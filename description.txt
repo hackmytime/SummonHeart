@@ -24,6 +24,8 @@ LV450-500 4个
 但是限制每次攻击偷取生命上限值为噬魂之心等级除以25
 100级时，每次攻击最大偷取量为4，200级时为8，500级时为20
 限制每秒（60帧）最大吸血量为噬魂之心等级，满级时为500
+
+github地址(完全开源)：https://github.com/hackmytime/SummonHeart
 English：
 Heart of soul module
 
