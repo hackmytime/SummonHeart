@@ -5,8 +5,24 @@
 开局赠送豪华大礼包，亲民。
 还有几件非常方便的辅助饰品，亲民。
 最重要的，添加了自动攻击功能，没错，你可以自动使用武器进行攻击了，超级亲民，拯救鼠标，拯救你的手指头，可通过热键配置。
-加群:1136043760讨论制作
+加群:1136043760讨论制作(求画图大佬来画噬魂之心的图标QAQ)
 版本：1.0正式版
+------------------------------------------------------
+更新1.2.1版本：
+新版噬魂之心新版本增加以下内容：
+装备噬魂之心时生效
+1、为所有近战，远程，魔法，投手增加额外弹幕
+初始一个额外弹幕：每150级增加一个
+Lv0-149 1个
+Lv150-299 2个
+Lv300-449 3个
+LV450-500 4个
+2、更改所有悠悠球持续时间为无限
+3、召唤师5倍召唤栏位（仅装备增加的召唤栏生效，饰品增加的不受次加成）
+4、生命偷取效果削弱，增加双重吸血上限限制，每50级增加1%生命偷取，500级为10%，满级比吸血鬼刀7.5%强
+但是限制每次攻击偷取生命上限值为噬魂之心等级除以25
+100级时，每次攻击最大偷取量为4，200级时为8，500级时为20
+限制每秒（60帧）最大吸血量为噬魂之心等级，满级时为500
 English：
 Heart of soul module
 
@@ -23,3 +39,34 @@ There are also a few very convenient accessories, people-friendly.
 The most important, add the automatic attack function, yes, you can automatically use weapons to attack, super Pro people, save the mouse, save your fingers, can be configured through the hotkey.
 
 Version: 1.0 official
+------------------------------------------------------
+
+Update 1.21:
+
+The new version of soul eating heart adds the following contents:
+
+It takes effect when equipped with soul eating heart
+
+1. Add extra barrage to all melee, ranged, magic, pitchers
+
+Initial additional projectiles: one for every 150 levels
+
+Lv0-149 1 additional projectile
+
+Lv150-299 2 additional projectile
+
+Lv300-449 3 additional projectile
+
+Lv450-500 4 additional projectile
+
+2. Change all Yo Yo duration to infinite
+
+3. Summoner's 5 times of summon max num (only the summon field added by equipment takes effect, and the accessary added is not subject to the second bonus)
+
+4. The effect of life stealing is weakened, and the upper limit of double blood sucking is increased. Life stealing increases by 1% every 50 levels, 10% at 500 levels, and 7.5% at full level
+
+However, the limit for each attack to steal maximum health is divided by 25
+
+At level 100, the maximum amount of theft per attack is 4200, 8500 and 20
+
+Limit the maximum amount of blood drawn per second (60 frames) to the heart of soul level, and 500 at full level
