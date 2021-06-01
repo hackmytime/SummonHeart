@@ -1,0 +1,25 @@
+噬魂之心模组
+核心是一件可成长饰品，通过吞噬击败敌人的灵魂进行升级，逐步获取远古魔神之力，最大等级500级。
+具体见图标
+加载mod会自动释放远古魔神之力，使得泰拉所有敌人和生物增加5倍生命值，3倍防御力，2倍攻击力，请做好准备，其他mod的敌人和boss也会受此加成。
+开局赠送豪华大礼包，亲民。
+还有几件非常方便的辅助饰品，亲民。
+最重要的，添加了自动攻击功能，没错，你可以自动使用武器进行攻击了，超级亲民，拯救鼠标，拯救你的手指头，可通过热键配置。
+加群:1136043760讨论制作
+版本：1.0正式版
+English：
+Heart of soul module
+
+The core is a growth ornament. It can be upgraded by swallowing and defeating the soul of the enemy, and gradually gain the power of ancient demons. The maximum level is 500.
+
+See the icon for details
+
+Loading mod will automatically release the power of ancient demons, making all enemies and creatures of Tara increase 5 times of health, 3 times of defense and 2 times of attack. Please be prepared. Other mod enemies and bosses will also receive this bonus.
+
+At the beginning, we will present a luxury gift package, which is close to the people.
+
+There are also a few very convenient accessories, people-friendly.
+
+The most important, add the automatic attack function, yes, you can automatically use weapons to attack, super Pro people, save the mouse, save your fingers, can be configured through the hotkey.
+
+Version: 1.0 official
