@@ -8,6 +8,9 @@
 加群:1136043760讨论制作(求画图大佬来画噬魂之心的图标QAQ)
 尽情享受吧，希望此mod能带给你不一样的泰拉体验。
 -------------------------------------------
+更新1.2.4版本：
+添加狱石、沙漠化石、泥沙、淤泥可被洞穴探险药剂探索到
+-------------------------------------------
 更新1.2.3版本：
 噬魂之心新版本增加和调整以下内容：
 为所有物品添加英文翻译
@@ -44,14 +47,13 @@ At the beginning, we will present a luxury gift package, which is close to the p
 There are also a few very convenient accessories, people-friendly.
 
 The most important, add the automatic attack function, yes, you can automatically use weapons to attack, super Pro people, save the mouse, save your fingers, can be configured through the hotkey.
-
+-------------------------------------------
+Update version 1.2.4:
+DesertFossil、Hellstone、SlushBlock、SiltBlock now can be affected by spelunker highlighting.
 -------------------------------------------
 Update version 1.2.3:
 
-The new version of soul eating heart adds and adjusts the following contents:
-
 Add English translation for all items
-
 Now you can gain more souls by defeating boss. The formula is: max health of boss / 1000 (the upper limit is soul eating heart level x5)
 ------------------------------------------------------
 
