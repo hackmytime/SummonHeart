@@ -1,6 +1,7 @@
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace SummonHeart.Items
@@ -12,6 +13,9 @@ namespace SummonHeart.Items
             DisplayName.SetDefault("BattleCry");
             Tooltip.SetDefault("Increase spawn rates by 20x on use" +
                                "\nUse it again to decrease them");
+            DisplayName.AddTranslation(GameCulture.Chinese, "战争号角");
+            Tooltip.AddTranslation(GameCulture.Chinese, "20x刷怪率" +
+                               "\n再次使用可关闭");
         }
 
         public override void SetDefaults()

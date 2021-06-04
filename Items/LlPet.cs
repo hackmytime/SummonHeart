@@ -1,5 +1,6 @@
 ﻿using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace SummonHeart.Items
@@ -9,8 +10,10 @@ namespace SummonHeart.Items
         public override void SetStaticDefaults()
         {
             // DisplayName and Tooltip are automatically set from the .lang files, but below is how it is done normally.
-            DisplayName.SetDefault("天依喜欢的包子");
-            Tooltip.SetDefault("她要来了！嗯~啊~");
+            DisplayName.SetDefault("Tianyi's favorite steamed bun");
+            Tooltip.SetDefault("She's coming! Mm-hmm~");
+            DisplayName.AddTranslation(GameCulture.Chinese, "天依喜欢的包子");
+            Tooltip.AddTranslation(GameCulture.Chinese, "她要来了！嗯~啊~");
         }
 
         public override void SetDefaults()

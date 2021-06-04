@@ -38,7 +38,20 @@ namespace SummonHeart.NPCs
 					{
 						if (modPlayer.SummonCrit < 500)
                         {
-							modPlayer.BBP++;
+							if (npc.boss)
+							{
+								int addExp = npc.lifeMax / 1000;
+								if (addExp == 0)
+									addExp = 1;
+								if (addExp > modPlayer.SummonCrit * 5)
+									addExp = modPlayer.SummonCrit * 5;
+								modPlayer.BBP += addExp;
+                            }
+                            else
+                            {
+								modPlayer.BBP++;
+							}
+							
 							dealLevel(modPlayer);
 							if (Main.netMode == 2)
 							{

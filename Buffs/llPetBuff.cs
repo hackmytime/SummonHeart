@@ -1,4 +1,5 @@
 ﻿using Terraria;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace SummonHeart.Buffs
@@ -8,8 +9,10 @@ namespace SummonHeart.Buffs
         public override void SetDefaults()
         {
             // DisplayName and Description are automatically set from the .lang files, but below is how it is done normally.
-            DisplayName.SetDefault("洛天依爱着你");
-            Description.SetDefault("\"据说洛天依的身心被魔法变小了\"");
+            DisplayName.SetDefault("Lotanyi loves you");
+            Description.SetDefault("\"It is said that lotanyi's body and mind are reduced by magic\"");
+            DisplayName.AddTranslation(GameCulture.Chinese, "洛天依爱着你");
+            Description.AddTranslation(GameCulture.Chinese, "\"据说洛天依的身心被魔法变小了\"");
             Main.buffNoTimeDisplay[Type] = true;
             Main.vanityPet[Type] = true;
         }

@@ -1,13 +1,19 @@
 ﻿using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace SummonHeart.Items
 {
     public class CursedSextant : ModItem
     {
-        public override void SetStaticDefaults() => Tooltip.SetDefault("Starts the Blood Moon");
+        public override void SetStaticDefaults() {
+            DisplayName.SetDefault("CursedSextant");
+            Tooltip.SetDefault("Starts the Blood Moon");
+            DisplayName.AddTranslation(GameCulture.Chinese, "血色六分仪");
+            Tooltip.AddTranslation(GameCulture.Chinese, "召唤血月");
+        }
 
         public override void SetDefaults()
         {

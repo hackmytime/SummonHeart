@@ -1,5 +1,6 @@
 ﻿using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace SummonHeart.Items.BalloonBundle
@@ -8,8 +9,10 @@ namespace SummonHeart.Items.BalloonBundle
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("大马掌气球束");
-            Tooltip.SetDefault("可让持有者五连跳\n增加跳跃高度\n免疫坠落伤害");
+            DisplayName.SetDefault("QuadrupleHorseshoeBalloonBundle");
+            Tooltip.SetDefault("Allows the holder to jump five times in a row\nincreases the jump height\nimmune to falling damage");
+            DisplayName.AddTranslation(GameCulture.Chinese, "大马掌气球束");
+            Tooltip.AddTranslation(GameCulture.Chinese, "可让持有者五连跳\n增加跳跃高度\n免疫坠落伤害");
         }
 
         public override void SetDefaults()
