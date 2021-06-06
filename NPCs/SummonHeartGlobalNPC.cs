@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -36,20 +36,48 @@ namespace SummonHeart.NPCs
 
 					if (modPlayer.SummonHeart)
 					{
-						if (modPlayer.SummonCrit < 500)
+						if (!Main.hardMode && modPlayer.SummonCrit < 299)
                         {
 							if (npc.boss)
 							{
-								int addExp = npc.lifeMax / 1000;
-								if (addExp == 0)
-									addExp = 1;
-								if (addExp > modPlayer.SummonCrit * 5)
+								int addExp = npc.lifeMax / 100;
+								if (addExp > modPlayer.SummonCrit * 20)
+									addExp = modPlayer.SummonCrit * 20;
+								if (addExp < modPlayer.SummonCrit * 5)
 									addExp = modPlayer.SummonCrit * 5;
 								modPlayer.BBP += addExp;
-                            }
+								Main.NewText($"你吞噬了{npc.FullName}的灵魂，灵魂之力+{addExp}", Color.Green);
+							}
+							else
+							{
+								if (SummonHeartWorld.GoddessMode)
+									modPlayer.BBP += 10;
+								else
+									modPlayer.BBP++;
+							}
+
+							dealLevel(modPlayer);
+							if (Main.netMode == 2)
+							{
+								SyncPlayerVariables(player);
+							}
+						}
+						if (Main.hardMode && modPlayer.SummonCrit < 500)
+                        {
+							if (npc.boss)
+							{
+								int addExp = npc.lifeMax / 100;
+								if (addExp > modPlayer.SummonCrit * 10)
+									addExp = modPlayer.SummonCrit * 10;
+								modPlayer.BBP += addExp;
+								Main.NewText($"你吞噬了{npc.FullName}的灵魂，灵魂之力+{addExp}", Color.Green);
+							}
                             else
                             {
-								modPlayer.BBP++;
+								if (SummonHeartWorld.GoddessMode)
+									modPlayer.BBP += 10;
+								else
+									modPlayer.BBP++;
 							}
 							
 							dealLevel(modPlayer);
@@ -77,6 +105,10 @@ namespace SummonHeart.NPCs
 			int needExp = exp - modPlayer.BBP;
 			modPlayer.exp = needExp;
 			modPlayer.SummonCrit = level;
+			if (!Main.hardMode && modPlayer.SummonCrit > 299)
+				modPlayer.SummonCrit = 299;
+			if (Main.hardMode && modPlayer.SummonCrit > 499)
+				modPlayer.SummonCrit = 500;
 		}
 
         public override void EditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns)

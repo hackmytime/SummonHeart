@@ -8,6 +8,13 @@
 加群:1136043760讨论制作(求画图大佬来画噬魂之心的图标QAQ)
 尽情享受吧，希望此mod能带给你不一样的泰拉体验。
 -------------------------------------------
+更新1.2.5版本：
+添加女神之像，恶魔祭坛合成，可开启女神模式（作弊模式：10倍灵魂获取）
+大幅提升击杀boss的奖励：boss增加的灵魂值=boss最大生命值/100
+肉前击杀boss最低提升5级，boss灵魂值不足，自动补齐。最大提升20级，超过20级的灵魂值无效（越级击杀boss限制）
+新增肉前噬魂之心等级上限为299级
+肉后击杀boss无最低提升等级福利，防止肉后刷肉前boss快速升级，最大提升10级，超过10级的灵魂值无效（越级击杀boss限制）
+-------------------------------------------
 更新1.2.4版本：
 添加狱石、沙漠化石、泥沙、淤泥可被洞穴探险药剂探索到
 -------------------------------------------
@@ -47,6 +54,13 @@ At the beginning, we will present a luxury gift package, which is close to the p
 There are also a few very convenient accessories, people-friendly.
 
 The most important, add the automatic attack function, yes, you can automatically use weapons to attack, super Pro people, save the mouse, save your fingers, can be configured through the hotkey.
+-------------------------------------------
+Update 1.2.5:
+Add the statue of goddess, the devil altar synthesis, can open the goddess mode (cheating mode: 10 times soul gain)
+Greatly increase the reward for killing the boss: the increased soul value of the boss = the maximum health value of the boss / 100
+The minimum level of killing boss before meat is increased by 5. If the soul value of boss is insufficient, it will be automatically supplemented. The maximum increase is 20 levels. The soul value beyond 20 levels is invalid (exceed the boss limit)
+The maximum level of soul eating heart before adding meat is 299
+There is no minimum promotion level benefit for killing boss after meat, which prevents the boss from upgrading quickly after meat and before brushing meat. The maximum promotion level is 10, and the soul value above 10 is invalid (skip the level to kill boss limit)
 -------------------------------------------
 Update version 1.2.4:
 DesertFossil、Hellstone、SlushBlock、SiltBlock now can be affected by spelunker highlighting.
