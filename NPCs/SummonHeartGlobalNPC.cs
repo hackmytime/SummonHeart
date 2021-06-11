@@ -6,11 +6,21 @@ namespace SummonHeart.NPCs
 {
     public class SummonHeartGlobalNPC : GlobalNPC
     {
+		public override bool InstancePerEntity
+		{
+			get
+			{
+				return true;
+			}
+		}
+
+		public int soulSplitCount = 0;
+
 		public override void SetDefaults(NPC npc)
 		{
 			npc.lifeMax *= 5;
 			npc.damage *= 2;
-			npc.defense *= 3;
+			npc.defense *= 5;
 			base.SetDefaults(npc);
 		}
 
@@ -127,6 +137,11 @@ namespace SummonHeart.NPCs
 			if (modPlayer.SummonHeart)
 			{
 				npc.defense *= (1 - modPlayer.SummonCrit / 500);
+				if (!npc.HasBuff(mod.BuffType("SoulSplit")))
+				{
+					soulSplitCount = 1;
+				}
+				npc.AddBuff(mod.BuffType("SoulSplit"), 2);
 			}
 		}
 
@@ -138,6 +153,11 @@ namespace SummonHeart.NPCs
 			if (modPlayer.SummonHeart)
             {
 				npc.defense *= (1 - modPlayer.SummonCrit / 500);
+				if (!npc.HasBuff(mod.BuffType("SoulSplit")))
+				{
+					soulSplitCount = 1;
+				}
+				npc.AddBuff(mod.BuffType("SoulSplit"), 2);		
 
 				//欺负大幻海妖蛇
 				if (Calamity != null)

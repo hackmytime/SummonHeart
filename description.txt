@@ -1,12 +1,18 @@
 噬魂之心模组
 噬魂之心是一件可成长饰品，通过吞噬击败敌人的灵魂进行升级，逐步获取远古魔神之力，最大等级500级。
-具体见图标和下面的更新介绍，或在游戏中自己探索。
+具体见下面的更新介绍，或在游戏中自己探索。
 加载mod会自动释放远古魔神之力，使得泰拉所有敌人和生物增加5倍生命值，3倍防御力，2倍攻击力，请做好准备，其他mod的敌人和boss也会受此加成。
 开局赠送豪华大礼包，亲民。
 还有几件非常方便的辅助物品，亲民。
 最重要的，添加了自动攻击功能，没错，你可以自动使用武器进行攻击了，超级亲民，拯救鼠标，拯救你的手指头，可通过热键配置。
 加群:1136043760讨论制作(求画图大佬来画噬魂之心的图标QAQ)
 尽情享受吧，希望此mod能带给你不一样的泰拉体验。
+-------------------------------------------
+更新1.2.6版本：
+装备噬魂之心新增魔神级能力：每次攻击对会给敌人施加灵魂撕裂（持续时间无限，可叠加，最大叠加500层）
+灵魂撕裂伤害计算公式：噬魂之心等级/50的伤害*层数（噬魂之心等级）
+最大伤害：10*500=5000
+图标更改为灵魂撕裂buff图标
 -------------------------------------------
 更新1.2.5版本：
 添加女神之像，恶魔祭坛合成，可开启女神模式（作弊模式：10倍灵魂获取）
@@ -54,6 +60,12 @@ At the beginning, we will present a luxury gift package, which is close to the p
 There are also a few very convenient accessories, people-friendly.
 
 The most important, add the automatic attack function, yes, you can automatically use weapons to attack, super Pro people, save the mouse, save your fingers, can be configured through the hotkey.
+-------------------------------------------
+Update 1.2.6:
+Equip soul eating heart add new ability of demon level: each attack will tear the enemy's soul (unlimited duration, can stack up to 500 layers)
+Soul tearing damage calculation formula: heart of soul level / 50 damage * layers (heart of soul level)
+Maximum damage: 10 * 500 = 5000
+The icon changes to the soul rip buff icon
 -------------------------------------------
 Update 1.2.5:
 Add the statue of goddess, the devil altar synthesis, can open the goddess mode (cheating mode: 10 times soul gain)
