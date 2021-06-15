@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using SummonHeart.ui;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.GameInput;
@@ -6,6 +8,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
+using static SummonHeart.SummonHeartMod;
 
 namespace SummonHeart
 {
@@ -21,11 +24,29 @@ namespace SummonHeart
 		public int BBP = 0;
 		public int SummonCrit = 0;
 		public int exp = 0;
+		public float bodyDef = 0;
 
 		public int HealCount = 0;
 		private int healCD = 0;
 
-		public override void ResetEffects()
+		public List<bool> boughtbuffList;
+
+		public SummonHeartPlayer()
+		{
+			var size = SummonHeartMod.getBuffLength();
+			boughtbuffList = new List<bool>();
+			for(int i = 1; i <= size; i++)
+            {
+				boughtbuffList.Add(false);
+            }
+		}
+
+        public override void PostUpdateMiscEffects()
+        {
+			player.statDefense += (int)bodyDef;
+		}
+
+        public override void ResetEffects()
         {
 			SummonHeart = false;
 			AttackSpeed = 1f;
@@ -84,6 +105,8 @@ namespace SummonHeart
 			clone.BBP = BBP;
 			clone.SummonCrit = SummonCrit;
 			clone.exp = exp;
+			clone.bodyDef = bodyDef;
+			clone.boughtbuffList = boughtbuffList;
 		}
 
 		public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
@@ -93,29 +116,57 @@ namespace SummonHeart
 			packet.Write(BBP);
 			packet.Write(SummonCrit);
 			packet.Write(exp);
+			packet.Write(bodyDef);
+			for (int i = 0; i < boughtbuffList.Count; i++)
+			{
+				packet.Write(boughtbuffList[i]);
+			}
 			packet.Send(toWho, fromWho);
 		}
 
 		public override void SendClientChanges(ModPlayer clientPlayer)
 		{
 			SummonHeartPlayer clone = clientPlayer as SummonHeartPlayer;
-			if (clone.BBP != BBP || clone.SummonCrit != SummonCrit || clone.exp != exp)
+			bool send = false;
+
+			for (int i = 0; i < boughtbuffList.Count; i++)
+			{
+				if (clone.BBP != BBP || clone.SummonCrit != SummonCrit || clone.exp != exp)
+				{
+					send = true;
+					break;
+				}
+				if (clone.boughtbuffList[i] != boughtbuffList[i])
+				{
+					send = true;
+					break;
+				}
+			}
+			if (send)
 			{
 				var packet = mod.GetPacket();
+				packet.Write((byte)player.whoAmI);
 				packet.Write(BBP);
 				packet.Write(SummonCrit);
 				packet.Write(exp);
+				packet.Write(bodyDef);
+				for (int i = 0; i < boughtbuffList.Count; i++)
+				{
+					packet.Write(boughtbuffList[i]);
+				}
 				packet.Send();
 			}
 		}
 
 		public override TagCompound Save()
 		{
-			return new TagCompound {
-				{"BBP", BBP},
-				{"SummonCrit", SummonCrit},
-				{"exp", exp},
-			};
+			var tagComp = new TagCompound();
+			tagComp.Add("BBP", BBP);
+			tagComp.Add("SummonCrit", SummonCrit);
+			tagComp.Add("exp", exp);
+			tagComp.Add("bodyDef", bodyDef);
+			tagComp.Add("boughtbuffList", boughtbuffList);
+			return tagComp;
 		}
 		
 		public override void Load(TagCompound tag)
@@ -123,25 +174,15 @@ namespace SummonHeart
 			BBP = tag.GetInt("BBP");
 			SummonCrit = tag.GetInt("SummonCrit");
 			exp = tag.GetInt("exp");
+			bodyDef = tag.GetFloat("bodyDef");
+			boughtbuffList = tag.Get<List<bool>>("boughtbuffList");
+
+			while (boughtbuffList.Count < modBuffValues.Count)
+			{
+				boughtbuffList.Add(false);
+			}
 		}
 
-		public override float UseTimeMultiplier(Item item)
-		{
-			int useTime = item.useTime;
-			int useAnimate = item.useAnimation;
-
-			if (useTime == 0 || useAnimate == 0 || item.damage <= 0)
-			{
-				return 1f;
-			}
-
-			if (SummonHeart)
-			{
-				return AttackSpeed;
-			}
-
-			return 1f;
-		}
 
 		public override void ProcessTriggers(TriggersSet triggersSet)
 		{
@@ -152,6 +193,16 @@ namespace SummonHeart
 					Main.NewText($"自动使用武器: 开", Color.SkyBlue);
 				else
 					Main.NewText($"自动使用武器: 关", Color.SkyBlue);
+			}
+
+			if (Main.keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape))
+			{
+				Panel.visible = false;
+			}
+
+			if (SummonHeartMod.ShowUI.JustPressed)
+			{
+				Panel.visible = !Panel.visible;
 			}
 		}
 

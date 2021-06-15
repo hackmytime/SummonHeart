@@ -64,7 +64,7 @@ namespace SummonHeart.Buffs
 
             if (globalNPC.soulSplitCount < modPlayer.SummonCrit)
                 globalNPC.soulSplitCount++;
-            Main.NewText($"{npc.FullName}灵魂撕裂层数：【{globalNPC.soulSplitCount}】层（-{modPlayer.SummonCrit / 50 * globalNPC.soulSplitCount}生命/秒）", Color.SkyBlue);
+            //Main.NewText($"{npc.FullName}灵魂撕裂层数：【{globalNPC.soulSplitCount}】层（-{modPlayer.SummonCrit / 50 * globalNPC.soulSplitCount}生命/秒）", Color.SkyBlue);
             return true;
         }
     }

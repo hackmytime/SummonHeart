@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
+using static SummonHeart.SummonHeartMod;
 
 namespace SummonHeart.NPCs
 {
@@ -32,6 +33,11 @@ namespace SummonHeart.NPCs
 			packet.Write(modPlayer.BBP);
 			packet.Write(modPlayer.SummonCrit);
 			packet.Write(modPlayer.exp);
+			packet.Write(modPlayer.bodyDef);
+			for (int i = 0; i < modPlayer.boughtbuffList.Count; i++)
+			{
+				packet.Write(modPlayer.boughtbuffList[i]);
+			}
 			packet.Send();
 		}
 
@@ -40,10 +46,9 @@ namespace SummonHeart.NPCs
 			for (int k = 0; k < 255; k++)
 			{
 				Player player = Main.player[k];
-				if (player.active)
+				if (player.active && Main.myPlayer == player.whoAmI)
 				{
 					SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
-
 					if (modPlayer.SummonHeart)
 					{
 						if (!Main.hardMode && modPlayer.SummonCrit < 299)
