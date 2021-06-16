@@ -86,7 +86,11 @@ namespace SummonHeart.ui
             int buffIndex = 0;
             {
                 var modbuffpanel = new Layout(10, 0, 0, 0, 10, new LayoutVertical());
-                
+
+                var modlabel_level = new UIText("当前肉身强度："+ mp.bodyDef);
+                modlabel_level.TextColor = Color.SkyBlue;
+                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
+
                 var modlabel = new UIText("炼体材料");
                 modlabel.TextColor = new Color(232, 181, 16);
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));

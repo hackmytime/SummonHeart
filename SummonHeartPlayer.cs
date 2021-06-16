@@ -44,9 +44,43 @@ namespace SummonHeart
         public override void PostUpdateMiscEffects()
         {
 			player.statDefense += (int)bodyDef;
+			//player.thorns = 1f;
+			if(bodyDef > 96)
+				player.noKnockback = true;
 		}
 
-        public override void ResetEffects()
+		public bool CheckSoul(int count)
+		{
+			return BBP >= count;
+		}
+
+		public void BuySoul(int count)
+		{
+			BBP -= count;
+			dealLevel();
+		}
+
+		private void dealLevel()
+		{
+			int lvExp = 1;
+			int exp = lvExp;
+			int level = 0;
+			while (exp <= BBP)
+			{
+				exp += lvExp;
+				level++;
+				lvExp += 1;
+			}
+			int needExp = exp - BBP;
+			exp = needExp;
+			SummonCrit = level;
+			if (!Main.hardMode && SummonCrit > 299)
+				SummonCrit = 299;
+			if (Main.hardMode && SummonCrit > 499)
+				SummonCrit = 500;
+		}
+
+		public override void ResetEffects()
         {
 			SummonHeart = false;
 			AttackSpeed = 1f;
@@ -269,6 +303,15 @@ namespace SummonHeart
 				player.HeldItem.autoReuse = true;
 			}
 			return true;
+		}
+
+        public override void ModifyHitByNPC(NPC npc, ref int damage, ref bool crit)
+        {
+			if (bodyDef >= 1)
+			{
+				npc.StrikeNPC((int)(damage + bodyDef), npc.knockBackResist, -npc.direction);
+				//Projectile.NewProjectile(npc.Center.X, npc.Center.Y, 0f, 0f, mod.ProjectileType("Returner2"), (int)bodyDef + npc.defense, 0, player.whoAmI);
+			}
 		}
 
         public override void PostItemCheck()

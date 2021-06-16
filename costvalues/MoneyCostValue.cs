@@ -14,16 +14,16 @@ namespace SummonHeart.costvalues
 
         public bool CheckBuy()
         {
-            Main.LocalPlayer.CanBuyItem(cost);
-
-            return  Main.LocalPlayer.CanBuyItem(cost);
+            SummonHeartPlayer summonHeartPlayer = Main.player[Main.myPlayer].GetModPlayer<SummonHeartPlayer>();
+            return summonHeartPlayer.CheckSoul(cost);
         }
 
         public void Buy()
         {
             if (true)
             {
-                Main.LocalPlayer.BuyItem(cost);
+                SummonHeartPlayer summonHeartPlayer = Main.player[Main.myPlayer].GetModPlayer<SummonHeartPlayer>();
+                summonHeartPlayer.BuySoul(cost);
             }
         }
 

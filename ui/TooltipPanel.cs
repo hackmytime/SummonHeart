@@ -152,22 +152,19 @@ namespace SummonHeart.ui
                 else if (v.GetType() == typeof(MoneyCostValue))
                 {
                     var ll = new Layout(0, 0, 0, 0, 10, new LayoutHorizontal());
-                    var money = ((MoneyCostValue)v).cost;
-                    for (int i = 4; i >= 1; i--)
-                    {
-                        int mcount = (int)(money / Math.Pow(100, i - 1));
-                        money = money % (int)Math.Pow(100, i - 1);
-                        if (mcount > 0)
-                        {
-                            var costIcon = new UIImage(Main.itemTexture[70 + i]);
-                            costIcon.Height.Set(20, 0);
-                            ll.children.Add(new LayoutElementWrapperUIElement(costIcon));
+                    var costIcon = new UIImage(ModContent.GetTexture("SummonHeart/Buffs/SoulSplit"));
+                    costIcon.Height.Set(20, 0);
+                    //ll.children.Add(new LayoutElementWrapperUIElement(costIcon));
 
-                            var costcountLabel = new UIText("x" + mcount);
-                            costcountLabel.TextColor = new Color(232, 181, 16);
-                            ll.children.Add(new LayoutElementWrapperUIElement(costcountLabel));
-                        }
-                    }
+                    var money = ((MoneyCostValue)v).cost;
+                    var costcountLabel = new UIText("x" + money);
+                    costcountLabel.TextColor = new Color(232, 181, 16);
+                    ll.children.Add(new LayoutElementWrapperUIElement(costcountLabel));
+
+                    var costnamelabel = new UIText("灵魂之力");
+                    costnamelabel.TextColor = new Color(232, 181, 16);
+                    ll.children.Add(new LayoutElementWrapperUIElement(costnamelabel));
+
                     costPanel.children.Add(ll);
                 }
             }

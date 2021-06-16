@@ -17,15 +17,13 @@ namespace SummonHeart.body
         public CostValue[] cost;
         public Texture2D texture;
 
-        public BuffValue(int id, int def, string name, string mod, CostValue[] cost, string effect, Texture2D texture = null)
+        public BuffValue(int id, int def, string effect, string name)
         {
             this.id = id;
             this.def = def;
             this.effect = effect;
             this.name = name;
-            this.mod = mod;
-            this.cost = cost;
-            this.texture = texture;
+            this.cost = new CostValue[] { new ItemCostValue(id, 99, name), new MoneyCostValue(def * 100) };
         }
     }
 }

@@ -43,64 +43,59 @@ namespace SummonHeart.NPCs
 
         public override void NPCLoot(NPC npc)
 		{
-			for (int k = 0; k < 255; k++)
-			{
-				Player player = Main.player[k];
-				if (player.active && Main.myPlayer == player.whoAmI)
-				{
-					SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
-					if (modPlayer.SummonHeart)
-					{
-						if (!Main.hardMode && modPlayer.SummonCrit < 299)
-                        {
-							if (npc.boss)
-							{
-								int addExp = npc.lifeMax / 100;
-								if (addExp > modPlayer.SummonCrit * 20)
-									addExp = modPlayer.SummonCrit * 20;
-								if (addExp < modPlayer.SummonCrit * 5)
-									addExp = modPlayer.SummonCrit * 5;
-								modPlayer.BBP += addExp;
-								Main.NewText($"你吞噬了{npc.FullName}的灵魂，灵魂之力+{addExp}", Color.Green);
-							}
-							else
-							{
-								if (SummonHeartWorld.GoddessMode)
-									modPlayer.BBP += 10;
-								else
-									modPlayer.BBP++;
-							}
+			Player player = Main.player[npc.lastInteraction];
+			SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
 
-							dealLevel(modPlayer);
-							if (Main.netMode == 2)
-							{
-								SyncPlayerVariables(player);
-							}
-						}
-						if (Main.hardMode && modPlayer.SummonCrit < 500)
-                        {
-							if (npc.boss)
-							{
-								int addExp = npc.lifeMax / 100;
-								if (addExp > modPlayer.SummonCrit * 10)
-									addExp = modPlayer.SummonCrit * 10;
-								modPlayer.BBP += addExp;
-								Main.NewText($"你吞噬了{npc.FullName}的灵魂，灵魂之力+{addExp}", Color.Green);
-							}
-                            else
-                            {
-								if (SummonHeartWorld.GoddessMode)
-									modPlayer.BBP += 10;
-								else
-									modPlayer.BBP++;
-							}
-							
-							dealLevel(modPlayer);
-							if (Main.netMode == 2)
-							{
-								SyncPlayerVariables(player);
-							}
-						}
+			if (modPlayer.SummonHeart)
+			{
+				if (!Main.hardMode && modPlayer.SummonCrit < 299)
+				{
+					if (npc.boss)
+					{
+						int addExp = npc.lifeMax / 100;
+						if (addExp > modPlayer.SummonCrit * 20)
+							addExp = modPlayer.SummonCrit * 20;
+						if (addExp < modPlayer.SummonCrit * 5)
+							addExp = modPlayer.SummonCrit * 5;
+						modPlayer.BBP += addExp;
+						Main.NewText($"你吞噬了{npc.FullName}的灵魂，灵魂之力+{addExp}", Color.Green);
+					}
+					else
+					{
+						if (SummonHeartWorld.GoddessMode)
+							modPlayer.BBP += 10;
+						else
+							modPlayer.BBP++;
+					}
+
+					dealLevel(modPlayer);
+					if (Main.netMode == 2)
+					{
+						SyncPlayerVariables(player);
+					}
+				}
+				if (Main.hardMode && modPlayer.SummonCrit < 500)
+				{
+					if (npc.boss)
+					{
+						int addExp = npc.lifeMax / 100;
+						if (addExp > modPlayer.SummonCrit * 10)
+							addExp = modPlayer.SummonCrit * 10;
+						modPlayer.BBP += addExp;
+						Main.NewText($"你吞噬了{npc.FullName}的灵魂，灵魂之力+{addExp}", Color.Green);
+					}
+					else
+					{
+						if (SummonHeartWorld.GoddessMode)
+							modPlayer.BBP += 10;
+						else
+							modPlayer.BBP++;
+					}
+
+					dealLevel(modPlayer);
+					if (Main.netMode == 2)
+					{
+						SyncPlayerVariables(player);
 					}
 				}
 			}

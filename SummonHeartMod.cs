@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.UI;
 
@@ -56,17 +57,20 @@ namespace SummonHeart
 			ShowUI = null;
 		}
 
-       public override void PostSetupContent()
+      /* public override void PostSetupContent()
         {
+			
 			for (int i = 0; i < ItemLoader.ItemCount; i++)
 			{
 				ModItem mitem = ItemLoader.GetItem(i);
+				
 				if (mitem != null)
 				{
-					if (mitem.item.defense >= 1 && !mitem.item.accessory)
+					if (mitem.item.Name.Contains("Bar") && !mitem.item.accessory && mitem.mod.Name != "ThoriumMod")
 					{
 						var item = mitem.item;
-						var bvalue = new BuffValue(item.type, item.defense, item.Name, mitem.mod.Name, new CostValue[] { new ItemCostValue(mitem.item.type, 1, mitem.DisplayName.GetDefault()) },"防御+" + item.defense, null);
+						
+						var bvalue = new BuffValue(item.type, item.defense, "防御+" + item.defense, item.Name);
                         if (!modBuffValues.Contains(bvalue))
                         {
 							modBuffValues.Add(bvalue);
@@ -74,7 +78,7 @@ namespace SummonHeart
 					}
 				}
 			}
-		}
+		}*/
 
 		public static int getBuffLength()
 		{
