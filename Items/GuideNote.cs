@@ -10,16 +10,22 @@ namespace SummonHeart.Items
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("GuideNote");
-            Tooltip.SetDefault("'I know that Sasscade Yo-Yo exists. But how do you make it?"
-            + "\nI am pretty sure that the [c/00FF00:Terrarian Yo-Yo] is the first component."
-            + "\nAn [c/00FF00:Alchemical Bundle] should be the second component..."
-            + "\nBut what could be the third one? I think that it is something, related to the Sass..."
-            + "\nMaybe inner part of the [c/00FF00:Rod of Discord] can be it?"
-            + "\nAnd the final component... Is the [c/00FF00:Yo-yo Bag]. I am 100% sure about this.'");
-            DisplayName.AddTranslation(GameCulture.Russian, "Запись исследования №1");
-            Tooltip.AddTranslation(GameCulture.Russian, "'Я знаю, что йо-йо Сасскад существует. Но как именно его сделать?\nЯ уверена, что первый компонент - [c/00FF00:Йо-Йо Террариан].\n[c/00FF00:Алхимический Набор] может быть вторым компонентом...\nНо что насчёт третьего? Я думаю, это что-то относящееся к ссорам...\nМожет внутренняя часть [c/00FF00:Жезла Раздора] подойдёт?\nИ последний компонент... Это [c/00FF00:Сумка для Йо-Йо]. Я на 100% в этом уверена.'");
-
+            DisplayName.SetDefault("The Devil's Letter");
+            Tooltip.SetDefault("'Welcome, the one million son of the demon God. You are our last hope." +
+                 "\nI'm avoiding the pursuit of the goddess cult. I foresee your arrival, so I've taken the time to write this letter to give you some guidance" +
+                 "\n1、Don't believe any of the words of Goddess religion. Their goal is to destroy every son of demon God" +
+                 "\n2、The crystal of life, the glue of slime, and the power of magic are hidden in these two objects. Please integrate them as soon as possible." +
+                 "\n3、The body refining method of the demon God is the powerful foundation of the son of the demon God. " +
+                 "\n   I suggest you practice it as soon as possible, pay attention to the consumption of soul, and don't be greedy. The last one was greedy to death" +
+                 "\n4、I will entangle the goddess cult for you and fight for the time for your development. Before you are strong enough," +
+                 "\n   don't break the seal of Goddess and attract the attention of goddess" +
+                 "\n5、If I die, don't take revenge for me. You are our last hope. I don't want you to have an accident. After all, we are the only two left in the demon clan" +
+                 "\n6、I'm really a failure as a demon. I can't even protect my subordinates, and I don't even have a decent gift." +
+                 "\n7、You can sell this piece of paper as a gift. It's made of magic dragon skin. This is the only one. It's very valuable." +
+                 "\n   You don't have to worry about being seen by others. Only the demons can read it" +
+                 "\n8、Wuwuwu, please, please, too many people have died, we must live! Must live well!! If you don't like conflict, it's good to live in seclusion" +
+                 "\nIt's not the handwriting of the devil: it's good not to sell it. Don't regret it'");
+           
             DisplayName.AddTranslation(GameCulture.Chinese, "魔王的信");
             Tooltip.AddTranslation(GameCulture.Chinese, "'欢迎你，第100万任魔神之子，你是我们最后的希望了。" +
                 "\n我正在躲避女神教的追杀，预知了你的到来，所以抽空写了这封信给与你一些指导" +
