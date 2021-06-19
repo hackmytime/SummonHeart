@@ -23,11 +23,12 @@ namespace SummonHeart.ui
 
         Texture2D texture_checked;
         Texture2D texture_unchecked;
-        public UIHoverImageToggleButton(Texture2D texture_checked, Texture2D texture_unchecked, string hoverTextchecked, string hoverTextunchecked) : base(texture_unchecked)
+        public UIHoverImageToggleButton(Texture2D texture_checked, Texture2D texture_unchecked, string hoverTextchecked, string hoverTextunchecked, bool canToggle) : base(texture_unchecked)
         {
             HoverTextChecked = hoverTextchecked;
             HoverTextUnchecked = hoverTextunchecked;
-            OnClick += new MouseEvent(PlayButtonClicked);
+            if(canToggle)
+                OnClick += new MouseEvent(PlayButtonClicked);
             this.texture_checked = texture_checked;
             this.texture_unchecked = texture_unchecked;
 
@@ -66,7 +67,7 @@ namespace SummonHeart.ui
 
         private void PlayButtonClicked(UIMouseEvent evt, UIElement listeningElement)
         {
-           /* IsChecked = !IsChecked;
+           IsChecked = !IsChecked;
 
             if (IsChecked)
             {
@@ -77,7 +78,7 @@ namespace SummonHeart.ui
                 SetImage(texture_unchecked);
             }
 
-            OnChecked?.Invoke(IsChecked);*/
+            OnChecked?.Invoke(IsChecked);
         }
     }
 }

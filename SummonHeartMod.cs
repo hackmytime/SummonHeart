@@ -27,11 +27,13 @@ namespace SummonHeart
 		internal Panel somethingUI;
 		public UserInterface somethingInterface;
 		public UserInterface tooltipInterface;
+		public SummonHeartMod Instance;
 
 		public SummonHeartMod()
 		{
 			modBuffValues = new List<BuffValue>();
 			modBuffValues = VanilaBuffs.getVanilla();
+			Instance = this;
 		}
 
 		public override void Load()
@@ -47,7 +49,7 @@ namespace SummonHeart
 				somethingInterface.SetState(somethingUI);
 			}
 
-			ShowUI = RegisterHotKey("魔神之躯炼化万物", Keys.L.ToString());
+			ShowUI = RegisterHotKey("魔神炼体法", Keys.L.ToString());
 			
 		}
 
@@ -137,6 +139,16 @@ namespace SummonHeart
 			summonHeartPlayer.SummonCrit = reader.ReadInt32();
 			summonHeartPlayer.exp = reader.ReadInt32();
 			summonHeartPlayer.bodyDef = reader.ReadSingle();
+			summonHeartPlayer.eyeBloodGas = reader.ReadInt32();
+			summonHeartPlayer.handBloodGas = reader.ReadInt32();
+			summonHeartPlayer.bodyBloodGas = reader.ReadInt32();
+			summonHeartPlayer.footBloodGas = reader.ReadInt32();
+			summonHeartPlayer.practiceEye = reader.ReadBoolean();
+			summonHeartPlayer.practiceHand = reader.ReadBoolean();
+			summonHeartPlayer.practiceBody = reader.ReadBoolean();
+			summonHeartPlayer.practiceFoot = reader.ReadBoolean();
+			summonHeartPlayer.soulSplit = reader.ReadBoolean();
+
 			for (int i = 0; i < getBuffLength(); i++)
 			{
 				summonHeartPlayer.boughtbuffList[i] = reader.ReadBoolean();
@@ -149,6 +161,15 @@ namespace SummonHeart
 				packet.Write(summonHeartPlayer.SummonCrit);
 				packet.Write(summonHeartPlayer.exp);
 				packet.Write(summonHeartPlayer.bodyDef);
+				packet.Write(summonHeartPlayer.eyeBloodGas);
+				packet.Write(summonHeartPlayer.handBloodGas);
+				packet.Write(summonHeartPlayer.bodyBloodGas);
+				packet.Write(summonHeartPlayer.footBloodGas);
+				packet.Write(summonHeartPlayer.practiceEye);
+				packet.Write(summonHeartPlayer.practiceHand);
+				packet.Write(summonHeartPlayer.practiceBody);
+				packet.Write(summonHeartPlayer.practiceFoot);
+				packet.Write(summonHeartPlayer.soulSplit);
 				for (int i = 0; i < getBuffLength(); i++)
 				{
 					packet.Write(summonHeartPlayer.boughtbuffList[i]);

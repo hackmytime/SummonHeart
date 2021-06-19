@@ -14,7 +14,7 @@ namespace SummonHeart.Items
 			DisplayName.SetDefault("SoulEatingHeart");
 			Tooltip.SetDefault("The heart of Terra ancient demons\nCan obtain the power of the devil By swallowing the soul of creatures");
 			DisplayName.AddTranslation(GameCulture.Chinese, "噬魂之心");
-            Tooltip.AddTranslation(GameCulture.Chinese, "泰拉远古魔神的心脏\n通过吞噬生物灵魂，获取魔神之力");
+            Tooltip.AddTranslation(GameCulture.Chinese, "泰拉远古魔神的心脏\n噬魂之心，吞噬万灵，铸我魔魂!");
 
 			ModTranslation text = mod.CreateTranslation("Pip-Boy3000text1");
 			text.SetDefault("Swallowed souls ");

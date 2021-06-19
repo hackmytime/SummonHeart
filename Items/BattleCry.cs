@@ -20,8 +20,8 @@ namespace SummonHeart.Items
 
         public override void SetDefaults()
         {
-            item.width = 28;
-            item.height = 38;
+            item.width = 32;
+            item.height = 32;
             item.value = Item.sellPrice(0, 0, 2);
             item.rare = ItemRarityID.Pink;
             item.useAnimation = 30;

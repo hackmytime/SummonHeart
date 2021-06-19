@@ -123,10 +123,10 @@ namespace SummonHeart.ui
             lv.Recalculate();
         }
 
-        internal void SetInfo(CostValue[] cost, BuffValue buff, string name, string effect, Texture2D texture)
+        internal void SetInfo(CostValue[] cost, BuffValue buff, string name, string effect, Texture2D texture, string tip)
         {
             costPanel.children.Clear();
-            var costtopLabel = new UIText("修炼魔神之躯炼化");
+            var costtopLabel = new UIText(tip);
             costtopLabel.TextColor = new Color(232, 181, 16);
             costPanel.children.Add(new LayoutElementWrapperUIElement(costtopLabel));
 

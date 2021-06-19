@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using SummonHeart.costvalues;
 using Terraria;
+using Terraria.ID;
 
 namespace SummonHeart.body
 {
@@ -23,7 +24,16 @@ namespace SummonHeart.body
             this.def = def;
             this.effect = effect;
             this.name = name;
-            this.cost = new CostValue[] { new ItemCostValue(id, 99, name), new MoneyCostValue(def * 100) };
+            this.cost = new CostValue[] { new ItemCostValue(id, 200, name), new MoneyCostValue(def * 100) };
+        }
+
+        public BuffValue(int id, int def, string effect)
+        {
+            this.id = id;
+            this.def = def;
+            this.effect = effect;
+            this.name = "生命水晶";
+            this.cost = new CostValue[] { new ItemCostValue(ItemID.LifeCrystal, 10, name), new MoneyCostValue(10000) };
         }
     }
 }
