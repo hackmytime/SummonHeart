@@ -97,7 +97,7 @@ namespace SummonHeart.ui
             {
                 var modbuffpanel = new Layout(10, 0, 0, 0, 10, new LayoutVertical());
 
-                var modlabel = new UIText("魔神炼体法-传承自动领悟：魔神突破极限时自创的魔神级炼体功法，直达炼体第七境。");
+                var modlabel = new UIText("魔神炼体法-魔神传承自动领悟：魔神突破极限时自创的魔神级炼体功法，直达炼体第七境。");
                 modlabel.TextColor = new Color(232, 181, 16);
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
                 modlabel = new UIText("崩碎身躯把灵魂之力炼化溶于肉身，大幅提升肉身极限，使得肉身拥有吞血肉凝练的逆天之力。");

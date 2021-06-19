@@ -1,15 +1,37 @@
-噬魂之心模组
+噬魂之心、魔神之路模组
 噬魂之心是一件可成长饰品，通过吞噬击败敌人的灵魂进行升级，逐步获取远古魔神之力，最大等级500级。
-具体见下面的更新介绍，或在游戏中自己探索。
-加载mod会自动释放远古魔神之力，使得泰拉所有敌人和生物增加5倍生命值，3倍防御力，2倍攻击力，请做好准备，其他mod的敌人和boss也会受此加成。
+魔神之路：新增魔神炼体功能，可以在泰拉世界修炼功法
+魔神炼体法-魔神传承自动领悟：魔神突破极限时自创的魔神级炼体功法，直达炼体第七境。
+崩碎身躯把灵魂之力炼化溶于肉身，大幅提升肉身极限，使得肉身拥有吞血肉凝练的逆天之力。
+炼体七境：淬体入门、炼皮成牛、炼骨如钢、练髓如汞、金刚之躯、肉身圆满、不死之身七大境界
+加载mod会自动释放远古魔神之力，使得泰拉所有敌人和生物增加，请做好准备，其他mod的敌人和boss也会受此加成。
 开局赠送豪华大礼包，亲民。
-还有几件非常方便的辅助物品，亲民。
 最重要的，添加了自动攻击功能，没错，你可以自动使用武器进行攻击了，超级亲民，拯救鼠标，拯救你的手指头，可通过热键配置。
-加群:1136043760讨论制作(求画图大佬来画噬魂之心的图标QAQ)
-尽情享受吧，希望此mod能带给你不一样的泰拉体验。
+加群:1136043760讨论制作，群内可以提前玩最新内测版本
+尽情享受吧，希望此mod能带给你不一样的泰拉修炼体验。
 -------------------------------------------
 更新1.3.0版本：
-大版本更新，新增魔神炼体功能，设置控件打开炼体菜单
+大版本更新，新增魔神炼体功能，可以在泰拉世界修炼功法了，设置控件打开炼体菜单，增加新手指引
+增加难度配置项，可以自行调节难度，获得最佳体验（默认最低5倍生命值，5倍防御力，2倍攻击力）
+炼体简介：详情请自行在游戏中体验。遇到bug请加群反馈
+魔神炼体法-魔神传承自动领悟：魔神突破极限时自创的魔神级炼体功法，直达炼体第七境。
+崩碎身躯把灵魂之力炼化溶于肉身，大幅提升肉身极限，使得肉身拥有吞血肉凝练的逆天之力。
+炼体七境：淬体入门、炼皮成牛、炼骨如钢、练髓如汞、金刚之躯、肉身圆满、不死之身七大境界
+噬魂之心，吞噬万灵， 铸我魔魂，挡我者死! ! !
+吞噬万灵，铸我魔魂:吞噬灵魂增加生命偷取，效果视吞噬灵魂数量而定。
+挡我者死，效果: 吞噬灵魂增加护甲穿透，无视敌人护甲%。效果视灵魂数量而定。
+魔神之眼，命运之路，看破妄虚。生死轮转，介入吾眼！
+命运之路，勘破妄虚：极大提升暴击概率！
+生死轮转，介入吾眼：巨幅提升暴击伤害！
+魔神之躯，万灵炼体，铸我身躯。千凝万锻，魔体终成!
+万灵炼体，不死不灭: 吞噬气血增加生命回复与生命上限，生命回复效果无视任何负面状态。效果视吞噬灵魂数量而定。
+干凝万锻，魔体終成:吞噬气血增加防御效果视吞噬灵魂数量而走。
+魔神之手掌凝万灵擎天撼地，指天天裂划地地崩!
+掌凝万灵肇天撼地:吞噬气血增加攻击速度与攻击范围，效果视吞噬气血数量而定。
+指天天裂划地地崩:吞噬气血增加攻击力,效果视吞噬气血数量而定，
+魔神之腿风驰电掣，雷厉风行。天涯海角，一步跨之! ! !
+风驰电掣，雷厉风行：巨幅提升跳跃速度。
+天涯海角，一步跨之：巨幅增加飞行时间
 -------------------------------------------
 更新1.2.6版本：
 装备噬魂之心新增魔神级能力：每次攻击对会给敌人施加灵魂撕裂（持续时间无限，可叠加，最大叠加500层）
@@ -50,19 +72,40 @@ LV450-500 4个
 
 github地址(完全开源)：https://github.com/hackmytime/SummonHeart
 English：
-Heart of soul module
-
-The core is a growth ornament. It can be upgraded by swallowing and defeating the soul of the enemy, and gradually gain the power of ancient demons. The maximum level is 500.
-
-See the icon for details
-
-Loading mod will automatically release the power of ancient demons, making all enemies and creatures of Tara increase 5 times of health, 3 times of defense and 2 times of attack. Please be prepared. Other mod enemies and bosses will also receive this bonus.
-
+Heart of soul & The road of the devil module
+Soul eating heart is a growth ornament. It can be upgraded by swallowing and defeating the soul of the enemy, and gradually gain the power of ancient demons. The maximum level is 500.
+The way of the demon God: add the function of refining the body of the demon God, you can practice the Dharma in the world of Tara
+Magic spirit refining method - Magic spirit inheritance automatic understanding: the magic spirit level refining method created by the magic God when breaking through the limit can reach the seventh realm of refining.
+Breaking the body, refining and dissolving the power of the soul into the body, greatly increasing the limit of the body, making the body possess the power of swallowing blood and flesh.
+The Seven Realms of refining body: the entry of quenching body, refining skin into cattle, refining bone as steel, refining marrow as mercury, body of Vajra, perfect body of flesh and body of immortality
+Loading mod will automatically release the power of the ancient demon God, increasing all enemies and creatures of Tara. Please be prepared. Enemies and boss of other mod will also receive this bonus.
 At the beginning, we will present a luxury gift package, which is close to the people.
-
-There are also a few very convenient accessories, people-friendly.
-
 The most important, add the automatic attack function, yes, you can automatically use weapons to attack, super Pro people, save the mouse, save your fingers, can be configured through the hotkey.
+Plus group: 1136043760 discussion production, the group can play the latest beta version in advance
+Enjoy it. I hope this mod can bring you a different experience of Tara cultivation.
+-------------------------------------------
+Update 1.3.0:
+Big version update, new demon refining function, you can practice in Tara world, set control to open the refining menu, add novice guide
+Increase the difficulty configuration item, you can adjust the difficulty by yourself to get the best experience (default minimum 5 times of health, 5 times of defense, 2 times of attack)
+Brief introduction: for details, please experience in the game by yourself. If you encounter a bug, please add group feedback
+Magic spirit refining method - Magic spirit inheritance automatic understanding: the magic spirit level refining method created by the magic God when breaking through the limit can reach the seventh realm of refining.
+Breaking the body, refining and dissolving the power of the soul into the body, greatly increasing the limit of the body, making the body possess the power of swallowing blood and flesh.
+The Seven Realms of refining body: the entry of quenching body, refining skin into cattle, refining bone as steel, refining marrow as mercury, body of Vajra, perfect body of flesh and body of immortality
+Devour the soul of the heart, devour all souls, cast my ghost, block me to die!
+Devour all souls, cast my spirit: devour souls, increase life steal, the effect depends on the number of devoured souls.
+Kill those who block me. Effect: devours souls, increases armor penetration, and ignores enemy armor by%. The effect depends on the number of souls.
+The eye of the devil, the road of destiny, sees through the false. Life and death in my eyes!
+The road of destiny, explore and break the false: greatly improve the critical hit probability!
+Rotation of life and death, intervene in my eyes: greatly increase critical hit damage!
+The body of demons and gods, refined by all spirits, cast my body. Thousands of solidification and thousands of forging, the magic body is finally formed!
+All souls refine the body, never die, never die: devour Qi and blood, increase HP recovery and maximum HP, HP recovery effect ignores any negative state. The effect depends on the number of souls consumed.
+Dry coagulation ten thousand forging, the devil body finally becomes: devour Qi and blood, increase defense effect, depending on the number of souls devoured.
+The hand of the demon God is holding up the sky and shaking the ground, pointing to the collapse of the earth every day!
+Zhang Ning: engulfs Qi and blood to increase attack speed and range. The effect depends on the amount of Qi and blood engulfed.
+It means to split and collapse every day: engulf Qi and blood to increase attack power. The effect depends on the amount of Qi and blood engulfed,
+The leg of the devil is fast and vigorous. The ends of the earth, step forward!
+Fast and vigorous: greatly improve the jumping speed.
+The ends of the earth, one step: a huge increase in flight time
 -------------------------------------------
 Update 1.2.6:
 Equip soul eating heart add new ability of demon level: each attack will tear the enemy's soul (unlimited duration, can stack up to 500 layers)
