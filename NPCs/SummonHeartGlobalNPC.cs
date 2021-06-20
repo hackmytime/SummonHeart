@@ -153,13 +153,13 @@ namespace SummonHeart.NPCs
                 {
 					Main.NewText($"你吞噬了{npc.FullName}的灵魂，灵魂之力+{addExp}", Color.Green);
 					if(modPlayer.practiceEye)
-						Main.NewText($"你修炼魔神之眼消耗" + addExp + "灵魂之力吞噬了{npc.FullName}的气血，魔神之眼气血+{addExp}", Color.Green);
+						Main.NewText($"你修炼魔神之眼消耗{addExp}灵魂之力吞噬了{npc.FullName}的气血，魔神之眼气血+{addExp}", Color.Green);
 					if (modPlayer.practiceHand)
-						Main.NewText($"你修炼魔神之手消耗" + addExp + "灵魂之力吞噬了{npc.FullName}的气血，魔神之手气血+{addBloodGas}", Color.Green);
+						Main.NewText($"你修炼魔神之手消耗{addExp}灵魂之力吞噬了{npc.FullName}的气血，魔神之手气血+{addBloodGas}", Color.Green);
 					if (modPlayer.practiceBody)
-						Main.NewText($"你修炼魔神之躯消耗" + addExp + "灵魂之力吞噬了{npc.FullName}的气血，魔神之躯气血+{addBloodGas}", Color.Green);
+						Main.NewText($"你修炼魔神之躯消耗{addExp}灵魂之力吞噬了{npc.FullName}的气血，魔神之躯气血+{addBloodGas}", Color.Green);
 					if (modPlayer.practiceFoot)
-						Main.NewText($"你修炼魔神之腿消耗" + addExp + "灵魂之力吞噬了{npc.FullName}的气血，魔神之腿气血+{addBloodGas}", Color.Green);
+						Main.NewText($"你修炼魔神之腿消耗{addExp}灵魂之力吞噬了{npc.FullName}的气血，魔神之腿气血+{addBloodGas}", Color.Green);
 				}
 			}
 		}
