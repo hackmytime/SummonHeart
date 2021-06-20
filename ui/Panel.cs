@@ -150,10 +150,10 @@ namespace SummonHeart.ui
                 modlabel_level = new UIText("魔神之眼" + praticeText + " 气血值：" + mp.eyeBloodGas);
                 modlabel_level.TextColor = Color.Orange;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("命运之路，勘破妄虚：所有暴击+" + mp.eyeBloodGas / 1000 + "(包括召唤暴击,每1000气血+1)");
+                modlabel_level = new UIText("命运之路，勘破妄虚：所有暴击+" + mp.eyeBloodGas / 1000 + "%(包括召唤暴击,每1000气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("生死轮转，介入吾眼：暴击伤害+" + mp.eyeBloodGas / 1000 + "%(每1000气血+1)");
+                modlabel_level = new UIText("生死轮转，皆入吾眼：暴击伤害+" + mp.eyeBloodGas / 1000 + "%(每1000气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
 
@@ -166,7 +166,7 @@ namespace SummonHeart.ui
                 modlabel_level = new UIText("魔神之手"+ praticeText + " 气血值：" + mp.handBloodGas);
                 modlabel_level.TextColor = Color.Orange;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("掌凝万灵肇天撼地：攻击速度+" + mp.handBloodGas/500 + "% 攻击范围+" + mp.handBloodGas/500 + "%(每333气血+1)");
+                modlabel_level = new UIText("掌凝万灵肇天撼地：攻击速度+" + mp.handBloodGas/500 + "%(每500气血+1) 攻击范围+" + mp.handBloodGas/333 + "%(每333气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
                 modlabel_level = new UIText("指天天裂划地地崩：所有攻击+" + mp.handBloodGas / 100 + "%(每100气血+1)");
@@ -201,7 +201,7 @@ namespace SummonHeart.ui
                 modlabel_level = new UIText("风驰电掣，雷厉风行：跳跃速度+" + mp.footBloodGas / 200 + "%(每200气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("天涯海角，一步跨之：飞行时间+" + mp.footBloodGas + "秒(每1000气血+1，修炼圆满时无限飞行)");
+                modlabel_level = new UIText("天涯海角，一步跨之：飞行时间+" + mp.footBloodGas/1000 + "秒(每1000气血+1，修炼圆满时无限飞行)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
 

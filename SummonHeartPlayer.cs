@@ -80,20 +80,6 @@ namespace SummonHeart
 			player.allDamage += handBloodGas / 100 * 0.01f;
 			AttackSpeed += handBloodGas / 500 * 0.01f;
 
-			Item heldItem = player.HeldItem;
-			if (heldItem.damage > 0 && heldItem.melee && heldItem.scale < 4.0f)
-			{
-				tungstenPrevSizeSave = heldItem.scale;
-				float curScale = handBloodGas / 333 * 0.01f + 1;
-				if (curScale < tungstenPrevSizeSave)
-					curScale = tungstenPrevSizeSave;
-				heldItem.scale = curScale;
-			}else if (tungstenPrevSizeSave != -1)
-			{
-				heldItem.scale = tungstenPrevSizeSave;
-			}
-
-
 			//魔神之躯
 			player.statLifeMax2 += bodyBloodGas / 100;
             if (boughtbuffList[2])
@@ -111,6 +97,10 @@ namespace SummonHeart
 				player.noFallDmg = true;
 			player.wingTimeMax += footBloodGas / 1000 * 60;
 			player.jumpSpeedBoost += footBloodGas / 200 * 0.01f;
+			if(footBloodGas >= 100000)
+            {
+				player.wingTime = footBloodGas / 1000 * 60;
+			}
 		}
 
         public override void PostUpdate()

@@ -28,7 +28,7 @@ namespace SummonHeart.Items
 
 			text = mod.CreateTranslation("Pip-Boy3000text3");
 			text.SetDefault("All Weapon speed add ");
-			text.AddTranslation(GameCulture.Chinese, "攻击速度增加");
+			text.AddTranslation(GameCulture.Chinese, "召唤栏位增加");
 			mod.AddTranslation(text);
 
 			text = mod.CreateTranslation("Pip-Boy3000text4");
@@ -59,7 +59,7 @@ namespace SummonHeart.Items
 			SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
 			string text1 = Language.GetTextValue("Mods.SummonHeart.Pip-Boy3000text1") + modPlayer.BBP;
 			string text2 = Language.GetTextValue("Mods.SummonHeart.Pip-Boy3000text2") + modPlayer.SummonCrit / 50 + "%";
-			string text3 = Language.GetTextValue("Mods.SummonHeart.Pip-Boy3000text3") + modPlayer.SummonCrit / 10 + "%";
+			string text3 = Language.GetTextValue("Mods.SummonHeart.Pip-Boy3000text3") + "5倍";
 			string text4 = Language.GetTextValue("Mods.SummonHeart.Pip-Boy3000text4") + modPlayer.SummonCrit / 5 + "%";
 			string text5 = Language.GetTextValue("Mods.SummonHeart.Pip-Boy3000text5") + modPlayer.SummonCrit	/ 5;
 			string text6 = Language.GetTextValue("Mods.SummonHeart.Pip-Boy3000text6") + modPlayer.exp;
@@ -103,7 +103,7 @@ namespace SummonHeart.Items
 			SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
 			modPlayer.SummonHeart = true;
 			player.maxMinions *= 5;
-			modPlayer.AttackSpeed += modPlayer.SummonCrit / 10 * 0.01f;
+			//modPlayer.AttackSpeed += modPlayer.SummonCrit / 10 * 0.01f;
 			player.armorPenetration += modPlayer.SummonCrit / 5;
 			/*player.magicCrit += modPlayer.SummonCrit / 10;
 			player.meleeCrit += modPlayer.SummonCrit / 10;
