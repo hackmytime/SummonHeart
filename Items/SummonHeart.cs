@@ -33,12 +33,12 @@ namespace SummonHeart.Items
 
 			text = mod.CreateTranslation("Pip-Boy3000text4");
 			text.SetDefault("Ignore enemy armor rate ");
-			text.AddTranslation(GameCulture.Chinese, "无视敌人护甲");
+			text.AddTranslation(GameCulture.Chinese, "攻击附加真伤");
 			mod.AddTranslation(text);
 
 			text = mod.CreateTranslation("Pip-Boy3000text5");
 			text.SetDefault("Armor penetration add ");
-			text.AddTranslation(GameCulture.Chinese, "护甲穿透增加");
+			text.AddTranslation(GameCulture.Chinese, "真实伤害增加");
 			mod.AddTranslation(text);
 
 			text = mod.CreateTranslation("Pip-Boy3000text6");
@@ -60,8 +60,8 @@ namespace SummonHeart.Items
 			string text1 = Language.GetTextValue("Mods.SummonHeart.Pip-Boy3000text1") + modPlayer.BBP;
 			string text2 = Language.GetTextValue("Mods.SummonHeart.Pip-Boy3000text2") + modPlayer.SummonCrit / 50 + "%";
 			string text3 = Language.GetTextValue("Mods.SummonHeart.Pip-Boy3000text3") + "5倍";
-			string text4 = Language.GetTextValue("Mods.SummonHeart.Pip-Boy3000text4") + modPlayer.SummonCrit / 5 + "%";
-			string text5 = Language.GetTextValue("Mods.SummonHeart.Pip-Boy3000text5") + modPlayer.SummonCrit	/ 5;
+			string text4 = Language.GetTextValue("Mods.SummonHeart.Pip-Boy3000text4") + modPlayer.SummonCrit / 50 + "%";
+			string text5 = Language.GetTextValue("Mods.SummonHeart.Pip-Boy3000text5") + (modPlayer.SummonCrit / 5 + SummonHeartConfig.Instance.hpDefMultiplier);
 			string text6 = Language.GetTextValue("Mods.SummonHeart.Pip-Boy3000text6") + modPlayer.exp;
 			string text7 = Language.GetTextValue("Mods.SummonHeart.Pip-Boy3000text7") + modPlayer.SummonCrit;
 			TooltipLine line = new TooltipLine(mod, "text1", text1);
@@ -104,7 +104,7 @@ namespace SummonHeart.Items
 			modPlayer.SummonHeart = true;
 			player.maxMinions *= 5;
 			//modPlayer.AttackSpeed += modPlayer.SummonCrit / 10 * 0.01f;
-			player.armorPenetration += modPlayer.SummonCrit / 5;
+			//player.armorPenetration += modPlayer.SummonCrit / 5;
 			/*player.magicCrit += modPlayer.SummonCrit / 10;
 			player.meleeCrit += modPlayer.SummonCrit / 10;
 			player.rangedCrit += modPlayer.SummonCrit / 10;

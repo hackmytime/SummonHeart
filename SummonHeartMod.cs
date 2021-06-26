@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using SummonHeart.body;
 using SummonHeart.costvalues;
+using SummonHeart.Extensions;
 using SummonHeart.ui;
 using System;
 using System.Collections.Generic;
@@ -101,7 +103,58 @@ namespace SummonHeart
 			throw new Exception("Index out of range " + index);
 		}
 
-		public override void AddRecipes()
+        public override void PostDrawInterface(SpriteBatch spriteBatch)
+        {
+			foreach (NPC npc2 in Main.npc)
+			{
+				if (npc2.active && npc2.type != 0)
+				{
+					Rectangle rectangle;
+                    rectangle = new Rectangle((int)npc2.position.X - 15, (int)npc2.position.Y - 15, npc2.width + 30, npc2.height + 30);
+					if (rectangle.Contains((int)Main.MouseWorld.X, (int)Main.MouseWorld.Y) && ((!npc2.townNPC && !npc2.friendly) || Main.LocalPlayer.dead))
+					{
+						string arg = "666666";
+						if (npc2.friendly && npc2.dontTakeDamage)
+						{
+							arg = "449944";
+						}
+						if (npc2.friendly && !npc2.dontTakeDamage)
+						{
+							arg = "00FF00";
+						}
+						if (!npc2.friendly && npc2.dontTakeDamage)
+						{
+							arg = "994444";
+						}
+						if (!npc2.friendly && !npc2.dontTakeDamage)
+						{
+							arg = "FF0000";
+						}
+						if (!npc2.friendly && npc2.damage == 0 && (npc2.type < 396 || npc2.type > 398))
+						{
+							arg = "FFFF00";
+						}
+						string[] array = new string[]
+						{
+							string.Format("[c/{0}:{1}]", arg, npc2.GivenOrTypeName),
+							string.Format("\n【{0}】", (npc2.modNPC == null) ? (GameCulture.Chinese.IsActive ? "原版" : "Vanilla") : npc2.modNPC.mod.Name),
+							string.Format("\n{0}:{1}", GameCulture.Chinese.IsActive ? "伤害" : "Damage", npc2.damage.ToString()),
+							string.Format("\n{0}:{1}", GameCulture.Chinese.IsActive ? "防御" : "Defense", npc2.defense.ToString()),
+							string.Format("\n{0}:{1}/{2}", GameCulture.Chinese.IsActive ? "生命" : "Life", npc2.life.ToString(), npc2.lifeMax.ToString()),
+							string.Format("\n{0}:{1}", GameCulture.Chinese.IsActive ? "战力" : "Power", npc2.getPower()),
+							string.Format("\n{0}:{1}", GameCulture.Chinese.IsActive ? "评价" : "PowerLevel", npc2.getPowerLevelText())
+						};
+						string text = string.Concat(array);
+						Main.instance.MouseTextHackZoom(text);
+						Main.mouseText = true;
+						Main.player[Main.myPlayer].showItemIcon = false;
+						return;
+					}
+				}
+			}
+		}
+
+        public override void AddRecipes()
 		{
 			ModRecipe recipe = new ModRecipe(this);
 			recipe.AddIngredient(ItemID.Silk, 2);
@@ -143,6 +196,7 @@ namespace SummonHeart
 			summonHeartPlayer.handBloodGas = reader.ReadInt32();
 			summonHeartPlayer.bodyBloodGas = reader.ReadInt32();
 			summonHeartPlayer.footBloodGas = reader.ReadInt32();
+			summonHeartPlayer.bloodGasMax = reader.ReadInt32();
 			summonHeartPlayer.practiceEye = reader.ReadBoolean();
 			summonHeartPlayer.practiceHand = reader.ReadBoolean();
 			summonHeartPlayer.practiceBody = reader.ReadBoolean();
@@ -165,6 +219,7 @@ namespace SummonHeart
 				packet.Write(summonHeartPlayer.handBloodGas);
 				packet.Write(summonHeartPlayer.bodyBloodGas);
 				packet.Write(summonHeartPlayer.footBloodGas);
+				packet.Write(summonHeartPlayer.bloodGasMax);
 				packet.Write(summonHeartPlayer.practiceEye);
 				packet.Write(summonHeartPlayer.practiceHand);
 				packet.Write(summonHeartPlayer.practiceBody);

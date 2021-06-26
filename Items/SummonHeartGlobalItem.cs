@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace SummonHeart.Items
@@ -21,11 +23,11 @@ namespace SummonHeart.Items
 
         public override void HoldItem(Item item, Player player)
         {
+            SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
            
-            if (item.melee)
+            if (item.melee && modPlayer.handBloodGas > 0)
             {
-                SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
-                float curScale = modPlayer.handBloodGas / 333 * 0.01f + 1;
+                float curScale = modPlayer.handBloodGas / 500 * 0.01f + 2;
                 item.scale = curScale;
             }
         }
@@ -67,28 +69,54 @@ namespace SummonHeart.Items
         }
 
 
-        /*public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
+        public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
-            foreach (TooltipLine tooltipLine in tooltips)
+            Player player = Main.player[Main.myPlayer];
+            SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
+
+            int num = tooltips.FindIndex((TooltipLine t) => t.Name.Equals("ItemName"));
+            if (num != -1)
             {
-                if (tooltipLine.mod == "Terraria" && tooltipLine.Name == "Speed")
-                { 
-                    double useTimes =  60.0 / item.useTime;
-                    tooltipLine.text = Convert.ToDouble(useTimes).ToString("0.0") + " 每秒攻击次数";
-                }
-                if (tooltipLine.mod == "Terraria" && tooltipLine.Name == "Knockback")
+                string text;
+                if (item.modItem == null)
                 {
-                    tooltipLine.text = Convert.ToDouble(item.knockBack).ToString("0.0") + " 击退力度";
+                    text = "【" + (GameCulture.Chinese.IsActive ? "原版" : "Vanilla") + "】";
+                }
+                else
+                {
+                    text = "【" + item.modItem.mod.DisplayName + "】";
+                }
+                tooltips.Insert(num + 1, new TooltipLine(base.mod, "SRC:ModBelongIdentifier", text));
+            }
+            int num2 = tooltips.FindIndex((TooltipLine t) => t.Name.Equals("Damage"));
+            if (num2 != -1)
+            {
+                if (item.summon)
+                {
+                    if(modPlayer.eyeBloodGas > 0)
+                    {
+                        string text2 = (modPlayer.eyeBloodGas / 1000 + 20) + "%" + (GameCulture.Chinese.IsActive ? "暴击率" : "Critical Strike Chance");
+                        tooltips.Insert(num2 + 1, new TooltipLine(base.mod, "SRC:MinionCrit", text2));
+                    }
+                    else
+                    {
+                        string text2 = modPlayer.eyeBloodGas / 1000 + "%" + (GameCulture.Chinese.IsActive ? "暴击率" : "Critical Strike Chance");
+                        tooltips.Insert(num2 + 1, new TooltipLine(base.mod, "SRC:MinionCrit", text2));
+                    }
                 }
             }
-            String modName = "【原版】";
-            if (item.modItem != null)
+            int num4 = tooltips.FindIndex((TooltipLine t) => t.Name.Equals("Speed"));
+            if (num4 != -1)
             {
-                modName = "【" + item.modItem.mod.DisplayName + "】";
+                string str = (60f / (float)item.useTime).ToString("f1") + " ";
+                tooltips[num4].text = str + (GameCulture.Chinese.IsActive ? "每秒攻击次数" : "Attack Per Secend");
             }
-            TooltipLine line = new TooltipLine(mod, "ModName", modName);
-            tooltips.Insert(1, line);
-            base.ModifyTooltips(item, tooltips);
-        }*/
+            int num5 = tooltips.FindIndex((TooltipLine t) => t.Name.Equals("Knockback"));
+            if (num5 != -1)
+            {
+                string str2 = item.knockBack.ToString("f1") + " ";
+                tooltips[num5].text = str2 + (GameCulture.Chinese.IsActive ? "击退力度" : "Knockback");
+            }
+        }
     }
 }

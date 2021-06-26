@@ -1,5 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using SummonHeart.Extensions;
 using Terraria;
+using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using static SummonHeart.SummonHeartMod;
 
@@ -38,6 +42,7 @@ namespace SummonHeart.NPCs
 			packet.Write(modPlayer.handBloodGas);
 			packet.Write(modPlayer.bodyBloodGas);
 			packet.Write(modPlayer.footBloodGas);
+			packet.Write(modPlayer.bloodGasMax);
 			packet.Write(modPlayer.practiceEye);
 			packet.Write(modPlayer.practiceHand);
 			packet.Write(modPlayer.practiceBody);
@@ -59,87 +64,198 @@ namespace SummonHeart.NPCs
 			{
 				int addExp = 0;
 				int addBloodGas = 0;
-				if (!Main.hardMode && modPlayer.SummonCrit < 299)
+				int powerLevel = npc.getPowerLevel();
+				
+				if (npc.boss)
 				{
-					if (npc.boss)
-					{
-						addExp = npc.lifeMax / 100;
-						if (addExp > modPlayer.SummonCrit * 20)
-							addExp = modPlayer.SummonCrit * 20;
-						if (addExp < modPlayer.SummonCrit * 5)
-							addExp = modPlayer.SummonCrit * 5;
-                    }
-                    else
+					if(powerLevel == -1)
                     {
 						addExp = 1;
+						
 					}
+                    else
+                    {
+						addExp = npc.getPower() / 100;
+						if (Main.hardMode)
+						{
+							addExp = npc.getPower() / 200;
+						}
+						if (NPC.downedMoonlord)
+						{
+							addExp = npc.getPower() / 1000;
+						}
+                    }
+                }
+                else
+                {
+					addExp = 1;
 				}
-				if (Main.hardMode && modPlayer.SummonCrit < 500)
+				//越阶战斗奖励
+				if (powerLevel > 0)
 				{
-					if (npc.boss)
-					{
-						addExp = npc.lifeMax / 100;
-						if (addExp > modPlayer.SummonCrit * 10)
-							addExp = modPlayer.SummonCrit * 10;
-					}
-					else
-					{
-						addExp = 1;
-					}
+					addExp *= (powerLevel + 1);
 				}
+
 				//处理灵魂
-				if (SummonHeartWorld.GoddessMode)
-					addExp *= 10;
+				//处理难度额外灵魂
+				int hardMulti = SummonHeartConfig.Instance.hpDefMultiplier / 5;
+				addExp *= hardMulti;
 				modPlayer.BBP += addExp;
-				addBloodGas = addExp;
-				if (SummonHeartWorld.GoddessMode)
-					addBloodGas /= 10;
-				//最大血气上限
-				int maxBloodGas = 100000;
-				//修炼魔神之眼
-				if (modPlayer.practiceEye)
-				{
-					if (modPlayer.eyeBloodGas < maxBloodGas)
+
+                if (npc.boss)
+                {
+					if(powerLevel == -1)
+                    {
+						Main.NewText($"你的战力碾压{npc.FullName}，可惜，其血肉灵魂已于你无用！灵魂之力+{addExp}", Color.Green);
+					}
+					if(powerLevel == 0)
+                    {
+						Main.NewText($"你吞噬了{npc.FullName}的灵魂，灵魂之力+{addExp}", Color.Green);
+                    }
+					if (powerLevel > 0)
 					{
-						if (modPlayer.CheckSoul(addExp)){
-							modPlayer.BuySoul(addExp);
-							modPlayer.eyeBloodGas += addBloodGas;
-                        }
+						Main.NewText($"你越级吞噬了{npc.getPowerLevelText()}强者{npc.FullName}的灵魂，获得额外{powerLevel}倍灵魂之力，+{addExp}灵魂之力", Color.Green);
 					}
 				}
-				//修炼魔神之手
-				if (modPlayer.practiceHand)
-				{
-					if (modPlayer.handBloodGas < maxBloodGas)
+
+				//处理突破
+				//最大血气上限【规则】
+				int MAXBLOODGAS = 100000 + (SummonHeartConfig.Instance.atkMultiplier * 10000);
+				if (powerLevel > 0 && npc.getPower() > modPlayer.bloodGasMax)
+                {
+					//突破的数值=（敌人战力-玩家肉身极限）/  5 * (阶位)
+					int addMax = (npc.getPower() - modPlayer.bloodGasMax) / 5;
+					
+					if (powerLevel >= 5)
+						addMax = npc.getPower() - modPlayer.bloodGasMax;
+                    else
+                    {
+						addMax *= (powerLevel);
+					}
+					modPlayer.bloodGasMax += addMax;
+					//判断是否超过世界上限
+					if (modPlayer.bloodGasMax > MAXBLOODGAS * 4)
+						modPlayer.bloodGasMax = MAXBLOODGAS * 4;
+					Main.NewText($"你越级斩杀了{npc.getPowerLevelText()}强者{npc.FullName}，于生死之间突破肉身极限，+{addMax}肉身极限", Color.Red);
+				}
+
+				//修炼开始
+				int bloodGasMax = modPlayer.bloodGasMax;
+				
+				if(modPlayer.getAllBloodGas() < bloodGasMax)
+                {
+					addBloodGas = addExp;
+					
+					//修炼魔神之眼
+					if (modPlayer.practiceEye)
 					{
-						if (modPlayer.CheckSoul(addExp))
+						if (modPlayer.eyeBloodGas < MAXBLOODGAS)
 						{
-							modPlayer.BuySoul(addExp);
-							modPlayer.handBloodGas += addBloodGas;
+							//判断是否超上限
+							if (modPlayer.getAllBloodGas() + addBloodGas > bloodGasMax)
+							{
+								addBloodGas = bloodGasMax - modPlayer.getAllBloodGas();
+							}
+							if (modPlayer.CheckSoul(addExp))
+							{
+								modPlayer.BuySoul(addExp);
+								modPlayer.eyeBloodGas += addBloodGas;
+								if (npc.boss)
+								{
+									if (powerLevel == 0)
+									{
+										Main.NewText($"你修炼魔神之眼消耗{addExp}灵魂之力吞噬了{npc.FullName}的气血，魔神之眼气血+{addBloodGas}", Color.Green);
+									}
+									if (powerLevel > 0)
+									{
+										Main.NewText($"你修炼魔神之眼消耗{addExp}灵魂之力越级吞噬了{npc.getPowerLevelText()}强者{npc.FullName}的气血，额外吸收{powerLevel}倍气血，魔神之眼气血+{addBloodGas}", Color.Green);
+									}
+								}
+							}
 						}
 					}
-				}
-				//修炼魔神之躯
-				if (modPlayer.practiceBody)
-				{
-					if (modPlayer.bodyBloodGas < maxBloodGas)
+					//修炼魔神之手
+					if (modPlayer.practiceHand)
 					{
-						if (modPlayer.CheckSoul(addExp))
+						if (modPlayer.handBloodGas < MAXBLOODGAS)
 						{
-							modPlayer.BuySoul(addExp);
-							modPlayer.bodyBloodGas += addBloodGas;
+							//判断是否超上限
+							if (modPlayer.getAllBloodGas() + addBloodGas > bloodGasMax)
+							{
+								addBloodGas = bloodGasMax - modPlayer.getAllBloodGas();
+							}
+							if (modPlayer.CheckSoul(addExp))
+							{
+								modPlayer.BuySoul(addExp);
+                                modPlayer.handBloodGas += addBloodGas;
+								if (npc.boss)
+                                {
+									if (powerLevel == 0)
+									{
+										Main.NewText($"你修炼魔神之手消耗{addExp}灵魂之力吞噬了{npc.FullName}的气血，魔神之手气血+{addBloodGas}", Color.Green);
+									}
+									if (powerLevel > 0)
+									{
+										Main.NewText($"你修炼魔神之手消耗{addExp}灵魂之力越级吞噬了{npc.getPowerLevelText()}强者{npc.FullName}的气血，额外吸收{powerLevel}倍气血，魔神之手气血+{addBloodGas}", Color.Green);
+									}
+								}
+							}
 						}
 					}
-				}
-				//修炼魔神之腿
-				if (modPlayer.practiceFoot)
-				{
-					if (modPlayer.footBloodGas < maxBloodGas)
+					//修炼魔神之躯
+					if (modPlayer.practiceBody)
 					{
-						if (modPlayer.CheckSoul(addExp))
+						if (modPlayer.bodyBloodGas < MAXBLOODGAS)
 						{
-							modPlayer.BuySoul(addExp);
-							modPlayer.footBloodGas += addBloodGas;
+							//判断是否超上限
+							if (modPlayer.getAllBloodGas() + addBloodGas > bloodGasMax)
+							{
+								addBloodGas = bloodGasMax - modPlayer.getAllBloodGas();
+							}
+							if (modPlayer.CheckSoul(addExp))
+							{
+								modPlayer.BuySoul(addExp);
+                                modPlayer.bodyBloodGas += addBloodGas;
+								if (npc.boss)
+                                {
+									if (powerLevel == 0)
+									{
+										Main.NewText($"你修炼魔神之躯消耗{addExp}灵魂之力吞噬了{npc.FullName}的气血，魔神之躯气血+{addBloodGas}", Color.Green);
+									}
+									if (powerLevel > 0)
+									{
+										Main.NewText($"你修炼魔神之躯消耗{addExp}灵魂之力越级吞噬了{npc.getPowerLevelText()}强者{npc.FullName}的气血，额外吸收{powerLevel}倍气血，魔神之躯气血+{addBloodGas}", Color.Green);
+									}
+								}
+							}
+						}
+					}
+					//修炼魔神之腿
+					if (modPlayer.practiceFoot)
+					{
+						if (modPlayer.footBloodGas < MAXBLOODGAS)
+						{
+							//判断是否超上限
+							if (modPlayer.getAllBloodGas() + addBloodGas > bloodGasMax)
+							{
+								addBloodGas = bloodGasMax - modPlayer.getAllBloodGas();
+							}
+							if (modPlayer.CheckSoul(addExp))
+							{
+								modPlayer.BuySoul(addExp);
+                                modPlayer.footBloodGas += addBloodGas;
+								if (npc.boss)
+								{
+									if (powerLevel == 0)
+									{
+										Main.NewText($"你修炼魔神之腿消耗{addExp}灵魂之力吞噬了{npc.FullName}的气血，魔神之腿气血+{addBloodGas}", Color.Green);
+									}
+									if (powerLevel > 0)
+									{
+										Main.NewText($"你修炼魔神之腿消耗{addExp}灵魂之力越级吞噬了{npc.getPowerLevelText()}强者{npc.FullName}的气血，额外吸收{powerLevel}倍气血，魔神之腿气血+{addBloodGas}", Color.Green);
+									}
+								}
+							}
 						}
 					}
 				}
@@ -148,18 +264,6 @@ namespace SummonHeart.NPCs
 				if (Main.netMode == 2)
 				{
 					SyncPlayerVariables(player);
-				}
-				if (npc.boss)
-                {
-					Main.NewText($"你吞噬了{npc.FullName}的灵魂，灵魂之力+{addExp}", Color.Green);
-					if(modPlayer.practiceEye)
-						Main.NewText($"你修炼魔神之眼消耗{addExp}灵魂之力吞噬了{npc.FullName}的气血，魔神之眼气血+{addExp}", Color.Green);
-					if (modPlayer.practiceHand)
-						Main.NewText($"你修炼魔神之手消耗{addExp}灵魂之力吞噬了{npc.FullName}的气血，魔神之手气血+{addBloodGas}", Color.Green);
-					if (modPlayer.practiceBody)
-						Main.NewText($"你修炼魔神之躯消耗{addExp}灵魂之力吞噬了{npc.FullName}的气血，魔神之躯气血+{addBloodGas}", Color.Green);
-					if (modPlayer.practiceFoot)
-						Main.NewText($"你修炼魔神之腿消耗{addExp}灵魂之力吞噬了{npc.FullName}的气血，魔神之腿气血+{addBloodGas}", Color.Green);
 				}
 			}
 		}
@@ -197,11 +301,7 @@ namespace SummonHeart.NPCs
         public override void ModifyHitByItem(NPC npc, Player player, Item item, ref int damage, ref float knockback, ref bool crit)
         {
 			SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
-			if (modPlayer.SummonHeart)
-			{
-				npc.defense *= (1 - modPlayer.SummonCrit / 500);
-			}
-
+			
 			if (modPlayer.soulSplit)
 			{
 				if (!npc.HasBuff(mod.BuffType("SoulSplit")))
@@ -218,21 +318,6 @@ namespace SummonHeart.NPCs
 			Player player = Main.player[projectile.owner];
             SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
 
-			if (modPlayer.SummonHeart)
-            {
-				npc.defense *= (1 - modPlayer.SummonCrit / 500);
-
-				//欺负大幻海妖蛇
-				if (Calamity != null)
-				{
-					if (npc.type == 594)
-					{
-						damage *= 100;
-						damage *= 10000;
-					}
-				}
-			}
-
 			if (modPlayer.soulSplit)
 			{
 				if (!npc.HasBuff(mod.BuffType("SoulSplit")))
@@ -241,10 +326,57 @@ namespace SummonHeart.NPCs
 				}
 				npc.AddBuff(mod.BuffType("SoulSplit"), 2);
 			}
+            if (modPlayer.eyeBloodGas > 0)
+            {
+				if (projectile.minion && Main.rand.Next(101) <= (modPlayer.eyeBloodGas + 30000) / 1500)
+				{
+					crit = true;
+				}
+            }
+		}
 
-			if (projectile.minion && Main.rand.Next(101) <= modPlayer.eyeBloodGas / 1000)
+        public override void SpawnNPC(int npc, int tileX, int tileY)
+        {
+			for (int j = 0; j < Main.maxNPCs; j++)
 			{
-				crit = true;
+				if (Main.npc[j].type == npc)
+                {
+					NPC curNpc = Main.npc[j];
+					if (curNpc.boss)
+					{
+						int x = 1;
+						if (Main.hardMode)
+						{
+							x = 2;
+						}
+						if (NPC.downedMoonlord)
+						{
+							x = 10;
+						}
+						int power = curNpc.lifeMax / x;
+						Player player = Main.player[Main.myPlayer];
+						SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
+						int myPower = modPlayer.getPower();
+						string text = "";
+						if (myPower >= power * 2)
+						{
+							text = "你的战力碾压" + curNpc.FullName + "，击败无法获得任何奖励！";
+						}
+						if (power >= myPower * 2)
+						{
+							text = curNpc.FullName + "战力远大于你，你在越级战斗，请务必小心！";
+						}
+						if (Main.netMode == NetmodeID.Server)
+						{
+							NetMessage.BroadcastChatMessage(NetworkText.FromLiteral($"{curNpc.FullName}战力：{power}!你的战力为：{myPower} {text}"), new Color(175, 75, 255));
+						}
+						else
+						{
+							Main.NewText($"{curNpc.FullName}战力：{power}!你的战力为：{myPower} {text}", new Color(175, 75, 255));
+						}
+					}
+					break;
+				}
 			}
 		}
     }

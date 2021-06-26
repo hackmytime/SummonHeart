@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using SummonHeart.Effects.Animations.Aura;
+using SummonHeart.Extensions;
 using SummonHeart.Models;
 using SummonHeart.ui;
 using SummonHeart.Utils;
@@ -34,6 +35,8 @@ namespace SummonHeart
 		public int handBloodGas = 0;
 		public int bodyBloodGas = 0;
 		public int footBloodGas = 0;
+		
+		public int bloodGasMax = 10000 + SummonHeartConfig.Instance.atkMultiplier * 1000;
 
 		public bool practiceEye = false;
 		public bool practiceHand = false;
@@ -71,14 +74,14 @@ namespace SummonHeart
 				player.noKnockback = true;
 
 			//魔神之眼
-			player.magicCrit += eyeBloodGas / 1000;
+			/*player.magicCrit += eyeBloodGas / 1000;
 			player.meleeCrit += eyeBloodGas / 1000;
 			player.rangedCrit += eyeBloodGas / 1000;
-			player.thrownCrit += eyeBloodGas / 1000;
+			player.thrownCrit += eyeBloodGas / 1000;*/
 
 			//魔神之手
-			player.allDamage += handBloodGas / 100 * 0.01f;
-			AttackSpeed += handBloodGas / 500 * 0.01f;
+			player.allDamage += handBloodGas / 200 * 0.01f;
+			AttackSpeed += handBloodGas / 1000 * 0.01f;
 
 			//魔神之躯
 			player.statLifeMax2 += bodyBloodGas / 100;
@@ -87,6 +90,8 @@ namespace SummonHeart
 				int heal = (int)(player.statLifeMax2 * (0.01 + bodyBloodGas / 10000 * 0.01f)) / 4;
 				if(player.statLife < player.statLifeMax2 && bodyHealCD == 1)
 				{
+					if (heal < 1)
+						heal = 1;
 					player.statLife += heal;
 					player.HealEffect(heal);
 				}
@@ -96,8 +101,8 @@ namespace SummonHeart
 			if (boughtbuffList[3])
 				player.noFallDmg = true;
 			player.wingTimeMax += footBloodGas / 1000 * 60;
-			player.jumpSpeedBoost += footBloodGas / 200 * 0.01f;
-			if(footBloodGas >= 100000)
+			player.jumpSpeedBoost += footBloodGas / 400 * 0.01f;
+			if(footBloodGas >= 120000)
             {
 				player.wingTime = footBloodGas / 1000 * 60;
 			}
@@ -170,6 +175,7 @@ namespace SummonHeart
 			dealLevel();
 		}
 
+
 		private void dealLevel()
 		{
 			int lvExp = 1;
@@ -210,7 +216,19 @@ namespace SummonHeart
 			}
 		}
 
-        public override void SetupStartInventory(IList<Item> items, bool mediumcoreDeath)
+		public void CauseDirectDamage(NPC npc, int originalDamage, bool crit)
+		{
+			if (crit)
+				originalDamage *= 2;
+
+			int num = originalDamage * SummonCrit / 5000 + SummonCrit / 5 + SummonHeartConfig.Instance.hpDefMultiplier;
+			
+			if (num >= 1)
+			{
+				npc.LoseLife(num, new Color?(new Color(240, 20, 20, 255)));
+			}
+		}
+		public override void SetupStartInventory(IList<Item> items, bool mediumcoreDeath)
         {
 			Item item = new Item();
 			item.SetDefaults(ModLoader.GetMod("SummonHeart").ItemType("GuideNote"));
@@ -271,6 +289,7 @@ namespace SummonHeart
 			packet.Write(handBloodGas);
 			packet.Write(bodyBloodGas);
 			packet.Write(footBloodGas);
+			packet.Write(bloodGasMax);
 			packet.Write(practiceEye);
 			packet.Write(practiceHand);
 			packet.Write(practiceBody);
@@ -313,6 +332,7 @@ namespace SummonHeart
 				packet.Write(handBloodGas);
 				packet.Write(bodyBloodGas);
 				packet.Write(footBloodGas);
+				packet.Write(bloodGasMax);
 				packet.Write(practiceEye);
 				packet.Write(practiceHand);
 				packet.Write(practiceBody);
@@ -337,6 +357,7 @@ namespace SummonHeart
 			tagComp.Add("handBloodGas", handBloodGas);
 			tagComp.Add("bodyBloodGas", bodyBloodGas);
 			tagComp.Add("footBloodGas", footBloodGas);
+			tagComp.Add("bloodGasMax", bloodGasMax);
 			tagComp.Add("practiceEye", practiceEye);
 			tagComp.Add("practiceHand", practiceHand);
 			tagComp.Add("practiceBody", practiceBody);
@@ -356,6 +377,7 @@ namespace SummonHeart
 			handBloodGas = tag.GetInt("handBloodGas");
 			bodyBloodGas = tag.GetInt("bodyBloodGas");
 			footBloodGas = tag.GetInt("footBloodGas");
+			bloodGasMax = tag.GetInt("bloodGasMax");
 			practiceEye = tag.GetBool("practiceEye");
 			practiceHand = tag.GetBool("practiceHand");
 			practiceBody = tag.GetBool("practiceBody");
@@ -396,7 +418,7 @@ namespace SummonHeart
         {
 			if (target.type == NPCID.TargetDummy || target.friendly)
 				return;
-
+			
 			SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
 			if (modPlayer.SummonHeart)
 			{
@@ -423,7 +445,6 @@ namespace SummonHeart
         {
 			if (target.type == NPCID.TargetDummy || target.friendly)
 				return;
-
 			SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
 			if (modPlayer.SummonHeart)
 			{
@@ -456,10 +477,8 @@ namespace SummonHeart
 			}
 			return true;
 		}
-
-
-
-        public override void ModifyHitByNPC(NPC npc, ref int damage, ref bool crit)
+		//允许您修改 NPC 对该玩家造成的伤害等
+		public override void ModifyHitByNPC(NPC npc, ref int damage, ref bool crit)
         {
 			if (bodyDef >= 1)
 			{
@@ -536,6 +555,7 @@ namespace SummonHeart
 			{
 				damage *= (int)(eyeBloodGas / 1000 * 0.01 + 1);
 			}
+			this.CauseDirectDamage(target, damage, crit);
 		}
 
         public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
@@ -544,6 +564,7 @@ namespace SummonHeart
 			{
 				damage *= (int)(eyeBloodGas / 1000 * 0.01 + 1);
 			}
+			this.CauseDirectDamage(target, damage, crit);
 		}
     }
 }

@@ -107,8 +107,9 @@ namespace SummonHeart.Models
             // scale is based on kaioken level, which gets set to 0
             var baseScale = 1.0f;
             int totalBloodGas = modPlayer.eyeBloodGas + modPlayer.handBloodGas + modPlayer.bodyBloodGas + modPlayer.footBloodGas;
-            
-            return baseScale * 0.5f * (2.5f * totalBloodGas / 400000 + 1);
+            if (totalBloodGas > 500000)
+                totalBloodGas = 500000;
+            return baseScale * 0.5f * (2.5f * totalBloodGas / 500000 + 1);
         }
     }
 }

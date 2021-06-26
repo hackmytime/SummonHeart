@@ -38,5 +38,37 @@ namespace SummonHeart.Extensions
         {
             return player.mount.Active ? Main.MountedSamplerState : Main.DefaultSamplerState;
         }
+
+        public static int getPower(this SummonHeartPlayer modPlayer)
+        {
+            int power = 0;
+            int x = 1;
+            if (Main.hardMode)
+            {
+                x = 2;
+            }
+            if (NPC.downedMoonlord)
+            {
+                x = 10;
+            }
+            power = modPlayer.eyeBloodGas + modPlayer.handBloodGas + modPlayer.bodyBloodGas + modPlayer.footBloodGas;
+            power += modPlayer.player.statLifeMax2 * x;
+            power += modPlayer.player.statDefense * 30;
+            power += modPlayer.SummonCrit * 20 * x;
+            Item item = modPlayer.player.HeldItem;
+            if (item.damage > 0)
+            {
+                power += (int)(item.damage * 5 * (60f / (float)item.useTime));
+            }
+           
+            return power;
+        }
+
+        public static int getAllBloodGas(this SummonHeartPlayer modPlayer)
+        {
+            int all = 0;
+            all = modPlayer.eyeBloodGas + modPlayer.handBloodGas + modPlayer.bodyBloodGas + modPlayer.footBloodGas;
+            return all;
+        }
     }
 }
