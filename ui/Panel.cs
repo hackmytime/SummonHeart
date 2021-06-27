@@ -70,7 +70,7 @@ namespace SummonHeart.ui
 
         public void updateSize()
         {
-            int maxWidth = Main.screenWidth / 2;
+            int maxWidth = (int)(Main.screenWidth / 1.8);
             int columnCount = maxWidth / (32 + 10);
             maxWidth = columnCount * (32 + 10);
             panel.panelWidth = maxWidth;
