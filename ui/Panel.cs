@@ -154,7 +154,7 @@ namespace SummonHeart.ui
                 modlabel_level = new UIText("魔神之眼" + praticeText + " 气血值：" + mp.eyeBloodGas);
                 modlabel_level.TextColor = Color.Orange;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                if (mp.handBloodGas > 0)
+                if (mp.boughtbuffList[0])
                     modlabel_level = new UIText("命运之路，勘破妄虚：召唤暴击+" + (mp.eyeBloodGas / 1500 + 20)+ "%(初始20%，每1500气血+1)");
                 else
                     modlabel_level = new UIText("命运之路，勘破妄虚：召唤暴击+" + mp.eyeBloodGas / 1500 + "%(初始20%，每1500气血+1)");
@@ -173,10 +173,10 @@ namespace SummonHeart.ui
                 modlabel_level = new UIText("魔神之手"+ praticeText + " 气血值：" + mp.handBloodGas);
                 modlabel_level.TextColor = Color.Orange;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                if (mp.handBloodGas > 0)
-                    modlabel_level = new UIText("掌凝万灵肇天撼地：攻击速度+" + mp.handBloodGas / 1000 + "%(每1000气血+1) 攻击范围+" + (mp.handBloodGas / 500 + 100) + "%(初始100%，每500气血+1)");
+                if (mp.boughtbuffList[1])
+                    modlabel_level = new UIText("掌凝万灵肇天撼地：攻击速度+" + (mp.handBloodGas / 1000 + 30) + "%(初始30%，每1000气血+1) 攻击范围+" + (mp.handBloodGas / 500 + 100) + "%(初始100%，每500气血+1)");
                 else
-                    modlabel_level = new UIText("掌凝万灵肇天撼地：攻击速度+" + mp.handBloodGas / 1000 + "%(每1000气血+1) 攻击范围+" + (mp.handBloodGas / 500) + "%(初始100%，每500气血+1)");
+                    modlabel_level = new UIText("掌凝万灵肇天撼地：攻击速度+" + mp.handBloodGas / 1000 + "%(初始30%，每1000气血+1) 攻击范围+" + (mp.handBloodGas / 500) + "%(初始100%，每500气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
                 modlabel_level = new UIText("指天天裂划地地崩：所有攻击+" + mp.handBloodGas / 200 + "%(每200气血+1)");
@@ -192,7 +192,7 @@ namespace SummonHeart.ui
                 modlabel_level = new UIText("魔神之躯" + praticeText + " 气血值：" + mp.bodyBloodGas);
                 modlabel_level.TextColor = Color.Orange;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("万灵炼体，不死不灭：生命上限+" + mp.bodyBloodGas / 100 + "(每100气血+1) 每秒回复自身" + (mp.handBloodGas / 10000 + 1) + "%生命(每10000气血+1)");
+                modlabel_level = new UIText("万灵炼体，不死不灭：生命上限+" + mp.bodyBloodGas / 100 + "(每100气血+1) 每秒回复自身" + (mp.handBloodGas / 10000 + 2) + "%生命(初始2%，每10000气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
                 modlabel_level = new UIText("干凝万锻，魔体終成：防御+" + mp.bodyDef + " 反伤+" + mp.bodyDef);
@@ -208,10 +208,10 @@ namespace SummonHeart.ui
                 modlabel_level = new UIText("魔神之腿" + praticeText + " 气血值：" + mp.footBloodGas);
                 modlabel_level.TextColor = Color.Orange;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("风驰电掣，雷厉风行：跳跃速度+" + mp.footBloodGas / 400 + "%(每400气血+1)");
+                modlabel_level = new UIText("风驰电掣，雷厉风行：跳跃速度+" + (mp.footBloodGas / 500 + 100) + "%(初始100%，每400气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("天涯海角，一步跨之：飞行时间+" + mp.footBloodGas/1000 + "秒(每1000气血+1，修炼圆满时无限飞行)");
+                modlabel_level = new UIText("天涯海角，一步跨之：飞行时间+" + (mp.footBloodGas/1000 + 10) + "秒(初始10，每1000气血+1，修炼圆满时无限飞行)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
 

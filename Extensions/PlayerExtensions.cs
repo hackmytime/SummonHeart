@@ -70,5 +70,17 @@ namespace SummonHeart.Extensions
             all = modPlayer.eyeBloodGas + modPlayer.handBloodGas + modPlayer.bodyBloodGas + modPlayer.footBloodGas;
             return all;
         }
+
+        public static int HasItemInAcc(this Player player, int type)
+        {
+            for (int i = 3; i < 8 + player.extraAccessorySlots; i++)
+            {
+                if (player.armor[i].type == type)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
     }
 }

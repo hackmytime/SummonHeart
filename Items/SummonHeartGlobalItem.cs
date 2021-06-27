@@ -25,7 +25,7 @@ namespace SummonHeart.Items
         {
             SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
            
-            if (item.melee && modPlayer.handBloodGas > 0)
+            if (item.melee && modPlayer.boughtbuffList[1])
             {
                 float curScale = modPlayer.handBloodGas / 500 * 0.01f + 2;
                 item.scale = curScale;
@@ -93,7 +93,7 @@ namespace SummonHeart.Items
             {
                 if (item.summon)
                 {
-                    if(modPlayer.eyeBloodGas > 0)
+                    if(modPlayer.boughtbuffList[0])
                     {
                         string text2 = (modPlayer.eyeBloodGas / 1000 + 20) + "%" + (GameCulture.Chinese.IsActive ? "暴击率" : "Critical Strike Chance");
                         tooltips.Insert(num2 + 1, new TooltipLine(base.mod, "SRC:MinionCrit", text2));

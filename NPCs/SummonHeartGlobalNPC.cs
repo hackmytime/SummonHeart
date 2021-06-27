@@ -326,58 +326,13 @@ namespace SummonHeart.NPCs
 				}
 				npc.AddBuff(mod.BuffType("SoulSplit"), 2);
 			}
-            if (modPlayer.eyeBloodGas > 0)
+            if (modPlayer.boughtbuffList[0])
             {
 				if (projectile.minion && Main.rand.Next(101) <= (modPlayer.eyeBloodGas + 30000) / 1500)
 				{
 					crit = true;
 				}
             }
-		}
-
-        public override void SpawnNPC(int npc, int tileX, int tileY)
-        {
-			for (int j = 0; j < Main.maxNPCs; j++)
-			{
-				if (Main.npc[j].type == npc)
-                {
-					NPC curNpc = Main.npc[j];
-					if (curNpc.boss)
-					{
-						int x = 1;
-						if (Main.hardMode)
-						{
-							x = 2;
-						}
-						if (NPC.downedMoonlord)
-						{
-							x = 10;
-						}
-						int power = curNpc.lifeMax / x;
-						Player player = Main.player[Main.myPlayer];
-						SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
-						int myPower = modPlayer.getPower();
-						string text = "";
-						if (myPower >= power * 2)
-						{
-							text = "你的战力碾压" + curNpc.FullName + "，击败无法获得任何奖励！";
-						}
-						if (power >= myPower * 2)
-						{
-							text = curNpc.FullName + "战力远大于你，你在越级战斗，请务必小心！";
-						}
-						if (Main.netMode == NetmodeID.Server)
-						{
-							NetMessage.BroadcastChatMessage(NetworkText.FromLiteral($"{curNpc.FullName}战力：{power}!你的战力为：{myPower} {text}"), new Color(175, 75, 255));
-						}
-						else
-						{
-							Main.NewText($"{curNpc.FullName}战力：{power}!你的战力为：{myPower} {text}", new Color(175, 75, 255));
-						}
-					}
-					break;
-				}
-			}
 		}
     }
 }

@@ -73,21 +73,24 @@ namespace SummonHeart
 			if(bodyDef > 96)
 				player.noKnockback = true;
 
-			//魔神之眼
-			/*player.magicCrit += eyeBloodGas / 1000;
+            //魔神之眼
+            /*player.magicCrit += eyeBloodGas / 1000;
 			player.meleeCrit += eyeBloodGas / 1000;
 			player.rangedCrit += eyeBloodGas / 1000;
 			player.thrownCrit += eyeBloodGas / 1000;*/
 
-			//魔神之手
-			player.allDamage += handBloodGas / 200 * 0.01f;
-			AttackSpeed += handBloodGas / 1000 * 0.01f;
+            //魔神之手
+            if (boughtbuffList[1])
+            {
+				player.allDamage += handBloodGas / 200 * 0.01f;
+				AttackSpeed += (handBloodGas / 1000 + 30) * 0.01f;
+            }
 
 			//魔神之躯
 			player.statLifeMax2 += bodyBloodGas / 100;
             if (boughtbuffList[2])
             {
-				int heal = (int)(player.statLifeMax2 * (0.01 + bodyBloodGas / 10000 * 0.01f)) / 4;
+				int heal = (int)(player.statLifeMax2 * (0.02 + bodyBloodGas / 10000 * 0.01f)) / 4;
 				if(player.statLife < player.statLifeMax2 && bodyHealCD == 1)
 				{
 					if (heal < 1)
@@ -99,16 +102,26 @@ namespace SummonHeart
 
 			//魔神之腿
 			if (boughtbuffList[3])
-				player.noFallDmg = true;
-			player.wingTimeMax += footBloodGas / 1000 * 60;
-			player.jumpSpeedBoost += footBloodGas / 400 * 0.01f;
-			if(footBloodGas >= 120000)
             {
-				player.wingTime = footBloodGas / 1000 * 60;
+				player.noFallDmg = true;
+				player.wingTimeMax += (footBloodGas / 1000 + 10) * 60;
+				player.jumpSpeedBoost += (footBloodGas / 500 + 100) * 0.01f;
+				if(footBloodGas >= 150000)
+				{
+					player.wingTime = footBloodGas / 1000 * 60;
+				}
+            }
+		}
+
+		public override void PreUpdate()
+		{
+			if (player.HasItemInAcc(mod.ItemType("MysteriousCrystal")) != -1 && base.player.respawnTimer > 300)
+			{
+				player.respawnTimer = 300;
 			}
 		}
 
-        public override void PostUpdate()
+		public override void PostUpdate()
         {
 			currentAura = this.GetAuraEffectOnPlayer();
 			IncrementAuraFrameTimers(currentAura);
@@ -242,7 +255,17 @@ namespace SummonHeart
 			item.SetDefaults(ModLoader.GetMod("SummonHeart").ItemType("LlPet"));
 			item.stack = 1;
 			items.Add(item);
-			
+			if(SummonHeartConfig.Instance.atkMultiplier >= 5 || SummonHeartConfig.Instance.hpDefMultiplier >= 10)
+            {
+				item = new Item();
+				item.SetDefaults(ModLoader.GetMod("SummonHeart").ItemType("MysteriousCrystal"));
+				item.stack = 1;
+				items.Add(item);
+				item = new Item();
+				item.SetDefaults(ItemID.WaterBucket);
+				item.stack = 2;
+				items.Add(item);
+			}
 			if (ModLoader.GetMod("Luiafk") != null)
 			{
 				item = new Item();
