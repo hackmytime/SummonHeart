@@ -9,6 +9,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Localization;
 using System.Linq;
+using Terraria.Utilities;
 
 namespace SummonHeart.Items.Weapons.Sabres
 {
@@ -134,17 +135,22 @@ namespace SummonHeart.Items.Weapons.Sabres
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Raiden");
+            DisplayName.SetDefault("DemonShortSword");
             DisplayName.AddTranslation(GameCulture.Chinese, "魔剑·弑神·传承武器");
-            DisplayName.AddTranslation(GameCulture.Russian, "Рейден");
 
             Tooltip.SetDefault(
-                 "Stand still to focus on nearby foes\n" +
-                 "'Imbued with ancient arts'");
-            Tooltip.AddTranslation(GameCulture.Chinese, "魔神临死之前用右臂所铸造\n魔神之子的护道传承武器");
-            Tooltip.AddTranslation(GameCulture.Russian,
-                "Стойте на месте, чтобы сфокусироваться на ближайших врагов\n" +
-                "'Зачарован древним мастерством'");
+              "Refining eight realms · the peak of martial arts · cast by the immortal right arm of the ancient demon God before he died" +
+               "\nThe guardian weapon of the devil's son can only be summoned by blood essence" +
+               "\nResentment of all living beings: critical hit bonus without any damage reduced by 4 times attack speed bonus and 2 times attack range bonus" +
+               "\nPower of killing gods: kill any creature + 1 attack power, but limited by the upper limit of awakening." +
+               "\nSword awakening: kill the strong, capture their flesh and soul, repair the sword body and increase the upper limit of awakening.");
+            Tooltip.AddTranslation(GameCulture.Chinese, "" +
+                "炼体八境·武道巅峰·远古魔神临死之前碎裂不朽右臂所铸造" +
+                "\n魔神之子的护道传承武器，唯魔神之子可用精血召唤使用" +
+                "\n众生之怨：不受任何伤害暴击攻击范围加成，无法附魔，减少3倍攻速加成" +
+                "\n弑神之力：击杀任意生物+1攻击力，然受觉醒上限限制。" +
+                "\n魔剑觉醒：击杀强者摄其血肉灵魂修复剑身，增加觉醒上限。" +
+                "\n空间法则：自身蕴含魔神所悟空间法则之力，剑出必中！");
         }
         public override void SetDefaults()
         {
@@ -163,6 +169,16 @@ namespace SummonHeart.Items.Weapons.Sabres
 
             item.rare = -12;
             item.value = Item.sellPrice(0, 99, 0, 0);
+        }
+
+        public override bool AllowPrefix(int pre)
+        {
+            return false;
+        }
+
+        public override bool? PrefixChance(int pre, UnifiedRandom rand)
+        {
+            return new bool?(false);
         }
 
         public override void AddRecipes()
