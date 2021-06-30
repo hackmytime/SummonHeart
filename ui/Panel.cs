@@ -127,7 +127,23 @@ namespace SummonHeart.ui
                 var modlabel_level = new UIText("当前炼体境界：" + level + " 总气血：" + totalBoodGas + " 战斗力：" + mp.getPower());
                 modlabel_level.TextColor = Color.Red;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                var modlabel_max = new UIText("当前肉身极限：" + mp.bloodGasMax + "(与战力大于你肉身极限的斩命1重或以上强敌战斗可突破极限)");
+                
+                string worldLevel = "Lv1魔神之子";
+                if (SummonHeartWorld.WorldLevel == 2)
+                    worldLevel = "Lv2魔神之路";
+                if (SummonHeartWorld.WorldLevel == 3)
+                    worldLevel = "Lv3弑神屠魔";
+                if (SummonHeartWorld.WorldLevel == 4)
+                    worldLevel = "Lv4逆天而行";
+                if (SummonHeartWorld.WorldLevel == 5)
+                    worldLevel = "Lv5？？？？";
+                var modlabel_max = new UIText("世界难度："+worldLevel+" 世界单部位炼体气血上限：" + SummonHeartWorld.WorldBloodGasMax + "(由世界难度所决定)");
+                modlabel_max.TextColor = Color.Red;
+                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_max));
+
+                if (mp.bloodGasMax < SummonHeartWorld.PlayerBloodGasMax)
+                    mp.bloodGasMax = SummonHeartWorld.PlayerBloodGasMax;
+                modlabel_max = new UIText("当前肉身极限：" + mp.bloodGasMax + "(与战力大于你肉身极限的斩命1重或以上强敌战斗可突破极限)");
                 modlabel_max.TextColor = Color.Magenta;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_max));
 
@@ -192,7 +208,7 @@ namespace SummonHeart.ui
                 modlabel_level = new UIText("魔神之躯" + praticeText + " 气血值：" + mp.bodyBloodGas);
                 modlabel_level.TextColor = Color.Orange;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("万灵炼体，不死不灭：生命上限+" + mp.bodyBloodGas / 100 + "(每100气血+1) 每秒回复自身" + (mp.handBloodGas / 10000 + 2) + "%生命(初始2%，每10000气血+1)");
+                modlabel_level = new UIText("万灵炼体，不死不灭：生命上限+" + mp.bodyBloodGas / 100 + "(每100气血+1) 每秒回复自身" + (mp.bodyBloodGas / 10000 + 2) + "%生命(初始2%，每10000气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
                 modlabel_level = new UIText("干凝万锻，魔体終成：防御+" + mp.bodyDef + " 反伤+" + mp.bodyDef);

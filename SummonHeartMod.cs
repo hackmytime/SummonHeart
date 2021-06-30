@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using SummonHeart.body;
-using SummonHeart.costvalues;
 using SummonHeart.Extensions;
 using SummonHeart.ui;
 using System;
@@ -16,11 +15,13 @@ using Terraria.UI;
 
 namespace SummonHeart
 {
-	public class SummonHeartMod : Mod
+    public class SummonHeartMod : Mod
 	{
 	/*	public static SummonHeartMod instance;*/
 
 		internal static List<BuffValue> modBuffValues = new List<BuffValue>();
+
+		public static int DustIDSlashFX;
 
 		// Hotkeys
 		internal static ModHotKey AutoAttackKey;
@@ -61,28 +62,10 @@ namespace SummonHeart
 			ShowUI = null;
 		}
 
-      /* public override void PostSetupContent()
+		public override void PostSetupContent()
         {
-			
-			for (int i = 0; i < ItemLoader.ItemCount; i++)
-			{
-				ModItem mitem = ItemLoader.GetItem(i);
-				
-				if (mitem != null)
-				{
-					if (mitem.item.Name.Contains("Bar") && !mitem.item.accessory && mitem.mod.Name != "ThoriumMod")
-					{
-						var item = mitem.item;
-						
-						var bvalue = new BuffValue(item.type, item.defense, "防御+" + item.defense, item.Name);
-                        if (!modBuffValues.Contains(bvalue))
-                        {
-							modBuffValues.Add(bvalue);
-                        }
-					}
-				}
-			}
-		}*/
+			DustIDSlashFX = GetDust("SlashDust").Type;
+		}
 
 		public static int getBuffLength()
 		{
@@ -197,6 +180,9 @@ namespace SummonHeart
 			summonHeartPlayer.bodyBloodGas = reader.ReadInt32();
 			summonHeartPlayer.footBloodGas = reader.ReadInt32();
 			summonHeartPlayer.bloodGasMax = reader.ReadInt32();
+			summonHeartPlayer.swordBlood = reader.ReadInt32();
+			summonHeartPlayer.shortSwordBlood = reader.ReadInt32();
+			summonHeartPlayer.swordBloodMax = reader.ReadInt32();
 			summonHeartPlayer.practiceEye = reader.ReadBoolean();
 			summonHeartPlayer.practiceHand = reader.ReadBoolean();
 			summonHeartPlayer.practiceBody = reader.ReadBoolean();
@@ -220,6 +206,9 @@ namespace SummonHeart
 				packet.Write(summonHeartPlayer.bodyBloodGas);
 				packet.Write(summonHeartPlayer.footBloodGas);
 				packet.Write(summonHeartPlayer.bloodGasMax);
+				packet.Write(summonHeartPlayer.swordBlood);
+				packet.Write(summonHeartPlayer.shortSwordBlood);
+				packet.Write(summonHeartPlayer.swordBloodMax);
 				packet.Write(summonHeartPlayer.practiceEye);
 				packet.Write(summonHeartPlayer.practiceHand);
 				packet.Write(summonHeartPlayer.practiceBody);

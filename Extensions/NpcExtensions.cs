@@ -15,11 +15,11 @@ namespace SummonHeart.Extensions
 				CombatText.NewText(new Rectangle((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height), textColor.Value, string.Concat(num), false, true);
 			}
 			npc.life -= num;
-			if (npc.life <= 0)
+			/*if (npc.life <= 0)
 			{
 				npc.life = 1;
 				npc.StrikeNPC(9999, 0f, 0, false, false, false);
-			}
+			}*/
 		}
 
 		public static int getPower(this NPC npc)

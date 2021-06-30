@@ -13,18 +13,17 @@ namespace SummonHeart
         [Label("炼体特效")]
         public bool EffectVisualConfig;
 
-        [Label("敌人Hp和防御倍率(每5倍额外增加1倍获取灵魂数量)")]
-        [Increment(1)]
-        [Range(5, 20)]
-        [DefaultValue(5)]
+        [Label("魔神之手攻击范围倍率")]
+        [Range(0, 1f)]
+        [DefaultValue(1)]
         [Slider]
-        public int hpDefMultiplier;
+        public float handMultiplier;
 
-        [Label("敌人攻击倍率(每1倍+1W炼体世界上限)")]
+       /* [Label("敌人攻击倍率(每1倍+1W炼体世界上限)")]
         [Increment(1)]
         [Range(2, 10)]
         [DefaultValue(2)]
         [Slider]
-        public int atkMultiplier;
+        public int atkMultiplier;*/
     }
 }

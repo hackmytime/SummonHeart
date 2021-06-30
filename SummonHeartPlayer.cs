@@ -24,8 +24,9 @@ namespace SummonHeart
 		public float tungstenPrevSizeSave;
 		public bool FishSoul = false;
 		public bool BattleCry = false;		
-		public bool GlobalTeleporterUp = false;
 		public bool llPet = false;
+		public bool chargeAttack = false;
+		public bool showRadius = false;
 		public int BBP = 0;
 		public int SummonCrit = 0;
 		public int exp = 0;
@@ -36,7 +37,11 @@ namespace SummonHeart
 		public int bodyBloodGas = 0;
 		public int footBloodGas = 0;
 		
-		public int bloodGasMax = 10000 + SummonHeartConfig.Instance.atkMultiplier * 1000;
+		public int bloodGasMax = 10000;
+
+		public int swordBlood = 1;
+		public int shortSwordBlood = 1;
+		public int swordBloodMax = 100;
 
 		public bool practiceEye = false;
 		public bool practiceHand = false;
@@ -111,6 +116,35 @@ namespace SummonHeart
 					player.wingTime = footBloodGas / 1000 * 60;
 				}
             }
+		}
+
+		public struct SoundData
+		{
+			public int Type;
+			public int x;
+			public int y;
+			public int Style;
+			public float volumeScale;
+			public float pitchOffset;
+			public SoundData(int Type)
+			{ this.Type = Type; x = -1; y = -1; Style = 1; volumeScale = 1f; pitchOffset = 0f; }
+		}
+		public static void ItemFlashFX(Player player, int dustType = 45, SoundData sDat = default(SoundData))
+		{
+			if (sDat.Type == 0) { sDat = new SoundData(25); }
+			if (player.whoAmI == Main.myPlayer)
+			{ 
+				Main.PlaySound(sDat.Type, sDat.x, sDat.y, sDat.Style, sDat.volumeScale, sDat.pitchOffset); 
+			}
+			for (int i = 0; i < 5; i++)
+			{
+				int d = Dust.NewDust(
+					player.position, player.width, player.height, dustType, 0f, 0f, 255,
+					default(Color), (float)Main.rand.Next(20, 26) * 0.1f);
+				Main.dust[d].noLight = true;
+				Main.dust[d].noGravity = true;
+				Main.dust[d].velocity *= 0.5f;
+			}
 		}
 
 		public override void PreUpdate()
@@ -214,7 +248,6 @@ namespace SummonHeart
 			SummonHeart = false;
 			AttackSpeed = 1f;
 			FishSoul = false;
-			GlobalTeleporterUp = false;
 			llPet = false;
 			healCD++;
 			if (healCD == 60)
@@ -231,11 +264,16 @@ namespace SummonHeart
 
 		public void CauseDirectDamage(NPC npc, int originalDamage, bool crit)
 		{
+			Player player = Main.player[Main.myPlayer];
+            SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
+
+			int num = 0;
 			if (crit)
 				originalDamage *= 2;
 
-			int num = originalDamage * SummonCrit / 5000 + SummonCrit / 5 + SummonHeartConfig.Instance.hpDefMultiplier;
-			
+            if (modPlayer.SummonHeart)
+                num = originalDamage * SummonCrit / 5000 + SummonCrit / 5 + SummonHeartWorld.WorldLevel * 5;
+
 			if (num >= 1)
 			{
 				npc.LoseLife(num, new Color?(new Color(240, 20, 20, 255)));
@@ -248,6 +286,10 @@ namespace SummonHeart
 			item.stack = 1;
 			items.Add(item);
 			item = new Item();
+			item.SetDefaults(ModLoader.GetMod("SummonHeart").ItemType("Level0"));
+			item.stack = 1;
+			items.Add(item);
+			item = new Item();
 			item.SetDefaults(ItemID.LifeCrystal);
 			item.stack = 1;
 			items.Add(item);
@@ -255,17 +297,15 @@ namespace SummonHeart
 			item.SetDefaults(ModLoader.GetMod("SummonHeart").ItemType("LlPet"));
 			item.stack = 1;
 			items.Add(item);
-			if(SummonHeartConfig.Instance.atkMultiplier >= 5 || SummonHeartConfig.Instance.hpDefMultiplier >= 10)
-            {
-				item = new Item();
-				item.SetDefaults(ModLoader.GetMod("SummonHeart").ItemType("MysteriousCrystal"));
-				item.stack = 1;
-				items.Add(item);
-				item = new Item();
-				item.SetDefaults(ItemID.WaterBucket);
-				item.stack = 2;
-				items.Add(item);
-			}
+			
+			item = new Item();
+			item.SetDefaults(ModLoader.GetMod("SummonHeart").ItemType("MysteriousCrystal"));
+			item.stack = 1;
+			items.Add(item);
+			item = new Item();
+			item.SetDefaults(ItemID.WaterBucket);
+			item.stack = 2;
+			items.Add(item);
 			if (ModLoader.GetMod("Luiafk") != null)
 			{
 				item = new Item();
@@ -313,6 +353,9 @@ namespace SummonHeart
 			packet.Write(bodyBloodGas);
 			packet.Write(footBloodGas);
 			packet.Write(bloodGasMax);
+			packet.Write(swordBlood);
+			packet.Write(shortSwordBlood);
+			packet.Write(swordBloodMax);
 			packet.Write(practiceEye);
 			packet.Write(practiceHand);
 			packet.Write(practiceBody);
@@ -356,6 +399,9 @@ namespace SummonHeart
 				packet.Write(bodyBloodGas);
 				packet.Write(footBloodGas);
 				packet.Write(bloodGasMax);
+				packet.Write(swordBlood);
+				packet.Write(shortSwordBlood);
+				packet.Write(swordBloodMax);
 				packet.Write(practiceEye);
 				packet.Write(practiceHand);
 				packet.Write(practiceBody);
@@ -381,6 +427,9 @@ namespace SummonHeart
 			tagComp.Add("bodyBloodGas", bodyBloodGas);
 			tagComp.Add("footBloodGas", footBloodGas);
 			tagComp.Add("bloodGasMax", bloodGasMax);
+			tagComp.Add("swordBlood", swordBlood);
+			tagComp.Add("shortSwordBlood", shortSwordBlood);
+			tagComp.Add("swordBloodMax", swordBloodMax);
 			tagComp.Add("practiceEye", practiceEye);
 			tagComp.Add("practiceHand", practiceHand);
 			tagComp.Add("practiceBody", practiceBody);
@@ -401,6 +450,9 @@ namespace SummonHeart
 			bodyBloodGas = tag.GetInt("bodyBloodGas");
 			footBloodGas = tag.GetInt("footBloodGas");
 			bloodGasMax = tag.GetInt("bloodGasMax");
+			swordBlood = tag.GetInt("swordBlood");
+			shortSwordBlood = tag.GetInt("shortSwordBlood");
+			swordBloodMax = tag.GetInt("swordBloodMax");
 			practiceEye = tag.GetBool("practiceEye");
 			practiceHand = tag.GetBool("practiceHand");
 			practiceBody = tag.GetBool("practiceBody");
@@ -562,6 +614,15 @@ namespace SummonHeart
 			if (useTime == 0 || useAnimate == 0 || item.damage <= 0)
 			{
 				return 1f;
+			}
+
+			if(item.modItem != null && item.modItem.Name == "Hayauchi")
+            {
+				return AttackSpeed / 4 + 0.75f;
+			}
+			if(item.modItem != null && item.modItem.Name == "Raiden")
+            {
+				return AttackSpeed / 3 + 0.67f;
 			}
 
 			return AttackSpeed;

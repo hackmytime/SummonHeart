@@ -9,26 +9,29 @@ namespace SummonHeart
     public class SummonHeartWorld : ModWorld
     {
         public static bool GoddessMode;
-    
+
+        public static int WorldLevel;
+
+        public static int WorldBloodGasMax = 0;
+
+        public static int PlayerBloodGasMax = 0;
+
         public override void Initialize()
         {
-         
             GoddessMode = false;
-          
+            WorldLevel = 0;
+            WorldBloodGasMax = 100000;
+            PlayerBloodGasMax = 10000;
         }
 
         public override TagCompound Save()
         {
-            var found = new List<string>();
-          
-            if (GoddessMode) found.Add("AntiBuffMode");
-          
-            var downed = new List<string>();
-
-            return new TagCompound {
-                {"found", found},
-                {"downed", downed}
-            };
+            var tagComp = new TagCompound();
+            tagComp.Add("GoddessMode", GoddessMode);
+            tagComp.Add("WorldLevel", WorldLevel);
+            tagComp.Add("WorldBloodGasMax", WorldBloodGasMax);
+            tagComp.Add("PlayerBloodGasMax", PlayerBloodGasMax);
+            return tagComp;
         }
 
         public override void NetSend(BinaryWriter writer)
@@ -36,20 +39,27 @@ namespace SummonHeart
             BitsByte flags = new BitsByte();
             flags[0] = GoddessMode;
             writer.Write(flags);
+
+            writer.Write(WorldLevel);
+            writer.Write(WorldBloodGasMax);
+            writer.Write(PlayerBloodGasMax);
         }
 
         public override void NetReceive(BinaryReader reader)
         {
             BitsByte flags = reader.ReadByte();
             GoddessMode = flags[0];
+            WorldLevel = reader.ReadInt32();
+            WorldBloodGasMax = reader.ReadInt32();
+            PlayerBloodGasMax = reader.ReadInt32();
         }
 
         public override void Load(TagCompound tag)
         {
-            var found = tag.GetList<string>("found");
-            GoddessMode = found.Contains("AntiBuffMode");
-
-            var downed = tag.GetList<string>("downed");
+            GoddessMode = tag.GetBool("GoddessMode");
+            WorldLevel = tag.GetInt("WorldLevel");
+            WorldBloodGasMax = tag.GetInt("WorldBloodGasMax");
+            PlayerBloodGasMax = tag.GetInt("PlayerBloodGasMax");
         }
     }
 }

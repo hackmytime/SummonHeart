@@ -61,7 +61,7 @@ namespace SummonHeart.Items
 			string text2 = Language.GetTextValue("Mods.SummonHeart.Pip-Boy3000text2") + modPlayer.SummonCrit / 50 + "%";
 			string text3 = Language.GetTextValue("Mods.SummonHeart.Pip-Boy3000text3") + "5倍";
 			string text4 = Language.GetTextValue("Mods.SummonHeart.Pip-Boy3000text4") + modPlayer.SummonCrit / 50 + "%";
-			string text5 = Language.GetTextValue("Mods.SummonHeart.Pip-Boy3000text5") + (modPlayer.SummonCrit / 5 + SummonHeartConfig.Instance.hpDefMultiplier);
+			string text5 = Language.GetTextValue("Mods.SummonHeart.Pip-Boy3000text5") + (modPlayer.SummonCrit / 5 + SummonHeartWorld.WorldLevel * 5);
 			string text6 = Language.GetTextValue("Mods.SummonHeart.Pip-Boy3000text6") + modPlayer.exp;
 			string text7 = Language.GetTextValue("Mods.SummonHeart.Pip-Boy3000text7") + modPlayer.SummonCrit;
 			TooltipLine line = new TooltipLine(mod, "text1", text1);

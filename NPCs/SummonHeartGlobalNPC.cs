@@ -23,10 +23,36 @@ namespace SummonHeart.NPCs
 
 		public override void SetDefaults(NPC npc)
 		{
-			npc.lifeMax *= SummonHeartConfig.Instance.hpDefMultiplier;
-			npc.defense *= SummonHeartConfig.Instance.hpDefMultiplier;
-			npc.damage *= SummonHeartConfig.Instance.atkMultiplier;
-			base.SetDefaults(npc);
+			if(SummonHeartWorld.WorldLevel <= 1)
+            {
+				npc.lifeMax *= 5;
+				npc.defense *= 5;
+				npc.damage *= 2;
+            }
+			else if(SummonHeartWorld.WorldLevel == 2)
+			{
+				npc.lifeMax *= 10;
+				npc.defense *= 10;
+				npc.damage *= 5;
+			}
+			else if (SummonHeartWorld.WorldLevel == 3)
+			{
+				npc.lifeMax *= 15;
+				npc.defense *= 15;
+				npc.damage *= 8;
+			}
+			else if (SummonHeartWorld.WorldLevel == 4)
+			{
+				npc.lifeMax *= 20;
+				npc.defense *= 20;
+				npc.damage *= 10;
+			}
+			else if (SummonHeartWorld.WorldLevel == 5)
+			{
+				npc.lifeMax *= 30;
+				npc.defense *= 30;
+				npc.damage *= 30;
+			}
 		}
 
 		public void SyncPlayerVariables(Player player)
@@ -43,6 +69,9 @@ namespace SummonHeart.NPCs
 			packet.Write(modPlayer.bodyBloodGas);
 			packet.Write(modPlayer.footBloodGas);
 			packet.Write(modPlayer.bloodGasMax);
+			packet.Write(modPlayer.swordBlood);
+			packet.Write(modPlayer.shortSwordBlood);
+			packet.Write(modPlayer.swordBloodMax);
 			packet.Write(modPlayer.practiceEye);
 			packet.Write(modPlayer.practiceHand);
 			packet.Write(modPlayer.practiceBody);
@@ -59,6 +88,49 @@ namespace SummonHeart.NPCs
 		{
 			Player player = Main.player[npc.lastInteraction];
 			SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
+
+			if(player.HeldItem.modItem.Name == "Hayauchi")
+            {
+				if(modPlayer.swordBlood < modPlayer.swordBloodMax)
+                {
+					modPlayer.swordBlood++;
+					if (npc.boss)
+                    {
+						int swordMax = npc.lifeMax / 200;
+						if (modPlayer.swordBloodMax < swordMax)
+                        {
+							modPlayer.swordBloodMax = swordMax;
+							string curMax = (modPlayer.swordBloodMax * 1.0f / 100f).ToString("0.00");
+							Main.NewText($"魔剑·弑神吞噬了{npc.FullName}的血肉，突破觉醒上限，当前觉醒上限：{curMax}%", Color.Green);
+						}
+					}
+					if (Main.netMode == 2)
+					{
+						SyncPlayerVariables(player);
+					}
+				}
+            }
+			if (player.HeldItem.modItem.Name == "Raiden")
+			{
+				if (modPlayer.shortSwordBlood < modPlayer.swordBloodMax)
+				{
+					modPlayer.shortSwordBlood++;
+					if (npc.boss)
+					{
+						int swordMax = npc.lifeMax / 200;
+						if (modPlayer.swordBloodMax < swordMax)
+						{
+							modPlayer.swordBloodMax = swordMax;
+							string curMax = (modPlayer.swordBloodMax * 1.0f / 100f).ToString("0.00");
+							Main.NewText($"魔剑·弑神吞噬了{npc.FullName}的血肉，突破觉醒上限，当前觉醒上限：{curMax}%", Color.Green);
+						}
+					}
+					if (Main.netMode == 2)
+					{
+						SyncPlayerVariables(player);
+					}
+				}
+			}
 
 			if (modPlayer.SummonHeart)
 			{
@@ -98,8 +170,11 @@ namespace SummonHeart.NPCs
 
 				//处理灵魂
 				//处理难度额外灵魂
-				int hardMulti = SummonHeartConfig.Instance.hpDefMultiplier / 5;
-				addExp *= hardMulti;
+				int hardMulti = SummonHeartWorld.WorldLevel;
+				if (hardMulti > 0)
+                {
+					addExp *= hardMulti;
+                }
 				modPlayer.BBP += addExp;
 
                 if (npc.boss)
@@ -120,7 +195,7 @@ namespace SummonHeart.NPCs
 
 				//处理突破
 				//最大血气上限【规则】
-				int MAXBLOODGAS = 100000 + (SummonHeartConfig.Instance.atkMultiplier * 10000);
+				int MAXBLOODGAS = SummonHeartWorld.WorldBloodGasMax;
 				if (powerLevel > 0 && npc.getPower() > modPlayer.bloodGasMax)
                 {
 					//突破的数值=（敌人战力-玩家肉身极限）/  5 * (阶位)
@@ -160,6 +235,8 @@ namespace SummonHeart.NPCs
 							{
 								modPlayer.BuySoul(addExp);
 								modPlayer.eyeBloodGas += addBloodGas;
+								if (modPlayer.eyeBloodGas > MAXBLOODGAS)
+									modPlayer.eyeBloodGas = MAXBLOODGAS;
 								if (npc.boss)
 								{
 									if (powerLevel == 0)
@@ -188,6 +265,8 @@ namespace SummonHeart.NPCs
 							{
 								modPlayer.BuySoul(addExp);
                                 modPlayer.handBloodGas += addBloodGas;
+								if (modPlayer.handBloodGas > MAXBLOODGAS)
+									modPlayer.handBloodGas = MAXBLOODGAS;
 								if (npc.boss)
                                 {
 									if (powerLevel == 0)
@@ -216,6 +295,8 @@ namespace SummonHeart.NPCs
 							{
 								modPlayer.BuySoul(addExp);
                                 modPlayer.bodyBloodGas += addBloodGas;
+								if (modPlayer.bodyBloodGas > MAXBLOODGAS)
+									modPlayer.bodyBloodGas = MAXBLOODGAS;
 								if (npc.boss)
                                 {
 									if (powerLevel == 0)
@@ -244,6 +325,8 @@ namespace SummonHeart.NPCs
 							{
 								modPlayer.BuySoul(addExp);
                                 modPlayer.footBloodGas += addBloodGas;
+								if (modPlayer.footBloodGas > MAXBLOODGAS)
+									modPlayer.footBloodGas = MAXBLOODGAS;
 								if (npc.boss)
 								{
 									if (powerLevel == 0)

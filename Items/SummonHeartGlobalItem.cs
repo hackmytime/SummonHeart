@@ -24,11 +24,23 @@ namespace SummonHeart.Items
         public override void HoldItem(Item item, Player player)
         {
             SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
-           
+
+            float handMultiplier = SummonHeartConfig.Instance.handMultiplier;
             if (item.melee && modPlayer.boughtbuffList[1])
             {
-                float curScale = modPlayer.handBloodGas / 500 * 0.01f + 2;
-                item.scale = curScale;
+                float curScale = (modPlayer.handBloodGas / 500 * 0.01f + 1f) * handMultiplier;
+               
+                //魔剑距离减半
+                if (item.modItem != null && item.modItem.Name == "Hayauchi")
+                {
+                    curScale = curScale * 0.5f;
+                }
+                //刺剑距离减半
+                if (item.modItem != null && item.modItem.Name == "Raiden")
+                {
+                    curScale = 0.5f;
+                }
+                item.scale = curScale + 1f;
             }
         }
 
