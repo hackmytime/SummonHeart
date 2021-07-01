@@ -35,10 +35,14 @@ namespace SummonHeart.Items
             SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
             modPlayer.BattleCry = !modPlayer.BattleCry;
 
-            string text = "Spawn rates " + (modPlayer.BattleCry ? "on!" : "off!");
+            string text = "战争号角 " + (modPlayer.BattleCry ? "开启!" : "关闭!");
             if (Main.netMode == NetmodeID.SinglePlayer)
             {
                 Main.NewText(text, new Color(175, 75, 255));
+            }
+            if (Main.netMode == NetmodeID.Server)
+            {
+                NetMessage.BroadcastChatMessage(NetworkText.FromLiteral(text), new Color(175, 75, 255));
             }
 
             return true;

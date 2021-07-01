@@ -264,7 +264,7 @@ namespace SummonHeart
 
 		public void CauseDirectDamage(NPC npc, int originalDamage, bool crit)
 		{
-			Player player = Main.player[Main.myPlayer];
+			/*Player player = Main.player[Main.myPlayer];
             SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
 
 			int num = 0;
@@ -277,7 +277,7 @@ namespace SummonHeart
 			if (num >= 1)
 			{
 				npc.LoseLife(num, new Color?(new Color(240, 20, 20, 255)));
-			}
+			}*/
 		}
 		public override void SetupStartInventory(IList<Item> items, bool mediumcoreDeath)
         {
@@ -343,6 +343,7 @@ namespace SummonHeart
 		public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
 		{
 			ModPacket packet = mod.GetPacket();
+			packet.Write((byte)0);
 			packet.Write((byte)player.whoAmI);
 			packet.Write(BBP);
 			packet.Write(SummonCrit);
@@ -389,6 +390,7 @@ namespace SummonHeart
 			if (send)
 			{
 				var packet = mod.GetPacket();
+				packet.Write((byte)0);
 				packet.Write((byte)player.whoAmI);
 				packet.Write(BBP);
 				packet.Write(SummonCrit);
@@ -557,7 +559,7 @@ namespace SummonHeart
         {
 			if (bodyDef >= 1)
 			{
-				npc.StrikeNPC((int)(damage + bodyDef), npc.knockBackResist, -npc.direction);
+				//npc.StrikeNPC((int)(damage + bodyDef), npc.knockBackResist, -npc.direction);
 				//Projectile.NewProjectile(npc.Center.X, npc.Center.Y, 0f, 0f, mod.ProjectileType("Returner2"), (int)bodyDef + npc.defense, 0, player.whoAmI);
 			}
 		}

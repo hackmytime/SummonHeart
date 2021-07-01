@@ -59,6 +59,7 @@ namespace SummonHeart.NPCs
 		{			
 			SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
 			ModPacket packet = mod.GetPacket();
+			packet.Write((byte)0);
 			packet.Write((byte)player.whoAmI);
 			packet.Write(modPlayer.BBP);
 			packet.Write(modPlayer.SummonCrit);
@@ -89,7 +90,7 @@ namespace SummonHeart.NPCs
 			Player player = Main.player[npc.lastInteraction];
 			SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
 
-			if(player.HeldItem.modItem.Name == "Hayauchi")
+			if(player.HeldItem.modItem != null && player.HeldItem.modItem.Name == "Hayauchi")
             {
 				if(modPlayer.swordBlood < modPlayer.swordBloodMax)
                 {
@@ -110,7 +111,7 @@ namespace SummonHeart.NPCs
 					}
 				}
             }
-			if (player.HeldItem.modItem.Name == "Raiden")
+			if (player.HeldItem.modItem != null && player.HeldItem.modItem.Name == "Raiden")
 			{
 				if (modPlayer.shortSwordBlood < modPlayer.swordBloodMax)
 				{
@@ -381,7 +382,44 @@ namespace SummonHeart.NPCs
             }
         }
 
-        public override void ModifyHitByItem(NPC npc, Player player, Item item, ref int damage, ref float knockback, ref bool crit)
+		public void SyncNpcVariables(NPC npc)
+		{
+			ModPacket packet = mod.GetPacket();
+			packet.Write((byte)1);
+			packet.Write((byte)npc.whoAmI);
+			packet.Write(npc.life);
+			packet.Send();
+		}
+
+		public void CauseDirectDamage(NPC npc, int originalDamage, bool crit)
+		{
+			Player player = Main.player[Main.myPlayer];
+			SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
+
+			int num = 0;
+			if (crit)
+				originalDamage *= 2;
+
+			if (modPlayer.SummonHeart)
+				num = originalDamage * modPlayer.SummonCrit / 5000 + modPlayer.SummonCrit / 5 + SummonHeartWorld.WorldLevel * 5;
+
+			if (num >= 1)
+			{
+				CombatText.NewText(new Rectangle((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height), new Color(240, 20, 20, 255), string.Concat(num), false, true);
+				npc.life -= num;
+				if (npc.life <= 0)
+				{
+					npc.life = 1;
+					//npc.StrikeNPC(9999, 0f, 0, false, false, false);
+				}
+				if (Main.netMode == 1)
+				{
+					SyncNpcVariables(npc);
+				}
+			}
+		}
+
+		public override void ModifyHitByItem(NPC npc, Player player, Item item, ref int damage, ref float knockback, ref bool crit)
         {
 			SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
 			
@@ -393,6 +431,8 @@ namespace SummonHeart.NPCs
 				}
 				npc.AddBuff(mod.BuffType("SoulSplit"), 2);
 			}
+
+			this.CauseDirectDamage(npc, damage, crit);
 		}
 
         public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
@@ -400,7 +440,7 @@ namespace SummonHeart.NPCs
 			Mod Calamity = ModLoader.GetMod("CalamityMod");
 			Player player = Main.player[projectile.owner];
             SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
-
+			this.CauseDirectDamage(npc, damage, crit);
 			if (modPlayer.soulSplit)
 			{
 				if (!npc.HasBuff(mod.BuffType("SoulSplit")))

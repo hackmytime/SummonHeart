@@ -168,58 +168,78 @@ namespace SummonHeart
 		}
 		public override void HandlePacket(BinaryReader reader, int whoAmI)
 		{
-			// 同步噬魂之心
-			byte playernumber = reader.ReadByte();
-			SummonHeartPlayer summonHeartPlayer = Main.player[playernumber].GetModPlayer<SummonHeartPlayer>();
-			summonHeartPlayer.BBP = reader.ReadInt32();
-			summonHeartPlayer.SummonCrit = reader.ReadInt32();
-			summonHeartPlayer.exp = reader.ReadInt32();
-			summonHeartPlayer.bodyDef = reader.ReadSingle();
-			summonHeartPlayer.eyeBloodGas = reader.ReadInt32();
-			summonHeartPlayer.handBloodGas = reader.ReadInt32();
-			summonHeartPlayer.bodyBloodGas = reader.ReadInt32();
-			summonHeartPlayer.footBloodGas = reader.ReadInt32();
-			summonHeartPlayer.bloodGasMax = reader.ReadInt32();
-			summonHeartPlayer.swordBlood = reader.ReadInt32();
-			summonHeartPlayer.shortSwordBlood = reader.ReadInt32();
-			summonHeartPlayer.swordBloodMax = reader.ReadInt32();
-			summonHeartPlayer.practiceEye = reader.ReadBoolean();
-			summonHeartPlayer.practiceHand = reader.ReadBoolean();
-			summonHeartPlayer.practiceBody = reader.ReadBoolean();
-			summonHeartPlayer.practiceFoot = reader.ReadBoolean();
-			summonHeartPlayer.soulSplit = reader.ReadBoolean();
+			byte msgType = reader.ReadByte();
+			switch (msgType)
+			{
+				case 0:
+                    {
+						// 同步噬魂之心
+						byte playernumber = reader.ReadByte();
+						SummonHeartPlayer summonHeartPlayer = Main.player[playernumber].GetModPlayer<SummonHeartPlayer>();
+						summonHeartPlayer.BBP = reader.ReadInt32();
+						summonHeartPlayer.SummonCrit = reader.ReadInt32();
+						summonHeartPlayer.exp = reader.ReadInt32();
+						summonHeartPlayer.bodyDef = reader.ReadSingle();
+						summonHeartPlayer.eyeBloodGas = reader.ReadInt32();
+						summonHeartPlayer.handBloodGas = reader.ReadInt32();
+						summonHeartPlayer.bodyBloodGas = reader.ReadInt32();
+						summonHeartPlayer.footBloodGas = reader.ReadInt32();
+						summonHeartPlayer.bloodGasMax = reader.ReadInt32();
+						summonHeartPlayer.swordBlood = reader.ReadInt32();
+						summonHeartPlayer.shortSwordBlood = reader.ReadInt32();
+						summonHeartPlayer.swordBloodMax = reader.ReadInt32();
+						summonHeartPlayer.practiceEye = reader.ReadBoolean();
+						summonHeartPlayer.practiceHand = reader.ReadBoolean();
+						summonHeartPlayer.practiceBody = reader.ReadBoolean();
+						summonHeartPlayer.practiceFoot = reader.ReadBoolean();
+						summonHeartPlayer.soulSplit = reader.ReadBoolean();
 
-			for (int i = 0; i < getBuffLength(); i++)
-			{
-				summonHeartPlayer.boughtbuffList[i] = reader.ReadBoolean();
+						for (int i = 0; i < getBuffLength(); i++)
+						{
+							summonHeartPlayer.boughtbuffList[i] = reader.ReadBoolean();
+						}
+						if (Main.netMode == NetmodeID.Server)
+						{
+							var packet = GetPacket();
+							packet.Write((byte)playernumber);
+							packet.Write(summonHeartPlayer.BBP);
+							packet.Write(summonHeartPlayer.SummonCrit);
+							packet.Write(summonHeartPlayer.exp);
+							packet.Write(summonHeartPlayer.bodyDef);
+							packet.Write(summonHeartPlayer.eyeBloodGas);
+							packet.Write(summonHeartPlayer.handBloodGas);
+							packet.Write(summonHeartPlayer.bodyBloodGas);
+							packet.Write(summonHeartPlayer.footBloodGas);
+							packet.Write(summonHeartPlayer.bloodGasMax);
+							packet.Write(summonHeartPlayer.swordBlood);
+							packet.Write(summonHeartPlayer.shortSwordBlood);
+							packet.Write(summonHeartPlayer.swordBloodMax);
+							packet.Write(summonHeartPlayer.practiceEye);
+							packet.Write(summonHeartPlayer.practiceHand);
+							packet.Write(summonHeartPlayer.practiceBody);
+							packet.Write(summonHeartPlayer.practiceFoot);
+							packet.Write(summonHeartPlayer.soulSplit);
+							for (int i = 0; i < getBuffLength(); i++)
+							{
+								packet.Write(summonHeartPlayer.boughtbuffList[i]);
+							}
+							packet.Send(-1, playernumber);
+						}
+					}
+					break;
+
+				case 1:
+                    {
+						byte npc = reader.ReadByte();
+						Main.npc[npc].life = reader.ReadInt32();
+					}
+					break;
+
+				default:
+					Logger.WarnFormat("MyMod: Unknown Message type: {0}", msgType);
+					break;
 			}
-			if (Main.netMode == NetmodeID.Server)
-			{
-				var packet = GetPacket();
-				packet.Write((byte)playernumber);
-				packet.Write(summonHeartPlayer.BBP);
-				packet.Write(summonHeartPlayer.SummonCrit);
-				packet.Write(summonHeartPlayer.exp);
-				packet.Write(summonHeartPlayer.bodyDef);
-				packet.Write(summonHeartPlayer.eyeBloodGas);
-				packet.Write(summonHeartPlayer.handBloodGas);
-				packet.Write(summonHeartPlayer.bodyBloodGas);
-				packet.Write(summonHeartPlayer.footBloodGas);
-				packet.Write(summonHeartPlayer.bloodGasMax);
-				packet.Write(summonHeartPlayer.swordBlood);
-				packet.Write(summonHeartPlayer.shortSwordBlood);
-				packet.Write(summonHeartPlayer.swordBloodMax);
-				packet.Write(summonHeartPlayer.practiceEye);
-				packet.Write(summonHeartPlayer.practiceHand);
-				packet.Write(summonHeartPlayer.practiceBody);
-				packet.Write(summonHeartPlayer.practiceFoot);
-				packet.Write(summonHeartPlayer.soulSplit);
-				for (int i = 0; i < getBuffLength(); i++)
-				{
-					packet.Write(summonHeartPlayer.boughtbuffList[i]);
-				}
-				packet.Send(-1, playernumber);
-			}
+			
 		}
 
 
