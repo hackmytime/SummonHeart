@@ -31,7 +31,7 @@ namespace SummonHeart.Items
                 float curScale = (modPlayer.handBloodGas / 500 * 0.01f + 1f) * handMultiplier;
                
                 //魔剑距离减半
-                if (item.modItem != null && item.modItem.Name == "Hayauchi")
+                if (item.modItem != null && item.modItem.Name == "DemonSword")
                 {
                     curScale = curScale * 0.5f;
                 }

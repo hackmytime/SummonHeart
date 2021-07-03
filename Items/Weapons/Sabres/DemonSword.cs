@@ -18,10 +18,10 @@ namespace SummonHeart.Items.Weapons.Sabres
     /// Draw Strike DPS = 146
     /// hey, its me, jetstream sammy
     /// </summary>
-    public class Hayauchi : ModItem
+    public class DemonSword : ModItem
     {
         public const int waitTime = 15;
-        public const int chargeDamageMult = 4;
+        public const int chargeDamageMult = 2;
 
         private bool drawStrike;
 
@@ -41,7 +41,8 @@ namespace SummonHeart.Items.Weapons.Sabres
                 "\n魔神之子的护道传承武器，唯魔神之子可用精血召唤使用" +
                 "\n众生之怨：不受任何伤害暴击加成，无法附魔，减少4倍攻速加成，减少2倍攻击范围加成" +
                 "\n弑神之力：击杀任意生物+1攻击力，然受觉醒上限限制。" +
-                "\n魔剑觉醒：击杀强者摄其血肉灵魂修复剑身，增加觉醒上限。");
+                "\n魔剑觉醒：击杀强者摄其血肉灵魂修复剑身，可突破觉醒上限。" +
+                "\n破灭法则：重击必定造成3倍暴击。");
             
         }
         public override void SetDefaults()
@@ -83,7 +84,7 @@ namespace SummonHeart.Items.Weapons.Sabres
         }
 
         // Define if the player is still enough to use the special
-        public bool hasHayauchiSpecialCharge(Player player)
+        public bool hasDemonSwordSpecialCharge(Player player)
         {
             return player.itemTime == 0
                 && Math.Abs(player.position.X - player.oldPosition.X) < 1f
@@ -92,10 +93,10 @@ namespace SummonHeart.Items.Weapons.Sabres
 
         public override void HoldItem(Player player)
         {
-            //bool specialCharge = hasHayauchiSpecialCharge(player);
+            //bool specialCharge = hasDemonSwordSpecialCharge(player);
             bool specialCharge = false;
             SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
-            ModSabres.HoldItemManager(player, item, mod.ProjectileType("HayauchiSlash"),
+            WeaponSabres.HoldItemManager(player, item, mod.ProjectileType("DemonSwordSlash"),
                 Color.Red, 1.0f, specialCharge ? 0f : 1f, customCharge, 12);
 
             // Blade sheen once fully charged
@@ -183,7 +184,7 @@ namespace SummonHeart.Items.Weapons.Sabres
 
         /*public override bool HoldItemFrame(Player player) //called on player holding but not swinging
         {
-            if (hasHayauchiSpecialCharge(player)) //ready to slash
+            if (hasDemonSwordSpecialCharge(player)) //ready to slash
             {
                 player.bodyFrame.Y = 4 * player.bodyFrame.Height;
                 return true;
@@ -193,7 +194,7 @@ namespace SummonHeart.Items.Weapons.Sabres
 
         public override bool UseItemFrame(Player player)
         {
-            ModSabres.UseItemFrame(player, 0.9f, item.isBeingGrabbed);
+            WeaponSabres.UseItemFrame(player, 0.9f, item.isBeingGrabbed);
             return true;
         }
 
@@ -206,30 +207,29 @@ namespace SummonHeart.Items.Weapons.Sabres
                 length = 228;
                 height = 140;
             }
-            ModSabres.UseItemHitboxCalculate(player, item, ref hitbox, ref noHitbox, 0.9f, height, length);
+            WeaponSabres.UseItemHitboxCalculate(player, item, ref hitbox, ref noHitbox, 0.9f, height, length);
         }
 
         public override void OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit)
         {
             Color colour = new Color(1f, 0f, 0f);
-            ModSabres.OnHitFX(player, target, crit, colour, true);
+            WeaponSabres.OnHitFX(player, target, crit, colour, true);
         }
 
         //x6 damage + crit to make up for terrible (but cool) usage
         public override void ModifyHitNPC(Player player, NPC target, ref int damage, ref float knockBack, ref bool crit)
         {
-            if (ModSabres.SabreIsChargedStriking(player, item))
+            SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
+            if (WeaponSabres.SabreIsChargedStriking(player, item))
             {
                 damage *= chargeDamageMult;
                 knockBack *= 2;
-                if ((player.Center - target.Center).Length() > 70)
-                { crit = true; }
+                crit = true;
             }
-
         }
         public override void ModifyHitPvp(Player player, Player target, ref int damage, ref bool crit)
         {
-            if (ModSabres.SabreIsChargedStriking(player, item))
+            if (WeaponSabres.SabreIsChargedStriking(player, item))
             {
                 damage *= chargeDamageMult;
                 if ((player.Center - target.Center).Length() > 70)
@@ -239,7 +239,7 @@ namespace SummonHeart.Items.Weapons.Sabres
     }
 
 
-    public class HayauchiSlash : ModProjectile
+    public class DemonSwordSlash : ModProjectile
     {
         public static Texture2D specialSlash;
         public static int specialProjFrames = 6;
@@ -247,7 +247,7 @@ namespace SummonHeart.Items.Weapons.Sabres
         int chargeSlashDirection = -1;
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Hayauchi");
+            DisplayName.SetDefault("DemonSword");
             DisplayName.AddTranslation(GameCulture.Chinese, "快打");
             DisplayName.AddTranslation(GameCulture.Russian, "Хаяуси");
             Main.projFrames[projectile.type] = 5;
@@ -283,7 +283,7 @@ namespace SummonHeart.Items.Weapons.Sabres
         public override void AI()
         {
             Player player = Main.player[projectile.owner];
-            if (ModSabres.AINormalSlash(projectile, SlashLogic))
+            if (WeaponSabres.AINormalSlash(projectile, SlashLogic))
             {
                 FrameCheck += 1f;
             }
@@ -292,13 +292,15 @@ namespace SummonHeart.Items.Weapons.Sabres
                 // Charged attack
                 projectile.height = 228;
                 projectile.width = 140;
-                ModSabres.AISetChargeSlashVariables(player, chargeSlashDirection);
-                ModSabres.NormalSlash(projectile, player);
+                WeaponSabres.AISetChargeSlashVariables(player, chargeSlashDirection);
+                WeaponSabres.NormalSlash(projectile, player);
 
                 // Play charged sound
                 if (sndOnce)
                 {
                     Main.PlaySound(SoundID.Item71, projectile.Center); sndOnce = false;
+                    SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
+                    modPlayer.chargeAttack = false;
                 }
 
                 float pow = (specialProjFrames - SlashLogic) / 16f;
@@ -319,9 +321,9 @@ namespace SummonHeart.Items.Weapons.Sabres
         public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
         {
             Player player = Main.player[projectile.owner];
-            int weaponItemID = mod.ItemType("Hayauchi");
+            int weaponItemID = mod.ItemType("DemonSword");
             Color lighting = Lighting.GetColor((int)(player.MountedCenter.X / 16), (int)(player.MountedCenter.Y / 16));
-            return ModSabres.PreDrawSlashAndWeapon(spriteBatch, projectile, weaponItemID, lighting,
+            return WeaponSabres.PreDrawSlashAndWeapon(spriteBatch, projectile, weaponItemID, lighting,
                 SlashLogic == 0f ? specialSlash : null,
                 SlashLogic == 0f ? new Color(1f, 1f, 1f, 0.1f) : lighting,
                 specialProjFrames,

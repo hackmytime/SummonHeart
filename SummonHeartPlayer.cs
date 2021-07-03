@@ -341,6 +341,19 @@ namespace SummonHeart
 			clone.SummonCrit = SummonCrit;
 			clone.exp = exp;
 			clone.bodyDef = bodyDef;
+			clone.eyeBloodGas = eyeBloodGas;
+			clone.handBloodGas = handBloodGas;
+			clone.bodyBloodGas = bodyBloodGas;
+			clone.footBloodGas = footBloodGas;
+			clone.bloodGasMax = bloodGasMax;
+			clone.swordBlood = swordBlood;
+			clone.shortSwordBlood = shortSwordBlood;
+			clone.swordBloodMax = swordBloodMax;
+			clone.practiceEye = practiceEye;
+			clone.practiceHand = practiceHand;
+			clone.practiceBody = practiceBody;
+			clone.practiceFoot = practiceFoot;
+			clone.soulSplit = soulSplit;
 			clone.boughtbuffList = boughtbuffList;
 		}
 
@@ -378,19 +391,26 @@ namespace SummonHeart
 			SummonHeartPlayer clone = clientPlayer as SummonHeartPlayer;
 			bool send = false;
 
-			for (int i = 0; i < boughtbuffList.Count; i++)
+			if (clone.BBP != BBP || clone.SummonCrit != SummonCrit || clone.exp != exp
+					|| clone.bodyDef != bodyDef
+					|| clone.eyeBloodGas != eyeBloodGas || clone.handBloodGas != handBloodGas
+					|| clone.bodyBloodGas != bodyBloodGas || clone.footBloodGas != footBloodGas
+					|| clone.bloodGasMax != bloodGasMax || clone.swordBlood != swordBlood
+					|| clone.shortSwordBlood != shortSwordBlood || clone.swordBloodMax != swordBloodMax
+					|| clone.practiceEye != practiceEye || clone.practiceHand != practiceHand
+					|| clone.practiceBody != practiceBody || clone.practiceFoot != practiceFoot
+					|| clone.soulSplit != soulSplit)
 			{
-				if (clone.BBP != BBP || clone.SummonCrit != SummonCrit || clone.exp != exp)
-				{
-					send = true;
-					break;
-				}
+				send = true;
+			}
+			for (int i = 0; i < boughtbuffList.Count; i++)
+			{ 
 				if (clone.boughtbuffList[i] != boughtbuffList[i])
 				{
 					send = true;
-					break;
 				}
 			}
+
 			if (send)
 			{
 				var packet = mod.GetPacket();
@@ -622,7 +642,7 @@ namespace SummonHeart
 				return 1f;
 			}
 
-			if(item.modItem != null && item.modItem.Name == "Hayauchi")
+			if(item.modItem != null && item.modItem.Name == "DemonSword")
             {
 				return AttackSpeed / 4 + 0.75f;
 			}

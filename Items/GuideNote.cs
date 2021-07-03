@@ -27,7 +27,7 @@ namespace SummonHeart.Items
                  "\nIt's not the handwriting of the devil: it's good not to sell it. Don't regret it'");
            
             DisplayName.AddTranslation(GameCulture.Chinese, "魔王的信");
-            Tooltip.AddTranslation(GameCulture.Chinese, "'欢迎你，第100万任魔神之子，你是我们最后的希望了。" +
+            Tooltip.AddTranslation(GameCulture.Chinese, "欢迎你，第100万任魔神之子，你是我们最后的希望了。" +
                 "\n我正在躲避女神教的追杀，预知了你的到来，所以抽空写了这封信给与你一些指导" +
                 "\n1、不要相信女神教说的任何一句话，他们的目标就是消灭每一任魔神之子" +
                 "\n2、生命水晶，史莱姆的凝胶，魔神的力量传承被我隐藏在这两件物品之中，请尽快将其融合获得魔神的完整传承！" +
@@ -37,7 +37,7 @@ namespace SummonHeart.Items
                 "\n6、我这个魔王当的还真是失败呢，连自己的部下都保护不了，而且连个像样的礼物都没有。" +
                 "\n7、你可以把这张纸卖了，就当做我送给你的礼物吧。这是魔龙皮做的，仅此一份，挺值钱的哟，不用担心字被别人看到，只有魔族的人能看" +
                 "\n8、呜呜呜，求你了，求你了，已经死太多人了，一定要活下去！一定要好好的活下去！！如果你不喜欢纷争，隐世安稳的活下去也不错" +
-                "\n不是魔王的笔迹：不卖有好处，卖了别后悔，可以合成魔神器'");
+                "\n不是魔王的笔迹：不卖有好处，卖了别后悔。加群:1136043760可窥探天机，获得更多指引");
         }
 
         public override void SetDefaults()

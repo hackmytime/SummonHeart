@@ -90,7 +90,7 @@ namespace SummonHeart.NPCs
 			Player player = Main.player[npc.lastInteraction];
 			SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
 
-			if(player.HeldItem.modItem != null && player.HeldItem.modItem.Name == "Hayauchi")
+			if(player.HeldItem.modItem != null && player.HeldItem.modItem.Name == "DemonSword")
             {
 				if (npc.boss)
 				{

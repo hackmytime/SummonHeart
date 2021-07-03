@@ -10,6 +10,7 @@ using Terraria.ModLoader;
 using Terraria.Localization;
 using System.Linq;
 using Terraria.Utilities;
+using SummonHeart.Utilities;
 
 namespace SummonHeart.Items.Weapons.Sabres
 {
@@ -19,6 +20,7 @@ namespace SummonHeart.Items.Weapons.Sabres
         public const int focusTargets = 30;
         private const float focusRadius = 400f;
         private const float focusRadiusReductionSpeedFactor = 15f;
+        private const int dustId = MyDustId.BlueMagic;//106
 
         public static int DustAmount(Player player) { return player.whoAmI == Main.myPlayer ? 32 : 2; }
 
@@ -38,7 +40,7 @@ namespace SummonHeart.Items.Weapons.Sabres
                 offset.X += (float)(Math.Sin(angle) * radius);
                 offset.Y += (float)(Math.Cos(angle) * radius);
 
-                Dust d = Dust.NewDustPerfect(player.Center + offset, 106, player.velocity, 200, default, 0.3f);
+                Dust d = Dust.NewDustPerfect(player.Center + offset, dustId, player.velocity, 200, default, 0.3f);
                 d.fadeIn = 0.5f;
                 d.noGravity = true;
             }
@@ -52,7 +54,7 @@ namespace SummonHeart.Items.Weapons.Sabres
                 Vector2 last = player.Center;
                 for (int i = 0; i < targets.Count; i++)
                 {
-                    DrawDustToBetweenVectors(last, targets[i].Center, 106, 5, 0.35f);
+                    DrawDustToBetweenVectors(last, targets[i].Center, dustId, 5, 0.35f);
                     last = targets[i].Center;
                 }
 
@@ -82,6 +84,9 @@ namespace SummonHeart.Items.Weapons.Sabres
 
         public static List<NPC> GetTargettableNPCs(Vector2 center, Vector2 targetCentre, float radius, int limit = 15)
         {
+            Player player = Main.player[Main.myPlayer];
+            SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
+
             Dictionary<NPC, float> targets = new Dictionary<NPC, float>();
             foreach (NPC npc in Main.npc)
             {
@@ -92,7 +97,11 @@ namespace SummonHeart.Items.Weapons.Sabres
                     if (distance <= radius)
                     {
                         float distanceToFocus = (targetCentre - npc.Center).Length();
-                        if (Collision.CanHit(center - new Vector2(12, 12), 24, 24, npc.position, npc.width, npc.height))
+                        if(modPlayer.shortSwordBlood >= 5000)
+                        {
+                            targets.Add(npc, distanceToFocus);
+                        }
+                        else if(Collision.CanHit(center - new Vector2(12, 12), 24, 24, npc.position, npc.width, npc.height))
                         {
                             targets.Add(npc, distanceToFocus);
                         }
@@ -149,7 +158,7 @@ namespace SummonHeart.Items.Weapons.Sabres
                 "\n魔神之子的护道传承武器，唯魔神之子可用精血召唤使用" +
                 "\n众生之怨：不受任何伤害暴击攻击范围加成，无法附魔，减少3倍攻速加成" +
                 "\n弑神之力：击杀任意生物+1攻击力，然受觉醒上限限制。" +
-                "\n魔剑觉醒：击杀强者摄其血肉灵魂修复剑身，增加觉醒上限。" +
+                "\n魔剑觉醒：击杀强者摄其血肉灵魂修复剑身，可突破觉醒上限。" +
                 "\n空间法则：自身蕴含魔神所悟空间法则之力，剑出必中！");
         }
         public override void SetDefaults()
@@ -228,7 +237,7 @@ namespace SummonHeart.Items.Weapons.Sabres
         {
             SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
 
-            ModSabres.HoldItemManager(player, item, mod.ProjectileType("RaidenSlash"),
+            WeaponSabres.HoldItemManager(player, item, mod.ProjectileType("RaidenSlash"),
                 Color.Red, 1f, false ? 0f : 1f, customCharge, 8);
 
             if (modPlayer.showRadius)
@@ -273,7 +282,7 @@ namespace SummonHeart.Items.Weapons.Sabres
 
         public override bool UseItemFrame(Player player)
         {
-            ModSabres.UseItemFrame(player, 0.9f, item.isBeingGrabbed);
+            //WeaponSabres.UseItemFrame(player, 0.9f, item.isBeingGrabbed);
             return true;
         }
 
@@ -281,8 +290,8 @@ namespace SummonHeart.Items.Weapons.Sabres
         {
             int height = 94;
             int length = 104;
-            ModSabres.UseItemHitboxCalculate(player, item, ref hitbox, ref noHitbox, 0.9f, height, length);
-            if (ModSabres.SabreIsChargedStriking(player, item))
+            WeaponSabres.UseItemHitboxCalculate(player, item, ref hitbox, ref noHitbox, 0.9f, height, length);
+            if (WeaponSabres.SabreIsChargedStriking(player, item))
             {
                 player.meleeDamage += 2f;
                 noHitbox = player.itemAnimation < player.itemAnimationMax - 10;
@@ -292,7 +301,7 @@ namespace SummonHeart.Items.Weapons.Sabres
         public override void OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit)
         {
             Color colour = new Color(0.4f, 0.8f, 0.1f);
-            ModSabres.OnHitFX(player, target, crit, colour, true);
+            WeaponSabres.OnHitFX(player, target, crit, colour, true);
         }
 
         public override void MeleeEffects(Player player, Rectangle hitbox)
@@ -301,11 +310,11 @@ namespace SummonHeart.Items.Weapons.Sabres
             if (item.isBeingGrabbed) rotation -= MathHelper.PiOver2; // Reverse slash (upward) flip
             if (player.direction < 0) { rotation *= -1f; rotation += MathHelper.Pi; }
             Vector2 direction = new Vector2((float)Math.Cos(rotation), (float)Math.Sin(rotation));
-
-            Dust d = Dust.NewDustDirect(hitbox.Location.ToVector2() - new Vector2(4, 4), hitbox.Width, hitbox.Height, 159);
-            d.color = Color.Green;
+            int dustId = MyDustId.YellowFx;//159
+            Dust d = Dust.NewDustDirect(hitbox.Location.ToVector2() - new Vector2(4, 4), hitbox.Width, hitbox.Height, dustId);
+            d.color = Color.Red;
             d.scale = 0.5f;
-            d.fadeIn = 0.8f;
+            d.fadeIn = 0.5f;
             d.position -= direction * 25f;
             d.velocity = direction * 5f;
         }
@@ -352,7 +361,7 @@ namespace SummonHeart.Items.Weapons.Sabres
         public override void AI()
         {
             Player player = Main.player[projectile.owner];
-            if (ModSabres.AINormalSlash(projectile, SlashLogic))
+            if (WeaponSabres.AINormalSlash(projectile, SlashLogic))
             {
                 FrameCheck += 1f;
                 targets = null;
@@ -360,8 +369,8 @@ namespace SummonHeart.Items.Weapons.Sabres
             else
             {
                 // Charged attack
-                ModSabres.AISetChargeSlashVariables(player, chargeSlashDirection);
-                ModSabres.NormalSlash(projectile, player);
+                WeaponSabres.AISetChargeSlashVariables(player, chargeSlashDirection);
+                WeaponSabres.NormalSlash(projectile, player);
 
                 // Play charged sound & set targets
                 if (sndOnce)
@@ -398,7 +407,7 @@ namespace SummonHeart.Items.Weapons.Sabres
                 else
                 {
                     SlashLogic = 1;
-                    ModSabres.AINormalSlash(projectile, SlashLogic);
+                    WeaponSabres.AINormalSlash(projectile, SlashLogic);
                     FrameCheck += 1f;
                     targets = null;
                 }
@@ -468,7 +477,7 @@ namespace SummonHeart.Items.Weapons.Sabres
                     player.velocity.Y = -player.gravDir * 1.5f;
 
                     int distFactor = (int)(dist.Length() / 4f);
-                    RaidenUtils.DrawDustToBetweenVectors(oldBottom + vecHeight, player.Bottom + vecHeight, 106, distFactor, 2f);
+                    RaidenUtils.DrawDustToBetweenVectors(oldBottom + vecHeight, player.Bottom + vecHeight, 15, distFactor, 2f);
                 }
 
                 int framesToNextKeyframe = Math.Max(0, ((iTarget + 1) * framesPerTarget - 1) - i);
@@ -478,11 +487,11 @@ namespace SummonHeart.Items.Weapons.Sabres
                 {
                     player.Bottom = targetBottom;
 
-                    RaidenUtils.DrawDustToBetweenVectors(oldBottom + vecHeight, player.Bottom + vecHeight, 106, 2, 2f);
+                    RaidenUtils.DrawDustToBetweenVectors(oldBottom + vecHeight, player.Bottom + vecHeight, 15, 2, 2f);
                 }
 
                 // Set slash
-                ModSabres.RecentreSlash(projectile, player);
+                WeaponSabres.RecentreSlash(projectile, player);
 
 
                 // Clientside unstick code, don't bother for others in MP
@@ -542,7 +551,7 @@ namespace SummonHeart.Items.Weapons.Sabres
             Player player = Main.player[projectile.owner];
             int weaponItemID = mod.ItemType("Raiden");
             Color lighting = Lighting.GetColor((int)(player.MountedCenter.X / 16), (int)(player.MountedCenter.Y / 16));
-            return ModSabres.PreDrawSlashAndWeapon(spriteBatch, projectile, weaponItemID, lighting,
+            return WeaponSabres.PreDrawSlashAndWeapon(spriteBatch, projectile, weaponItemID, lighting,
                 null,//SlashLogic == 0f ? specialSlash : null,
                 lighting,
                 specialProjFrames,

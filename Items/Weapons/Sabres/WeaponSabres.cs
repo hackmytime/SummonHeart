@@ -16,7 +16,7 @@ namespace SummonHeart.Items.Weapons.Sabres
     ///item.isbeingrapped用于跟踪上/下斜杠
     ///item.noGrabDelay用于跟踪指控攻击
     /// </summary>
-    public static class ModSabres
+    public static class WeaponSabres
     {
         private static byte internalChargeTicker;
         private static int normalAttackCount = 0;
@@ -55,6 +55,8 @@ namespace SummonHeart.Items.Weapons.Sabres
                             ai1 = 0;
                             modPlayer.chargeAttack = true;
                             modPlayer.showRadius = false;
+                            item.beingGrabbed = true;
+                            charged = true;
                         }
                         if (normalAttackCount == 2)
                         {
