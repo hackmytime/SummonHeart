@@ -2,6 +2,7 @@
 using SummonHeart.NPCs;
 using System;
 using Terraria;
+using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
@@ -45,6 +46,10 @@ namespace SummonHeart.Buffs
                 dmage = 2;
 
             npc.lifeRegen -= dmage;
+            if (Main.netMode == NetmodeID.MultiplayerClient)
+            {
+                SyncNpcData(npc);
+            }
             //Main.NewText($"lifeRegen: {npc.lifeRegen} soulSplitCount: {globalNPC.soulSplitCount}", Color.SkyBlue);
         }
 
@@ -65,7 +70,17 @@ namespace SummonHeart.Buffs
             if (globalNPC.soulSplitCount < modPlayer.SummonCrit)
                 globalNPC.soulSplitCount++;
             //Main.NewText($"{npc.FullName}灵魂撕裂层数：【{globalNPC.soulSplitCount}】层（-{modPlayer.SummonCrit / 50 * globalNPC.soulSplitCount}生命/秒）", Color.SkyBlue);
+          
             return true;
+        }
+
+        public void SyncNpcData(NPC npc)
+        {
+            ModPacket packet = mod.GetPacket();
+            packet.Write((byte)2);
+            packet.Write((byte)npc.whoAmI);
+            packet.Write(npc.lifeRegen);
+            packet.Send();
         }
     }
 }

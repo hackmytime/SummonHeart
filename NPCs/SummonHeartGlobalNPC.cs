@@ -55,7 +55,7 @@ namespace SummonHeart.NPCs
 			}
 		}
 
-		public void SyncPlayerVariables(Player player)
+        public void SyncPlayerVariables(Player player)
 		{			
 			SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
 			ModPacket packet = mod.GetPacket();
@@ -92,44 +92,44 @@ namespace SummonHeart.NPCs
 
 			if(player.HeldItem.modItem != null && player.HeldItem.modItem.Name == "Hayauchi")
             {
-				if(modPlayer.swordBlood < modPlayer.swordBloodMax)
-                {
-					modPlayer.swordBlood++;
-					if (npc.boss)
-                    {
-						int swordMax = npc.lifeMax / 200;
-						if (modPlayer.swordBloodMax < swordMax)
-                        {
-							modPlayer.swordBloodMax = swordMax;
-							string curMax = (modPlayer.swordBloodMax * 1.0f / 100f).ToString("0.00");
-							Main.NewText($"魔剑·弑神吞噬了{npc.FullName}的血肉，突破觉醒上限，当前觉醒上限：{curMax}%", Color.Green);
-						}
-					}
-					if (Main.netMode == 2)
+				if (npc.boss)
+				{
+					int swordMax = npc.lifeMax / 200;
+					if (modPlayer.swordBloodMax < swordMax)
 					{
-						SyncPlayerVariables(player);
+						modPlayer.swordBloodMax = swordMax;
+						string curMax = (modPlayer.swordBloodMax * 1.0f / 100f).ToString("0.00");
+						Main.NewText($"魔剑·弑神吞噬了{npc.FullName}的血肉，突破觉醒上限，当前觉醒上限：{curMax}%", Color.Green);
 					}
 				}
-            }
+				if (modPlayer.swordBlood < modPlayer.swordBloodMax)
+				{
+					modPlayer.swordBlood++;
+				}
+				if (Main.netMode == 2)
+				{
+					SyncPlayerVariables(player);
+				}
+			}
 			if (player.HeldItem.modItem != null && player.HeldItem.modItem.Name == "Raiden")
 			{
+				if (npc.boss)
+				{
+					int swordMax = npc.lifeMax / 200;
+					if (modPlayer.swordBloodMax < swordMax)
+					{
+						modPlayer.swordBloodMax = swordMax;
+						string curMax = (modPlayer.swordBloodMax * 1.0f / 100f).ToString("0.00");
+						Main.NewText($"魔剑·弑神吞噬了{npc.FullName}的血肉，突破觉醒上限，当前觉醒上限：{curMax}%", Color.Green);
+					}
+				}
 				if (modPlayer.shortSwordBlood < modPlayer.swordBloodMax)
 				{
 					modPlayer.shortSwordBlood++;
-					if (npc.boss)
-					{
-						int swordMax = npc.lifeMax / 200;
-						if (modPlayer.swordBloodMax < swordMax)
-						{
-							modPlayer.swordBloodMax = swordMax;
-							string curMax = (modPlayer.swordBloodMax * 1.0f / 100f).ToString("0.00");
-							Main.NewText($"魔剑·弑神吞噬了{npc.FullName}的血肉，突破觉醒上限，当前觉醒上限：{curMax}%", Color.Green);
-						}
-					}
-					if (Main.netMode == 2)
-					{
-						SyncPlayerVariables(player);
-					}
+				}
+				if (Main.netMode == 2)
+				{
+					SyncPlayerVariables(player);
 				}
 			}
 
@@ -172,7 +172,7 @@ namespace SummonHeart.NPCs
 				//处理灵魂
 				//处理难度额外灵魂
 				int hardMulti = SummonHeartWorld.WorldLevel;
-				if (hardMulti > 0)
+				if (hardMulti > 0 && !npc.boss)
                 {
 					addExp *= hardMulti;
                 }

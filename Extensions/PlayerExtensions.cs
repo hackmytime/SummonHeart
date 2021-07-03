@@ -4,7 +4,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SummonHeart.Models;
-using SummonHeart.Utils;
+using SummonHeart.Utilities;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;

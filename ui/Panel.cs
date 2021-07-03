@@ -7,6 +7,7 @@ using SummonHeart.ui.layout;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
 
@@ -289,6 +290,8 @@ namespace SummonHeart.ui
                                         mp.boughtbuffList[currentBuffIndex] = true;
                                         mp.bodyDef += buff.def;
                                         needValidate = true;
+                                        if (Main.netMode == NetmodeID.MultiplayerClient)
+                                            mp.SendClientChanges(mp);
                                     }
                                     else
                                     {

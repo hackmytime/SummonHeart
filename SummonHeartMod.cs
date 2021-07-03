@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using SummonHeart.body;
 using SummonHeart.Extensions;
+using SummonHeart.NPCs;
 using SummonHeart.ui;
 using System;
 using System.Collections.Generic;
@@ -232,6 +233,18 @@ namespace SummonHeart
                     {
 						byte npc = reader.ReadByte();
 						Main.npc[npc].life = reader.ReadInt32();
+					}
+                    break;
+
+				case 2: //update SoulSplit
+                    {
+						/*byte npc = reader.ReadByte();
+						*/
+						if (Main.netMode == NetmodeID.MultiplayerClient)
+						{
+							int npc = reader.ReadByte();
+							Main.npc[npc].lifeRegen = reader.ReadInt32();
+						}
 					}
 					break;
 

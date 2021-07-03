@@ -3,7 +3,7 @@ using SummonHeart.Effects.Animations.Aura;
 using SummonHeart.Extensions;
 using SummonHeart.Models;
 using SummonHeart.ui;
-using SummonHeart.Utils;
+using SummonHeart.Utilities;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -208,6 +208,10 @@ namespace SummonHeart
 			else if (index == 4)
 			{
 				soulSplit = flag;
+			}
+            if (Main.netMode == NetmodeID.MultiplayerClient)
+            {
+				SendClientChanges(this);
 			}
 		}
 

@@ -7,7 +7,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace SummonHeart.Utils
+namespace SummonHeart.Utilities
 {
     public static class AnimationHelper
     {
@@ -47,7 +47,7 @@ namespace SummonHeart.Utils
 
 
         public static DrawData LightningEffectDrawData(PlayerDrawInfo drawInfo, string lightningTexture)
-        { 
+        {
             Player drawPlayer = drawInfo.drawPlayer;
             Mod mod = ModLoader.GetMod("SummonHeart");
             SummonHeartPlayer modPlayer = drawPlayer.GetModPlayer<SummonHeartPlayer>();
