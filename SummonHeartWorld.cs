@@ -58,8 +58,31 @@ namespace SummonHeart
         {
             GoddessMode = tag.GetBool("GoddessMode");
             WorldLevel = tag.GetInt("WorldLevel");
-            WorldBloodGasMax = tag.GetInt("WorldBloodGasMax");
-            PlayerBloodGasMax = tag.GetInt("PlayerBloodGasMax");
+            if(WorldLevel <= 1)
+            {
+                WorldBloodGasMax = 100000;
+                PlayerBloodGasMax = 10000;
+            }
+            else if(WorldLevel == 2)
+            {
+                WorldBloodGasMax = 150000;
+                PlayerBloodGasMax = 15000;
+            }
+            else if (WorldLevel == 3)
+            {
+                WorldBloodGasMax = 180000;
+                PlayerBloodGasMax = 18000;
+            }
+            else if (WorldLevel == 4)
+            {
+                WorldBloodGasMax = 200000;
+                PlayerBloodGasMax = 20000;
+            }
+            else if (WorldLevel == 5)
+            {
+                WorldBloodGasMax = 250000;
+                PlayerBloodGasMax = 30000;
+            }
         }
     }
 }

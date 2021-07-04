@@ -252,7 +252,6 @@ namespace SummonHeart
 					Logger.WarnFormat("MyMod: Unknown Message type: {0}", msgType);
 					break;
 			}
-			
 		}
 
 

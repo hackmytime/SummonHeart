@@ -20,7 +20,7 @@ namespace SummonHeart.body
             modBuffValues.Add(buff3);
             BuffValue buff4 = new BuffValue(ItemID.LifeCrystal, 0, "魔神之腿：风驰电掣，雷厉风行。天涯海角，一步跨之! ");
             modBuffValues.Add(buff4);
-            BuffValue buff5 = new BuffValue(ItemID.LifeCrystal, 0, "灵魂撕裂：魔神级被动技能! 所有攻击附加灵魂撕裂效果。");
+            BuffValue buff5 = new BuffValue(ItemID.LifeCrystal, 0, "灵魂撕裂：灵魂法则，所有攻击附加最多噬魂之心等级层数的灵魂撕裂效果。");
             buff5.cost = new CostValue[] {new MoneyCostValue(50000) };
             modBuffValues.Add(buff5);
             return modBuffValues;

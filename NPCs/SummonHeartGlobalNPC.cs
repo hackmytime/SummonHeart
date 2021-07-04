@@ -99,7 +99,12 @@ namespace SummonHeart.NPCs
 					{
 						modPlayer.swordBloodMax = swordMax;
 						string curMax = (modPlayer.swordBloodMax * 1.0f / 100f).ToString("0.00");
-						Main.NewText($"魔剑·弑神吞噬了{npc.FullName}的血肉，突破觉醒上限，当前觉醒上限：{curMax}%", Color.Green);
+						string text = $"{player.name}手持魔剑·弑神吞噬了{npc.FullName}的血肉，突破觉醒上限，当前觉醒上限：{curMax}%";
+						Main.NewText(text, Color.Green);
+						if (Main.netMode == NetmodeID.Server)
+						{
+							NetMessage.BroadcastChatMessage(NetworkText.FromLiteral(text), Color.Green);
+						}
 					}
 				}
 				if (modPlayer.swordBlood < modPlayer.swordBloodMax)
@@ -120,7 +125,12 @@ namespace SummonHeart.NPCs
 					{
 						modPlayer.swordBloodMax = swordMax;
 						string curMax = (modPlayer.swordBloodMax * 1.0f / 100f).ToString("0.00");
-						Main.NewText($"魔剑·弑神吞噬了{npc.FullName}的血肉，突破觉醒上限，当前觉醒上限：{curMax}%", Color.Green);
+						string text = $"{player.name}手持魔剑·神陨吞噬了{npc.FullName}的血肉，突破觉醒上限，当前觉醒上限：{curMax}%";
+						Main.NewText(text, Color.Green);
+						if (Main.netMode == NetmodeID.Server)
+						{
+							NetMessage.BroadcastChatMessage(NetworkText.FromLiteral(text), Color.Green);
+						}
 					}
 				}
 				if (modPlayer.shortSwordBlood < modPlayer.swordBloodMax)
@@ -180,17 +190,24 @@ namespace SummonHeart.NPCs
 
                 if (npc.boss)
                 {
+					string text = "";
 					if(powerLevel == -1)
                     {
-						Main.NewText($"你的战力碾压{npc.FullName}，可惜，其血肉灵魂已于你无用！灵魂之力+{addExp}", Color.Green);
+						text = $"{player.name}的战力碾压{npc.FullName}，可惜，其血肉灵魂已于{player.name}无用！灵魂之力+{addExp}";
 					}
 					if(powerLevel == 0)
                     {
-						Main.NewText($"你吞噬了{npc.FullName}的灵魂，灵魂之力+{addExp}", Color.Green);
+						text = $"{player.name}吞噬了{npc.FullName}的灵魂，灵魂之力+{addExp}";
                     }
 					if (powerLevel > 0)
 					{
-						Main.NewText($"你越级吞噬了{npc.getPowerLevelText()}强者{npc.FullName}的灵魂，获得额外{powerLevel}倍灵魂之力，+{addExp}灵魂之力", Color.Green);
+						text = $"{player.name}越级吞噬了{npc.getPowerLevelText()}强者{npc.FullName}的灵魂，获得额外{powerLevel}倍灵魂之力，+{addExp}灵魂之力";
+					}
+
+					Main.NewText(text, Color.Green);
+					if (Main.netMode == NetmodeID.Server)
+					{
+						NetMessage.BroadcastChatMessage(NetworkText.FromLiteral(text), Color.Green);
 					}
 				}
 
@@ -212,7 +229,12 @@ namespace SummonHeart.NPCs
 					//判断是否超过世界上限
 					if (modPlayer.bloodGasMax > MAXBLOODGAS * 4)
 						modPlayer.bloodGasMax = MAXBLOODGAS * 4;
-					Main.NewText($"你越级斩杀了{npc.getPowerLevelText()}强者{npc.FullName}，于生死之间突破肉身极限，+{addMax}肉身极限", Color.Red);
+                    string text = $"{player.name}越级斩杀了{npc.getPowerLevelText()}强者{npc.FullName}，于生死之间突破肉身极限，+{addMax}肉身极限";
+					Main.NewText(text, Color.Green);
+					if (Main.netMode == NetmodeID.Server)
+					{
+						NetMessage.BroadcastChatMessage(NetworkText.FromLiteral(text), Color.Red);
+					}
 				}
 
 				//修炼开始
@@ -240,13 +262,19 @@ namespace SummonHeart.NPCs
 									modPlayer.eyeBloodGas = MAXBLOODGAS;
 								if (npc.boss)
 								{
+									string text = "";
 									if (powerLevel == 0)
 									{
-										Main.NewText($"你修炼魔神之眼消耗{addExp}灵魂之力吞噬了{npc.FullName}的气血，魔神之眼气血+{addBloodGas}", Color.Green);
+										text = $"{player.name}修炼魔神之眼消耗{addExp}灵魂之力吞噬了{npc.FullName}的气血，魔神之眼气血+{addBloodGas}";
 									}
 									if (powerLevel > 0)
 									{
-										Main.NewText($"你修炼魔神之眼消耗{addExp}灵魂之力越级吞噬了{npc.getPowerLevelText()}强者{npc.FullName}的气血，额外吸收{powerLevel}倍气血，魔神之眼气血+{addBloodGas}", Color.Green);
+										text = $"{player.name}修炼魔神之眼消耗{addExp}灵魂之力越级吞噬了{npc.getPowerLevelText()}强者{npc.FullName}的气血，额外吸收{powerLevel}倍气血，魔神之眼气血+{addBloodGas}";
+									}
+									Main.NewText(text, Color.Green);
+									if (Main.netMode == NetmodeID.Server)
+									{
+										NetMessage.BroadcastChatMessage(NetworkText.FromLiteral(text), Color.Green);
 									}
 								}
 							}
@@ -270,13 +298,19 @@ namespace SummonHeart.NPCs
 									modPlayer.handBloodGas = MAXBLOODGAS;
 								if (npc.boss)
                                 {
+									string text = "";
 									if (powerLevel == 0)
 									{
-										Main.NewText($"你修炼魔神之手消耗{addExp}灵魂之力吞噬了{npc.FullName}的气血，魔神之手气血+{addBloodGas}", Color.Green);
+										text = $"{player.name}修炼魔神之手消耗{addExp}灵魂之力吞噬了{npc.FullName}的气血，魔神之手气血+{addBloodGas}";
 									}
 									if (powerLevel > 0)
 									{
-										Main.NewText($"你修炼魔神之手消耗{addExp}灵魂之力越级吞噬了{npc.getPowerLevelText()}强者{npc.FullName}的气血，额外吸收{powerLevel}倍气血，魔神之手气血+{addBloodGas}", Color.Green);
+										text = $"{player.name}修炼魔神之手消耗{addExp}灵魂之力越级吞噬了{npc.getPowerLevelText()}强者{npc.FullName}的气血，额外吸收{powerLevel}倍气血，魔神之手气血+{addBloodGas}";
+									}
+									Main.NewText(text, Color.Green);
+									if (Main.netMode == NetmodeID.Server)
+									{
+										NetMessage.BroadcastChatMessage(NetworkText.FromLiteral(text), Color.Green);
 									}
 								}
 							}
@@ -300,13 +334,19 @@ namespace SummonHeart.NPCs
 									modPlayer.bodyBloodGas = MAXBLOODGAS;
 								if (npc.boss)
                                 {
+									string text = "";
 									if (powerLevel == 0)
 									{
-										Main.NewText($"你修炼魔神之躯消耗{addExp}灵魂之力吞噬了{npc.FullName}的气血，魔神之躯气血+{addBloodGas}", Color.Green);
+										text = $"{player.name}修炼魔神之躯消耗{addExp}灵魂之力吞噬了{npc.FullName}的气血，魔神之躯气血+{addBloodGas}";
 									}
 									if (powerLevel > 0)
 									{
-										Main.NewText($"你修炼魔神之躯消耗{addExp}灵魂之力越级吞噬了{npc.getPowerLevelText()}强者{npc.FullName}的气血，额外吸收{powerLevel}倍气血，魔神之躯气血+{addBloodGas}", Color.Green);
+										text = $"{player.name}修炼魔神之躯消耗{addExp}灵魂之力越级吞噬了{npc.getPowerLevelText()}强者{npc.FullName}的气血，额外吸收{powerLevel}倍气血，魔神之躯气血+{addBloodGas}";
+									}
+									Main.NewText(text, Color.Green);
+									if (Main.netMode == NetmodeID.Server)
+									{
+										NetMessage.BroadcastChatMessage(NetworkText.FromLiteral(text), Color.Green);
 									}
 								}
 							}
@@ -330,13 +370,19 @@ namespace SummonHeart.NPCs
 									modPlayer.footBloodGas = MAXBLOODGAS;
 								if (npc.boss)
 								{
+									string text = "";
 									if (powerLevel == 0)
 									{
-										Main.NewText($"你修炼魔神之腿消耗{addExp}灵魂之力吞噬了{npc.FullName}的气血，魔神之腿气血+{addBloodGas}", Color.Green);
+										text = $"{player.name}修炼魔神之腿消耗{addExp}灵魂之力吞噬了{npc.FullName}的气血，魔神之腿气血+{addBloodGas}";
 									}
 									if (powerLevel > 0)
 									{
-										Main.NewText($"你修炼魔神之腿消耗{addExp}灵魂之力越级吞噬了{npc.getPowerLevelText()}强者{npc.FullName}的气血，额外吸收{powerLevel}倍气血，魔神之腿气血+{addBloodGas}", Color.Green);
+										text = $"{player.name}修炼魔神之腿消耗{addExp}灵魂之力越级吞噬了{npc.getPowerLevelText()}强者{npc.FullName}的气血，额外吸收{powerLevel}倍气血，魔神之腿气血+{addBloodGas}";
+									}
+									Main.NewText(text, Color.Green);
+									if (Main.netMode == NetmodeID.Server)
+									{
+										NetMessage.BroadcastChatMessage(NetworkText.FromLiteral(text), Color.Green);
 									}
 								}
 							}
@@ -410,8 +456,35 @@ namespace SummonHeart.NPCs
 				if (npc.life <= 0)
 				{
 					npc.life = 1;
-					//npc.StrikeNPC(9999, 0f, 0, false, false, false);
+					/*npc.StrikeNPC(9999, 0f, 0, false, false, false);
+					if (Main.netMode == 2)
+					{
+						NetMessage.SendData(28, -1, -1, null, npc.whoAmI, 9999f);
+					}*/
 				}
+				if (Main.netMode == 1)
+				{
+					SyncNpcVariables(npc);
+				}
+			}
+		}
+
+		public override void UpdateLifeRegen(NPC npc, ref int damage)
+		{
+			if (npc.HasBuff(mod.BuffType("SoulSplit")))
+            {
+				Player player = Main.player[Main.myPlayer];
+				SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
+
+				int lifeDmage = 2 * modPlayer.SummonCrit / 50 * soulSplitCount;
+				if (lifeDmage < 2)
+					lifeDmage = 2;
+				npc.lifeRegen -= lifeDmage;
+				damage = soulSplitCount;
+				/*if (npc.life == 1 && Main.netMode == 1 || Main.netMode == 2)
+				{
+					NetMessage.SendData(28, -1, -1, null, npc.whoAmI, 9999f);
+				}*/
 				if (Main.netMode == 1)
 				{
 					SyncNpcVariables(npc);
@@ -429,7 +502,7 @@ namespace SummonHeart.NPCs
 				{
 					soulSplitCount = 1;
 				}
-				npc.AddBuff(mod.BuffType("SoulSplit"), 2);
+				npc.AddBuff(mod.BuffType("SoulSplit"), 200);
 			}
 
 			this.CauseDirectDamage(npc, damage, crit);
@@ -447,7 +520,7 @@ namespace SummonHeart.NPCs
 				{
 					soulSplitCount = 1;
 				}
-				npc.AddBuff(mod.BuffType("SoulSplit"), 2);
+				npc.AddBuff(mod.BuffType("SoulSplit"), 200);
 			}
             if (modPlayer.boughtbuffList[0])
             {

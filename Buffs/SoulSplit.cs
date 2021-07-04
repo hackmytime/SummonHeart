@@ -45,11 +45,11 @@ namespace SummonHeart.Buffs
             if (dmage < 2)
                 dmage = 2;
 
-            npc.lifeRegen -= dmage;
-            if (Main.netMode == NetmodeID.MultiplayerClient)
+            /*npc.lifeRegen -= dmage;
+            if (Main.netMode == NetmodeID.Server)
             {
                 SyncNpcData(npc);
-            }
+            }*/
             //Main.NewText($"lifeRegen: {npc.lifeRegen} soulSplitCount: {globalNPC.soulSplitCount}", Color.SkyBlue);
         }
 
