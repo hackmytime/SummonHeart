@@ -23,6 +23,7 @@ namespace SummonHeart.NPCs
 
 		public override void SetDefaults(NPC npc)
 		{
+            bool overLoadConfig = SummonHeartConfig.Instance.OverLoadConfig;
 			if(SummonHeartWorld.WorldLevel <= 1)
             {
 				npc.lifeMax *= 5;
@@ -31,25 +32,45 @@ namespace SummonHeart.NPCs
             }
 			else if(SummonHeartWorld.WorldLevel == 2)
 			{
-				npc.lifeMax *= 10;
+				if(overLoadConfig)
+					npc.lifeMax *= 10;
+				else if (npc.lifeMax * 10 >= 2100000000)
+					npc.lifeMax = 2100000000;
+				else
+					npc.lifeMax *= 10;
 				npc.defense *= 10;
 				npc.damage *= 5;
 			}
 			else if (SummonHeartWorld.WorldLevel == 3)
 			{
-				npc.lifeMax *= 15;
+				if (overLoadConfig)
+					npc.lifeMax *= 15;
+				else if (npc.lifeMax * 15 >= 2100000000)
+					npc.lifeMax = 2100000000;
+				else
+					npc.lifeMax *= 15;
 				npc.defense *= 15;
 				npc.damage *= 8;
 			}
 			else if (SummonHeartWorld.WorldLevel == 4)
 			{
-				npc.lifeMax *= 20;
+				if (overLoadConfig)
+					npc.lifeMax *= 20;
+				else if (npc.lifeMax * 20 >= 2100000000)
+					npc.lifeMax = 2100000000;
+				else
+					npc.lifeMax *= 20;
 				npc.defense *= 20;
 				npc.damage *= 10;
 			}
 			else if (SummonHeartWorld.WorldLevel == 5)
 			{
-				npc.lifeMax *= 30;
+				if (overLoadConfig)
+					npc.lifeMax *= 30;
+				else if (npc.lifeMax * 30 >= 2100000000)
+					npc.lifeMax = 2100000000;
+				else
+					npc.lifeMax *= 30;
 				npc.defense *= 30;
 				npc.damage *= 30;
 			}
@@ -176,6 +197,8 @@ namespace SummonHeart.NPCs
 				//越阶战斗奖励
 				if (powerLevel > 0)
 				{
+					if (powerLevel >= 99)
+						powerLevel = 99;
 					addExp *= (powerLevel + 1);
 				}
 
@@ -187,8 +210,10 @@ namespace SummonHeart.NPCs
 					addExp *= hardMulti;
                 }
 				modPlayer.BBP += addExp;
+				if (modPlayer.BBP > 5000000)
+					modPlayer.BBP = 5000000;
 
-                if (npc.boss)
+				if (npc.boss)
                 {
 					string text = "";
 					if(powerLevel == -1)
@@ -400,14 +425,14 @@ namespace SummonHeart.NPCs
 
 		private void dealLevel(SummonHeartPlayer modPlayer)
         {
-			int lvExp = 1;
+			int lvExp = 10;
 			int exp = lvExp;
 			int level = 0;
             while (exp <= modPlayer.BBP)
             {
 				exp += lvExp;
 				level++;
-				lvExp += 1;
+				lvExp += 10;
             }
 			int needExp = exp - modPlayer.BBP;
 			modPlayer.exp = needExp;
