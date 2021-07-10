@@ -17,9 +17,8 @@ namespace SummonHeart.Items.Level
                 "\n所有敌人15倍血防" +
                 "\n所有敌人8倍攻击" +
                 "\n灵魂气血获取倍率：3倍" +
-                "\n世界肉身总气血上限：72W" +
-                "\n单部位炼体气血上限：18W" +
-                "\n初始肉身极限：18000" +
+                "\n世界肉身总气血上限：60W" +
+                "\n初始肉身极限：36000" +
                 "\n评价：硬核高手，你有点强");
         }
 
@@ -44,8 +43,8 @@ namespace SummonHeart.Items.Level
                     Main.NewText("当前世界难度为：弑神屠魔", 255, 255, 255);
                 }
                 SummonHeartWorld.WorldLevel = 3;
-                SummonHeartWorld.WorldBloodGasMax = 180000;
-                SummonHeartWorld.PlayerBloodGasMax = 18000;
+                SummonHeartWorld.WorldBloodGasMax = 600000;
+                SummonHeartWorld.PlayerBloodGasMax = 36000;
                 return true;
             }
             else

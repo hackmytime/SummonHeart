@@ -28,13 +28,8 @@ namespace SummonHeart.Items
             float handMultiplier = SummonHeartConfig.Instance.handMultiplier;
             if (item.melee && modPlayer.boughtbuffList[1])
             {
-                float curScale = (modPlayer.handBloodGas / 500 * 0.01f + 1f) * handMultiplier;
-               
-                //魔剑距离减半
-                if (item.modItem != null && item.modItem.Name == "DemonSword")
-                {
-                    curScale = curScale * 0.5f;
-                }
+                float curScale = (modPlayer.handBloodGas / 500 * 0.01f + 0.5f) * handMultiplier;
+                curScale = 1f;
                 //刺剑距离减半
                 if (item.modItem != null && item.modItem.Name == "Raiden")
                 {
@@ -49,30 +44,44 @@ namespace SummonHeart.Items
             SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
             if (modPlayer.SummonHeart)
             {
-                if (item.melee || item.ranged || item.magic || item.thrown)
+                //if (item.melee || item.ranged || item.magic || item.thrown)
+                if (item.melee && modPlayer.PlayerClass == 1)
                 {
-                    //第1个额外弹幕-5度角
-                    if (modPlayer.SummonCrit >= 0)
+                    //第1个额外弹幕-3度角
+                    int bloodGas = modPlayer.handBloodGas;
+                    if (bloodGas >= 0)
                     {
-                        Vector2 velocity = new Vector2(speedX, speedY).RotatedBy(MathHelper.Pi / 180 * 5 * (-1));
+                        Vector2 velocity = new Vector2(speedX, speedY).RotatedBy(MathHelper.Pi / 180 * 3 * (-1));
                         Projectile.NewProjectile(position.X, position.Y, velocity.X, velocity.Y, type, damage, knockBack, player.whoAmI);
                     }
-                    //第2个额外弹幕5度角
-                    if (modPlayer.SummonCrit >= 150)
+                    //第2个额外弹幕3度角
+                    if (bloodGas >= 50000)
                     {
-                        Vector2 velocity = new Vector2(speedX, speedY).RotatedBy(MathHelper.Pi / 180 * 5 * 1);
+                        Vector2 velocity = new Vector2(speedX, speedY).RotatedBy(MathHelper.Pi / 180 * 3 * 1);
                         Projectile.NewProjectile(position.X, position.Y, velocity.X, velocity.Y, type, damage, knockBack, player.whoAmI);
                     }
-                    //第3个额外弹幕-10度角
-                    if (modPlayer.SummonCrit >= 300)
+                    //第3个额外弹幕-6度角
+                    if (bloodGas >= 100000)
                     {
-                        Vector2 velocity = new Vector2(speedX, speedY).RotatedBy(MathHelper.Pi / 180 * 5 * (-2));
+                        Vector2 velocity = new Vector2(speedX, speedY).RotatedBy(MathHelper.Pi / 180 * 3 * (-2));
                         Projectile.NewProjectile(position.X, position.Y, velocity.X, velocity.Y, type, damage, knockBack, player.whoAmI);
                     }
-                    //第4个额外弹幕10度角
-                    if (modPlayer.SummonCrit >= 450)
+                    //第4个额外弹幕6度角
+                    if (bloodGas >= 15000)
                     {
-                        Vector2 velocity = new Vector2(speedX, speedY).RotatedBy(MathHelper.Pi / 180 * 5 * 2);
+                        Vector2 velocity = new Vector2(speedX, speedY).RotatedBy(MathHelper.Pi / 180 * 3 * 2);
+                        Projectile.NewProjectile(position.X, position.Y, velocity.X, velocity.Y, type, damage, knockBack, player.whoAmI);
+                    }
+                    //第5个额外弹幕-9度角
+                    if (bloodGas >= 200000)
+                    {
+                        Vector2 velocity = new Vector2(speedX, speedY).RotatedBy(MathHelper.Pi / 180 * 3 * (-3));
+                        Projectile.NewProjectile(position.X, position.Y, velocity.X, velocity.Y, type, damage, knockBack, player.whoAmI);
+                    }
+                    //第6个额外弹幕9度角
+                    if (bloodGas >= 200000)
+                    {
+                        Vector2 velocity = new Vector2(speedX, speedY).RotatedBy(MathHelper.Pi / 180 * 3 * 3);
                         Projectile.NewProjectile(position.X, position.Y, velocity.X, velocity.Y, type, damage, knockBack, player.whoAmI);
                     }
                 }

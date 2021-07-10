@@ -19,6 +19,7 @@ namespace SummonHeart
     public class SummonHeartPlayer : ModPlayer
 	{	
 		public bool SummonHeart = false;
+		public int PlayerClass = 0;
 		public bool Berserked = false;
 		public float AttackSpeed;
 		public float tungstenPrevSizeSave;
@@ -74,51 +75,70 @@ namespace SummonHeart
         public override void PostUpdateMiscEffects()
         {
 			player.statDefense += (int)bodyDef;
-			//player.thorns = 1f;
-			if(bodyDef > 96)
-				player.noKnockback = true;
+			if(PlayerClass == 1)
+            {
+				//战士
+				EffectMelee();
+            }else if(PlayerClass == 2)
+			{
+				//刺客
+				EffectKill();
+			}
+		}
 
-            //魔神之眼
-            /*player.magicCrit += eyeBloodGas / 1000;
-			player.meleeCrit += eyeBloodGas / 1000;
+        private void EffectKill()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void EffectMelee()
+        {
+			//魔神之眼
+			if (boughtbuffList[0])
+            {
+				player.meleeCrit += eyeBloodGas / 2222 + 10;
+			}
+			/*player.magicCrit += eyeBloodGas / 1000;
 			player.rangedCrit += eyeBloodGas / 1000;
 			player.thrownCrit += eyeBloodGas / 1000;*/
 
-            //魔神之手
-            if (boughtbuffList[1])
-            {
-				player.allDamage += handBloodGas / 200 * 0.01f;
-				AttackSpeed += (handBloodGas / 1000 + 30) * 0.01f;
-            }
+			//魔神之手
+			if (boughtbuffList[1])
+			{
+				player.meleeDamage += handBloodGas / 200 * 0.01f;
+				AttackSpeed += (handBloodGas / 1111 + 20) * 0.01f;
+			}
 
 			//魔神之躯
-			player.statLifeMax2 += bodyBloodGas / 100;
-            if (boughtbuffList[2])
-            {
-				int heal = (int)(player.statLifeMax2 * (0.02 + bodyBloodGas / 10000 * 0.01f)) / 4;
-				if(player.statLife < player.statLifeMax2 && bodyHealCD == 1)
+			if (boughtbuffList[2])
+			{
+				player.noKnockback = true;
+				player.statLifeMax2 += bodyBloodGas / 200;
+				int heal = (int)(player.statLifeMax2 * (0.01 + bodyBloodGas / 20000 * 0.01f)) / 4;
+				if (player.statLife < player.statLifeMax2 && bodyHealCD == 1)
 				{
 					if (heal < 1)
 						heal = 1;
 					player.statLife += heal;
 					player.HealEffect(heal);
 				}
-            }
+			}
 
 			//魔神之腿
 			if (boughtbuffList[3])
-            {
+			{
 				player.noFallDmg = true;
-				player.wingTimeMax += (footBloodGas / 1000 + 10) * 60;
-				player.jumpSpeedBoost += (footBloodGas / 500 + 100) * 0.01f;
-				if(footBloodGas >= 150000)
+				player.moveSpeed += (footBloodGas / 10000 + 10) * 0.01f;
+				player.wingTimeMax += (footBloodGas / 2222 + 10) * 60;
+				player.jumpSpeedBoost += (footBloodGas / 1333 + 50) * 0.01f;
+				/*if (footBloodGas >= 150000)
 				{
 					player.wingTime = footBloodGas / 1000 * 60;
-				}
-            }
+				}*/
+			}
 		}
 
-		public struct SoundData
+        public struct SoundData
 		{
 			public int Type;
 			public int x;
@@ -294,6 +314,10 @@ namespace SummonHeart
 			item.stack = 1;
 			items.Add(item);
 			item = new Item();
+			item.SetDefaults(ModLoader.GetMod("SummonHeart").ItemType("DemonScroll"));
+			item.stack = 1;
+			items.Add(item);
+			item = new Item();
 			item.SetDefaults(ItemID.LifeCrystal);
 			item.stack = 1;
 			items.Add(item);
@@ -340,6 +364,7 @@ namespace SummonHeart
 			clone.BBP = BBP;
 			clone.SummonCrit = SummonCrit;
 			clone.exp = exp;
+			clone.PlayerClass = PlayerClass;
 			clone.bodyDef = bodyDef;
 			clone.eyeBloodGas = eyeBloodGas;
 			clone.handBloodGas = handBloodGas;
@@ -354,7 +379,7 @@ namespace SummonHeart
 			clone.practiceBody = practiceBody;
 			clone.practiceFoot = practiceFoot;
 			clone.soulSplit = soulSplit;
-			clone.boughtbuffList = boughtbuffList;
+			//clone.boughtbuffList = boughtbuffList;
 		}
 
 		public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
@@ -365,6 +390,7 @@ namespace SummonHeart
 			packet.Write(BBP);
 			packet.Write(SummonCrit);
 			packet.Write(exp);
+			packet.Write(PlayerClass);
 			packet.Write(bodyDef);
 			packet.Write(eyeBloodGas);
 			packet.Write(handBloodGas);
@@ -379,10 +405,10 @@ namespace SummonHeart
 			packet.Write(practiceBody);
 			packet.Write(practiceFoot);
 			packet.Write(soulSplit);
-			for (int i = 0; i < boughtbuffList.Count; i++)
+			/*for (int i = 0; i < boughtbuffList.Count; i++)
 			{
 				packet.Write(boughtbuffList[i]);
-			}
+			}*/
 			packet.Send(toWho, fromWho);
 		}
 
@@ -392,7 +418,7 @@ namespace SummonHeart
 			bool send = false;
 
 			if (clone.BBP != BBP || clone.SummonCrit != SummonCrit || clone.exp != exp
-					|| clone.bodyDef != bodyDef
+					|| clone.bodyDef != bodyDef || clone.PlayerClass != PlayerClass
 					|| clone.eyeBloodGas != eyeBloodGas || clone.handBloodGas != handBloodGas
 					|| clone.bodyBloodGas != bodyBloodGas || clone.footBloodGas != footBloodGas
 					|| clone.bloodGasMax != bloodGasMax || clone.swordBlood != swordBlood
@@ -403,13 +429,13 @@ namespace SummonHeart
 			{
 				send = true;
 			}
-			for (int i = 0; i < boughtbuffList.Count; i++)
+			/*for (int i = 0; i < boughtbuffList.Count; i++)
 			{ 
 				if (clone.boughtbuffList[i] != boughtbuffList[i])
 				{
 					send = true;
 				}
-			}
+			}*/
 
 			if (send)
 			{
@@ -419,6 +445,7 @@ namespace SummonHeart
 				packet.Write(BBP);
 				packet.Write(SummonCrit);
 				packet.Write(exp);
+				packet.Write(PlayerClass);
 				packet.Write(bodyDef);
 				packet.Write(eyeBloodGas);
 				packet.Write(handBloodGas);
@@ -433,10 +460,10 @@ namespace SummonHeart
 				packet.Write(practiceBody);
 				packet.Write(practiceFoot);
 				packet.Write(soulSplit);
-				for (int i = 0; i < boughtbuffList.Count; i++)
+				/*for (int i = 0; i < boughtbuffList.Count; i++)
 				{
 					packet.Write(boughtbuffList[i]);
-				}
+				}*/
 				packet.Send();
 			}
 		}
@@ -447,6 +474,7 @@ namespace SummonHeart
 			tagComp.Add("BBP", BBP);
 			tagComp.Add("SummonCrit", SummonCrit);
 			tagComp.Add("exp", exp);
+			tagComp.Add("PlayerClass", PlayerClass);
 			tagComp.Add("bodyDef", bodyDef);
 			tagComp.Add("eyeBloodGas", eyeBloodGas);
 			tagComp.Add("handBloodGas", handBloodGas);
@@ -470,6 +498,7 @@ namespace SummonHeart
 			BBP = tag.GetInt("BBP");
 			SummonCrit = tag.GetInt("SummonCrit");
 			exp = tag.GetInt("exp");
+			PlayerClass = tag.GetInt("PlayerClass");
 			bodyDef = tag.GetFloat("bodyDef");
 			eyeBloodGas = tag.GetInt("eyeBloodGas");
 			handBloodGas = tag.GetInt("handBloodGas");
@@ -506,12 +535,22 @@ namespace SummonHeart
 
 			if (Main.keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape))
 			{
-				Panel.visible = false;
+				PanelMelee.visible = false;
 			}
 
 			if (SummonHeartMod.ShowUI.JustPressed)
 			{
-				Panel.visible = !Panel.visible;
+				if(PlayerClass == 0)
+                {
+					Main.NewText($"你暂未获得任何传承，请先选择道", Color.Red);
+				}
+				else if(PlayerClass == 1)
+                {
+					PanelMelee.visible = !PanelMelee.visible;
+                }else if(PlayerClass == 2)
+                {
+					PanelKill.visible = !PanelKill.visible;
+				}
 			}
 		}
 
@@ -521,7 +560,7 @@ namespace SummonHeart
 				return;
 			
 			SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
-			if (modPlayer.SummonHeart)
+			/*if (modPlayer.SummonHeart)
 			{
 				int heal = damage * modPlayer.SummonCrit / 5000;
 
@@ -539,7 +578,7 @@ namespace SummonHeart
 					player.statLife += heal;
 					player.HealEffect(heal);
                 }
-			}
+			}*/
 		}
 
         public override void OnHitNPCWithProj(Projectile proj, NPC target, int damage, float knockback, bool crit)
@@ -547,7 +586,7 @@ namespace SummonHeart
 			if (target.type == NPCID.TargetDummy || target.friendly)
 				return;
 			SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
-			if (modPlayer.SummonHeart)
+			/*if (modPlayer.SummonHeart)
 			{
 				int heal = damage * modPlayer.SummonCrit / 5000;
 
@@ -565,7 +604,7 @@ namespace SummonHeart
 					player.statLife += heal;
 					player.HealEffect(heal);
 				}
-			}
+			}*/
         }
 
         public override bool PreItemCheck()
@@ -581,10 +620,11 @@ namespace SummonHeart
 		//允许您修改 NPC 对该玩家造成的伤害等
 		public override void ModifyHitByNPC(NPC npc, ref int damage, ref bool crit)
         {
-			if (bodyDef >= 1)
+			if (PlayerClass == 1 && boughtbuffList[2])
 			{
-				//npc.StrikeNPC((int)(damage + bodyDef), npc.knockBackResist, -npc.direction);
-				//Projectile.NewProjectile(npc.Center.X, npc.Center.Y, 0f, 0f, mod.ProjectileType("Returner2"), (int)bodyDef + npc.defense, 0, player.whoAmI);
+				damage = (int)(damage * (1 - bodyBloodGas / 5000 * 0.01f));
+				if (damage < 1)
+					damage = 1;
 			}
 		}
 
@@ -644,11 +684,11 @@ namespace SummonHeart
 
 			if(item.modItem != null && item.modItem.Name == "DemonSword")
             {
-				return AttackSpeed / 4 + 0.75f;
+				return AttackSpeed / 2 + 0.5f;
 			}
 			if(item.modItem != null && item.modItem.Name == "Raiden")
             {
-				return AttackSpeed / 3 + 0.67f;
+				return AttackSpeed / 2 + 0.5f;
 			}
 
 			return AttackSpeed;
@@ -661,18 +701,18 @@ namespace SummonHeart
 
         public override void ModifyHitNPC(Item item, NPC target, ref int damage, ref float knockback, ref bool crit)
         {
-			if (crit)
+			if (crit && PlayerClass == 1 && boughtbuffList[0])
 			{
-				damage *= (int)(eyeBloodGas / 1000 * 0.01 + 1);
+				damage *= (int)(eyeBloodGas / 2000 * 0.01 + 1);
 			}
 			this.CauseDirectDamage(target, damage, crit);
 		}
 
         public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
         {
-			if (crit)
+			if (crit && PlayerClass == 1 && boughtbuffList[0])
 			{
-				damage *= (int)(eyeBloodGas / 1000 * 0.01 + 1);
+				damage *= (int)(eyeBloodGas / 2000 * 0.01 + 1);
 			}
 			this.CauseDirectDamage(target, damage, crit);
 		}

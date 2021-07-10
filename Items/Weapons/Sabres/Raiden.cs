@@ -156,7 +156,7 @@ namespace SummonHeart.Items.Weapons.Sabres
             Tooltip.AddTranslation(GameCulture.Chinese, "" +
                 "炼体八境·武道巅峰·远古魔神临死之前碎裂不朽右臂所铸造" +
                 "\n魔神之子的护道传承武器，唯魔神之子可用精血召唤使用" +
-                "\n众生之怨：不受任何伤害暴击攻击范围加成，无法附魔，减少3倍攻速加成" +
+                "\n众生之怨：不受任何伤害暴击攻击范围加成，无法附魔，减少2倍攻速加成" +
                 "\n弑神之力：击杀任意生物+1攻击力，然受觉醒上限限制。" +
                 "\n魔剑觉醒：击杀强者摄其血肉灵魂修复剑身，可突破觉醒上限。" +
                 "\n空间法则：自身蕴含魔神所悟空间法则之力，剑出必中！50%觉醒刺杀可穿墙");
@@ -194,6 +194,7 @@ namespace SummonHeart.Items.Weapons.Sabres
         {
             ModRecipe recipe = new ModRecipe(mod);
             recipe.AddIngredient(mod.GetItem("GuideNote"), 1);
+            recipe.AddIngredient(mod.GetItem("KillScroll"), 1);
             recipe.SetResult(this);
             recipe.AddRecipe();
         }

@@ -17,9 +17,8 @@ namespace SummonHeart.Items.Level
                 "\n所有敌人10倍血防" +
                 "\n所有敌人5倍攻击" +
                 "\n灵魂气血获取倍率：2倍" +
-                "\n世界肉身总气血上限：60W" +
-                "\n单部位炼体气血上限：15W" +
-                "\n初始肉身极限：15000" +
+                "\n世界肉身总气血上限：50W" +
+                "\n初始肉身极限：30000" +
                 "\n评价：硬核入门，你不正常");
         }
 
@@ -44,8 +43,8 @@ namespace SummonHeart.Items.Level
                     Main.NewText("当前世界难度为：魔神之路", 255, 255, 255);
                 }
                 SummonHeartWorld.WorldLevel = 2;
-                SummonHeartWorld.WorldBloodGasMax = 150000;
-                SummonHeartWorld.PlayerBloodGasMax = 15000;
+                SummonHeartWorld.WorldBloodGasMax = 500000;
+                SummonHeartWorld.PlayerBloodGasMax = 30000;
                 return true;
             }
             else

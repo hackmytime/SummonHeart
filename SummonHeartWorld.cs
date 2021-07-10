@@ -60,28 +60,28 @@ namespace SummonHeart
             WorldLevel = tag.GetInt("WorldLevel");
             if(WorldLevel <= 1)
             {
-                WorldBloodGasMax = 100000;
-                PlayerBloodGasMax = 10000;
+                WorldBloodGasMax = 400000;
+                PlayerBloodGasMax = 20000;
             }
             else if(WorldLevel == 2)
             {
-                WorldBloodGasMax = 150000;
-                PlayerBloodGasMax = 15000;
+                WorldBloodGasMax = 500000;
+                PlayerBloodGasMax = 30000;
             }
             else if (WorldLevel == 3)
             {
-                WorldBloodGasMax = 180000;
-                PlayerBloodGasMax = 18000;
+                WorldBloodGasMax = 600000;
+                PlayerBloodGasMax = 36000;
             }
             else if (WorldLevel == 4)
             {
-                WorldBloodGasMax = 200000;
-                PlayerBloodGasMax = 20000;
+                WorldBloodGasMax = 700000;
+                PlayerBloodGasMax = 40000;
             }
             else if (WorldLevel == 5)
             {
-                WorldBloodGasMax = 250000;
-                PlayerBloodGasMax = 30000;
+                WorldBloodGasMax = 800000;
+                PlayerBloodGasMax = 60000;
             }
         }
     }

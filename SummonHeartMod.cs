@@ -28,7 +28,8 @@ namespace SummonHeart
 		internal static ModHotKey AutoAttackKey;
 		internal static ModHotKey ShowUI;
 
-		internal Panel somethingUI;
+		internal PanelMelee PanelMeleeUI;
+		internal PanelKill PanelKillUI;
 		public UserInterface somethingInterface;
 		public UserInterface tooltipInterface;
 		public SummonHeartMod Instance;
@@ -43,18 +44,39 @@ namespace SummonHeart
 		public override void Load()
         {
 			AutoAttackKey = RegisterHotKey("自动使用武器（再次点击停止使用）", "G");
+			ShowUI = RegisterHotKey("魔神炼体法", Keys.L.ToString());
 			// this makes sure that the UI doesn't get opened on the server
 			// the server can't see UI, can it? it's just a command prompt
 			if (!Main.dedServ)
 			{
-				somethingUI = new Panel();
-				somethingUI.Initialize();
-				somethingInterface = new UserInterface();
-				somethingInterface.SetState(somethingUI);
+				try
+				{
+					Player player = Main.player[Main.myPlayer];
+					SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
+					if (modPlayer.PlayerClass == 1)
+					{
+						PanelMeleeUI = new PanelMelee();
+						PanelMeleeUI.Initialize();
+						somethingInterface = new UserInterface();
+						somethingInterface.SetState(PanelMeleeUI);
+					}
+					else if (modPlayer.PlayerClass == 2)
+					{
+						PanelKillUI = new PanelKill();
+						PanelKillUI.Initialize();
+						somethingInterface = new UserInterface();
+						somethingInterface.SetState(PanelKillUI);
+					}
+				}
+				catch (Exception ex)
+				{
+					//处理异常
+				}
+				finally
+				{
+					//清理
+				}
 			}
-
-			ShowUI = RegisterHotKey("魔神炼体法", Keys.L.ToString());
-			
 		}
 
         public override void Unload()
@@ -180,6 +202,7 @@ namespace SummonHeart
 						summonHeartPlayer.BBP = reader.ReadInt32();
 						summonHeartPlayer.SummonCrit = reader.ReadInt32();
 						summonHeartPlayer.exp = reader.ReadInt32();
+						summonHeartPlayer.PlayerClass = reader.ReadInt32();
 						summonHeartPlayer.bodyDef = reader.ReadSingle();
 						summonHeartPlayer.eyeBloodGas = reader.ReadInt32();
 						summonHeartPlayer.handBloodGas = reader.ReadInt32();
@@ -195,10 +218,10 @@ namespace SummonHeart
 						summonHeartPlayer.practiceFoot = reader.ReadBoolean();
 						summonHeartPlayer.soulSplit = reader.ReadBoolean();
 
-						for (int i = 0; i < getBuffLength(); i++)
+						/*for (int i = 0; i < getBuffLength(); i++)
 						{
 							summonHeartPlayer.boughtbuffList[i] = reader.ReadBoolean();
-						}
+						}*/
 						if (Main.netMode == NetmodeID.Server)
 						{
 							var packet = GetPacket();
@@ -206,6 +229,7 @@ namespace SummonHeart
 							packet.Write(summonHeartPlayer.BBP);
 							packet.Write(summonHeartPlayer.SummonCrit);
 							packet.Write(summonHeartPlayer.exp);
+							packet.Write(summonHeartPlayer.PlayerClass);
 							packet.Write(summonHeartPlayer.bodyDef);
 							packet.Write(summonHeartPlayer.eyeBloodGas);
 							packet.Write(summonHeartPlayer.handBloodGas);
@@ -220,10 +244,10 @@ namespace SummonHeart
 							packet.Write(summonHeartPlayer.practiceBody);
 							packet.Write(summonHeartPlayer.practiceFoot);
 							packet.Write(summonHeartPlayer.soulSplit);
-							for (int i = 0; i < getBuffLength(); i++)
+							/*for (int i = 0; i < getBuffLength(); i++)
 							{
 								packet.Write(summonHeartPlayer.boughtbuffList[i]);
-							}
+							}*/
 							packet.Send(-1, playernumber);
 						}
 					}
@@ -258,13 +282,43 @@ namespace SummonHeart
 		public override void UpdateUI(GameTime gameTime)
         {
 			// it will only draw if the player is not on the main menu
-			if (!Main.gameMenu && Panel.visible)
+			Player player = Main.player[Main.myPlayer];
+			SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
+			
+			if(modPlayer.PlayerClass == 1)
+            {
+				if (!Main.gameMenu && PanelMelee.visible)
+				{
+					somethingInterface?.Update(gameTime);
+				}
+				else
+				{
+					if (PanelMeleeUI == null)
+					{
+						PanelMeleeUI = new PanelMelee();
+						PanelMeleeUI.Initialize();
+						somethingInterface = new UserInterface();
+						somethingInterface.SetState(PanelMeleeUI);
+					}
+					PanelMeleeUI.needValidate = true;
+				}
+            }else if (modPlayer.PlayerClass == 2)
 			{
-				somethingInterface?.Update(gameTime);
-			}
-			else
-			{
-				somethingUI.needValidate = true;
+				if (!Main.gameMenu && PanelKill.visible)
+				{
+					somethingInterface?.Update(gameTime);
+				}
+				else
+				{
+                    if (PanelKillUI == null)
+                    {
+						PanelKillUI = new PanelKill();
+						PanelKillUI.Initialize();
+						somethingInterface = new UserInterface();
+						somethingInterface.SetState(PanelKillUI);
+					}
+					PanelKillUI.needValidate = true;
+				}
 			}
 		}
 
@@ -280,10 +334,21 @@ namespace SummonHeart
 		private bool DrawSomethingUI()
 		{
 			// it will only draw if the player is not on the main menu
-			if (!Main.gameMenu
-				&& Panel.visible)
+			Player player = Main.player[Main.myPlayer];
+			SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
+
+			if (modPlayer.PlayerClass == 1)
+            {
+				if (!Main.gameMenu && PanelMelee.visible)
+				{
+					somethingInterface.Draw(Main.spriteBatch, new GameTime());
+				}
+            }else if (modPlayer.PlayerClass == 2)
 			{
-				somethingInterface.Draw(Main.spriteBatch, new GameTime());
+				if (!Main.gameMenu && PanelKill.visible)
+				{
+					somethingInterface.Draw(Main.spriteBatch, new GameTime());
+				}
 			}
 			return true;
 		}

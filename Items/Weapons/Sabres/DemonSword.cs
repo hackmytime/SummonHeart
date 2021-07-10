@@ -39,7 +39,7 @@ namespace SummonHeart.Items.Weapons.Sabres
             Tooltip.AddTranslation(GameCulture.Chinese, "" +
                 "炼体八境·武道巅峰·远古魔神临死之前碎裂不朽右臂所铸造" +
                 "\n魔神之子的护道传承武器，唯魔神之子可用精血召唤使用" +
-                "\n众生之怨：不受任何伤害暴击加成，无法附魔，减少4倍攻速加成，减少2倍攻击范围加成" +
+                "\n众生之怨：不受任何伤害暴击加成，无法附魔，减少2倍攻速加成" +
                 "\n弑神之力：击杀任意生物+1攻击力，然受觉醒上限限制。" +
                 "\n魔剑觉醒：击杀强者摄其血肉灵魂修复剑身，可突破觉醒上限。" +
                 "\n破灭法则：重击必定造成3倍暴击。");
@@ -79,6 +79,7 @@ namespace SummonHeart.Items.Weapons.Sabres
         {
             ModRecipe recipe = new ModRecipe(mod);
             recipe.AddIngredient(mod.GetItem("GuideNote"), 1);
+            recipe.AddIngredient(mod.GetItem("MeleeScroll"), 1);
             recipe.SetResult(this);
             recipe.AddRecipe();
         }
@@ -223,7 +224,7 @@ namespace SummonHeart.Items.Weapons.Sabres
             if (WeaponSabres.SabreIsChargedStriking(player, item))
             {
                 damage *= chargeDamageMult;
-                knockBack *= 2;
+                knockBack *= 1.5f;
                 crit = true;
             }
         }

@@ -85,6 +85,7 @@ namespace SummonHeart.NPCs
 			packet.Write(modPlayer.BBP);
 			packet.Write(modPlayer.SummonCrit);
 			packet.Write(modPlayer.exp);
+			packet.Write(modPlayer.PlayerClass);
 			packet.Write(modPlayer.bodyDef);
 			packet.Write(modPlayer.eyeBloodGas);
 			packet.Write(modPlayer.handBloodGas);
@@ -238,7 +239,8 @@ namespace SummonHeart.NPCs
 
 				//处理突破
 				//最大血气上限【规则】
-				int MAXBLOODGAS = SummonHeartWorld.WorldBloodGasMax;
+				int WORLDMAXBLOODGAS = SummonHeartWorld.WorldBloodGasMax;
+				int MAXBLOODGAS = 200000;
 				if (powerLevel > 0 && npc.getPower() > modPlayer.bloodGasMax)
                 {
 					//突破的数值=（敌人战力-玩家肉身极限）/  5 * (阶位)
@@ -252,8 +254,8 @@ namespace SummonHeart.NPCs
 					}
 					modPlayer.bloodGasMax += addMax;
 					//判断是否超过世界上限
-					if (modPlayer.bloodGasMax > MAXBLOODGAS * 4)
-						modPlayer.bloodGasMax = MAXBLOODGAS * 4;
+					if (modPlayer.bloodGasMax > WORLDMAXBLOODGAS)
+						modPlayer.bloodGasMax = WORLDMAXBLOODGAS;
                     string text = $"{player.name}越级斩杀了{npc.getPowerLevelText()}强者{npc.FullName}，于生死之间突破肉身极限，+{addMax}肉身极限";
 					Main.NewText(text, Color.Green);
 					if (Main.netMode == NetmodeID.Server)
@@ -344,7 +346,10 @@ namespace SummonHeart.NPCs
 					//修炼魔神之躯
 					if (modPlayer.practiceBody)
 					{
-						if (modPlayer.bodyBloodGas < MAXBLOODGAS)
+						int bodyMaxBloodGas = MAXBLOODGAS;
+						if (modPlayer.PlayerClass == 1)
+							bodyMaxBloodGas = MAXBLOODGAS * 2;
+						if (modPlayer.bodyBloodGas < bodyMaxBloodGas)
 						{
 							//判断是否超上限
 							if (modPlayer.getAllBloodGas() + addBloodGas > bloodGasMax)
@@ -355,8 +360,8 @@ namespace SummonHeart.NPCs
 							{
 								modPlayer.BuySoul(addExp);
                                 modPlayer.bodyBloodGas += addBloodGas;
-								if (modPlayer.bodyBloodGas > MAXBLOODGAS)
-									modPlayer.bodyBloodGas = MAXBLOODGAS;
+								if (modPlayer.bodyBloodGas > bodyMaxBloodGas)
+									modPlayer.bodyBloodGas = bodyMaxBloodGas;
 								if (npc.boss)
                                 {
 									string text = "";
@@ -547,13 +552,13 @@ namespace SummonHeart.NPCs
 				}
 				npc.AddBuff(mod.BuffType("SoulSplit"), 200);
 			}
-            if (modPlayer.boughtbuffList[0])
+            /*if (modPlayer.boughtbuffList[0])
             {
 				if (projectile.minion && Main.rand.Next(101) <= (modPlayer.eyeBloodGas + 30000) / 1500)
 				{
 					crit = true;
 				}
-            }
+            }*/
 		}
     }
 }

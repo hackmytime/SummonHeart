@@ -17,9 +17,8 @@ namespace SummonHeart.Items.Level
                 "\n所有敌人30倍血防" +
                 "\n所有敌人30倍攻击" +
                 "\n灵魂气血获取倍率：5倍" +
-                "\n世界肉身总气血上限：100W" +
-                "\n单部位炼体气血上限：25W" +
-                "\n初始肉身极限：30000" +
+                "\n世界肉身总气血上限：80W" +
+                "\n初始肉身极限：60000" +
                 "\n评价：......");
         }
 
@@ -44,8 +43,8 @@ namespace SummonHeart.Items.Level
                     Main.NewText("当前世界难度为：？？？？", 255, 255, 255);
                 }
                 SummonHeartWorld.WorldLevel = 5;
-                SummonHeartWorld.WorldBloodGasMax = 250000;
-                SummonHeartWorld.PlayerBloodGasMax = 30000;
+                SummonHeartWorld.WorldBloodGasMax = 800000;
+                SummonHeartWorld.PlayerBloodGasMax = 60000;
                 return true;
             }
             else

@@ -17,9 +17,8 @@ namespace SummonHeart.Items.Level
                 "\n所有敌人20倍血防" +
                 "\n所有敌人10倍攻击" +
                 "\n灵魂气血获取倍率：4倍" +
-                "\n世界肉身总气血上限：80W" +
-                "\n单部位炼体气血上限：20W" +
-                "\n初始肉身极限：20000" +
+                "\n世界肉身总气血上限：70W" +
+                "\n初始肉身极限：40000" +
                 "\n评价：逆天而行，勇士走好");
         }
 
@@ -44,8 +43,8 @@ namespace SummonHeart.Items.Level
                     Main.NewText("当前世界难度为：逆天而行", 255, 255, 255);
                 }
                 SummonHeartWorld.WorldLevel = 4;
-                SummonHeartWorld.WorldBloodGasMax = 200000;
-                SummonHeartWorld.PlayerBloodGasMax = 20000;
+                SummonHeartWorld.WorldBloodGasMax = 700000;
+                SummonHeartWorld.PlayerBloodGasMax = 40000;
                 return true;
             }
             else
