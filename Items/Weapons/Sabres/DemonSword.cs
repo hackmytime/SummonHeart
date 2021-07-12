@@ -299,7 +299,8 @@ namespace SummonHeart.Items.Weapons.Sabres
                 // Play charged sound
                 if (sndOnce)
                 {
-                    Main.PlaySound(SoundID.Item71, projectile.Center); sndOnce = false;
+                    Main.PlaySound(mod.GetLegacySoundSlot(SoundType.Custom, "Sounds/Attack06"), player.Center);
+                    sndOnce = false;
                     SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
                     modPlayer.chargeAttack = false;
                 }

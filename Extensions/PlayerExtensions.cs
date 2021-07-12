@@ -55,6 +55,7 @@ namespace SummonHeart.Extensions
             power += modPlayer.player.statLifeMax2 * x;
             power += modPlayer.player.statDefense * 30;
             power += modPlayer.SummonCrit * 20 * x;
+            power += modPlayer.killResourceMax2 * 30;
             Item item = modPlayer.player.HeldItem;
             if (item.damage > 0)
             {

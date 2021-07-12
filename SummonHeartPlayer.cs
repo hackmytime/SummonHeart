@@ -32,6 +32,12 @@ namespace SummonHeart
 		public int SummonCrit = 0;
 		public int exp = 0;
 		public float bodyDef = 0;
+		public int killResourceCurrent = 0;
+		public int killResourceMax;
+		public int killResourceMax2;
+		public int killResourceCost;
+		public int killResourceCostCount;
+		public int killResourceMulti;
 
 		public int eyeBloodGas = 0;
 		public int handBloodGas = 0;
@@ -53,6 +59,7 @@ namespace SummonHeart
 		public int HealCount = 0;
 		private int healCD = 0;
 		private int bodyHealCD = 0;
+		private int killHealCD = 0;
 
 		public List<bool> boughtbuffList;
 
@@ -72,7 +79,46 @@ namespace SummonHeart
             }
 		}
 
-        public override void PostUpdateMiscEffects()
+		public override void ResetEffects()
+		{
+			SummonHeart = false;
+			AttackSpeed = 1f;
+			FishSoul = false;
+			llPet = false;
+			healCD++;
+			if (healCD == 60)
+			{
+				healCD = 0;
+				HealCount = SummonCrit;
+			}
+			bodyHealCD++;
+			if (bodyHealCD == 15)
+			{
+				bodyHealCD = 0;
+			}
+			killHealCD++;
+			if (killHealCD == 12)
+			{
+				killHealCD = 0;
+			}
+			killResourceMax2 = killResourceMax;
+		}
+
+		public override void PreUpdate()
+		{
+			if (player.HasItemInAcc(mod.ItemType("MysteriousCrystal")) != -1 && base.player.respawnTimer > 300)
+			{
+				player.respawnTimer = 300;
+			}
+		}
+
+		public override void PostUpdate()
+		{
+			currentAura = this.GetAuraEffectOnPlayer();
+			IncrementAuraFrameTimers(currentAura);
+		}
+
+		public override void PostUpdateMiscEffects()
         {
 			player.statDefense += (int)bodyDef;
 			if(PlayerClass == 1)
@@ -85,11 +131,42 @@ namespace SummonHeart
 				EffectKill();
 			}
 		}
+		
 
-        private void EffectKill()
+		private void EffectKill()
         {
-            throw new NotImplementedException();
-        }
+			killResourceMax = 100 + shortSwordBlood + bodyBloodGas / 40;
+			killResourceMulti = 3;
+			killResourceCost = 25;
+            if (boughtbuffList[1] && handBloodGas > bodyBloodGas)
+            {
+				//一刀流
+				killResourceCost += handBloodGas / 2666;
+				killResourceMulti += (handBloodGas / 4000 + 2);
+			}
+            if (boughtbuffList[2] && bodyBloodGas > handBloodGas)
+            {
+				//神通流
+				killResourceCost -= (bodyBloodGas / 20000 + 5);
+			}
+			killResourceCostCount = killResourceMax * killResourceCost / 100;
+			if (killResourceCurrent < killResourceMax2 && killHealCD == 0)
+			{
+				int heal = 1;
+				killResourceCurrent += heal;
+				if (killResourceCurrent > killResourceMax2)
+					killResourceCurrent = killResourceMax2;
+			}
+
+			//魔神之腿
+			if (boughtbuffList[3])
+			{
+				player.noFallDmg = true;
+				player.moveSpeed += (footBloodGas / 10000 + 10) * 0.01f;
+				player.wingTimeMax += (footBloodGas / 2222 + 10) * 60;
+				player.jumpSpeedBoost += (footBloodGas / 1333 + 50) * 0.01f;
+			}
+		}
 
         private void EffectMelee()
         {
@@ -166,20 +243,7 @@ namespace SummonHeart
 				Main.dust[d].velocity *= 0.5f;
 			}
 		}
-
-		public override void PreUpdate()
-		{
-			if (player.HasItemInAcc(mod.ItemType("MysteriousCrystal")) != -1 && base.player.respawnTimer > 300)
-			{
-				player.respawnTimer = 300;
-			}
-		}
-
-		public override void PostUpdate()
-        {
-			currentAura = this.GetAuraEffectOnPlayer();
-			IncrementAuraFrameTimers(currentAura);
-		}
+		
 
 		public bool GetPratice(int currentBuffIndex)
 		{
@@ -267,24 +331,7 @@ namespace SummonHeart
 				SummonCrit = 500;
 		}
 
-		public override void ResetEffects()
-        {
-			SummonHeart = false;
-			AttackSpeed = 1f;
-			FishSoul = false;
-			llPet = false;
-			healCD++;
-			if (healCD == 60)
-            {
-				healCD = 1;
-				HealCount = SummonCrit;
-            }
-			bodyHealCD++;
-			if(bodyHealCD == 15)
-            {
-				bodyHealCD = 1;
-			}
-		}
+		
 
 		public void CauseDirectDamage(NPC npc, int originalDamage, bool crit)
 		{
@@ -550,6 +597,25 @@ namespace SummonHeart
                 }else if(PlayerClass == 2)
                 {
 					PanelKill.visible = !PanelKill.visible;
+				}
+			}
+			if (SummonHeartMod.KillSkillKey.JustPressed)
+			{
+				if(PlayerClass == 2)
+                {
+					showRadius = !showRadius;
+                    if (showRadius)
+                    {
+						Main.NewText($"已开启刺杀技能", Color.White);
+					}
+                    else
+                    {
+						Main.NewText($"已关闭刺杀技能", Color.White);
+					}
+                }
+                else
+                {
+					Main.NewText($"只有刺客才能使用刺杀技能", Color.Red);
 				}
 			}
 		}

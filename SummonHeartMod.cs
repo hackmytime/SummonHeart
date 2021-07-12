@@ -27,11 +27,16 @@ namespace SummonHeart
 		// Hotkeys
 		internal static ModHotKey AutoAttackKey;
 		internal static ModHotKey ShowUI;
+		internal static ModHotKey KillSkillKey;
 
 		internal PanelMelee PanelMeleeUI;
 		internal PanelKill PanelKillUI;
 		public UserInterface somethingInterface;
 		public UserInterface tooltipInterface;
+
+		internal KillBar ExampleResourceBar;
+		private UserInterface KillResourceBarUserInterface;
+
 		public SummonHeartMod Instance;
 
 		public SummonHeartMod()
@@ -45,6 +50,7 @@ namespace SummonHeart
         {
 			AutoAttackKey = RegisterHotKey("自动使用武器（再次点击停止使用）", "G");
 			ShowUI = RegisterHotKey("魔神炼体法", Keys.L.ToString());
+			KillSkillKey = RegisterHotKey("刺客刺杀技能(可开关)", Keys.V.ToString());
 			// this makes sure that the UI doesn't get opened on the server
 			// the server can't see UI, can it? it's just a command prompt
 			if (!Main.dedServ)
@@ -66,6 +72,10 @@ namespace SummonHeart
 						PanelKillUI.Initialize();
 						somethingInterface = new UserInterface();
 						somethingInterface.SetState(PanelKillUI);
+						ExampleResourceBar = new KillBar();
+						ExampleResourceBar.Activate();
+						KillResourceBarUserInterface = new UserInterface();
+						KillResourceBarUserInterface.SetState(ExampleResourceBar);
 					}
 				}
 				catch (Exception ex)
@@ -83,6 +93,7 @@ namespace SummonHeart
         {
 			AutoAttackKey = null;
 			ShowUI = null;
+			KillSkillKey = null;
 		}
 
 		public override void PostSetupContent()
@@ -319,6 +330,18 @@ namespace SummonHeart
 					}
 					PanelKillUI.needValidate = true;
 				}
+					
+				if (ExampleResourceBar == null)
+				{
+					ExampleResourceBar = new KillBar();
+					ExampleResourceBar.Activate();
+					KillResourceBarUserInterface = new UserInterface();
+					KillResourceBarUserInterface.SetState(ExampleResourceBar);
+                }
+                else
+                {
+					KillResourceBarUserInterface?.Update(gameTime);
+				}
 			}
 		}
 
@@ -349,6 +372,8 @@ namespace SummonHeart
 				{
 					somethingInterface.Draw(Main.spriteBatch, new GameTime());
 				}
+				if(KillResourceBarUserInterface != null)
+					KillResourceBarUserInterface.Draw(Main.spriteBatch, new GameTime());
 			}
 			return true;
 		}

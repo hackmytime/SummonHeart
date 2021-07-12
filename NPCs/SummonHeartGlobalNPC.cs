@@ -534,7 +534,13 @@ namespace SummonHeart.NPCs
 				}
 				npc.AddBuff(mod.BuffType("SoulSplit"), 200);
 			}
-
+			if (item.modItem != null && item.modItem.Name == "Raiden")
+			{
+				if (modPlayer.showRadius && modPlayer.PlayerClass == 2)
+				{
+					damage += modPlayer.killResourceCostCount * modPlayer.killResourceMulti;
+				}
+			}
 			this.CauseDirectDamage(npc, damage, crit);
 		}
 
@@ -543,6 +549,7 @@ namespace SummonHeart.NPCs
 			Mod Calamity = ModLoader.GetMod("CalamityMod");
 			Player player = Main.player[projectile.owner];
             SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
+			
 			this.CauseDirectDamage(npc, damage, crit);
 			if (modPlayer.soulSplit)
 			{

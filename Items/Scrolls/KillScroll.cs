@@ -13,7 +13,7 @@ namespace SummonHeart.Items.Scrolls
             Tooltip.SetDefault("Can synthesize the roulette of destiny of each difficulty");
             DisplayName.AddTranslation(GameCulture.Chinese, "魔神传承·刺客");
             Tooltip.AddTranslation(GameCulture.Chinese, "魔神之子使用可领悟弑灵戮神陨" +
-                "\n魔神根据杀戮之道所创的魔教传教功法，极具杀伐之意。" +
+                "\n魔神根据杀戮之道所创的魔教传教功法，练杀伐之意入体。" +
                 "\n修炼此功法大成者" +
                 "\n神念摄魂心为眼，杀意无形身化影。" +
                 "\n山河万里随心至，动若崩雷众神惊！");
@@ -35,7 +35,7 @@ namespace SummonHeart.Items.Scrolls
         {
             SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
 
-            if (modPlayer.PlayerClass == 0)
+            if (modPlayer.PlayerClass == 0 || modPlayer.PlayerClass == 2)
             {
                 if (Main.netMode == 0 || Main.netMode == 1)
                 {

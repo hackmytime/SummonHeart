@@ -26,8 +26,15 @@ namespace SummonHeart.Items.Weapons.Sabres
 
         public static float GetFocusRadius(Player player)
         {
+            SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
+            float focusRadiusCur = focusRadius;
+            if (modPlayer.boughtbuffList[0])
+            {
+                focusRadiusCur += (modPlayer.eyeBloodGas / 1500 + 20);
+
+            }
             float speedFactor = Math.Max(Math.Abs(player.velocity.X), Math.Abs(player.velocity.Y / 2));
-            return Math.Max(64, focusRadius);
+            return Math.Max(64, focusRadiusCur);
         }
 
         public static void DrawDustRadius(Player player, float radius, int amount = 4)
@@ -139,7 +146,7 @@ namespace SummonHeart.Items.Weapons.Sabres
     /// <summary>
     /// Yo it's like, a homing weapon or something.
     /// </summary>
-    public class Raiden : ModItem
+    public class Raiden : KillItem
     {
 
         public override void SetStaticDefaults()
@@ -166,9 +173,9 @@ namespace SummonHeart.Items.Weapons.Sabres
             item.width = 40;
             item.height = 40;
 
-            item.melee = true;
+            //item.melee = true;
             item.damage = 1;
-            item.knockBack = 5;
+            item.knockBack = 3;
             item.autoReuse = true;
 
             item.useStyle = 1;
@@ -221,6 +228,26 @@ namespace SummonHeart.Items.Weapons.Sabres
                 tooltipLine.overrideColor = Color.Red;
                 tooltips.Insert(num + 1, tooltipLine);
             }
+
+            TooltipLine tt = tooltips.FirstOrDefault(x => x.Name == "Damage" && x.mod == "Terraria");
+            if (tt != null)
+            {
+                string[] splitText = tt.text.Split(' ');
+                string damageValue = splitText.First();
+                string damageWord = splitText.Last();
+                tt.text = damageValue + " 刺杀" + damageWord;
+            }
+            if (modPlayer.showRadius)
+            {
+                num = tooltips.FindIndex((TooltipLine t) => t.Name.Equals("Damage"));
+                if (num != -1)
+                {
+                    string text = "刺杀技能 " + (modPlayer.killResourceCostCount * modPlayer.killResourceMulti) + "附加刺杀伤害";
+                    TooltipLine tooltipLine = new TooltipLine(base.mod, "SwordBloodMax", text);
+                    tooltipLine.overrideColor = Color.SkyBlue;
+                    tooltips.Insert(num + 1, tooltipLine);
+                }
+            }
         }
 
         public override void GetWeaponCrit(Player player, ref int crit)
@@ -228,20 +255,20 @@ namespace SummonHeart.Items.Weapons.Sabres
             crit = 0;
         }
 
-        public override void GetWeaponDamage(Player player, ref int damage)
+       /* public override void GetWeaponDamage(Player player, ref int damage)
         {
             SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
             damage = modPlayer.shortSwordBlood;
         }
-
+*/
         public override void HoldItem(Player player)
         {
             SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
-
+            bool charge = modPlayer.showRadius;
             WeaponSabres.HoldItemManager(player, item, mod.ProjectileType("RaidenSlash"),
-                Color.Red, 1f, false ? 0f : 1f, customCharge, 8);
+                Color.Red, 1f, charge ? 0f : 1f, customCharge, 8);
 
-            if (modPlayer.showRadius)
+            if (charge)
             {
                 float radius = RaidenUtils.GetFocusRadius(player);
 
@@ -302,7 +329,7 @@ namespace SummonHeart.Items.Weapons.Sabres
         public override void OnHitNPC(Player player, NPC target, int damage, float knockBack, bool crit)
         {
             Color colour = new Color(0.4f, 0.8f, 0.1f);
-            WeaponSabres.OnHitFX(player, target, crit, colour, true);
+            WeaponSabres.OnHitFX(player, target, crit, Color.Red, true);
         }
 
         public override void MeleeEffects(Player player, Rectangle hitbox)
@@ -386,8 +413,19 @@ namespace SummonHeart.Items.Weapons.Sabres
                     {
                         Main.PlaySound(SoundID.Item71, projectile.Center); sndOnce = false;
                         SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
-                        modPlayer.chargeAttack = false;
-                        modPlayer.showRadius = false;
+
+                        //消耗
+                        if(modPlayer.killResourceCurrent >= 20)
+                        {
+                            modPlayer.killResourceCurrent -= 20;
+                           
+                        }
+                        else
+                        {
+                            modPlayer.showRadius = false;
+                            Main.NewText($"杀意值不足20，无法使用刺杀技能，刺杀技能自动关闭", Color.Red);
+                            return;
+                        }
 
                         // Set up initial ending position as where we started
                         if (player.whoAmI == Main.myPlayer)
@@ -492,6 +530,7 @@ namespace SummonHeart.Items.Weapons.Sabres
                 }
 
                 // Set slash
+                projectile.damage = 20000;
                 WeaponSabres.RecentreSlash(projectile, player);
 
 

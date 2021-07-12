@@ -33,7 +33,7 @@ namespace SummonHeart.Items.Scrolls
         {
             SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
 
-            if (modPlayer.PlayerClass == 0)
+            if (modPlayer.PlayerClass == 0 || modPlayer.PlayerClass == 1)
             {
                 if (Main.netMode == 0 || Main.netMode == 1)
                 {

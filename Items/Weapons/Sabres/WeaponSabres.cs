@@ -48,20 +48,23 @@ namespace SummonHeart.Items.Weapons.Sabres
                         // 交替挥杆时使用IsBeingGranded
                         ai1 = item.isBeingGrabbed ? 1f : -1f;
                         item.isBeingGrabbed = !item.isBeingGrabbed;
-                        normalAttackCount++;
-                        if (normalAttackCount == 3)
+                        if (item.modItem != null && item.modItem.Name == "DemonSword")
                         {
-                            normalAttackCount = 0;
-                            ai1 = 0;
-                            modPlayer.chargeAttack = true;
-                            modPlayer.showRadius = false;
-                            item.beingGrabbed = true;
-                            charged = true;
+                            normalAttackCount++;
+                            if (normalAttackCount == 3)
+                            {
+                                normalAttackCount = 0;
+                                ai1 = 0;
+                                modPlayer.chargeAttack = true;
+                                //modPlayer.showRadius = false;
+                                item.beingGrabbed = true;
+                                charged = true;
+                            }
                         }
-                        if (normalAttackCount == 2)
+                        /*if (normalAttackCount == 2)
                         {
                             modPlayer.showRadius = true;
-                        }
+                        }*/
                         //Main.NewText($"normalAttackCount:{normalAttackCount}", Color.SkyBlue);
                     }
                     else if (ai1 == 0)
