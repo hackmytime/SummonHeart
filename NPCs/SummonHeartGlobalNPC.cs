@@ -159,6 +159,19 @@ namespace SummonHeart.NPCs
 				{
 					modPlayer.shortSwordBlood++;
 				}
+				if(modPlayer.PlayerClass == 2)
+                {
+					int heal = 0;
+					if (modPlayer.boughtbuffList[0])
+                    {
+						heal += (modPlayer.eyeBloodGas / 2000 + 5);
+					}
+					if (modPlayer.boughtbuffList[1])
+					{
+						heal += (modPlayer.handBloodGas / 2000);
+					}
+					modPlayer.killResourceCurrent += heal;
+				}
 				if (Main.netMode == 2)
 				{
 					SyncPlayerVariables(player);
@@ -240,7 +253,7 @@ namespace SummonHeart.NPCs
 				//处理突破
 				//最大血气上限【规则】
 				int WORLDMAXBLOODGAS = SummonHeartWorld.WorldBloodGasMax;
-				int MAXBLOODGAS = 200000;
+				//int MAXBLOODGAS = 200000;
 				if (powerLevel > 0 && npc.getPower() > modPlayer.bloodGasMax)
                 {
 					//突破的数值=（敌人战力-玩家肉身极限）/  5 * (阶位)
@@ -274,7 +287,7 @@ namespace SummonHeart.NPCs
 					//修炼魔神之眼
 					if (modPlayer.practiceEye)
 					{
-						if (modPlayer.eyeBloodGas < MAXBLOODGAS)
+						if (modPlayer.eyeBloodGas < modPlayer.eyeMax)
 						{
 							//判断是否超上限
 							if (modPlayer.getAllBloodGas() + addBloodGas > bloodGasMax)
@@ -285,8 +298,8 @@ namespace SummonHeart.NPCs
 							{
 								modPlayer.BuySoul(addExp);
 								modPlayer.eyeBloodGas += addBloodGas;
-								if (modPlayer.eyeBloodGas > MAXBLOODGAS)
-									modPlayer.eyeBloodGas = MAXBLOODGAS;
+								if (modPlayer.eyeBloodGas > modPlayer.eyeMax)
+									modPlayer.eyeBloodGas = modPlayer.eyeMax;
 								if (npc.boss)
 								{
 									string text = "";
@@ -310,7 +323,10 @@ namespace SummonHeart.NPCs
 					//修炼魔神之手
 					if (modPlayer.practiceHand)
 					{
-						if (modPlayer.handBloodGas < MAXBLOODGAS)
+						int handMaxBloodGas = modPlayer.handMax;
+						if (modPlayer.PlayerClass == 2)
+							handMaxBloodGas = modPlayer.handMax * 2;
+						if (modPlayer.handBloodGas < modPlayer.handMax)
 						{
 							//判断是否超上限
 							if (modPlayer.getAllBloodGas() + addBloodGas > bloodGasMax)
@@ -321,8 +337,8 @@ namespace SummonHeart.NPCs
 							{
 								modPlayer.BuySoul(addExp);
                                 modPlayer.handBloodGas += addBloodGas;
-								if (modPlayer.handBloodGas > MAXBLOODGAS)
-									modPlayer.handBloodGas = MAXBLOODGAS;
+								if (modPlayer.handBloodGas > handMaxBloodGas)
+									modPlayer.handBloodGas = handMaxBloodGas;
 								if (npc.boss)
                                 {
 									string text = "";
@@ -346,9 +362,9 @@ namespace SummonHeart.NPCs
 					//修炼魔神之躯
 					if (modPlayer.practiceBody)
 					{
-						int bodyMaxBloodGas = MAXBLOODGAS;
-						if (modPlayer.PlayerClass == 1)
-							bodyMaxBloodGas = MAXBLOODGAS * 2;
+						int bodyMaxBloodGas = modPlayer.bodyMax;
+						if (modPlayer.PlayerClass == 1 || modPlayer.PlayerClass == 2)
+							bodyMaxBloodGas = modPlayer.bodyMax * 2;
 						if (modPlayer.bodyBloodGas < bodyMaxBloodGas)
 						{
 							//判断是否超上限
@@ -385,7 +401,7 @@ namespace SummonHeart.NPCs
 					//修炼魔神之腿
 					if (modPlayer.practiceFoot)
 					{
-						if (modPlayer.footBloodGas < MAXBLOODGAS)
+						if (modPlayer.footBloodGas < modPlayer.footMax)
 						{
 							//判断是否超上限
 							if (modPlayer.getAllBloodGas() + addBloodGas > bloodGasMax)
@@ -396,8 +412,8 @@ namespace SummonHeart.NPCs
 							{
 								modPlayer.BuySoul(addExp);
                                 modPlayer.footBloodGas += addBloodGas;
-								if (modPlayer.footBloodGas > MAXBLOODGAS)
-									modPlayer.footBloodGas = MAXBLOODGAS;
+								if (modPlayer.footBloodGas > modPlayer.footMax)
+									modPlayer.footBloodGas = modPlayer.footMax;
 								if (npc.boss)
 								{
 									string text = "";

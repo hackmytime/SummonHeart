@@ -23,11 +23,32 @@ namespace SummonHeart
         [Slider]
         public float handMultiplier;
 
-       /* [Label("敌人攻击倍率(每1倍+1W炼体世界上限)")]
-        [Increment(1)]
-        [Range(2, 10)]
-        [DefaultValue(2)]
+        [Label("自定义魔神之眼气血上限")]
+        [Increment(1000)]
+        [Range(0, 200000)]
+        [DefaultValue(200000)]
         [Slider]
-        public int atkMultiplier;*/
+        public int eyeMax;
+
+        [Label("自定义魔神之手气血上限")]
+        [Increment(1000)]
+        [Range(0, 200000)]
+        [DefaultValue(200000)]
+        [Slider]
+        public int handMax;
+
+        [Label("自定义魔神之躯气血上限")]
+        [Increment(1000)]
+        [Range(0, 200000)]
+        [DefaultValue(200000)]
+        [Slider]
+        public int bodyMax;
+
+        [Label("自定义魔神之腿气血上限")]
+        [Increment(1000)]
+        [Range(0, 200000)]
+        [DefaultValue(200000)]
+        [Slider]
+        public int footMax;
     }
 }

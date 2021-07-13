@@ -43,7 +43,12 @@ namespace SummonHeart
 		public int handBloodGas = 0;
 		public int bodyBloodGas = 0;
 		public int footBloodGas = 0;
-		
+
+		public int eyeMax = 0;
+		public int handMax = 0;
+		public int bodyMax = 0;
+		public int footMax = 0;
+
 		public int bloodGasMax = 10000;
 
 		public int swordBlood = 1;
@@ -102,6 +107,11 @@ namespace SummonHeart
 				killHealCD = 0;
 			}
 			killResourceMax2 = killResourceMax;
+
+			eyeMax = SummonHeartConfig.Instance.eyeMax;
+			handMax = SummonHeartConfig.Instance.handMax;
+			bodyMax = SummonHeartConfig.Instance.bodyMax;
+			footMax = SummonHeartConfig.Instance.footMax;
 		}
 
 		public override void PreUpdate()
@@ -135,29 +145,35 @@ namespace SummonHeart
 
 		private void EffectKill()
         {
-			killResourceMax = 100 + shortSwordBlood + bodyBloodGas / 40;
+			killResourceMax = 100 + shortSwordBlood ;
 			killResourceMulti = 3;
 			killResourceCost = 25;
-            if (boughtbuffList[1] && handBloodGas > bodyBloodGas)
+            if (boughtbuffList[1] && handBloodGas >= bodyBloodGas)
             {
 				//一刀流
-				killResourceCost += handBloodGas / 2666;
+				killResourceCost += handBloodGas / 5333;
 				killResourceMulti += (handBloodGas / 4000 + 2);
 			}
             if (boughtbuffList[2] && bodyBloodGas > handBloodGas)
             {
 				//神通流
-				killResourceCost -= (bodyBloodGas / 20000 + 5);
+				killResourceMax += bodyBloodGas / 40;
+				killResourceCost -= (bodyBloodGas / 40000 + 5);
 			}
 			killResourceCostCount = killResourceMax * killResourceCost / 100;
 			if (killResourceCurrent < killResourceMax2 && killHealCD == 0)
 			{
 				int heal = 1;
+				if (boughtbuffList[2] && bodyBloodGas > handBloodGas)
+				{
+					//神通流
+					heal += (bodyBloodGas / 800 + 15) / 4;
+				}
 				killResourceCurrent += heal;
 				if (killResourceCurrent > killResourceMax2)
 					killResourceCurrent = killResourceMax2;
 			}
-
+			
 			//魔神之腿
 			if (boughtbuffList[3])
 			{
@@ -692,6 +708,13 @@ namespace SummonHeart
 				if (damage < 1)
 					damage = 1;
 			}
+			if (PlayerClass == 2 && boughtbuffList[2])
+            {
+				if (Main.rand.Next(101) <= (bodyBloodGas / 5000))
+				{
+					player.ShadowDodge();
+				}
+            }
 		}
 
         public override void ModifyDrawLayers(List<PlayerLayer> layers)

@@ -75,7 +75,7 @@ namespace SummonHeart.ui
             int columnCount = maxWidth / (32 + 10);
             maxWidth = columnCount * (32 + 10);
             panel.panelWidth = maxWidth;
-            panel.panelHeight = (int)(Main.screenHeight * 0.7);
+            panel.panelHeight = (int)(Main.screenHeight * 0.83);
 
             buffGrid.SetColumnCount(columnCount);
 
@@ -102,10 +102,10 @@ namespace SummonHeart.ui
                 var modlabel = new UIText("弑灵戮神陨-魔神刺客传承：魔神根据杀戮之道所创的魔教传教功法，练杀意入体。");
                 modlabel.TextColor = new Color(232, 181, 16);
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
-                modlabel = new UIText("杀意入体获得包含杀戮和空间法则的神通剑出神陨：身剑合一，斩杀敌人。");
+                modlabel = new UIText("刺客分为魔神之躯神通流和魔神之手一刀流两种流派，两个部位都可特化，只可选择一个修炼。");
                 modlabel.TextColor = new Color(232, 181, 16);
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
-                modlabel = new UIText("刺客分为魔神之躯神通流和魔神之手一刀流两种流派，请自行选择，只可选择一个修炼。");
+                modlabel = new UIText("如果你都修炼了，则魔神之手和魔神之躯气血值高的那个部位效果生效。");
                 modlabel.TextColor = new Color(232, 181, 16);
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
 
@@ -127,7 +127,7 @@ namespace SummonHeart.ui
                     worldLevel = "Lv4逆天而行";
                 if (SummonHeartWorld.WorldLevel == 5)
                     worldLevel = "Lv5？？？？";
-                var modlabel_max = new UIText("世界难度："+worldLevel+" 世界单部位炼体气血上限：" + SummonHeartWorld.WorldBloodGasMax + "(由世界难度所决定)");
+                var modlabel_max = new UIText("世界难度："+worldLevel+" 世界炼体气血上限：" + SummonHeartWorld.WorldBloodGasMax + "(由世界难度所决定)");
                 modlabel_max.TextColor = Color.Red;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_max));
 
@@ -163,7 +163,7 @@ namespace SummonHeart.ui
                 modlabel_level = new UIText("神念摄魂心为眼：刺杀范围+" + (mp.eyeBloodGas / 1500 + 20)+ "格(初始20，每1500气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("以杀入道，看破轮回：击杀敌人凝练+" + (mp.eyeBloodGas / 2000 + 5) + "点杀意值(每1000气血+1)");
+                modlabel_level = new UIText("以杀入道，看破轮回：击杀敌人额外凝练+" + (mp.eyeBloodGas / 2000 + 5) + "点杀意值(每2000气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
 
@@ -176,10 +176,10 @@ namespace SummonHeart.ui
                 modlabel_level = new UIText("魔神之手"+ praticeText + " 气血值：" + mp.handBloodGas);
                 modlabel_level.TextColor = Color.Orange;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("凝练杀意，动若崩雷：每点杀意值造成伤害+" + (mp.handBloodGas / 4000 + 2) + "点(初始2，每5000气血+1)");
+                modlabel_level = new UIText("凝练杀意，动若崩雷：每点杀意值造成伤害+" + (mp.handBloodGas / 4000 + 2) + "点(初始2，每4000气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("杀意掌控，登峰造极：神通消耗杀意值+" + (mp.handBloodGas / 2666) + "%(每2666气血+1%) 剑出无悔：击杀敌人返还" + (mp.handBloodGas / 2500) + "%消耗的杀意值");
+                modlabel_level = new UIText("杀意掌控，登峰造极：神通消耗杀意值+" + (mp.handBloodGas / 5333) + "%(每5333气血+1%) 击杀敌人获得" + (mp.handBloodGas / 2000) + "点杀意值(每2000气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
 
@@ -192,10 +192,10 @@ namespace SummonHeart.ui
                 modlabel_level = new UIText("魔神之躯" + praticeText + " 气血值：" + mp.bodyBloodGas);
                 modlabel_level.TextColor = Color.Orange;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("万杀炼体，杀意滔天：杀意上限+" + mp.bodyBloodGas / 40 + "(每40气血+1) 每秒回复自身" + (mp.bodyBloodGas / 400 + 15) + "杀意值(初始15，每400+1)");
+                modlabel_level = new UIText("万杀炼体，杀意滔天：杀意上限+" + mp.bodyBloodGas / 40 + "(每40气血+1) 每秒回复自身" + (mp.bodyBloodGas / 800 + 15) + "杀意值(初始15，每800+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("杀意无形身化影：闪避几率+" + mp.bodyBloodGas / 2500 + "%（闪避上限90%）神通消耗-" + (mp.bodyBloodGas / 20000 + 5) + "%(初始5%，每20000+1)");
+                modlabel_level = new UIText("杀意无形身化影：闪避几率+" + mp.bodyBloodGas / 5000 + "%（每5000+1%）神通消耗-" + (mp.bodyBloodGas / 40000 + 5) + "%(初始5%，每40000+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
 
