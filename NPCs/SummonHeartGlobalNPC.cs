@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SummonHeart.Extensions;
+using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
@@ -171,6 +172,9 @@ namespace SummonHeart.NPCs
 						heal += (modPlayer.handBloodGas / 2000);
 					}
 					modPlayer.killResourceCurrent += heal;
+					CombatText.NewText(player.getRect(), new Color(0, 255, 0), "+" + heal + "杀意值");
+					if (modPlayer.killResourceCurrent > modPlayer.killResourceMax2)
+						modPlayer.killResourceCurrent = modPlayer.killResourceMax2;
 				}
 				if (Main.netMode == 2)
 				{
@@ -552,7 +556,7 @@ namespace SummonHeart.NPCs
 			}
 			if (item.modItem != null && item.modItem.Name == "Raiden")
 			{
-				if (modPlayer.showRadius && modPlayer.PlayerClass == 2)
+				if (modPlayer.PlayerClass == 2 && modPlayer.chargeAttack)
 				{
 					damage += modPlayer.killResourceCostCount * modPlayer.killResourceMulti;
 				}

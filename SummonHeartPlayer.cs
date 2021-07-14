@@ -547,6 +547,7 @@ namespace SummonHeart
 			tagComp.Add("swordBlood", swordBlood);
 			tagComp.Add("shortSwordBlood", shortSwordBlood);
 			tagComp.Add("swordBloodMax", swordBloodMax);
+			tagComp.Add("killResourceCurrent", killResourceCurrent);
 			tagComp.Add("practiceEye", practiceEye);
 			tagComp.Add("practiceHand", practiceHand);
 			tagComp.Add("practiceBody", practiceBody);
@@ -571,6 +572,7 @@ namespace SummonHeart
 			swordBlood = tag.GetInt("swordBlood");
 			shortSwordBlood = tag.GetInt("shortSwordBlood");
 			swordBloodMax = tag.GetInt("swordBloodMax");
+			killResourceCurrent = tag.GetInt("killResourceCurrent");
 			practiceEye = tag.GetBool("practiceEye");
 			practiceHand = tag.GetBool("practiceHand");
 			practiceBody = tag.GetBool("practiceBody");
@@ -605,7 +607,7 @@ namespace SummonHeart
 			{
 				if(PlayerClass == 0)
                 {
-					Main.NewText($"你暂未获得任何传承，请先选择道", Color.Red);
+					Main.NewText($"你暂未获得任何传承，请先使用职业传承书选择你的道", Color.Red);
 				}
 				else if(PlayerClass == 1)
                 {
@@ -619,6 +621,12 @@ namespace SummonHeart
 			{
 				if(PlayerClass == 2)
                 {
+                    if (killResourceCurrent < killResourceCostCount)
+                    {
+						showRadius = false;
+						Main.NewText($"杀意值不足{killResourceCostCount}，无法开启刺杀技能", Color.Red);
+						return;
+					}
 					showRadius = !showRadius;
                     if (showRadius)
                     {

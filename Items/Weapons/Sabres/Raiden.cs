@@ -265,6 +265,12 @@ namespace SummonHeart.Items.Weapons.Sabres
         {
             SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
             bool charge = modPlayer.showRadius;
+            //消耗
+            if (modPlayer.killResourceCurrent < modPlayer.killResourceCostCount)
+            {
+                charge = false;
+            }
+           
             WeaponSabres.HoldItemManager(player, item, mod.ProjectileType("RaidenSlash"),
                 Color.Red, 1f, charge ? 0f : 1f, customCharge, 8);
 
@@ -389,10 +395,21 @@ namespace SummonHeart.Items.Weapons.Sabres
         public override void AI()
         {
             Player player = Main.player[projectile.owner];
+            SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
             if (WeaponSabres.AINormalSlash(projectile, SlashLogic))
             {
+                if(FrameCheck == 0)
+                {
+                    if (modPlayer.showRadius && modPlayer.killResourceCurrent < modPlayer.killResourceCostCount)
+                    {
+                        //Main.NewText($"杀意值不足{modPlayer.killResourceCostCount}，无法使用刺杀技能，自动变为普通攻击", Color.Red);
+                        modPlayer.showRadius = false;
+                        Main.NewText($"杀意值不足{modPlayer.killResourceCostCount}，无法使用刺杀技能，刺杀技能自动关闭", Color.Red);
+                    }
+                }
                 FrameCheck += 1f;
                 targets = null;
+                modPlayer.chargeAttack = false;
             }
             else
             {
@@ -412,18 +429,17 @@ namespace SummonHeart.Items.Weapons.Sabres
                     if (targets.Count > 0)
                     {
                         Main.PlaySound(SoundID.Item71, projectile.Center); sndOnce = false;
-                        SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
 
                         //消耗
-                        if(modPlayer.killResourceCurrent >= 20)
+                        if(modPlayer.killResourceCurrent >= modPlayer.killResourceCostCount)
                         {
-                            modPlayer.killResourceCurrent -= 20;
-                           
+                            modPlayer.killResourceCurrent -= modPlayer.killResourceCostCount;
+                            modPlayer.chargeAttack = true;
                         }
                         else
                         {
                             modPlayer.showRadius = false;
-                            Main.NewText($"杀意值不足20，无法使用刺杀技能，刺杀技能自动关闭", Color.Red);
+                            Main.NewText($"杀意值不足{modPlayer.killResourceCostCount}，无法使用刺杀技能，刺杀技能自动关闭", Color.Red);
                             return;
                         }
 
