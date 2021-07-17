@@ -75,7 +75,7 @@ namespace SummonHeart.ui
             int columnCount = maxWidth / (32 + 10);
             maxWidth = columnCount * (32 + 10);
             panel.panelWidth = maxWidth;
-            panel.panelHeight = (int)(Main.screenHeight * 0.7);
+            panel.panelHeight = (int)(Main.screenHeight * 0.83);
 
             buffGrid.SetColumnCount(columnCount);
 
@@ -99,7 +99,7 @@ namespace SummonHeart.ui
             {
                 var modbuffpanel = new Layout(10, 0, 0, 0, 10, new LayoutVertical());
 
-                var modlabel = new UIText("魔神炼体法-魔神传承自动领悟：魔神自创的魔神级炼体功法，不断突破极限直达炼体第七境。");
+                var modlabel = new UIText("魔神炼体法-魔神战士传承领悟：魔神自创的魔神级炼体功法，不断突破极限直达炼体第七境。");
                 modlabel.TextColor = new Color(232, 181, 16);
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
                 modlabel = new UIText("崩碎身躯把灵魂之力炼化溶于肉身，大幅提升肉身极限，使得肉身拥有吞血肉凝练的逆天之力。");
@@ -128,7 +128,9 @@ namespace SummonHeart.ui
                 var modlabel_level = new UIText("当前炼体境界：" + level + " 总气血：" + totalBoodGas + " 战斗力：" + mp.getPower());
                 modlabel_level.TextColor = Color.Red;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                
+                modlabel_level = new UIText("战者之心，不畏死亡【每次复活都能变得更加强大】死亡次数：" + mp.deathCount + " 生命上限+" + mp.deathCount + " 防御力+" + mp.deathCount/10);
+                modlabel_level.TextColor = Color.Red;
+                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
                 string worldLevel = "Lv1魔神之子";
                 if (SummonHeartWorld.WorldLevel == 2)
                     worldLevel = "Lv2魔神之路";

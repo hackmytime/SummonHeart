@@ -87,6 +87,7 @@ namespace SummonHeart.NPCs
 			packet.Write(modPlayer.SummonCrit);
 			packet.Write(modPlayer.exp);
 			packet.Write(modPlayer.PlayerClass);
+			packet.Write(modPlayer.deathCount);
 			packet.Write(modPlayer.bodyDef);
 			packet.Write(modPlayer.eyeBloodGas);
 			packet.Write(modPlayer.handBloodGas);
@@ -162,7 +163,7 @@ namespace SummonHeart.NPCs
 				}
 				if(modPlayer.PlayerClass == 2)
                 {
-					int heal = 0;
+					int heal = 5 * SummonHeartWorld.WorldLevel;
 					if (modPlayer.boughtbuffList[0])
                     {
 						heal += (modPlayer.eyeBloodGas / 2000 + 5);

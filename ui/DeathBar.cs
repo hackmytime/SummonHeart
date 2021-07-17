@@ -5,15 +5,16 @@ using Terraria.UI;
 
 namespace SummonHeart.ui
 {
-    internal class KillBar : UIState
+    internal class DeathBar : UIState
     {
-        public ExampleResourceBar killbar;
+        public DeathResourceBar killbar;
         public static bool visible = false;
 
         public override void OnInitialize()
         {
-            killbar = new ExampleResourceBar();
-            killbar.Left.Set(-150, 0f);
+            killbar = new DeathResourceBar();
+           /* killbar.Top.Set(50, 0f);
+            killbar.Left.Set(-192, 0f);*/
             killbar.OnMouseDown += new MouseEvent(DragStart);
             killbar.OnMouseUp += new MouseEvent(DragEnd);
             Append(killbar);

@@ -99,7 +99,7 @@ namespace SummonHeart.ui
             {
                 var modbuffpanel = new Layout(10, 0, 0, 0, 10, new LayoutVertical());
 
-                var modlabel = new UIText("弑灵戮神陨-魔神刺客传承：魔神根据杀戮之道所创的魔教传教功法，练杀意入体。");
+                var modlabel = new UIText("弑灵戮神陨-魔神刺客传承：刺客之道，向死而生。杀意未消，不死不休。");
                 modlabel.TextColor = new Color(232, 181, 16);
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
                 modlabel = new UIText("刺客分为魔神之躯神通流和魔神之手一刀流两种流派，两个部位都可特化，只可选择一个修炼。");
@@ -111,7 +111,7 @@ namespace SummonHeart.ui
 
                 int totalBoodGas = mp.eyeBloodGas + mp.handBloodGas + mp.bodyBloodGas + mp.footBloodGas;
                
-                var modlabel_level = new UIText("当前杀意上限：" + mp.killResourceMax2 + " 总气血：" + totalBoodGas + " 战斗力：" + mp.getPower());
+                var modlabel_level = new UIText("当前杀意上限：" + mp.killResourceMax2 + " 总气血：" + totalBoodGas + " 死亡次数：" + mp.deathCount + " 战斗力：" + mp.getPower());
                 modlabel_level.TextColor = Color.Red;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
                 modlabel_level = new UIText("当前神通消耗：" + mp.killResourceCost + "%杀意上限（"+mp.killResourceCostCount+"点杀意值） 杀意伤害倍率：" + mp.killResourceMulti + " 神通附加伤害：" + mp.killResourceCostCount * mp.killResourceMulti);

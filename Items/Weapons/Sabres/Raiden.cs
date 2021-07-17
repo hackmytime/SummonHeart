@@ -434,6 +434,11 @@ namespace SummonHeart.Items.Weapons.Sabres
                         if(modPlayer.killResourceCurrent >= modPlayer.killResourceCostCount)
                         {
                             modPlayer.killResourceCurrent -= modPlayer.killResourceCostCount;
+                            //转换死气值
+                            float addDeath = modPlayer.killResourceCostCount * (modPlayer.bodyDef + 500) / 1000;
+                            modPlayer.deathResourceCurrent += (int)addDeath;
+                            if (modPlayer.deathResourceCurrent > modPlayer.killResourceMax2)
+                                modPlayer.deathResourceCurrent = modPlayer.killResourceMax2;
                             modPlayer.chargeAttack = true;
                         }
                         else

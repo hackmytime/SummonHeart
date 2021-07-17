@@ -15,6 +15,7 @@ namespace SummonHeart.Items.Accessories
             DisplayName.AddTranslation(GameCulture.Chinese, "神秘水晶");
             Tooltip.AddTranslation(GameCulture.Chinese, "复活时间减为5秒" +
                 "\n探测周围的道路" +
+                "\n使用返回死亡点" +
                 "\n给挑战者的礼物");
         }
 
@@ -25,6 +26,19 @@ namespace SummonHeart.Items.Accessories
             item.height = 32;
             item.value = 4 * 100000;
             item.accessory = true;
+            item.useStyle = 4;
+        }
+
+        public override bool CanUseItem(Player player)
+        {
+            return player.showLastDeath;
+        }
+
+        public override bool UseItem(Player player)
+        {
+            Vector2 vector = new Vector2(player.lastDeathPostion.X - 16f, player.lastDeathPostion.Y - 24f);
+            player.Teleport(vector, 0, 0);
+            return base.ConsumeItem(player);
         }
 
         public override void UpdateAccessory(Player player, bool hideVisual)

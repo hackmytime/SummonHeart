@@ -7,6 +7,7 @@ using SummonHeart.Utilities;
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.Localization;
@@ -20,6 +21,7 @@ namespace SummonHeart
 	{	
 		public bool SummonHeart = false;
 		public int PlayerClass = 0;
+		public int deathCount;
 		public bool Berserked = false;
 		public float AttackSpeed;
 		public float tungstenPrevSizeSave;
@@ -33,6 +35,7 @@ namespace SummonHeart
 		public int exp = 0;
 		public float bodyDef = 0;
 		public int killResourceCurrent = 0;
+		public int deathResourceCurrent = 0;
 		public int killResourceMax;
 		public int killResourceMax2;
 		public int killResourceCost;
@@ -130,7 +133,6 @@ namespace SummonHeart
 
 		public override void PostUpdateMiscEffects()
         {
-			player.statDefense += (int)bodyDef;
 			if(PlayerClass == 1)
             {
 				//战士
@@ -145,7 +147,7 @@ namespace SummonHeart
 
 		private void EffectKill()
         {
-			killResourceMax = 100 + shortSwordBlood ;
+			killResourceMax = 100 + shortSwordBlood;
 			killResourceMulti = 3;
 			killResourceCost = 25;
             if (boughtbuffList[1] && handBloodGas >= bodyBloodGas)
@@ -186,6 +188,9 @@ namespace SummonHeart
 
         private void EffectMelee()
         {
+			player.statLifeMax2 += deathCount;
+			player.statDefense += (int)bodyDef;
+			player.statDefense += deathCount / 10;
 			//魔神之眼
 			if (boughtbuffList[0])
             {
@@ -428,6 +433,7 @@ namespace SummonHeart
 			clone.SummonCrit = SummonCrit;
 			clone.exp = exp;
 			clone.PlayerClass = PlayerClass;
+			clone.deathCount = deathCount;
 			clone.bodyDef = bodyDef;
 			clone.eyeBloodGas = eyeBloodGas;
 			clone.handBloodGas = handBloodGas;
@@ -454,6 +460,7 @@ namespace SummonHeart
 			packet.Write(SummonCrit);
 			packet.Write(exp);
 			packet.Write(PlayerClass);
+			packet.Write(deathCount);
 			packet.Write(bodyDef);
 			packet.Write(eyeBloodGas);
 			packet.Write(handBloodGas);
@@ -481,7 +488,7 @@ namespace SummonHeart
 			bool send = false;
 
 			if (clone.BBP != BBP || clone.SummonCrit != SummonCrit || clone.exp != exp
-					|| clone.bodyDef != bodyDef || clone.PlayerClass != PlayerClass
+					|| clone.bodyDef != bodyDef || clone.PlayerClass != PlayerClass || clone.deathCount != deathCount
 					|| clone.eyeBloodGas != eyeBloodGas || clone.handBloodGas != handBloodGas
 					|| clone.bodyBloodGas != bodyBloodGas || clone.footBloodGas != footBloodGas
 					|| clone.bloodGasMax != bloodGasMax || clone.swordBlood != swordBlood
@@ -509,6 +516,7 @@ namespace SummonHeart
 				packet.Write(SummonCrit);
 				packet.Write(exp);
 				packet.Write(PlayerClass);
+				packet.Write(deathCount);
 				packet.Write(bodyDef);
 				packet.Write(eyeBloodGas);
 				packet.Write(handBloodGas);
@@ -538,6 +546,7 @@ namespace SummonHeart
 			tagComp.Add("SummonCrit", SummonCrit);
 			tagComp.Add("exp", exp);
 			tagComp.Add("PlayerClass", PlayerClass);
+			tagComp.Add("deathCount;", deathCount);
 			tagComp.Add("bodyDef", bodyDef);
 			tagComp.Add("eyeBloodGas", eyeBloodGas);
 			tagComp.Add("handBloodGas", handBloodGas);
@@ -548,6 +557,7 @@ namespace SummonHeart
 			tagComp.Add("shortSwordBlood", shortSwordBlood);
 			tagComp.Add("swordBloodMax", swordBloodMax);
 			tagComp.Add("killResourceCurrent", killResourceCurrent);
+			tagComp.Add("deathResourceCurrent", deathResourceCurrent);
 			tagComp.Add("practiceEye", practiceEye);
 			tagComp.Add("practiceHand", practiceHand);
 			tagComp.Add("practiceBody", practiceBody);
@@ -563,6 +573,7 @@ namespace SummonHeart
 			SummonCrit = tag.GetInt("SummonCrit");
 			exp = tag.GetInt("exp");
 			PlayerClass = tag.GetInt("PlayerClass");
+			deathCount = tag.GetInt("deathCount");
 			bodyDef = tag.GetFloat("bodyDef");
 			eyeBloodGas = tag.GetInt("eyeBloodGas");
 			handBloodGas = tag.GetInt("handBloodGas");
@@ -573,6 +584,7 @@ namespace SummonHeart
 			shortSwordBlood = tag.GetInt("shortSwordBlood");
 			swordBloodMax = tag.GetInt("swordBloodMax");
 			killResourceCurrent = tag.GetInt("killResourceCurrent");
+			deathResourceCurrent = tag.GetInt("deathResourceCurrent");
 			practiceEye = tag.GetBool("practiceEye");
 			practiceHand = tag.GetBool("practiceHand");
 			practiceBody = tag.GetBool("practiceBody");
@@ -585,7 +597,6 @@ namespace SummonHeart
 				boughtbuffList.Add(false);
 			}
 		}
-
 
 		public override void ProcessTriggers(TriggersSet triggersSet)
 		{
@@ -716,13 +727,17 @@ namespace SummonHeart
 				if (damage < 1)
 					damage = 1;
 			}
-			if (PlayerClass == 2 && boughtbuffList[2])
-            {
-				if (Main.rand.Next(101) <= (bodyBloodGas / 5000))
-				{
-					player.ShadowDodge();
-				}
-            }
+			
+		}
+		//允许您修改 NPC 弹幕对该玩家造成的伤害等
+		public override void ModifyHitByProjectile(Projectile proj, ref int damage, ref bool crit)
+        {
+			if (PlayerClass == 1 && boughtbuffList[2])
+			{
+				damage = (int)(damage * (1 - bodyBloodGas / 5000 * 0.01f));
+				if (damage < 1)
+					damage = 1;
+			}
 		}
 
         public override void ModifyDrawLayers(List<PlayerLayer> layers)
@@ -769,7 +784,7 @@ namespace SummonHeart
 			}
 		}
 
-        public override float UseTimeMultiplier(Item item)
+        public override float MeleeSpeedMultiplier(Item item)
         {
 			int useTime = item.useTime;
 			int useAnimate = item.useAnimation;
@@ -779,22 +794,77 @@ namespace SummonHeart
 				return 1f;
 			}
 
-			if(item.modItem != null && item.modItem.Name == "DemonSword")
-            {
+			if (item.modItem != null && item.modItem.Name == "DemonSword")
+			{
 				return AttackSpeed / 2 + 0.5f;
 			}
-			if(item.modItem != null && item.modItem.Name == "Raiden")
-            {
+			if (item.modItem != null && item.modItem.Name == "Raiden")
+			{
 				return AttackSpeed / 2 + 0.5f;
 			}
 
 			return AttackSpeed;
 		}
 
-       /* public override void GetWeaponDamage(Item item, ref int damage)
+        /*public override float UseTimeMultiplier(Item item)
         {
-            base.GetWeaponDamage(item, ref damage);
-        }*/
+			
+		}*/
+
+        public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource)
+        {
+			if (PlayerClass == 2)
+			{
+				/*//刺客之道，向死而生。杀意未消，不死不休。
+				if (player.statLife <= damage)
+				{
+					//即死攻击，强制锁血
+					damage = damage - player.statLife + 1;
+					player.statLife = 2;
+					//剩余伤害用杀意值抵消
+					if (damage > killResourceCurrent)
+					{
+						//还是会死
+						damage -= killResourceCurrent;
+					}
+					else
+					{
+						killResourceCurrent -= damage;
+						damage = 0;
+					}
+				}*/
+				deathResourceCurrent -= (int)damage;
+				CombatText.NewText(player.getRect(), Color.DarkGray, "-" + damage + "死气值");
+				if (deathResourceCurrent <= 0)
+                {
+					deathResourceCurrent = 0;
+					return true;
+                }
+                else
+                {
+					player.statLife = 1;
+					return false;
+                }
+			}
+			return base.PreKill(damage, hitDirection, pvp, ref playSound, ref genGore, ref damageSource);
+        }
+
+        public override void Kill(double damage, int hitDirection, bool pvp, PlayerDeathReason damageSource)
+        {
+			deathCount++;
+			if (PlayerClass == 1)
+			{
+				string text = $"{player.name}拥有战者之心，不畏死亡。已从死亡之中获得力量，生命上限+1，防御力+0.1";
+				Main.NewText(text, Color.Green);
+			}
+			if (PlayerClass == 2)
+            {
+				swordBloodMax += 2;
+				string text = $"{player.name}身为刺客，向死而生。以自身血肉喂养魔剑·神陨，使其突破觉醒上限，觉醒上限+0.02%";
+				Main.NewText(text, Color.Green);
+			}
+            base.Kill(damage, hitDirection, pvp, damageSource);
+        }
 
         public override void ModifyHitNPC(Item item, NPC target, ref int damage, ref float knockback, ref bool crit)
         {

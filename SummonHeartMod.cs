@@ -37,6 +37,9 @@ namespace SummonHeart
 		internal KillBar ExampleResourceBar;
 		private UserInterface KillResourceBarUserInterface;
 
+		internal DeathBar DeathResourceBar;
+		private UserInterface DeathResourceBarInterface;
+
 		public SummonHeartMod Instance;
 
 		public SummonHeartMod()
@@ -76,6 +79,10 @@ namespace SummonHeart
 						ExampleResourceBar.Activate();
 						KillResourceBarUserInterface = new UserInterface();
 						KillResourceBarUserInterface.SetState(ExampleResourceBar);
+						DeathResourceBar = new DeathBar();
+						DeathResourceBar.Activate();
+						DeathResourceBarInterface = new UserInterface();
+						DeathResourceBarInterface.SetState(DeathResourceBar);
 					}
 				}
 				catch (Exception ex)
@@ -214,6 +221,7 @@ namespace SummonHeart
 						summonHeartPlayer.SummonCrit = reader.ReadInt32();
 						summonHeartPlayer.exp = reader.ReadInt32();
 						summonHeartPlayer.PlayerClass = reader.ReadInt32();
+						summonHeartPlayer.deathCount = reader.ReadInt32();
 						summonHeartPlayer.bodyDef = reader.ReadSingle();
 						summonHeartPlayer.eyeBloodGas = reader.ReadInt32();
 						summonHeartPlayer.handBloodGas = reader.ReadInt32();
@@ -241,6 +249,7 @@ namespace SummonHeart
 							packet.Write(summonHeartPlayer.SummonCrit);
 							packet.Write(summonHeartPlayer.exp);
 							packet.Write(summonHeartPlayer.PlayerClass);
+							packet.Write(summonHeartPlayer.deathCount);
 							packet.Write(summonHeartPlayer.bodyDef);
 							packet.Write(summonHeartPlayer.eyeBloodGas);
 							packet.Write(summonHeartPlayer.handBloodGas);
@@ -337,10 +346,15 @@ namespace SummonHeart
 					ExampleResourceBar.Activate();
 					KillResourceBarUserInterface = new UserInterface();
 					KillResourceBarUserInterface.SetState(ExampleResourceBar);
-                }
+					DeathResourceBar = new DeathBar();
+					DeathResourceBar.Activate();
+					DeathResourceBarInterface = new UserInterface();
+					DeathResourceBarInterface.SetState(DeathResourceBar);
+				}
                 else
                 {
 					KillResourceBarUserInterface?.Update(gameTime);
+					DeathResourceBarInterface?.Update(gameTime);
 				}
 			}
 		}
@@ -374,6 +388,8 @@ namespace SummonHeart
 				}
 				if(KillResourceBarUserInterface != null)
 					KillResourceBarUserInterface.Draw(Main.spriteBatch, new GameTime());
+				if(DeathResourceBarInterface != null)
+					DeathResourceBarInterface.Draw(Main.spriteBatch, new GameTime());
 			}
 			return true;
 		}
