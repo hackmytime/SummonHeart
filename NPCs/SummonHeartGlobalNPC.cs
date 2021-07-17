@@ -161,9 +161,9 @@ namespace SummonHeart.NPCs
 				}
 				if (modPlayer.shortSwordBlood < modPlayer.swordBloodMax)
 				{
-					modPlayer.swordBlood += (modPlayer.swordBloodMax / 10000 + 1);
-					if (modPlayer.swordBlood > modPlayer.swordBloodMax)
-						modPlayer.swordBlood = modPlayer.swordBloodMax;
+					modPlayer.shortSwordBlood += (modPlayer.swordBloodMax / 10000 + 1);
+					if (modPlayer.shortSwordBlood > modPlayer.swordBloodMax)
+						modPlayer.shortSwordBlood = modPlayer.swordBloodMax;
 				}
 				if(modPlayer.PlayerClass == 2)
                 {
