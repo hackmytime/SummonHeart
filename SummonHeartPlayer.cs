@@ -159,8 +159,8 @@ namespace SummonHeart
             if (boughtbuffList[2] && bodyBloodGas > handBloodGas)
             {
 				//神通流
-				killResourceMax += bodyBloodGas / 40;
-				killResourceCost -= (bodyBloodGas / 40000 + 5);
+				killResourceMax += bodyBloodGas / 20;
+				killResourceCost -= (bodyBloodGas / 40000 + 10);
 			}
 			killResourceCostCount = killResourceMax * killResourceCost / 100;
 			if (killResourceCurrent < killResourceMax2 && killHealCD == 0)
@@ -169,7 +169,7 @@ namespace SummonHeart
 				if (boughtbuffList[2] && bodyBloodGas > handBloodGas)
 				{
 					//神通流
-					heal += (bodyBloodGas / 800 + 15) / 4;
+					heal += (bodyBloodGas / 400 + 15) / 4;
 				}
 				killResourceCurrent += heal;
 				if (killResourceCurrent > killResourceMax2)

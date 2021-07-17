@@ -133,7 +133,9 @@ namespace SummonHeart.NPCs
 				}
 				if (modPlayer.swordBlood < modPlayer.swordBloodMax)
 				{
-					modPlayer.swordBlood++;
+					modPlayer.swordBlood += (modPlayer.swordBloodMax / 10000 + 1);
+					if (modPlayer.swordBlood > modPlayer.swordBloodMax)
+						modPlayer.swordBlood = modPlayer.swordBloodMax;
 				}
 				if (Main.netMode == 2)
 				{
@@ -159,7 +161,9 @@ namespace SummonHeart.NPCs
 				}
 				if (modPlayer.shortSwordBlood < modPlayer.swordBloodMax)
 				{
-					modPlayer.shortSwordBlood++;
+					modPlayer.swordBlood += (modPlayer.swordBloodMax / 10000 + 1);
+					if (modPlayer.swordBlood > modPlayer.swordBloodMax)
+						modPlayer.swordBlood = modPlayer.swordBloodMax;
 				}
 				if(modPlayer.PlayerClass == 2)
                 {
@@ -170,7 +174,7 @@ namespace SummonHeart.NPCs
 					}
 					if (modPlayer.boughtbuffList[1])
 					{
-						heal += (modPlayer.handBloodGas / 2000);
+						heal += (modPlayer.handBloodGas / 400);
 					}
 					modPlayer.killResourceCurrent += heal;
 					CombatText.NewText(player.getRect(), new Color(0, 255, 0), "+" + heal + "杀意值");

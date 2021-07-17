@@ -30,7 +30,7 @@ namespace SummonHeart.Items.Weapons.Sabres
             float focusRadiusCur = focusRadius;
             if (modPlayer.boughtbuffList[0])
             {
-                focusRadiusCur += (modPlayer.eyeBloodGas / 1500 + 20);
+                focusRadiusCur += (modPlayer.eyeBloodGas / 1500 + 50);
 
             }
             float speedFactor = Math.Max(Math.Abs(player.velocity.X), Math.Abs(player.velocity.Y / 2));
@@ -164,7 +164,7 @@ namespace SummonHeart.Items.Weapons.Sabres
                 "炼体八境·武道巅峰·远古魔神临死之前碎裂不朽右臂所铸造" +
                 "\n魔神之子的护道传承武器，唯魔神之子可用精血召唤使用" +
                 "\n众生之怨：不受任何伤害暴击攻击范围加成，无法附魔，减少2倍攻速加成" +
-                "\n弑神之力：击杀任意生物+1攻击力，然受觉醒上限限制。" +
+                "\n弑神之力：击杀任意生物增加攻击力，然受觉醒上限限制。" +
                 "\n魔剑觉醒：击杀强者摄其血肉灵魂修复剑身，可突破觉醒上限。" +
                 "\n空间法则：自身蕴含魔神所悟空间法则之力，剑出必中！50%觉醒刺杀可穿墙");
         }
@@ -223,10 +223,14 @@ namespace SummonHeart.Items.Weapons.Sabres
                 tooltips[num].overrideColor = Color.LimeGreen;
                 tooltips[num].text = str + (GameCulture.Chinese.IsActive ? "觉醒度" : "Arousal Level");
                 string text;
-                text = (modPlayer.swordBloodMax * 1.0f / 100f).ToString("0.00") + "%觉醒上限";
+                text = "击杀敌人+" + (modPlayer.swordBloodMax / 10000 + 1) + "攻击力";
                 TooltipLine tooltipLine = new TooltipLine(base.mod, "SwordBloodMax", text);
                 tooltipLine.overrideColor = Color.Red;
                 tooltips.Insert(num + 1, tooltipLine);
+                text = (modPlayer.swordBloodMax * 1.0f / 100f).ToString("0.00") + "%觉醒上限";
+                tooltipLine = new TooltipLine(base.mod, "SwordBloodMax", text);
+                tooltipLine.overrideColor = Color.Red;
+                tooltips.Insert(num + 2, tooltipLine);
             }
 
             TooltipLine tt = tooltips.FirstOrDefault(x => x.Name == "Damage" && x.mod == "Terraria");
