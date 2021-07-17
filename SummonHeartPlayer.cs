@@ -154,7 +154,7 @@ namespace SummonHeart
             {
 				//一刀流
 				killResourceCost += handBloodGas / 5333;
-				killResourceMulti += (handBloodGas / 4000 + 2);
+				killResourceMulti += (handBloodGas / 3200 + 2);
 			}
             if (boughtbuffList[2] && bodyBloodGas > handBloodGas)
             {
@@ -784,19 +784,25 @@ namespace SummonHeart
 			}
 		}
 
-		public void KillResourceCountMsg(int heal)
+		public void KillResourceCountMsg()
 		{
 			if (!Main.LocalPlayer.Equals(player) || Main.netMode == 2) return;
 
-			if (heal > 0)
+			if (Main.netMode == 1)
 			{
-				if (Main.netMode == 1)
+				int heal = 5 * SummonHeartWorld.WorldLevel;
+				if (boughtbuffList[0])
 				{
-					CombatText.NewText(player.getRect(), new Color(0, 255, 0), "+" + heal + "杀意值");
-					killResourceCurrent += heal;
-					if (killResourceCurrent > killResourceMax2)
-						killResourceCurrent = killResourceMax2;
+					heal += (eyeBloodGas / 2000 + 5);
 				}
+				if (boughtbuffList[1])
+				{
+					heal += (handBloodGas / 400);
+				}
+				CombatText.NewText(player.getRect(), new Color(0, 255, 0), "+" + heal + "杀意值");
+				killResourceCurrent += heal;
+				if (killResourceCurrent > killResourceMax2)
+					killResourceCurrent = killResourceMax2;
 			}
 		}
 

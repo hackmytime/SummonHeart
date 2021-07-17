@@ -30,8 +30,7 @@ namespace SummonHeart.Items.Weapons.Sabres
             float focusRadiusCur = focusRadius;
             if (modPlayer.boughtbuffList[0])
             {
-                focusRadiusCur += (modPlayer.eyeBloodGas / 1500 + 50);
-
+                focusRadiusCur += (modPlayer.eyeBloodGas / 800 + 30);
             }
             float speedFactor = Math.Max(Math.Abs(player.velocity.X), Math.Abs(player.velocity.Y / 2));
             return Math.Max(64, focusRadiusCur);

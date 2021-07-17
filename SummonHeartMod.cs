@@ -298,7 +298,7 @@ namespace SummonHeart
 							byte playernumber = reader.ReadByte();
 							int heal = reader.ReadInt32();
 							SummonHeartPlayer modPlayer = Main.player[playernumber].GetModPlayer<SummonHeartPlayer>();
-							modPlayer.KillResourceCountMsg(heal);
+							modPlayer.KillResourceCountMsg();
 						}
 					}
 					break;

@@ -13,7 +13,7 @@ namespace SummonHeart.ui
         public override void OnInitialize()
         {
             killbar = new ExampleResourceBar();
-            killbar.Left.Set(-150, 0f);
+            /*killbar.Left.Set(-150, 0f);*/
             killbar.OnMouseDown += new MouseEvent(DragStart);
             killbar.OnMouseUp += new MouseEvent(DragEnd);
             Append(killbar);
