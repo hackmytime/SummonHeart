@@ -176,6 +176,10 @@ namespace SummonHeart.NPCs
 					CombatText.NewText(player.getRect(), new Color(0, 255, 0), "+" + heal + "杀意值");
 					if (modPlayer.killResourceCurrent > modPlayer.killResourceMax2)
 						modPlayer.killResourceCurrent = modPlayer.killResourceMax2;
+					if (Main.netMode == 2)
+					{
+						SyncKillResourceCount(player, heal);
+					}
 				}
 				if (Main.netMode == 2)
 				{
@@ -486,6 +490,16 @@ namespace SummonHeart.NPCs
 			packet.Write((byte)npc.whoAmI);
 			packet.Write(npc.life);
 			packet.Send();
+		}
+
+		public void SyncKillResourceCount(Player player, int killResourceCount)
+		{
+			ModPacket packet = mod.GetPacket();
+			packet.Write((byte)3);
+			packet.Write((byte)player.whoAmI);
+			packet.Write(killResourceCount);
+			packet.Send();
+
 		}
 
 		public void CauseDirectDamage(NPC npc, int originalDamage, bool crit)

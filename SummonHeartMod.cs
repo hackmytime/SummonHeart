@@ -291,6 +291,17 @@ namespace SummonHeart
 						}
 					}
 					break;
+				case 3:
+                    {
+						if (Main.netMode == NetmodeID.MultiplayerClient)
+						{
+							byte playernumber = reader.ReadByte();
+							int heal = reader.ReadInt32();
+							SummonHeartPlayer modPlayer = Main.player[playernumber].GetModPlayer<SummonHeartPlayer>();
+							modPlayer.KillResourceCountMsg(heal);
+						}
+					}
+					break;
 
 				default:
 					Logger.WarnFormat("MyMod: Unknown Message type: {0}", msgType);

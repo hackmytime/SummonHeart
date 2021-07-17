@@ -784,7 +784,23 @@ namespace SummonHeart
 			}
 		}
 
-        public override float MeleeSpeedMultiplier(Item item)
+		public void KillResourceCountMsg(int heal)
+		{
+			if (!Main.LocalPlayer.Equals(player) || Main.netMode == 2) return;
+
+			if (heal > 0)
+			{
+				if (Main.netMode == 1)
+				{
+					CombatText.NewText(player.getRect(), new Color(0, 255, 0), "+" + heal + "杀意值");
+					killResourceCurrent += heal;
+					if (killResourceCurrent > killResourceMax2)
+						killResourceCurrent = killResourceMax2;
+				}
+			}
+		}
+
+		public override float MeleeSpeedMultiplier(Item item)
         {
 			int useTime = item.useTime;
 			int useAnimate = item.useAnimation;

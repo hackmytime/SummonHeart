@@ -109,7 +109,7 @@ namespace SummonHeart.Models
             int totalBloodGas = modPlayer.eyeBloodGas + modPlayer.handBloodGas + modPlayer.bodyBloodGas + modPlayer.footBloodGas;
             if (totalBloodGas > 500000)
                 totalBloodGas = 500000;
-            return baseScale * 0.5f * (2.5f * totalBloodGas / 500000 + 1);
+            return baseScale * 0.5f * (2.5f * totalBloodGas / 1000000 + 1);
         }
     }
 }
