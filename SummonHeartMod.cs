@@ -302,6 +302,16 @@ namespace SummonHeart
 						}
 					}
 					break;
+				case 4:
+                    {
+						if (Main.netMode == NetmodeID.MultiplayerClient)
+						{
+							byte playernumber = reader.ReadByte();
+							int npc = reader.ReadByte();
+							Main.player[playernumber].doKillNpcExp(Main.npc[npc]);
+						}
+					}
+					break;
 
 				default:
 					Logger.WarnFormat("MyMod: Unknown Message type: {0}", msgType);

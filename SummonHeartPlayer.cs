@@ -36,6 +36,7 @@ namespace SummonHeart
 		public float bodyDef = 0;
 		public int killResourceCurrent = 0;
 		public int deathResourceCurrent = 0;
+		public int deathResourceMax = 0;
 		public int killResourceMax;
 		public int killResourceMax2;
 		public int killResourceCost;
@@ -110,6 +111,9 @@ namespace SummonHeart
 				killHealCD = 0;
 			}
 			killResourceMax2 = killResourceMax;
+			deathResourceMax = killResourceMax2 / 2;
+			if (deathResourceMax > SummonHeartWorld.WorldBloodGasMax)
+				deathResourceMax = SummonHeartWorld.WorldBloodGasMax;
 
 			eyeMax = SummonHeartConfig.Instance.eyeMax;
 			handMax = SummonHeartConfig.Instance.handMax;
@@ -150,6 +154,15 @@ namespace SummonHeart
 			killResourceMax = 100 + shortSwordBlood;
 			killResourceMulti = 3;
 			killResourceCost = 25;
+            if (boughtbuffList[0] && killHealCD == 0)
+            {
+				int heal = (int)(killResourceMax2 * (0.01 + eyeBloodGas / 100000 * 0.01f)) / 4;
+				if (heal < 1)
+					heal = 1;
+				killResourceCurrent += heal;
+				if (killResourceCurrent > killResourceMax2)
+					killResourceCurrent = killResourceMax2;
+			}
             if (boughtbuffList[1] && handBloodGas >= bodyBloodGas)
             {
 				//一刀流
@@ -165,11 +178,13 @@ namespace SummonHeart
 			killResourceCostCount = killResourceMax * killResourceCost / 100;
 			if (killResourceCurrent < killResourceMax2 && killHealCD == 0)
 			{
-				int heal = 1;
+				int heal = 0;
 				if (boughtbuffList[2] && bodyBloodGas > handBloodGas)
 				{
 					//神通流
 					heal += (bodyBloodGas / 400 + 15) / 4;
+					if (heal < 1)
+						heal = 1;
 				}
 				killResourceCurrent += heal;
 				if (killResourceCurrent > killResourceMax2)
@@ -331,8 +346,7 @@ namespace SummonHeart
 			dealLevel();
 		}
 
-
-		private void dealLevel()
+		public void dealLevel()
 		{
 			int lvExp = 1;
 			int exp = lvExp;
@@ -791,10 +805,6 @@ namespace SummonHeart
 			if (Main.netMode == 1)
 			{
 				int heal = 5 * SummonHeartWorld.WorldLevel;
-				if (boughtbuffList[0])
-				{
-					heal += (eyeBloodGas / 2000 + 5);
-				}
 				if (boughtbuffList[1])
 				{
 					heal += (handBloodGas / 400);

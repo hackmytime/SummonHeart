@@ -163,7 +163,7 @@ namespace SummonHeart.ui
                 modlabel_level = new UIText("神念摄魂心为眼：刺杀范围+" + (mp.eyeBloodGas / 800 + 30)+ "格(初始30，每800气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("以杀入道，看破轮回：击杀敌人额外凝练+" + (mp.eyeBloodGas / 2000 + 5) + "点杀意值(每2000气血+1)");
+                modlabel_level = new UIText("以杀入道，看破轮回：每秒回复自身+" + (mp.eyeBloodGas / 100000 + 1) + "%杀意值(初始1%，每100000气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
 

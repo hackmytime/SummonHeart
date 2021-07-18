@@ -59,7 +59,7 @@ namespace SummonHeart.Items.Accessories
                         }
                     }
                 }
-                Main.refreshMap = true;
+                //Main.refreshMap = true;
             }
         }
     }

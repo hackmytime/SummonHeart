@@ -26,18 +26,14 @@ namespace SummonHeart.Extensions
         {
 			int power = 0;
 			int x = 1;
-			if (Main.hardMode)
-			{
-				x = 2;
-			}
 			if (NPC.downedMoonlord)
 			{
-				x = 10;
+				x = 2;
 			}
 			if (npc.boss)
 			{
 				int lifePower = npc.lifeMax / x;
-				int dmagePower = npc.damage * 30 * x;
+				int dmagePower = npc.damage * 100 * x;
 				if (dmagePower > lifePower * 5)
 					dmagePower = lifePower;
 				int defPower = npc.defense * 150;
@@ -47,7 +43,7 @@ namespace SummonHeart.Extensions
             }
             else
             {
-				power = npc.lifeMax + npc.damage * 10 * x + npc.defense * 30;
+				power = npc.lifeMax + npc.damage * 30 * x + npc.defense * 30;
             }
 			return power;
 		}
