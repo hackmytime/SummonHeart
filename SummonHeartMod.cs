@@ -221,7 +221,7 @@ namespace SummonHeart
 						summonHeartPlayer.SummonCrit = reader.ReadInt32();
 						summonHeartPlayer.exp = reader.ReadInt32();
 						summonHeartPlayer.PlayerClass = reader.ReadInt32();
-						summonHeartPlayer.deathCount = reader.ReadInt32();
+						//summonHeartPlayer.deathCount = reader.ReadInt32();
 						summonHeartPlayer.bodyDef = reader.ReadSingle();
 						summonHeartPlayer.eyeBloodGas = reader.ReadInt32();
 						summonHeartPlayer.handBloodGas = reader.ReadInt32();
@@ -249,7 +249,7 @@ namespace SummonHeart
 							packet.Write(summonHeartPlayer.SummonCrit);
 							packet.Write(summonHeartPlayer.exp);
 							packet.Write(summonHeartPlayer.PlayerClass);
-							packet.Write(summonHeartPlayer.deathCount);
+							//packet.Write(summonHeartPlayer.deathCount);
 							packet.Write(summonHeartPlayer.bodyDef);
 							packet.Write(summonHeartPlayer.eyeBloodGas);
 							packet.Write(summonHeartPlayer.handBloodGas);

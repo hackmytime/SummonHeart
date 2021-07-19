@@ -21,7 +21,7 @@ namespace SummonHeart
 	{	
 		public bool SummonHeart = false;
 		public int PlayerClass = 0;
-		public int deathCount;
+		public int deathCount = 0;
 		public bool Berserked = false;
 		public float AttackSpeed;
 		public float tungstenPrevSizeSave;
@@ -447,7 +447,7 @@ namespace SummonHeart
 			clone.SummonCrit = SummonCrit;
 			clone.exp = exp;
 			clone.PlayerClass = PlayerClass;
-			clone.deathCount = deathCount;
+			//clone.deathCount = deathCount;
 			clone.bodyDef = bodyDef;
 			clone.eyeBloodGas = eyeBloodGas;
 			clone.handBloodGas = handBloodGas;
@@ -474,7 +474,7 @@ namespace SummonHeart
 			packet.Write(SummonCrit);
 			packet.Write(exp);
 			packet.Write(PlayerClass);
-			packet.Write(deathCount);
+			//packet.Write(deathCount);
 			packet.Write(bodyDef);
 			packet.Write(eyeBloodGas);
 			packet.Write(handBloodGas);
@@ -530,7 +530,7 @@ namespace SummonHeart
 				packet.Write(SummonCrit);
 				packet.Write(exp);
 				packet.Write(PlayerClass);
-				packet.Write(deathCount);
+				//packet.Write(deathCount);
 				packet.Write(bodyDef);
 				packet.Write(eyeBloodGas);
 				packet.Write(handBloodGas);
@@ -560,7 +560,7 @@ namespace SummonHeart
 			tagComp.Add("SummonCrit", SummonCrit);
 			tagComp.Add("exp", exp);
 			tagComp.Add("PlayerClass", PlayerClass);
-			tagComp.Add("deathCount;", deathCount);
+			tagComp.Add("deathCount", deathCount);
 			tagComp.Add("bodyDef", bodyDef);
 			tagComp.Add("eyeBloodGas", eyeBloodGas);
 			tagComp.Add("handBloodGas", handBloodGas);
