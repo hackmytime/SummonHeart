@@ -178,13 +178,11 @@ namespace SummonHeart
 			killResourceCostCount = killResourceMax * killResourceCost / 100;
 			if (killResourceCurrent < killResourceMax2 && killHealCD == 0)
 			{
-				int heal = 0;
+				int heal = 1;
 				if (boughtbuffList[2] && bodyBloodGas > handBloodGas)
 				{
 					//神通流
 					heal += (bodyBloodGas / 400 + 15) / 4;
-					if (heal < 1)
-						heal = 1;
 				}
 				killResourceCurrent += heal;
 				if (killResourceCurrent > killResourceMax2)
