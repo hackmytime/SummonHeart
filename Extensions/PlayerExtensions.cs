@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SummonHeart.Models;
+using SummonHeart.NPCs;
 using SummonHeart.Utilities;
 using Terraria;
 using Terraria.ID;
@@ -16,7 +17,8 @@ namespace SummonHeart.Extensions
     /// </summary>
     public static class PlayerExtensions
     {
-        public static void DrawAura(this SummonHeartPlayer modPlayer, AuraAnimationInfo aura)
+		public static SummonHeartPlayer getModPlayer(this Player player) => player.GetModPlayer<SummonHeartPlayer>();
+		public static void DrawAura(this SummonHeartPlayer modPlayer, AuraAnimationInfo aura)
         {
             Player player = modPlayer.player;
             Texture2D texture = aura.GetTexture();
@@ -381,5 +383,23 @@ namespace SummonHeart.Extensions
 				modPlayer.dealLevel();
 			}
 		}
-    }
+
+		public static SummonHeartPlayer SummonHeart(this Player player) => player.GetModPlayer<SummonHeartPlayer>();
+		public static SummonHeartGlobalNPC SummonHeart(this NPC npc) => npc.GetGlobalNPC<SummonHeartGlobalNPC>();
+
+		public static void EbonEffect(this Player player, Projectile projectile)
+		{
+			if (player.whoAmI != Main.myPlayer)
+				return;
+		}
+
+		public static Color ColorOrOther(this SummonHeartPlayer modPlayer, Color other)
+		{
+			if (!modPlayer.useOscColor)
+			{
+				return other;
+			}
+			return modPlayer.oscColor;
+		}
+	}
 }

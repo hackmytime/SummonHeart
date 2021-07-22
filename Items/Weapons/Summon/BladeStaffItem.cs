@@ -44,5 +44,14 @@ namespace SummonHeart.Items.Weapons.Summon
             position = Main.MouseWorld;
             return true;
         }
+
+        public override void AddRecipes()
+        {
+            ModRecipe recipe = new ModRecipe(mod);
+            recipe.AddIngredient(mod.GetItem("GuideNote"), 1);
+            recipe.AddIngredient(mod.GetItem("SummonScroll"), 1);
+            recipe.SetResult(this);
+            recipe.AddRecipe();
+        }
     }
 }

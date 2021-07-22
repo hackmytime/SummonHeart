@@ -12,15 +12,15 @@ namespace SummonHeart.body
         public static List<BuffValue> getGongFa()
         {
             List<BuffValue> modBuffValues = new List<BuffValue>();
-            BuffValue buff1 = new BuffValue(ItemID.LifeCrystal, 0, "魔神之眼：命运之路，看破妄虚。生死轮转，介入吾眼！");
+            BuffValue buff1 = new BuffValue(ItemID.LifeCrystal, 5, "魔神之眼：命运之路，看破妄虚。生死轮转，介入吾眼！");
             modBuffValues.Add(buff1);
-            BuffValue buff2 = new BuffValue(ItemID.LifeCrystal, 0, "魔神之手：掌凝万灵擎天撼地，指天天裂划地地崩!");
+            BuffValue buff2 = new BuffValue(ItemID.LifeCrystal, 5, "魔神之手：掌凝万灵擎天撼地，指天天裂划地地崩!");
             modBuffValues.Add(buff2);
-            BuffValue buff3 = new BuffValue(ItemID.LifeCrystal, 0, "魔神之躯：万灵炼体，铸我身躯。千凝万锻，魔体终成!");
+            BuffValue buff3 = new BuffValue(ItemID.LifeCrystal, 5, "魔神之躯：万灵炼体，铸我身躯。千凝万锻，魔体终成!");
             modBuffValues.Add(buff3);
-            BuffValue buff4 = new BuffValue(ItemID.LifeCrystal, 0, "魔神之腿：风驰电掣，雷厉风行。天涯海角，一步跨之! ");
+            BuffValue buff4 = new BuffValue(ItemID.LifeCrystal, 5, "魔神之腿：风驰电掣，雷厉风行。天涯海角，一步跨之! ");
             modBuffValues.Add(buff4);
-            BuffValue buff5 = new BuffValue(ItemID.LifeCrystal, 0, "灵魂撕裂：灵魂法则，所有攻击附加最多噬魂之心等级层数的灵魂撕裂效果。");
+            BuffValue buff5 = new BuffValue(ItemID.LifeCrystal, 5, "灵魂撕裂：灵魂法则，所有攻击附加最多噬魂之心等级层数的灵魂撕裂效果。");
             buff5.cost = new CostValue[] {new MoneyCostValue(50000) };
             modBuffValues.Add(buff5);
             return modBuffValues;

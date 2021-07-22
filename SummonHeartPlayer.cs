@@ -2,6 +2,9 @@
 using SummonHeart.Effects.Animations.Aura;
 using SummonHeart.Extensions;
 using SummonHeart.Models;
+using SummonHeart.Projectiles.Melee;
+using SummonHeart.Projectiles.Summon;
+using SummonHeart.Projectiles.Weapon;
 using SummonHeart.ui;
 using SummonHeart.Utilities;
 using System;
@@ -65,6 +68,13 @@ namespace SummonHeart
 		public bool practiceFoot = false;
 		public bool soulSplit = false;
 
+		public Projectile eyeProjectile;
+		public float MyAccelerationMult;
+		public float MyMoveSpeedMult;
+		public bool accBuryTheLight;
+		public int buryTheLightCooldown;
+		public bool buryTheLightStarted;
+
 		public int HealCount = 0;
 		private int healCD = 0;
 		private int bodyHealCD = 0;
@@ -77,6 +87,13 @@ namespace SummonHeart
 		public int lightningFrameTimer = 500000;
 		public int auraFrameTimer = 0;
 		public int auraCurrentFrame = 0;
+
+		// 特效
+		public Gradient oscGradient;
+		public Color oscColor;
+		public bool useOscColor;
+		public bool useOscGradient;
+		public bool colorsInitialized;
 
 		public SummonHeartPlayer()
 		{
@@ -119,6 +136,9 @@ namespace SummonHeart
 			handMax = SummonHeartConfig.Instance.handMax;
 			bodyMax = SummonHeartConfig.Instance.bodyMax;
 			footMax = SummonHeartConfig.Instance.footMax;
+
+			MyAccelerationMult = 1f;
+			MyMoveSpeedMult = 1f;
 		}
 
 		public override void PreUpdate()
@@ -127,8 +147,51 @@ namespace SummonHeart
 			{
 				player.respawnTimer = 300;
 			}
+
+			if (this.accBuryTheLight && !base.player.dead)
+			{
+				if (base.player.HeldItem.damage > 0 && base.player.itemAnimation > 0)
+				{
+					this.AccBuryTheLight();
+				}
+				else if (this.buryTheLightStarted)
+				{
+					this.buryTheLightStarted = false;
+				}
+			}
+
+			if (Main.netMode != 2)
+			{
+				ModPlayerEffects.UpdateColors(player);
+			}
 		}
 
+		private void AccBuryTheLight()
+		{
+			NPC target = Helper.GetNearestNPC(base.player.position, (NPC npc) => !npc.friendly && npc.active && !npc.dontTakeDamage, 600f);
+			if (target == null)
+			{
+				this.buryTheLightStarted = false;
+				this.buryTheLightCooldown = 10;
+				return;
+			}
+			if (this.buryTheLightCooldown <= 0)
+			{
+				this.buryTheLightCooldown = 10;
+				if (!this.buryTheLightStarted)
+				{
+					this.buryTheLightStarted = true;
+					Main.PlaySound(50, (int)base.player.position.X, (int)base.player.position.Y, base.mod.GetSoundSlot((SoundType)50, "Sounds/Items/buryTheLight"), 0.4f, Utils.NextFloat(Main.rand, 0f, 0.15f));
+				}
+				float mult = 1f + (base.player.allDamage - 1f + (base.player.rangedDamage - 1f) + (base.player.meleeDamage - 1f) + (base.player.magicDamage - 1f));
+				int damage = (int)(12f * mult) + Math.Min(60, (int)((float)target.defense * 0.5f));
+				Vector2 vel = VectorHelper.VelocityToPoint(base.player.Center, target.Center, 1f);
+				Projectile.NewProjectileDirect(target.Center - vel * 60f, vel, ModContent.ProjectileType<DragonLegacyBlue>(), (int)((float)damage * 1.25f), 6.6f, base.player.whoAmI, 0f, 0f).netUpdate = true;
+				return;
+			}
+			this.buryTheLightCooldown--;
+		}
+	
 		public override void PostUpdate()
 		{
 			currentAura = this.GetAuraEffectOnPlayer();
@@ -146,8 +209,29 @@ namespace SummonHeart
 				//刺客
 				EffectKill();
 			}
+			else if (PlayerClass == 3)
+			{
+				//召唤
+				EffectSummon();
+			}
 		}
-		
+
+        private void EffectSummon()
+        {
+			if(player.ownedProjectileCounts(mod.ProjectileType("Overgrowth")) < 1)
+            {
+				//Projectile.NewProjectile(player.position, Vector2.Zero, mod.ProjectileType("Overgrowth"), 0, 0f, player.whoAmI);
+            }
+			player.EbonEffect(eyeProjectile);
+
+			if (player.whoAmI == Main.myPlayer)
+			{
+				if (player.ownedProjectileCounts(ModContent.ProjectileType<EmpyreanSpectre>()) < 1)
+					Projectile.NewProjectile(player.Center, Vector2.Zero, ModContent.ProjectileType<EmpyreanSpectre>(), 0, 0f, player.whoAmI);
+			}
+			MyMoveSpeedMult += 0.4f;
+			MyMoveSpeedMult += 0.4f;
+		}
 
 		private void EffectKill()
         {
@@ -913,5 +997,10 @@ namespace SummonHeart
 			}
 			this.CauseDirectDamage(target, damage, crit);
 		}
+
+        public override void PostUpdateRunSpeeds()
+        {
+            ModPlayerEffects.PostUpdateRunSpeeds(player);
+        }
     }
 }

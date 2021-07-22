@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -31,6 +32,7 @@ namespace SummonHeart
 
 		internal PanelMelee PanelMeleeUI;
 		internal PanelKill PanelKillUI;
+		internal PanelSummon panelSummonUI;
 		public UserInterface somethingInterface;
 		public UserInterface tooltipInterface;
 
@@ -40,7 +42,7 @@ namespace SummonHeart
 		internal DeathBar DeathResourceBar;
 		private UserInterface DeathResourceBarInterface;
 
-		public SummonHeartMod Instance;
+		public static SummonHeartMod Instance;
 
 		public SummonHeartMod()
 		{
@@ -60,6 +62,13 @@ namespace SummonHeart
 			{
 				try
 				{
+					Ref<Effect> trailRef = new Ref<Effect>(base.GetEffect("Effects/Trail"));
+					GameShaders.Misc["SummonHeart:CircleReveal"] = new MiscShaderData(new Ref<Effect>(base.GetEffect("Effects/CircleReveal")), "CircleReveal");
+					GameShaders.Misc["SummonHeart:SoftTrail"] = new MiscShaderData(trailRef, "SoftTrail");
+					GameShaders.Misc["SummonHeart:SwordTrail"] = new MiscShaderData(trailRef, "SwordTrail");
+					GameShaders.Misc["SummonHeart:SolidTrail"] = new MiscShaderData(trailRef, "RacketTrail");
+					SplitGlowMask.Load();
+
 					Player player = Main.player[Main.myPlayer];
 					SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
 					if (modPlayer.PlayerClass == 1)
@@ -83,6 +92,13 @@ namespace SummonHeart
 						DeathResourceBar.Activate();
 						DeathResourceBarInterface = new UserInterface();
 						DeathResourceBarInterface.SetState(DeathResourceBar);
+					}
+					else if (modPlayer.PlayerClass == 3)
+					{
+						panelSummonUI = new PanelSummon();
+						panelSummonUI.Initialize();
+						somethingInterface = new UserInterface();
+						somethingInterface.SetState(panelSummonUI);
 					}
 				}
 				catch (Exception ex)
@@ -377,6 +393,23 @@ namespace SummonHeart
 					KillResourceBarUserInterface?.Update(gameTime);
 					DeathResourceBarInterface?.Update(gameTime);
 				}
+			}else if (modPlayer.PlayerClass == 3)
+			{
+				if (!Main.gameMenu && PanelSummon.visible)
+				{
+					somethingInterface?.Update(gameTime);
+				}
+				else
+				{
+					if (panelSummonUI == null)
+					{
+						panelSummonUI = new PanelSummon();
+						panelSummonUI.Initialize();
+						somethingInterface = new UserInterface();
+						somethingInterface.SetState(panelSummonUI);
+					}
+					panelSummonUI.needValidate = true;
+				}
 			}
 		}
 
@@ -411,6 +444,12 @@ namespace SummonHeart
 					KillResourceBarUserInterface.Draw(Main.spriteBatch, new GameTime());
 				if(DeathResourceBarInterface != null)
 					DeathResourceBarInterface.Draw(Main.spriteBatch, new GameTime());
+			}else if (modPlayer.PlayerClass == 3)
+			{
+				if (!Main.gameMenu && PanelSummon.visible)
+				{
+					somethingInterface.Draw(Main.spriteBatch, new GameTime());
+				}
 			}
 			return true;
 		}
