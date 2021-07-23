@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using SummonHeart.Utilities;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -20,7 +21,8 @@ namespace SummonHeart.Projectiles
         {
             if (projectile.minion)
             {
-                int dust = Dust.NewDust(projectile.Center, projectile.width, projectile.height, DustID.GoldCoin);
+                //int dust = Dust.NewDust(projectile.Center, projectile.width, projectile.height, DustID.GoldCoin);
+                int dust = Dust.NewDust(projectile.Center, projectile.width, projectile.height, MyDustId.BlueMagic);
                 Main.dust[dust].velocity *= -1f;
                 Main.dust[dust].noGravity = true;
                 Vector2 vel = new Vector2(Main.rand.Next(-100, 101), Main.rand.Next(-100, 101));

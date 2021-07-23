@@ -10,7 +10,7 @@ namespace SummonHeart.Buffs.Weapon
         public override void SetDefaults()
         {
             DisplayName.SetDefault("Enchanted Daggers");
-            Description.SetDefault("Death by a thousand cuts");
+            Description.SetDefault("魔剑·神灭为魔神之子护道");
             Main.buffNoSave[Type] = true;
             Main.buffNoTimeDisplay[Type] = true;
         }

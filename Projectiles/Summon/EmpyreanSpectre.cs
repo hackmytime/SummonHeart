@@ -67,11 +67,11 @@ namespace SummonHeart.Projectiles.Summon
             {
                 Target = player.MinionAttackTargetNPC;
                 NPC See = Main.npc[Target];
-                if (projectile.Distance(See.Center) < 800) Target = See.whoAmI;
+                if (projectile.Distance(See.Center) < 600) Target = See.whoAmI;
             }
             else
             {
-                float MinDistance = 800;
+                float MinDistance = 600;
                 foreach (NPC See in Main.npc)
                 {
                     if (See.active && !See.friendly && !See.dontTakeDamage && projectile.Distance(See.Center) < MinDistance && See.CanBeChasedBy())
@@ -143,8 +143,6 @@ namespace SummonHeart.Projectiles.Summon
                             {
                                 if (projectile.Distance(npc.Center) < 160f)
                                 {
-                                    projectile.friendly = true;
-                                    projectile.damage = 0;
                                     if (CurrentStatus == ChasingEnermy)
                                     {
                                         CurrentStatus = AlreadyChasedOn;

@@ -224,13 +224,13 @@ namespace SummonHeart
             }
 			player.EbonEffect(eyeProjectile);
 
-			if (player.whoAmI == Main.myPlayer)
+			/*if (player.whoAmI == Main.myPlayer)
 			{
 				if (player.ownedProjectileCounts(ModContent.ProjectileType<EmpyreanSpectre>()) < 1)
 					Projectile.NewProjectile(player.Center, Vector2.Zero, ModContent.ProjectileType<EmpyreanSpectre>(), 0, 0f, player.whoAmI);
-			}
-			MyMoveSpeedMult += 0.4f;
-			MyMoveSpeedMult += 0.4f;
+			}*/
+			MyMoveSpeedMult += 0.5f;
+			MyMoveSpeedMult += 0.5f;
 		}
 
 		private void EffectKill()
@@ -722,6 +722,10 @@ namespace SummonHeart
                 }else if(PlayerClass == 2)
                 {
 					PanelKill.visible = !PanelKill.visible;
+				}
+				else if (PlayerClass == 3)
+				{
+					PanelSummon.visible = !PanelSummon.visible;
 				}
 			}
 			if (SummonHeartMod.KillSkillKey.JustPressed)
