@@ -202,6 +202,12 @@ namespace SummonHeart.Extensions
 				{
 					if (powerLevel >= 99)
 						powerLevel = 99;
+					if(modPlayer.PlayerClass == 3)
+                    {
+						//召唤职业最大5倍
+						if (powerLevel >= 5)
+							powerLevel = 5;
+					}
 					addExp *= (powerLevel + 1);
 				}
 

@@ -59,7 +59,7 @@ namespace SummonHeart.Items
 			SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
 			string text1 = Language.GetTextValue("Mods.SummonHeart.Pip-Boy3000text1") + modPlayer.BBP;
 			string text2 = Language.GetTextValue("Mods.SummonHeart.Pip-Boy3000text2") + (modPlayer.SummonCrit / 5);
-			string text3 = Language.GetTextValue("Mods.SummonHeart.Pip-Boy3000text3") + (modPlayer.SummonCrit / 50 + 2);
+			string text3 = Language.GetTextValue("Mods.SummonHeart.Pip-Boy3000text3") + (modPlayer.SummonCrit / 100 + 1);
 			string text4 = Language.GetTextValue("Mods.SummonHeart.Pip-Boy3000text4") + modPlayer.SummonCrit / 50 + "%";
 			string text5 = Language.GetTextValue("Mods.SummonHeart.Pip-Boy3000text5") + (modPlayer.SummonCrit / 5 + SummonHeartWorld.WorldLevel * 3);
 			string text6 = Language.GetTextValue("Mods.SummonHeart.Pip-Boy3000text6") + modPlayer.exp;
