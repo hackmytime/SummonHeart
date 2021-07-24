@@ -146,6 +146,26 @@ namespace SummonHeart.Extensions
 					}
 				}
 			}
+			if (player.HeldItem.modItem != null && player.HeldItem.modItem.Name == "DemonFlySword")
+			{
+				if (npc.boss)
+				{
+					int swordMax = npc.getPower() / 400;
+					if (modPlayer.swordBloodMax < swordMax)
+					{
+						modPlayer.swordBloodMax = swordMax;
+						string curMax = (modPlayer.swordBloodMax * 1.0f / 100f).ToString("0.00");
+						string text = $"{player.name}手持魔剑·神灭吞噬了{npc.FullName}的血肉，突破觉醒上限，当前觉醒上限：{curMax}%";
+						Main.NewText(text, Color.Green);
+					}
+					if (modPlayer.flySwordBlood < modPlayer.swordBloodMax)
+					{
+						modPlayer.flySwordBlood += (modPlayer.swordBloodMax / 10000 + 1);
+						if (modPlayer.flySwordBlood > modPlayer.swordBloodMax)
+							modPlayer.flySwordBlood = modPlayer.swordBloodMax;
+					}
+				}
+			}
 
 			if (modPlayer.SummonHeart)
 			{
@@ -387,11 +407,6 @@ namespace SummonHeart.Extensions
 		public static SummonHeartPlayer SummonHeart(this Player player) => player.GetModPlayer<SummonHeartPlayer>();
 		public static SummonHeartGlobalNPC SummonHeart(this NPC npc) => npc.GetGlobalNPC<SummonHeartGlobalNPC>();
 
-		public static void EbonEffect(this Player player, Projectile projectile)
-		{
-			if (player.whoAmI != Main.myPlayer)
-				return;
-		}
 
 		public static Color ColorOrOther(this SummonHeartPlayer modPlayer, Color other)
 		{

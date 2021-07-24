@@ -36,6 +36,11 @@ namespace SummonHeart.Projectiles.Weapon
         {
             bool flag64 = projectile.type == ModContent.ProjectileType<Overgrowth>();
             Player player = Main.player[projectile.owner];
+            if (player.dead || !player.active)
+            {
+                projectile.Kill();
+                return;
+            }
             SummonHeartPlayer modPlayer = player.getModPlayer();
             if (flag64)
             {
@@ -43,7 +48,7 @@ namespace SummonHeart.Projectiles.Weapon
             }
 
             projectile.position.X = Main.player[projectile.owner].Center.X - projectile.width / 2 - 6;
-            projectile.position.Y = Main.player[projectile.owner].Center.Y - projectile.height / 2 + Main.player[projectile.owner].gfxOffY - 60f;
+            projectile.position.Y = Main.player[projectile.owner].Center.Y - projectile.height / 2 + Main.player[projectile.owner].gfxOffY - 110f;
             if (Main.player[projectile.owner].gravDir == -1f)
             {
                 projectile.position.Y = projectile.position.Y + 120f;
@@ -60,13 +65,22 @@ namespace SummonHeart.Projectiles.Weapon
             num395 *= 0.2f;
             projectile.scale = num395 + 0.95f;
 
-            int dist = 300;
+            int dist = 200;
+            if (modPlayer.boughtbuffList[0])
+            {
+                dist += modPlayer.eyeBloodGas / 400 + 100;
+            }
             for (int i = 0; i < Main.projectile.Length; ++i)
             {
-                if (Main.projectile[i].active && Main.projectile[i].Distance(projectile.Center) < dist)
+                Projectile targetPro = Main.projectile[i];
+                if (targetPro.active && !targetPro.friendly && targetPro.Distance(projectile.Center) <= dist)
                 {
                     Projectile p = Main.projectile[i];
-                    p.velocity /= 2f;
+                    if(p != null)
+                        SummonHeartMod.addSlowMap(p);
+                }else if (targetPro.Distance(projectile.Center) > dist)
+                {
+                    SummonHeartMod.deleteSlowMap(targetPro);
                 }
             }
 
@@ -75,14 +89,9 @@ namespace SummonHeart.Projectiles.Weapon
                 NPC npc = Main.npc[i];
                 if (npc.active && !npc.friendly && npc.lifeMax > 5 && npc.Distance(projectile.Center) < dist)
                 {
-                    npc.AddBuff(BuffID.ShadowFlame, 120);
-                    npc.velocity /= 2f;
-                    /*if (WoodForce || WizardEnchant)
-					{
-						npc.AddBuff(BuffID.CursedInferno, 120);
-					}*/
+                    npc.AddBuff(mod.BuffType("EyeBuff"), 120);
+                    npc.velocity *= (1 - (modPlayer.eyeBloodGas / 5000 * 0.01f + 0.2f));
                 }
-
             }
 
             for (int i = 0; i < 10; i++)
@@ -99,16 +108,6 @@ namespace SummonHeart.Projectiles.Weapon
                 if (Main.rand.Next(3) == 0)
                     dust.velocity += Vector2.Normalize(offset) * -5f;
                 dust.noGravity = true;
-                /*Vector2 offset = new Vector2();
-				double angle = Main.rand.NextDouble() * 2d * Math.PI;
-				if (!Collision.SolidCollision(projectile.Center + offset, 0, 0))
-                {
-					offset.X += (float)(Math.Sin(angle) * dist);
-					offset.Y += (float)(Math.Cos(angle) * dist);
-					Dust d = Dust.NewDustPerfect(projectile.Center + offset, DustID.Shadowflame, projectile.velocity, 200, default, 1f);
-					d.fadeIn = 1f;
-					d.noGravity = true;
-                }*/
             }
         }
     }

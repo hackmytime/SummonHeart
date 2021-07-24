@@ -99,22 +99,19 @@ namespace SummonHeart.ui
             {
                 var modbuffpanel = new Layout(10, 0, 0, 0, 10, new LayoutVertical());
 
-                var modlabel = new UIText("魔神练灵诀-魔神召唤传承：召唤之道，向死而生。灵魂不灭，不死不休。");
+                var modlabel = new UIText("魔神练灵诀-魔神召唤传承：凝魂躯，斩化身，练灵眼，控万灵。");
                 modlabel.TextColor = new Color(232, 181, 16);
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
-                modlabel = new UIText("刺客分为魔神之躯神通流和魔神之手一刀流两种流派，两个部位都可特化，只可选择一个修炼。");
+                modlabel = new UIText("踏足灵魂之道，深掘灵魂之力。凝魂躯，介于虚实之间。练灵眼，可控万物");
                 modlabel.TextColor = new Color(232, 181, 16);
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
-                modlabel = new UIText("如果你都修炼了，则魔神之手和魔神之躯气血值高的那个部位效果生效。");
+                modlabel = new UIText("有道是灵魂之路道法妙，魂躯初凝挡万劫，神魂之眸慑八荒，掌控万灵夷四方！");
                 modlabel.TextColor = new Color(232, 181, 16);
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
 
                 int totalBoodGas = mp.eyeBloodGas + mp.handBloodGas + mp.bodyBloodGas + mp.footBloodGas;
                
-                var modlabel_level = new UIText("当前杀意上限：" + mp.killResourceMax2 + " 总气血：" + totalBoodGas + " 死亡次数：" + mp.deathCount + " 战斗力：" + mp.getPower());
-                modlabel_level.TextColor = Color.Red;
-                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("当前神通消耗：" + mp.killResourceCost + "%杀意上限（"+mp.killResourceCostCount+"点杀意值） 杀意伤害倍率：" + mp.killResourceMulti + " 神通附加伤害：" + mp.killResourceCostCount * mp.killResourceMulti);
+                var modlabel_level = new UIText("当前召唤栏：" + mp.player.maxMinions + " 总气血：" + totalBoodGas + " 死亡次数：" + mp.deathCount + " 战斗力：" + mp.getPower());
                 modlabel_level.TextColor = Color.Red;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
 
@@ -157,29 +154,34 @@ namespace SummonHeart.ui
                     praticeText = "【修炼中】";
                 else
                     praticeText = "【暂停修炼】";
-                modlabel_level = new UIText("魔神之眼" + praticeText + " 气血值：" + mp.eyeBloodGas);
+                modlabel_level = new UIText("神魂之眸" + praticeText + " 气血值：" + mp.eyeBloodGas);
                 modlabel_level.TextColor = Color.Orange;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("神念摄魂心为眼：刺杀范围+" + (mp.eyeBloodGas / 800 + 30)+ "格(初始30，每800气血+1)");
+                modlabel_level = new UIText("环视八方：神魂之眸视线范围+" + (mp.eyeBloodGas / 400 + 100)+ "格(初始100，每400气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("以杀入道，看破轮回：每秒回复自身+" + (mp.eyeBloodGas / 100000 + 1) + "%杀意值(初始1%，每100000气血+1)");
+                modlabel_level = new UIText("死亡之眼：视线范围内的敌人移动速度和弹幕飞行速度降低" + (mp.eyeBloodGas / 5000 + 20) + "%(初始20%，每5000气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-
+                modlabel_level = new UIText("震慑神魂：视线范围内的敌人每秒受到10次灵魂攻击，每次攻击造成" + (mp.eyeBloodGas / 1000 + 1) + "点真实伤害(初始1，每1000气血+1)");
+                modlabel_level.TextColor = Color.SkyBlue;
+                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
+                modlabel_level = new UIText("灵魂颤栗：视线范围内的敌人受到攻击必定暴击");
+                modlabel_level.TextColor = Color.SkyBlue;
+                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
                 if (!mp.boughtbuffList[1])
                     praticeText = "【未修炼】";
                 else if (mp.practiceHand)
                     praticeText = "【修炼中】";
                 else
                     praticeText = "【暂停修炼】";
-                modlabel_level = new UIText("魔神之手"+ praticeText + " 气血值：" + mp.handBloodGas);
+                modlabel_level = new UIText("神魂之手"+ praticeText + " 气血值：" + mp.handBloodGas);
                 modlabel_level.TextColor = Color.Orange;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("凝练杀意，动若崩雷：每点杀意值造成伤害+" + (mp.handBloodGas / 3200 + 2) + "点(初始2，每3200气血+1)");
+                modlabel_level = new UIText("灵手附身：灵手分裂附身召唤物，召唤物真实伤害+" + (mp.handBloodGas / 2000 + 10) + "点(初始10，每2000气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("杀意掌控，登峰造极：神通消耗杀意值+" + (mp.handBloodGas / 5333) + "%(每5333气血+1%) 击杀敌人获得" + (mp.handBloodGas / 400) + "点杀意值(每400气血+1)");
+                modlabel_level = new UIText("万灵狂暴：以灵魂之力强化召唤物，召唤武器基础攻击+" + (mp.handBloodGas / 200) + "%(每200气血+1%) ");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
 
@@ -189,13 +191,19 @@ namespace SummonHeart.ui
                     praticeText = "【修炼中】";
                 else
                     praticeText = "【暂停修炼】";
-                modlabel_level = new UIText("魔神之躯" + praticeText + " 气血值：" + mp.bodyBloodGas);
+                modlabel_level = new UIText("神魂之躯" + praticeText + " 气血值：" + mp.bodyBloodGas);
                 modlabel_level.TextColor = Color.Orange;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("万杀炼体，杀意滔天：杀意上限+" + mp.bodyBloodGas / 20 + "(每20气血+1) 每秒回复自身" + (mp.bodyBloodGas / 400 + 15) + "杀意值(初始15，每400+1)");
+                modlabel_level = new UIText("化身初斩，魂躯初凝：修炼需斩第一身外化身，血量永久减半。魂躯介于虚实之间，免疫99%物理接触伤害");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("死气护体，不死不休：死气转化+" + (mp.bodyDef + 500) / 10 + "%（每10肉身强度+1%）神通消耗-" + (mp.bodyBloodGas / 40000 + 10) + "%(初始10%，每40000+1)");
+                modlabel_level = new UIText("化身初斩，魂躯初凝：弹幕伤害减免+" + (mp.bodyBloodGas / 5000 + 20) + "%(初始20%，每5000+1)");
+                modlabel_level.TextColor = Color.SkyBlue;
+                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
+                modlabel_level = new UIText("近乎灵体，形若鬼魅：移动速度+66%，免疫摔落伤害");
+                modlabel_level.TextColor = Color.SkyBlue;
+                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
+                modlabel_level = new UIText("掌控万灵，魔力亲和：召唤栏位+" + (mp.bodyDef / 10000 + 5) + "（初始5，每10000气血+1）最大法力值+" + (mp.bodyBloodGas / 200 + 200) + "(初始200，每200+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
 
@@ -205,10 +213,10 @@ namespace SummonHeart.ui
                     praticeText = "【修炼中】";
                 else
                     praticeText = "【暂停修炼】";
-                modlabel_level = new UIText("魔神之腿" + praticeText + " 气血值：" + mp.footBloodGas);
+                modlabel_level = new UIText("神魂之腿" + praticeText + " 气血值：" + mp.footBloodGas);
                 modlabel_level.TextColor = Color.Orange;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("风驰电掣，雷厉风行：跳跃速度+" + (mp.footBloodGas / 500 + 100) + "%(初始100%，每400气血+1)");
+                modlabel_level = new UIText("灵魂漫步：跳跃速度+" + (mp.footBloodGas / 500 + 100) + "%(初始100%，每400气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
                 modlabel_level = new UIText("天涯海角，一步跨之：飞行时间+" + (mp.footBloodGas/1000 + 10) + "秒(初始10，每1000气血+1)");
@@ -321,7 +329,7 @@ namespace SummonHeart.ui
                 panelwrapper.children.Add(modbuffpanel);
             }
 
-            buffIndex = 0;
+           /* buffIndex = 0;
             {
                 var modbuffpanel = new Layout(10, 0, 0, 0, 10, new LayoutVertical());
 
@@ -429,7 +437,7 @@ namespace SummonHeart.ui
                 }
 
                 panelwrapper.children.Add(modbuffpanel);
-            }
+            }*/
 
             panelwrapper.Recalculate();
 

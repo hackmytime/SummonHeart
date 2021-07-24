@@ -193,7 +193,7 @@ namespace SummonHeart.ui
                 modlabel_level = new UIText("掌凝万灵肇天撼地：近战攻速+" + (mp.handBloodGas / 1111 + 20) + "%(初始20%，每1111气血+1) 攻击范围+" + (mp.handBloodGas / 1333 + 50) + "%(初始50%，每1333气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("指天天裂划地地崩：近战攻击+" + mp.handBloodGas / 200 + "%(每200气血+1) 近战额外弹幕+" + (mp.handBloodGas / 50000 + 1) + "(初始1，每50000+1,练满额外+1)");
+                modlabel_level = new UIText("指天天裂划地地崩：近战武器基础攻击+" + mp.handBloodGas / 200 + "%(每200气血+1) 近战额外弹幕+" + (mp.handBloodGas / 50000 + 1) + "(初始1，每50000+1,练满额外+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
 

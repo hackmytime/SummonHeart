@@ -23,6 +23,10 @@ namespace SummonHeart
 
 		internal static List<BuffValue> modBuffValues = new List<BuffValue>();
 
+		static List<Projectile> slowProList = new List<Projectile>();
+
+		static Dictionary<Projectile, Vector2> oldProMap = new Dictionary<Projectile, Vector2>();
+
 		public static int DustIDSlashFX;
 
 		// Hotkeys
@@ -49,6 +53,56 @@ namespace SummonHeart
 			modBuffValues = new List<BuffValue>();
 			modBuffValues = VanilaBuffs.getVanilla();
 			Instance = this;
+		}
+
+		public static void addSlowMap(Projectile p)
+		{
+			//判断是否包含
+			if (!slowProList.Contains(p))
+            {
+				slowProList.Add(p);
+                Vector2 velocity = new Vector2();
+				velocity = p.velocity;
+				oldProMap[p] = velocity;
+			}
+		}
+
+		public static void deleteSlowMap(Projectile p)
+		{
+			//判断是否包含
+			if (slowProList.Contains(p))
+			{
+				p.velocity = oldProMap[p];
+				slowProList.Remove(p);
+				oldProMap.Remove(p);
+			}
+		}
+
+		private void updateMap()
+		{
+			Player player = Main.player[Main.myPlayer];
+			SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
+			//遍历value
+			List<Projectile> delList = new List<Projectile>();
+			foreach (Projectile p in slowProList)
+			{
+				//判断p是否存活
+				if (!p.active)
+				{
+					delList.Add(p);
+				}
+				else
+				{
+					Vector2 vector2 = oldProMap[p];
+					p.velocity = vector2 *= (1 - (modPlayer.eyeBloodGas / 5000 * 0.01f + 0.2f));
+				}
+			}
+
+			//删除死亡的弹幕
+			foreach (Projectile p in delList)
+			{
+				slowProList.Remove(p);
+			}
 		}
 
 		public override void Load()
@@ -145,6 +199,7 @@ namespace SummonHeart
 
         public override void PostDrawInterface(SpriteBatch spriteBatch)
         {
+			updateMap();
 			foreach (NPC npc2 in Main.npc)
 			{
 				if (npc2.active && npc2.type != 0)
@@ -193,6 +248,8 @@ namespace SummonHeart
 				}
 			}
 		}
+
+       
 
         public override void AddRecipes()
 		{
@@ -246,6 +303,7 @@ namespace SummonHeart
 						summonHeartPlayer.bloodGasMax = reader.ReadInt32();
 						summonHeartPlayer.swordBlood = reader.ReadInt32();
 						summonHeartPlayer.shortSwordBlood = reader.ReadInt32();
+						summonHeartPlayer.flySwordBlood = reader.ReadInt32();
 						summonHeartPlayer.swordBloodMax = reader.ReadInt32();
 						summonHeartPlayer.practiceEye = reader.ReadBoolean();
 						summonHeartPlayer.practiceHand = reader.ReadBoolean();
@@ -274,6 +332,7 @@ namespace SummonHeart
 							packet.Write(summonHeartPlayer.bloodGasMax);
 							packet.Write(summonHeartPlayer.swordBlood);
 							packet.Write(summonHeartPlayer.shortSwordBlood);
+							packet.Write(summonHeartPlayer.flySwordBlood);
 							packet.Write(summonHeartPlayer.swordBloodMax);
 							packet.Write(summonHeartPlayer.practiceEye);
 							packet.Write(summonHeartPlayer.practiceHand);

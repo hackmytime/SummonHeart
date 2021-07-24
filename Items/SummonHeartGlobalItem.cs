@@ -112,19 +112,19 @@ namespace SummonHeart.Items
             int num2 = tooltips.FindIndex((TooltipLine t) => t.Name.Equals("Damage"));
             if (num2 != -1)
             {
-                if (item.summon)
+                /*if (item.summon)
                 {
-                    if(modPlayer.boughtbuffList[0])
+                    if (modPlayer.boughtbuffList[0])
                     {
-                        string text2 = (modPlayer.eyeBloodGas / 1000 + 20) + "%" + (GameCulture.Chinese.IsActive ? "暴击率" : "Critical Strike Chance");
+                        string text2 = (modPlayer.eyeBloodGas / 1000 + 20) + "%" + (GameCulture.Chinese.IsActive ? "暴击率" : "CritChance");
                         tooltips.Insert(num2 + 1, new TooltipLine(base.mod, "SRC:MinionCrit", text2));
                     }
                     else
                     {
-                        string text2 = modPlayer.eyeBloodGas / 1000 + "%" + (GameCulture.Chinese.IsActive ? "暴击率" : "Critical Strike Chance");
+                        string text2 = modPlayer.eyeBloodGas / 1000 + "%" + (GameCulture.Chinese.IsActive ? "暴击率" : "CritChance");
                         tooltips.Insert(num2 + 1, new TooltipLine(base.mod, "SRC:MinionCrit", text2));
                     }
-                }
+                }*/
             }
             int num4 = tooltips.FindIndex((TooltipLine t) => t.Name.Equals("Speed"));
             if (num4 != -1)

@@ -2,18 +2,14 @@
 using SummonHeart.Effects.Animations.Aura;
 using SummonHeart.Extensions;
 using SummonHeart.Models;
-using SummonHeart.Projectiles.Melee;
 using SummonHeart.Projectiles.Summon;
-using SummonHeart.Projectiles.Weapon;
 using SummonHeart.ui;
 using SummonHeart.Utilities;
-using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameInput;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using static SummonHeart.SummonHeartMod;
@@ -60,6 +56,7 @@ namespace SummonHeart
 
 		public int swordBlood = 1;
 		public int shortSwordBlood = 1;
+		public int flySwordBlood = 1;
 		public int swordBloodMax = 100;
 
 		public bool practiceEye = false;
@@ -148,25 +145,13 @@ namespace SummonHeart
 				player.respawnTimer = 300;
 			}
 
-			if (this.accBuryTheLight && !base.player.dead)
-			{
-				if (base.player.HeldItem.damage > 0 && base.player.itemAnimation > 0)
-				{
-					this.AccBuryTheLight();
-				}
-				else if (this.buryTheLightStarted)
-				{
-					this.buryTheLightStarted = false;
-				}
-			}
-
 			if (Main.netMode != 2)
 			{
 				ModPlayerEffects.UpdateColors(player);
 			}
 		}
 
-		private void AccBuryTheLight()
+		/*private void AccBuryTheLight()
 		{
 			NPC target = Helper.GetNearestNPC(base.player.position, (NPC npc) => !npc.friendly && npc.active && !npc.dontTakeDamage, 600f);
 			if (target == null)
@@ -190,7 +175,7 @@ namespace SummonHeart
 				return;
 			}
 			this.buryTheLightCooldown--;
-		}
+		}*/
 	
 		public override void PostUpdate()
 		{
@@ -216,21 +201,44 @@ namespace SummonHeart
 			}
 		}
 
-        private void EffectSummon()
-        {
-			if(player.ownedProjectileCounts(mod.ProjectileType("Overgrowth")) < 1)
+		private void EffectSummon()
+		{
+			// 眼
+			if (boughtbuffList[0])
             {
-				//Projectile.NewProjectile(player.position, Vector2.Zero, mod.ProjectileType("Overgrowth"), 0, 0f, player.whoAmI);
+				if (player.ownedProjectileCounts(mod.ProjectileType("Overgrowth")) < 1)
+				{
+					Projectile.NewProjectile(player.position, Vector2.Zero, mod.ProjectileType("Overgrowth"), 0, 0f, player.whoAmI);
+				}
             }
-			player.EbonEffect(eyeProjectile);
 
-			/*if (player.whoAmI == Main.myPlayer)
+			// 手
+			if (boughtbuffList[1])
 			{
-				if (player.ownedProjectileCounts(ModContent.ProjectileType<EmpyreanSpectre>()) < 1)
-					Projectile.NewProjectile(player.Center, Vector2.Zero, ModContent.ProjectileType<EmpyreanSpectre>(), 0, 0f, player.whoAmI);
-			}*/
-			MyMoveSpeedMult += 0.5f;
-			MyMoveSpeedMult += 0.5f;
+
+			}
+
+			// 躯
+			if (boughtbuffList[2])
+			{
+                if (player.whoAmI == Main.myPlayer)
+                {
+                    if (player.ownedProjectileCounts(ModContent.ProjectileType<EmpyreanSpectre>()) < 1)
+                        Projectile.NewProjectile(player.Center, Vector2.Zero, ModContent.ProjectileType<EmpyreanSpectre>(), 0, 0f, player.whoAmI);
+                }
+				player.noFallDmg = true;
+				MyMoveSpeedMult += 0.66f;
+				player.maxMinions += (bodyBloodGas / 10000) + 5;
+				player.statLifeMax2 /= 2;
+				player.statManaMax2 += bodyBloodGas / 400 + 200;
+			}
+
+			// 腿
+			if (boughtbuffList[3])
+			{
+				player.wingTimeMax += (footBloodGas / 1000 + 10) * 60;
+				player.jumpSpeedBoost += (footBloodGas / 400 + 100) * 0.01f;
+			}
 		}
 
 		private void EffectKill()
@@ -300,7 +308,7 @@ namespace SummonHeart
 			//魔神之手
 			if (boughtbuffList[1])
 			{
-				player.meleeDamage += handBloodGas / 200 * 0.01f;
+				//player.meleeDamage += handBloodGas / 200 * 0.01f;
 				AttackSpeed += (handBloodGas / 1111 + 20) * 0.01f;
 			}
 
@@ -448,25 +456,6 @@ namespace SummonHeart
 				SummonCrit = 500;
 		}
 
-		
-
-		public void CauseDirectDamage(NPC npc, int originalDamage, bool crit)
-		{
-			/*Player player = Main.player[Main.myPlayer];
-            SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
-
-			int num = 0;
-			if (crit)
-				originalDamage *= 2;
-
-            if (modPlayer.SummonHeart)
-                num = originalDamage * SummonCrit / 5000 + SummonCrit / 5 + SummonHeartWorld.WorldLevel * 5;
-
-			if (num >= 1)
-			{
-				npc.LoseLife(num, new Color?(new Color(240, 20, 20, 255)));
-			}*/
-		}
 		public override void SetupStartInventory(IList<Item> items, bool mediumcoreDeath)
         {
 			Item item = new Item();
@@ -538,6 +527,7 @@ namespace SummonHeart
 			clone.bloodGasMax = bloodGasMax;
 			clone.swordBlood = swordBlood;
 			clone.shortSwordBlood = shortSwordBlood;
+			clone.flySwordBlood = flySwordBlood;
 			clone.swordBloodMax = swordBloodMax;
 			clone.practiceEye = practiceEye;
 			clone.practiceHand = practiceHand;
@@ -565,6 +555,7 @@ namespace SummonHeart
 			packet.Write(bloodGasMax);
 			packet.Write(swordBlood);
 			packet.Write(shortSwordBlood);
+			packet.Write(flySwordBlood);
 			packet.Write(swordBloodMax);
 			packet.Write(practiceEye);
 			packet.Write(practiceHand);
@@ -588,7 +579,7 @@ namespace SummonHeart
 					|| clone.eyeBloodGas != eyeBloodGas || clone.handBloodGas != handBloodGas
 					|| clone.bodyBloodGas != bodyBloodGas || clone.footBloodGas != footBloodGas
 					|| clone.bloodGasMax != bloodGasMax || clone.swordBlood != swordBlood
-					|| clone.shortSwordBlood != shortSwordBlood || clone.swordBloodMax != swordBloodMax
+					|| clone.shortSwordBlood != shortSwordBlood || clone.flySwordBlood != flySwordBlood || clone.swordBloodMax != swordBloodMax
 					|| clone.practiceEye != practiceEye || clone.practiceHand != practiceHand
 					|| clone.practiceBody != practiceBody || clone.practiceFoot != practiceFoot
 					|| clone.soulSplit != soulSplit)
@@ -621,6 +612,7 @@ namespace SummonHeart
 				packet.Write(bloodGasMax);
 				packet.Write(swordBlood);
 				packet.Write(shortSwordBlood);
+				packet.Write(flySwordBlood);
 				packet.Write(swordBloodMax);
 				packet.Write(practiceEye);
 				packet.Write(practiceHand);
@@ -651,6 +643,7 @@ namespace SummonHeart
 			tagComp.Add("bloodGasMax", bloodGasMax);
 			tagComp.Add("swordBlood", swordBlood);
 			tagComp.Add("shortSwordBlood", shortSwordBlood);
+			tagComp.Add("flySwordBlood", flySwordBlood);
 			tagComp.Add("swordBloodMax", swordBloodMax);
 			tagComp.Add("killResourceCurrent", killResourceCurrent);
 			tagComp.Add("deathResourceCurrent", deathResourceCurrent);
@@ -678,6 +671,7 @@ namespace SummonHeart
 			bloodGasMax = tag.GetInt("bloodGasMax");
 			swordBlood = tag.GetInt("swordBlood");
 			shortSwordBlood = tag.GetInt("shortSwordBlood");
+			flySwordBlood = tag.GetInt("flySwordBlood");
 			swordBloodMax = tag.GetInt("swordBloodMax");
 			killResourceCurrent = tag.GetInt("killResourceCurrent");
 			deathResourceCurrent = tag.GetInt("deathResourceCurrent");
@@ -827,6 +821,12 @@ namespace SummonHeart
 				if (damage < 1)
 					damage = 1;
 			}
+			if (PlayerClass == 3 && boughtbuffList[2])
+			{
+				damage = (int)(damage * 0.01f);
+				if (damage < 1)
+					damage = 1;
+			}
 			
 		}
 		//允许您修改 NPC 弹幕对该玩家造成的伤害等
@@ -835,6 +835,12 @@ namespace SummonHeart
 			if (PlayerClass == 1 && boughtbuffList[2])
 			{
 				damage = (int)(damage * (1 - bodyBloodGas / 5000 * 0.01f));
+				if (damage < 1)
+					damage = 1;
+			}
+			if (PlayerClass == 3 && boughtbuffList[2])
+			{
+				damage = (int)(damage * (1 - 0.2 - bodyBloodGas / 5000 * 0.01f));
 				if (damage < 1)
 					damage = 1;
 			}
@@ -924,10 +930,29 @@ namespace SummonHeart
 			return AttackSpeed;
 		}
 
-        /*public override float UseTimeMultiplier(Item item)
+        public override void ModifyWeaponDamage(Item item, ref float add, ref float mult, ref float flat)
         {
-			
-		}*/
+			float baseAdd = add;
+			float heartAdd = 1f;
+			if(PlayerClass == 1 && item.melee)
+            {
+				//战士
+				if (boughtbuffList[1])
+				{
+					heartAdd += handBloodGas / 200 * 0.01f;
+				}
+			}
+			if(PlayerClass == 3 && item.summon)
+            {
+                //召唤师
+                if (boughtbuffList[1])
+                {
+					heartAdd += handBloodGas / 200 * 0.01f;
+				}
+            }
+			add = heartAdd * baseAdd;
+			base.ModifyWeaponDamage(item, ref add, ref mult, ref flat);
+        }
 
         public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource)
         {
@@ -990,7 +1015,6 @@ namespace SummonHeart
 			{
 				damage *= (int)(eyeBloodGas / 2000 * 0.01 + 1);
 			}
-			this.CauseDirectDamage(target, damage, crit);
 		}
 
         public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
@@ -999,7 +1023,6 @@ namespace SummonHeart
 			{
 				damage *= (int)(eyeBloodGas / 2000 * 0.01 + 1);
 			}
-			this.CauseDirectDamage(target, damage, crit);
 		}
 
         public override void PostUpdateRunSpeeds()

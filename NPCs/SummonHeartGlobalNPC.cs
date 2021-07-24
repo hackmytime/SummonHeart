@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using SummonHeart.Extensions;
 using System;
 using Terraria;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -519,7 +520,7 @@ namespace SummonHeart.NPCs
 
 		}
 
-		public void CauseDirectDamage(NPC npc, int originalDamage, bool crit)
+		public void CauseDirectDamage(NPC npc, int originalDamage, bool crit, int addRealDmage)
 		{
 			Player player = Main.player[Main.myPlayer];
 			SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
@@ -531,6 +532,10 @@ namespace SummonHeart.NPCs
 			if (modPlayer.SummonHeart)
 				num = originalDamage * modPlayer.SummonCrit / 5000 + modPlayer.SummonCrit / 5 + SummonHeartWorld.WorldLevel * 5;
 
+			if (modPlayer.PlayerClass == 3 && modPlayer.boughtbuffList[1])
+				num += 10 + modPlayer.handBloodGas / 2000;
+
+			num += addRealDmage;
 			if (num >= 1)
 			{
 				CombatText.NewText(new Rectangle((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height), new Color(240, 20, 20, 255), string.Concat(num), false, true);
@@ -543,6 +548,26 @@ namespace SummonHeart.NPCs
 					{
 						NetMessage.SendData(28, -1, -1, null, npc.whoAmI, 9999f);
 					}*/
+				}
+				if (Main.netMode == 1)
+				{
+					SyncNpcVariables(npc);
+				}
+			}
+		}
+
+		public void CauseRealDamage(NPC npc, int realDamage)
+		{
+			Player player = Main.player[Main.myPlayer];
+			SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
+			if (realDamage >= 1)
+			{
+				CombatText.NewText(new Rectangle((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height), new Color(240, 20, 20, 255), string.Concat(realDamage), false, true);
+				npc.life -= realDamage;
+				if (npc.life <= 0)
+				{
+					npc.life = 1;
+					npc.AddBuff(mod.BuffType("SoulSplit"), 200);
 				}
 				if (Main.netMode == 1)
 				{
@@ -574,10 +599,49 @@ namespace SummonHeart.NPCs
 			}
 		}
 
-		public override void ModifyHitByItem(NPC npc, Player player, Item item, ref int damage, ref float knockback, ref bool crit)
+        public override void DrawEffects(NPC npc, ref Color drawColor)
+        {
+			if (npc.HasBuff(mod.BuffType("EyeBuff")))
+			{
+				if (Main.rand.Next(4) < 3)
+				{
+					int dust = Dust.NewDust(new Vector2(npc.position.X - 2f, npc.position.Y - 2f), npc.width + 4, npc.height + 4, DustID.Blood, npc.velocity.X * 0.4f, npc.velocity.Y * 0.4f, 100);
+					Main.dust[dust].noGravity = true;
+					Main.dust[dust].shader = GameShaders.Armor.GetSecondaryShader(56, Main.LocalPlayer);
+
+					Dust expr_1CCF_cp_0 = Main.dust[dust];
+					expr_1CCF_cp_0.velocity.Y = expr_1CCF_cp_0.velocity.Y - 0.5f;
+					if (Main.rand.Next(4) == 0)
+					{
+						Main.dust[dust].noGravity = false;
+						Main.dust[dust].scale *= 0.5f;
+					}
+				}
+				Player player = Main.player[Main.myPlayer];
+				SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
+				if (Main.time % 6 == 0)
+                {
+                    int dmage = modPlayer.eyeBloodGas / 1000 + 1;
+					this.CauseRealDamage(npc, dmage);
+					if (modPlayer.soulSplit)
+					{
+						if (!npc.HasBuff(mod.BuffType("SoulSplit")))
+						{
+							soulSplitCount = 1;
+						}
+						npc.AddBuff(mod.BuffType("SoulSplit"), 200);
+					}
+				}
+			}
+		}
+
+        public override void ModifyHitByItem(NPC npc, Player player, Item item, ref int damage, ref float knockback, ref bool crit)
         {
 			SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
-			
+			if (npc.HasBuff(mod.BuffType("EyeBuff")))
+			{
+				crit = true;
+			}
 			if (modPlayer.soulSplit)
 			{
 				if (!npc.HasBuff(mod.BuffType("SoulSplit")))
@@ -593,7 +657,7 @@ namespace SummonHeart.NPCs
 					damage += modPlayer.killResourceCostCount * modPlayer.killResourceMulti;
 				}
 			}
-			this.CauseDirectDamage(npc, damage, crit);
+			this.CauseDirectDamage(npc, damage, crit, 0);
 		}
 
         public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
@@ -601,8 +665,10 @@ namespace SummonHeart.NPCs
 			Mod Calamity = ModLoader.GetMod("CalamityMod");
 			Player player = Main.player[projectile.owner];
             SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
-			
-			this.CauseDirectDamage(npc, damage, crit);
+			if (npc.HasBuff(mod.BuffType("EyeBuff")))
+            {
+				crit = true;
+            }
 			if (modPlayer.soulSplit)
 			{
 				if (!npc.HasBuff(mod.BuffType("SoulSplit")))
@@ -611,7 +677,17 @@ namespace SummonHeart.NPCs
 				}
 				npc.AddBuff(mod.BuffType("SoulSplit"), 200);
 			}
-            /*if (modPlayer.boughtbuffList[0])
+			//神灭
+			int addRealDmage = 0;
+			if (projectile.modProjectile != null && projectile.modProjectile.Name == "DemonFlySwordMinion")
+			{
+				if (modPlayer.PlayerClass == 3)
+				{
+					addRealDmage += modPlayer.flySwordBlood;
+				}
+			}
+			this.CauseDirectDamage(npc, damage, crit, addRealDmage);
+			/*if (modPlayer.boughtbuffList[0])
             {
 				if (projectile.minion && Main.rand.Next(101) <= (modPlayer.eyeBloodGas + 30000) / 1500)
 				{

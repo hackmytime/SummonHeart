@@ -14,10 +14,10 @@ namespace SummonHeart.Items.Scrolls
             DisplayName.AddTranslation(GameCulture.Chinese, "魔神传承·召唤");
             Tooltip.AddTranslation(GameCulture.Chinese, "魔神之子使用可领悟魔神练灵诀" +
                 "\n魔神根据灵魂法则所创，可练灵魂之力入体。" +
-                "\n把肉体炼化成灵魂体，可达到几乎物理免疫的效果" +
-                "\n修炼此功法大成者" +
-                "\n灵眼，灵手。" +
-                "\n灵躯，灵腿！");
+                "\n凝魂躯，斩化身，练灵眼，控万灵。" +
+                "\n有道是：" +
+                "\n神魂之路道法妙，魂躯初凝挡万劫!" +
+                "\n神魂之眸慑八荒，掌控万灵夷四方！");
         }
 
         public override void SetDefaults()

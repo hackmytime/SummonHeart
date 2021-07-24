@@ -17,7 +17,7 @@ namespace SummonHeart.Buffs.Weapon
 
         public override void Update(Player player, ref int buffIndex)
         {
-            if (player.ownedProjectileCounts[ModContent.ProjectileType<BladeStaffMinion>()] > 0)
+            if (player.ownedProjectileCounts[ModContent.ProjectileType<DemonFlySwordMinion>()] > 0)
             {
                 player.buffTime[buffIndex] = 18000;
                 return;

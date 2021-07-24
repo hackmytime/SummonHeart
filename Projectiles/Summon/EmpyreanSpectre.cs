@@ -19,7 +19,7 @@ namespace SummonHeart.Projectiles.Summon
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Empyrean Spectre");
-            DisplayName.AddTranslation(GameCulture.Chinese, "皇天幻影");
+            DisplayName.AddTranslation(GameCulture.Chinese, "身外化身");
             Main.projFrames[projectile.type] = 4;
             ProjectileID.Sets.TrailingMode[projectile.type] = 0;
             ProjectileID.Sets.TrailCacheLength[projectile.type] = 6;
@@ -34,6 +34,7 @@ namespace SummonHeart.Projectiles.Summon
             projectile.timeLeft = 60 * 60 * 24 * 30;
             projectile.soundDelay = 0;
             projectile.friendly = true;
+            projectile.localNPCHitCooldown = 10;
             Role = 0;
             WeaponRotation = 0f;
             WeaponPosition = Vector2.Zero;

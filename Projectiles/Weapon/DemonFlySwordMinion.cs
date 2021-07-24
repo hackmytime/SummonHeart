@@ -10,11 +10,11 @@ using Terraria.World.Generation;
 
 namespace SummonHeart.Projectiles.Weapon
 {
-    public class BladeStaffMinion : ModProjectile
+    public class DemonFlySwordMinion : ModProjectile
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Enchanted Daggers");
+            DisplayName.SetDefault("DemonFlySwordMinion");
             Main.projFrames[projectile.type] = 1;
             ProjectileID.Sets.MinionTargettingFeature[projectile.type] = true;
             ProjectileID.Sets.TrailingMode[projectile.type] = 2;
@@ -177,7 +177,7 @@ namespace SummonHeart.Projectiles.Weapon
         public override void AI()
         {
             Player player = Main.player[projectile.owner];
-            Vector2 vector = player.Top + new Vector2(-10f, -30f);
+            Vector2 vector = player.Top + new Vector2(-10f, -20f);
             int BladeMinionBuff = ModContent.BuffType<BladeStaffBuff>();
             if (player.HasBuff(BladeMinionBuff))
             {
