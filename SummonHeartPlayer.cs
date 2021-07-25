@@ -490,6 +490,10 @@ namespace SummonHeart
 			item.stack = 1;
 			items.Add(item);
 			item = new Item();
+			item.SetDefaults(ItemID.QueenSpiderStaff);
+			item.stack = 1;
+			items.Add(item);
+			item = new Item();
 			item.SetDefaults(ItemID.WaterBucket);
 			item.stack = 2;
 			items.Add(item);
