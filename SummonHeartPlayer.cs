@@ -206,10 +206,14 @@ namespace SummonHeart
 			// 眼
 			if (boughtbuffList[0])
             {
-				if (player.ownedProjectileCounts(mod.ProjectileType("Overgrowth")) < 1)
+				if (practiceEye && player.ownedProjectileCounts(mod.ProjectileType("Overgrowth")) < 1)
 				{
 					Projectile.NewProjectile(player.position, Vector2.Zero, mod.ProjectileType("Overgrowth"), 0, 0f, player.whoAmI);
-				}
+                }
+                if(!practiceEye && player.ownedProjectileCounts(mod.ProjectileType("Overgrowth")) > 0)
+                {
+					player.ownedProjectileKill(mod.ProjectileType("Overgrowth"));
+                }
             }
 
 			// 手
@@ -223,12 +227,14 @@ namespace SummonHeart
 			{
                 if (player.whoAmI == Main.myPlayer)
                 {
-                    if (player.ownedProjectileCounts(ModContent.ProjectileType<EmpyreanSpectre>()) < 1)
-                        Projectile.NewProjectile(player.Center, Vector2.Zero, ModContent.ProjectileType<EmpyreanSpectre>(), 0, 0f, player.whoAmI);
+					if (practiceBody && player.ownedProjectileCounts(ModContent.ProjectileType<EmpyreanSpectre>()) < 1)
+						Projectile.NewProjectile(player.Center, Vector2.Zero, ModContent.ProjectileType<EmpyreanSpectre>(), 0, 0f, player.whoAmI);
+					if (!practiceBody && player.ownedProjectileCounts(ModContent.ProjectileType<EmpyreanSpectre>()) >= 1)
+						player.ownedProjectileKill(ModContent.ProjectileType<EmpyreanSpectre>());
                 }
 				player.noFallDmg = true;
 				MyMoveSpeedMult += 0.66f;
-				player.maxMinions += (bodyBloodGas / 10000) + 5;
+				player.maxMinions += (bodyBloodGas / 10000) + 3;
 				player.statLifeMax2 /= 2;
 				player.statManaMax2 += bodyBloodGas / 400 + 200;
 			}

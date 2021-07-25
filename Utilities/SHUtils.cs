@@ -59,6 +59,14 @@ namespace SummonHeart.Utilities
             }
             return amt;
         }
+        public static void ownedProjectileKill(this Player player, int type)
+        {
+            for (int i = 0; i < Main.projectile.Length; i++)
+            {
+                Projectile projectile = Main.projectile[i];
+                if (projectile.active && projectile.type == type && projectile.owner == player.whoAmI) projectile.Kill();
+            }
+        }
         public static int TransFloatToInt(float num)
         {
             int low = (int)num;

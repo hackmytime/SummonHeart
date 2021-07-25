@@ -33,7 +33,7 @@ namespace SummonHeart.body
             this.def = def;
             this.effect = effect;
             this.name = "生命水晶";
-            this.cost = new CostValue[] { new ItemCostValue(ItemID.LifeCrystal, 10, name), new MoneyCostValue(10000) };
+            this.cost = new CostValue[] { new ItemCostValue(ItemID.LifeCrystal, 5, name), new MoneyCostValue(20000) };
         }
     }
 }

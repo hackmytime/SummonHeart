@@ -62,7 +62,7 @@ namespace SummonHeart.Items.Weapons.Sabres
             item.useAnimation = 22;
 
             item.rare = -12;
-            item.value = Item.buyPrice(0, 99, 0, 0);
+            item.value = Item.sellPrice(999, 0, 0, 0);
         }
 
         public override bool AllowPrefix(int pre)

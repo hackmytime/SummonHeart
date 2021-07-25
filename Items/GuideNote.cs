@@ -45,7 +45,7 @@ namespace SummonHeart.Items
             item.width = 32;
             item.height = 32;
             item.maxStack = 1;
-            item.value = Item.sellPrice(250,0,0,0); ;
+            item.value = Item.sellPrice(250,0,0,0);
             item.rare = 10;
         }
     }

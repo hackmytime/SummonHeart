@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using SummonHeart.body;
 using SummonHeart.costvalues;
 using SummonHeart.Extensions;
+using SummonHeart.Items.Material;
 using SummonHeart.ui.layout;
 using System.Collections.Generic;
 using Terraria;
@@ -203,7 +204,7 @@ namespace SummonHeart.ui
                 modlabel_level = new UIText("近乎灵体，形若鬼魅：移动速度+66%，免疫摔落伤害");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("掌控万灵，魔力亲和：召唤栏位+" + (mp.bodyDef / 10000 + 5) + "（初始5，每10000气血+1）最大法力值+" + (mp.bodyBloodGas / 200 + 200) + "(初始200，每200+1)");
+                modlabel_level = new UIText("掌控万灵，魔力亲和：召唤栏位+" + (mp.bodyBloodGas / 10000 + 3) + "（初始3，每10000气血+1）最大法力值+" + (mp.bodyBloodGas / 200 + 200) + "(初始200，每200+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
 
@@ -279,6 +280,10 @@ namespace SummonHeart.ui
                                             v.Buy();
                                         }
                                         mp.boughtbuffList[currentBuffIndex] = true;
+                                        if(currentBuffIndex == 2)
+                                        {
+                                            Item.NewItem(mp.player.Center, ModContent.ItemType<SoulCrystal>());
+                                        }
                                         mp.bodyDef += buff.def;
                                         needValidate = true;
                                         if (Main.netMode == NetmodeID.MultiplayerClient)

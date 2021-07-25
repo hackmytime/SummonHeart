@@ -51,7 +51,7 @@ namespace SummonHeart.Items.Weapons.Summon
             item.rare = 5;
             item.noMelee = true;
             item.knockBack = 0f;
-            item.value = Item.sellPrice(99, 0, 0, 0);
+            item.value = Item.sellPrice(999, 0, 0, 0);
             item.summon = true;
             item.autoReuse = true;
         }
@@ -122,6 +122,7 @@ namespace SummonHeart.Items.Weapons.Summon
             ModRecipe recipe = new ModRecipe(mod);
             recipe.AddIngredient(mod.GetItem("GuideNote"), 1);
             recipe.AddIngredient(mod.GetItem("SummonScroll"), 1);
+            recipe.AddIngredient(mod.GetItem("SoulCrystal"), 1);
             recipe.SetResult(this);
             recipe.AddRecipe();
         }
