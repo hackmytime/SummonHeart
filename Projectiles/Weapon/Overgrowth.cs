@@ -90,7 +90,7 @@ namespace SummonHeart.Projectiles.Weapon
                 if (npc.active && !npc.friendly && npc.lifeMax > 5 && npc.Distance(projectile.Center) < dist)
                 {
                     npc.AddBuff(mod.BuffType("EyeBuff"), 120);
-                    npc.velocity *= (1 - (modPlayer.eyeBloodGas / 5000 * 0.01f + 0.2f));
+                    npc.velocity *= (1 - (modPlayer.eyeBloodGas / 5000 * 0.01f + 0.1f));
                 }
             }
 

@@ -5,6 +5,7 @@ using SummonHeart.body;
 using SummonHeart.Extensions;
 using SummonHeart.NPCs;
 using SummonHeart.ui;
+using SummonHeart.ui.Bar;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -38,13 +39,18 @@ namespace SummonHeart
 		internal PanelKill PanelKillUI;
 		internal PanelSummon panelSummonUI;
 		public UserInterface somethingInterface;
-		public UserInterface tooltipInterface;
+
+		internal PanelMelee2 melee2UI;
+		public UserInterface melee2Interface;
 
 		internal KillBar ExampleResourceBar;
 		private UserInterface KillResourceBarUserInterface;
 
 		internal DeathBar DeathResourceBar;
 		private UserInterface DeathResourceBarInterface;
+		
+		internal AngerBar angerBar;
+		private UserInterface angerBarInterface;
 
 		public static SummonHeartMod Instance;
 
@@ -153,6 +159,18 @@ namespace SummonHeart
 						panelSummonUI.Initialize();
 						somethingInterface = new UserInterface();
 						somethingInterface.SetState(panelSummonUI);
+					}else if (modPlayer.PlayerClass == 4)
+                    {
+						//狂战
+						melee2UI = new PanelMelee2();
+						melee2UI.Initialize();
+						melee2Interface = new UserInterface();
+						melee2Interface.SetState(melee2UI);
+						//怒气条
+						angerBar = new AngerBar();
+						angerBar.Activate();
+						angerBarInterface = new UserInterface();
+						angerBarInterface.SetState(angerBar);
 					}
 				}
 				catch (Exception ex)
@@ -268,6 +286,11 @@ namespace SummonHeart
 			recipe.needWater = true;
 			recipe.needLava = true;
 			recipe.SetResult(ItemID.Obsidian, 5);
+			recipe.AddRecipe();
+			recipe = new ModRecipe(this);
+			recipe.AddIngredient(ModLoader.GetMod("SummonHeart").ItemType("GuideNote"), 1);
+			recipe.AddIngredient(ModLoader.GetMod("SummonHeart").ItemType("MeleeScroll2"), 1);
+			recipe.SetResult(ModLoader.GetMod("SummonHeart").ItemType("DemonSword"));
 			recipe.AddRecipe();
 			/*Mod Calamity = ModLoader.GetMod("CalamityMod");
 			if(Calamity != null)
@@ -401,7 +424,7 @@ namespace SummonHeart
 			Player player = Main.player[Main.myPlayer];
 			SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
 			
-			if(modPlayer.PlayerClass == 1)
+			if (modPlayer.PlayerClass == 1)
             {
 				if (!Main.gameMenu && PanelMelee.visible)
 				{
@@ -470,6 +493,36 @@ namespace SummonHeart
 					panelSummonUI.needValidate = true;
 				}
 			}
+			else if (modPlayer.PlayerClass == 4)
+			{
+				if (!Main.gameMenu && PanelMelee2.visible)
+				{
+					melee2Interface?.Update(gameTime);
+				}
+				else
+				{
+					if (melee2UI == null)
+					{
+						melee2UI = new PanelMelee2();
+						melee2UI.Initialize();
+						melee2Interface = new UserInterface();
+						melee2Interface.SetState(melee2UI);
+					}
+					melee2UI.needValidate = true;
+				}
+
+				if (angerBar == null)
+				{
+					angerBar = new AngerBar();
+					angerBar.Activate();
+					angerBarInterface = new UserInterface();
+					angerBarInterface.SetState(angerBar);
+				}
+				else
+				{
+					angerBarInterface?.Update(gameTime);
+				}
+			}
 		}
 
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
@@ -509,6 +562,15 @@ namespace SummonHeart
 				{
 					somethingInterface.Draw(Main.spriteBatch, new GameTime());
 				}
+			}
+			else if (modPlayer.PlayerClass == 4)
+			{
+				if (!Main.gameMenu && PanelMelee2.visible)
+				{
+					melee2Interface.Draw(Main.spriteBatch, new GameTime());
+				}
+				if (angerBar != null)
+					angerBarInterface.Draw(Main.spriteBatch, new GameTime());
 			}
 			return true;
 		}

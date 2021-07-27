@@ -32,10 +32,14 @@ namespace SummonHeart
 		public int BBP = 0;
 		public int SummonCrit = 0;
 		public int exp = 0;
+		public int addLife = 0;
 		public float bodyDef = 0;
 		public int killResourceCurrent = 0;
 		public int deathResourceCurrent = 0;
 		public int deathResourceMax = 0;
+		public int angerResourceCurrent = 0;
+		public int angerResourceMax = 0;
+		public bool onanger = false;
 		public int killResourceMax;
 		public int killResourceMax2;
 		public int killResourceCost;
@@ -187,7 +191,7 @@ namespace SummonHeart
         {
 			if(PlayerClass == 1)
             {
-				//战士
+				//战士·泰坦
 				EffectMelee();
             }else if(PlayerClass == 2)
 			{
@@ -198,6 +202,11 @@ namespace SummonHeart
 			{
 				//召唤
 				EffectSummon();
+			}
+			else if (PlayerClass == 4)
+			{
+				//战士·狂战
+				EffectMelee2();
 			}
 		}
 
@@ -299,17 +308,93 @@ namespace SummonHeart
 
         private void EffectMelee()
         {
-			player.statLifeMax2 += deathCount;
-			player.statDefense += (int)bodyDef;
-			player.statDefense += deathCount / 10;
+			player.statLifeMax2 += 300;
+			MyMoveSpeedMult -= 0.2f;
+			player.jumpSpeedBoost -= 0.33f;
+
+			player.statDefense += (int)bodyDef * 2;
+			int addDef = deathCount / 5;
+			if (addDef > bodyDef)
+				addDef = (int)bodyDef;
+			player.statDefense += addDef;
 			//魔神之眼
 			if (boughtbuffList[0])
             {
 				player.meleeCrit += eyeBloodGas / 2222 + 10;
 			}
-			/*player.magicCrit += eyeBloodGas / 1000;
-			player.rangedCrit += eyeBloodGas / 1000;
-			player.thrownCrit += eyeBloodGas / 1000;*/
+
+			//魔神之手
+			if (boughtbuffList[1])
+			{
+				AttackSpeed += (handBloodGas / 1111 + 20) * 0.01f;
+			}
+
+			//魔神之躯
+			if (boughtbuffList[2])
+			{
+				player.noKnockback = true;
+				player.statLifeMax2 += (bodyBloodGas / 200 + 300);
+				//计算被动
+				addLife = deathCount;
+				if (addLife > player.statLifeMax2)
+					addLife = player.statLifeMax2;
+				player.statLifeMax2 += addLife;
+				int heal = (int)(player.statLifeMax2 * (0.01 + bodyBloodGas / 20000 * 0.01f)) / 4;
+				if (player.statLife < player.statLifeMax2 && bodyHealCD == 1)
+				{
+					if (heal < 1)
+						heal = 1;
+					player.statLife += heal;
+					player.HealEffect(heal);
+				}
+            }
+            else
+            {
+				//计算被动
+				addLife = deathCount;
+				if (addLife > player.statLifeMax2)
+					addLife = player.statLifeMax2;
+				player.statLifeMax2 += addLife;
+			}
+
+			//魔神之腿
+			if (boughtbuffList[3])
+			{
+				player.noFallDmg = true;
+				MyMoveSpeedMult += (footBloodGas / 10000 + 20) * 0.01f;
+				player.wingTimeMax += (footBloodGas / 2222 + 10) * 60;
+				player.jumpSpeedBoost += (footBloodGas / 1333 + 50) * 0.01f;
+				/*if (footBloodGas >= 150000)
+				{
+					player.wingTime = footBloodGas / 1000 * 60;
+				}*/
+			}
+		}
+
+		private void EffectMelee2()
+		{
+			angerResourceMax = 100 + deathCount;
+			if (angerResourceMax > 500)
+				angerResourceMax = 500;
+			player.statDefense += (int)bodyDef;
+			player.meleeCrit += angerResourceCurrent;
+
+			if (onanger && Main.time % 12 == 0)
+			{
+				angerResourceCurrent -= 5;
+				CombatText.NewText(player.getRect(), Color.Red, "-" + 5 + "怒气值");
+				if (angerResourceCurrent <= 0)
+				{
+					angerResourceCurrent = 0;
+					player.KillMe(PlayerDeathReason.ByCustomReason(player.name + " 燃尽怒火而死."), 7777, 0);
+				}
+			}
+
+			//魔神之眼
+			if (boughtbuffList[0])
+			{
+				player.meleeCrit += eyeBloodGas / 2222 + 10;
+			}
 
 			//魔神之手
 			if (boughtbuffList[1])
@@ -347,7 +432,7 @@ namespace SummonHeart
 			}
 		}
 
-        public struct SoundData
+		public struct SoundData
 		{
 			public int Type;
 			public int x;
@@ -712,6 +797,9 @@ namespace SummonHeart
 			if (Main.keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape))
 			{
 				PanelMelee.visible = false;
+				PanelKill.visible = false;
+				PanelSummon.visible = false;
+				PanelMelee2.visible = false;
 			}
 
 			if (SummonHeartMod.ShowUI.JustPressed)
@@ -730,6 +818,10 @@ namespace SummonHeart
 				else if (PlayerClass == 3)
 				{
 					PanelSummon.visible = !PanelSummon.visible;
+				}
+				else if (PlayerClass == 4)
+				{
+					PanelMelee2.visible = !PanelMelee2.visible;
 				}
 			}
 			if (SummonHeartMod.KillSkillKey.JustPressed)
@@ -968,24 +1060,6 @@ namespace SummonHeart
         {
 			if (PlayerClass == 2)
 			{
-				/*//刺客之道，向死而生。杀意未消，不死不休。
-				if (player.statLife <= damage)
-				{
-					//即死攻击，强制锁血
-					damage = damage - player.statLife + 1;
-					player.statLife = 2;
-					//剩余伤害用杀意值抵消
-					if (damage > killResourceCurrent)
-					{
-						//还是会死
-						damage -= killResourceCurrent;
-					}
-					else
-					{
-						killResourceCurrent -= damage;
-						damage = 0;
-					}
-				}*/
 				deathResourceCurrent -= (int)damage;
 				CombatText.NewText(player.getRect(), Color.DarkGray, "-" + damage + "死气值");
 				if (deathResourceCurrent <= 0)
@@ -999,15 +1073,38 @@ namespace SummonHeart
 					return false;
                 }
 			}
+			else if
+			(PlayerClass == 4)
+			{
+				if (angerResourceCurrent >= angerResourceMax)
+					onanger = true;
+
+                if (onanger)
+                {
+					CombatText.NewText(player.getRect(), Color.Red, "触发被动无尽怒火免疫伤害");
+					if (angerResourceCurrent <= 0)
+					{
+						deathResourceCurrent = 0;
+						return true;
+					}
+					else
+					{
+						player.statLife = 1;
+						return false;
+					}
+				}
+			}
 			return base.PreKill(damage, hitDirection, pvp, ref playSound, ref genGore, ref damageSource);
         }
 
         public override void Kill(double damage, int hitDirection, bool pvp, PlayerDeathReason damageSource)
         {
+			onanger = false;
+			angerResourceCurrent = 0;
 			deathCount++;
 			if (PlayerClass == 1)
 			{
-				string text = $"{player.name}拥有战者之心，不畏死亡。已从死亡之中获得力量，生命上限+1，防御力+0.1";
+				string text = $"{player.name}拥有战者之心，不畏死亡。已从死亡之中获得力量，生命上限+1，防御力+0.2";
 				Main.NewText(text, Color.Green);
 			}
 			if (PlayerClass == 2)
@@ -1025,6 +1122,16 @@ namespace SummonHeart
 			{
 				damage *= (int)(eyeBloodGas / 2000 * 0.01 + 1);
 			}
+			if (crit && PlayerClass == 4 && !onanger)
+			{
+				angerResourceCurrent += 3;
+				if (angerResourceCurrent > angerResourceMax)
+					angerResourceCurrent = angerResourceMax;
+			}
+			if (crit && PlayerClass == 4 && angerResourceCurrent > 100)
+			{
+				damage = (int)(damage * (angerResourceCurrent - 100) / 2 * 0.01 + 1);
+			}
 		}
 
         public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
@@ -1032,6 +1139,16 @@ namespace SummonHeart
 			if (crit && PlayerClass == 1 && boughtbuffList[0])
 			{
 				damage *= (int)(eyeBloodGas / 2000 * 0.01 + 1);
+			}
+			if (crit && PlayerClass == 4 && !onanger)
+			{
+				angerResourceCurrent += 3;
+				if (angerResourceCurrent > angerResourceMax)
+					angerResourceCurrent = angerResourceMax;
+			}
+			if (crit && PlayerClass == 4 && angerResourceCurrent > 100)
+			{
+				damage = (int)(damage * (angerResourceCurrent - 100) / 2 * 0.01 + 1);
 			}
 		}
 

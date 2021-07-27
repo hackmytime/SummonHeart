@@ -35,7 +35,7 @@ namespace SummonHeart.Projectiles.Weapon
             projectile.tileCollide = false;
             projectile.friendly = true;
             projectile.minion = true;
-            projectile.minionSlots = 1f;
+            projectile.minionSlots = 3f;
             projectile.timeLeft = 60;
             projectile.localNPCHitCooldown = 10;
         }
