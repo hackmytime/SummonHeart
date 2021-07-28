@@ -72,6 +72,7 @@ namespace SummonHeart
 		public Projectile eyeProjectile;
 		public float MyAccelerationMult;
 		public float MyMoveSpeedMult;
+		public float MyCritDmageMult;
 		public bool accBuryTheLight;
 		public int buryTheLightCooldown;
 		public bool buryTheLightStarted;
@@ -116,7 +117,7 @@ namespace SummonHeart
 			if (healCD == 60)
 			{
 				healCD = 0;
-				HealCount = SummonCrit;
+				HealCount = player.statLifeMax2 / 2;
 			}
 			bodyHealCD++;
 			if (bodyHealCD == 15)
@@ -140,6 +141,7 @@ namespace SummonHeart
 
 			MyAccelerationMult = 1f;
 			MyMoveSpeedMult = 1f;
+			MyCritDmageMult = 1f;
 		}
 
 		public override void PreUpdate()
@@ -243,6 +245,7 @@ namespace SummonHeart
                 }
 				player.noFallDmg = true;
 				MyMoveSpeedMult += 0.66f;
+				MyAccelerationMult += 0.66f;
 				player.maxMinions += (bodyBloodGas / 10000) + 3;
 				player.statLifeMax2 /= 2;
 				player.statManaMax2 += bodyBloodGas / 400 + 200;
@@ -308,6 +311,7 @@ namespace SummonHeart
 
         private void EffectMelee()
         {
+			//泰坦
 			player.statLifeMax2 += 300;
 			MyMoveSpeedMult -= 0.2f;
 			player.jumpSpeedBoost -= 0.33f;
@@ -321,6 +325,7 @@ namespace SummonHeart
 			if (boughtbuffList[0])
             {
 				player.meleeCrit += eyeBloodGas / 2222 + 10;
+				MyCritDmageMult += eyeBloodGas / 2000 * 0.01f;
 			}
 
 			//魔神之手
@@ -362,6 +367,7 @@ namespace SummonHeart
 			{
 				player.noFallDmg = true;
 				MyMoveSpeedMult += (footBloodGas / 10000 + 20) * 0.01f;
+				MyAccelerationMult += (footBloodGas / 10000 + 20) * 0.01f;
 				player.wingTimeMax += (footBloodGas / 2222 + 10) * 60;
 				player.jumpSpeedBoost += (footBloodGas / 1333 + 50) * 0.01f;
 				/*if (footBloodGas >= 150000)
@@ -373,12 +379,21 @@ namespace SummonHeart
 
 		private void EffectMelee2()
 		{
+			//狂战
 			angerResourceMax = 100 + deathCount;
 			if (angerResourceMax > 500)
 				angerResourceMax = 500;
 			player.statDefense += (int)bodyDef;
 			player.meleeCrit += angerResourceCurrent;
-
+			if(angerResourceCurrent > 100)
+            {
+				MyCritDmageMult += (angerResourceCurrent - 100) / 2 * 0.01f;
+			}
+			//初始奖励
+			MyMoveSpeedMult += 0.2f;
+			MyAccelerationMult += 0.2f;
+			AttackSpeed += 0.2f;
+			player.jumpSpeedBoost += 0.33f;
 			if (onanger && Main.time % 12 == 0)
 			{
 				angerResourceCurrent -= 5;
@@ -394,6 +409,7 @@ namespace SummonHeart
 			if (boughtbuffList[0])
 			{
 				player.meleeCrit += eyeBloodGas / 2222 + 10;
+				MyCritDmageMult += eyeBloodGas / 1000 * 0.01f;
 			}
 
 			//魔神之手
@@ -408,27 +424,20 @@ namespace SummonHeart
 			{
 				player.noKnockback = true;
 				player.statLifeMax2 += bodyBloodGas / 200;
-				int heal = (int)(player.statLifeMax2 * (0.01 + bodyBloodGas / 20000 * 0.01f)) / 4;
-				if (player.statLife < player.statLifeMax2 && bodyHealCD == 1)
-				{
-					if (heal < 1)
-						heal = 1;
-					player.statLife += heal;
-					player.HealEffect(heal);
-				}
 			}
 
 			//魔神之腿
 			if (boughtbuffList[3])
 			{
 				player.noFallDmg = true;
-				player.moveSpeed += (footBloodGas / 10000 + 10) * 0.01f;
+				MyMoveSpeedMult += (footBloodGas / 5000 + 20) * 0.01f;
+				MyAccelerationMult += (footBloodGas / 5000 + 20) * 0.01f;
 				player.wingTimeMax += (footBloodGas / 2222 + 10) * 60;
-				player.jumpSpeedBoost += (footBloodGas / 1333 + 50) * 0.01f;
-				/*if (footBloodGas >= 150000)
+				player.jumpSpeedBoost += (footBloodGas / 1000 + 60) * 0.01f;
+				if (footBloodGas >= 200000)
 				{
 					player.wingTime = footBloodGas / 1000 * 60;
-				}*/
+				}
 			}
 		}
 
@@ -857,13 +866,13 @@ namespace SummonHeart
 				return;
 			
 			SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
-			/*if (modPlayer.SummonHeart)
+			if (PlayerClass == 4 && boughtbuffList[2])
 			{
-				int heal = damage * modPlayer.SummonCrit / 5000;
+				int heal = (int)(damage * (bodyBloodGas / 100000 * 0.01f + 0.01));
 
-				if (heal > modPlayer.SummonCrit / 25)
+				if (heal > player.statLifeMax2 / 4)
 				{
-					heal = modPlayer.SummonCrit / 25;
+					heal = player.statLifeMax2 / 4;
 				}
 				if (heal > HealCount)
                 {
@@ -875,7 +884,7 @@ namespace SummonHeart
 					player.statLife += heal;
 					player.HealEffect(heal);
                 }
-			}*/
+			}
 		}
 
         public override void OnHitNPCWithProj(Projectile proj, NPC target, int damage, float knockback, bool crit)
@@ -883,13 +892,13 @@ namespace SummonHeart
 			if (target.type == NPCID.TargetDummy || target.friendly)
 				return;
 			SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
-			/*if (modPlayer.SummonHeart)
+			if (PlayerClass == 4 && boughtbuffList[2])
 			{
-				int heal = damage * modPlayer.SummonCrit / 5000;
+				int heal = (int)(damage * (bodyBloodGas / 100000 * 0.01f + 0.01));
 
-				if (heal > modPlayer.SummonCrit / 25)
+				if (heal > player.statLifeMax2 / 4)
 				{
-					heal = modPlayer.SummonCrit / 25;
+					heal = player.statLifeMax2 / 4;
 				}
 				if (heal > HealCount)
 				{
@@ -901,8 +910,8 @@ namespace SummonHeart
 					player.statLife += heal;
 					player.HealEffect(heal);
 				}
-			}*/
-        }
+			}
+		}
 
         public override bool PreItemCheck()
         {
@@ -919,7 +928,7 @@ namespace SummonHeart
         {
 			if (PlayerClass == 1 && boughtbuffList[2])
 			{
-				damage = (int)(damage * (1 - bodyBloodGas / 5000 * 0.01f));
+				damage = (int)(damage * (1 - 0.5 - bodyBloodGas / 13333 * 0.01f));
 				if (damage < 1)
 					damage = 1;
 			}
@@ -929,20 +938,31 @@ namespace SummonHeart
 				if (damage < 1)
 					damage = 1;
 			}
-			
+			if (PlayerClass == 4 && boughtbuffList[2])
+			{
+				damage = (int)(damage * (1 - bodyBloodGas / 5000 * 0.01f));
+				if (damage < 1)
+					damage = 1;
+			}
 		}
 		//允许您修改 NPC 弹幕对该玩家造成的伤害等
 		public override void ModifyHitByProjectile(Projectile proj, ref int damage, ref bool crit)
         {
 			if (PlayerClass == 1 && boughtbuffList[2])
 			{
-				damage = (int)(damage * (1 - bodyBloodGas / 5000 * 0.01f));
+				damage = (int)(damage * (1 - 0.5 - bodyBloodGas / 13333 * 0.01f));
 				if (damage < 1)
 					damage = 1;
 			}
 			if (PlayerClass == 3 && boughtbuffList[2])
 			{
 				damage = (int)(damage * (1 - 0.2 - bodyBloodGas / 5000 * 0.01f));
+				if (damage < 1)
+					damage = 1;
+			}
+			if (PlayerClass == 4 && boughtbuffList[2])
+			{
+				damage = (int)(damage * (1 - bodyBloodGas / 5000 * 0.01f));
 				if (damage < 1)
 					damage = 1;
 			}
@@ -1118,37 +1138,21 @@ namespace SummonHeart
 
         public override void ModifyHitNPC(Item item, NPC target, ref int damage, ref float knockback, ref bool crit)
         {
-			if (crit && PlayerClass == 1 && boughtbuffList[0])
-			{
-				damage *= (int)(eyeBloodGas / 2000 * 0.01 + 1);
-			}
 			if (crit && PlayerClass == 4 && !onanger)
 			{
 				angerResourceCurrent += 3;
 				if (angerResourceCurrent > angerResourceMax)
 					angerResourceCurrent = angerResourceMax;
-			}
-			if (crit && PlayerClass == 4 && angerResourceCurrent > 100)
-			{
-				damage = (int)(damage * (angerResourceCurrent - 100) / 2 * 0.01 + 1);
 			}
 		}
 
         public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
         {
-			if (crit && PlayerClass == 1 && boughtbuffList[0])
-			{
-				damage *= (int)(eyeBloodGas / 2000 * 0.01 + 1);
-			}
 			if (crit && PlayerClass == 4 && !onanger)
 			{
 				angerResourceCurrent += 3;
 				if (angerResourceCurrent > angerResourceMax)
 					angerResourceCurrent = angerResourceMax;
-			}
-			if (crit && PlayerClass == 4 && angerResourceCurrent > 100)
-			{
-				damage = (int)(damage * (angerResourceCurrent - 100) / 2 * 0.01 + 1);
 			}
 		}
 

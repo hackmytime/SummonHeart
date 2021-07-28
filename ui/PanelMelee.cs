@@ -125,7 +125,7 @@ namespace SummonHeart.ui
                     level = "炼体第六境【肉身圆满】";
                 if (totalBoodGas >= 400000)
                     level = "炼体第七境【不死之身】";
-                var modlabel_level = new UIText("当前炼体境界：" + level + " 总气血：" + totalBoodGas + " 战斗力：" + mp.getPower());
+                var modlabel_level = new UIText("当前炼体境界：" + level + " 总气血：" + totalBoodGas + " 战斗力：" + mp.getPower() + " 当前暴击伤害" + mp.MyCritDmageMult * 100 + "%");
                 modlabel_level.TextColor = Color.Red;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
                 int addDef = mp.deathCount / 5;

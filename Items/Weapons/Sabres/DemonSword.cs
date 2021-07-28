@@ -42,7 +42,7 @@ namespace SummonHeart.Items.Weapons.Sabres
                 "\n众生之怨：不受任何伤害暴击加成，无法附魔，减少2倍攻速加成" +
                 "\n弑神之力：击杀任意生物增加攻击力，然受觉醒上限限制。" +
                 "\n魔剑觉醒：击杀强者摄其血肉灵魂修复剑身，可突破觉醒上限。" +
-                "\n破灭法则：重击必定造成3倍暴击。");
+                "\n破灭法则：重击必定暴击，并且暴击伤害翻倍");
             
         }
         public override void SetDefaults()

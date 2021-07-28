@@ -650,6 +650,10 @@ namespace SummonHeart.NPCs
 				}
 				npc.AddBuff(mod.BuffType("SoulSplit"), 200);
 			}
+			if (crit)
+			{
+				damage = (int)(damage * modPlayer.MyCritDmageMult);
+			}
 			if (item.modItem != null && item.modItem.Name == "Raiden")
 			{
 				if (modPlayer.PlayerClass == 2 && modPlayer.chargeAttack)
@@ -657,6 +661,7 @@ namespace SummonHeart.NPCs
 					damage += modPlayer.killResourceCostCount * modPlayer.killResourceMulti;
 				}
 			}
+			
 			this.CauseDirectDamage(npc, damage, crit, 0);
 		}
 
@@ -676,6 +681,10 @@ namespace SummonHeart.NPCs
 					soulSplitCount = 1;
 				}
 				npc.AddBuff(mod.BuffType("SoulSplit"), 200);
+			}
+			if (crit)
+			{
+				damage = (int)(damage * modPlayer.MyCritDmageMult);
 			}
 			//神灭
 			int addRealDmage = 0;
