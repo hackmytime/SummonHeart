@@ -41,14 +41,40 @@ namespace SummonHeart.Items
 
         public override bool Shoot(Item item, Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
         {
-            SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
-            if (modPlayer.SummonHeart)
+            SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
+            if (item.magic && mp.PlayerClass == 5 && mp.boughtbuffList[1])
+            {
+                if(player.statMana < mp.costMana)
+                {
+                    return false;
+                }
+                /*else if (item.modItem != null && item.modItem.Name == "DemonStaff")
+                {
+                    player.statMana -= 5;
+                }*/
+                else
+                {
+                    int maxPro = mp.handBloodGas / 33333 + 1;
+                    player.statMana -= mp.costMana;
+                    for (int i = 0; i < maxPro; i++)
+                    {
+                        int param = i / 2 + 1;
+                        if (i % 2 == 0)
+                        {
+                            param *= -1;
+                        }
+                        Vector2 velocity = new Vector2(speedX, speedY).RotatedBy(MathHelper.Pi / 180 * 2 * param);
+                        Projectile.NewProjectile(position.X, position.Y, velocity.X, velocity.Y, type, damage, knockBack, player.whoAmI);
+                    }
+                }
+            }
+            if (mp.SummonHeart)
             {
                 //if (item.melee || item.ranged || item.magic || item.thrown)
-                if (item.melee && modPlayer.PlayerClass == 1)
+                if (item.melee && mp.PlayerClass == 1)
                 {
                     //第1个额外弹幕-3度角
-                    int bloodGas = modPlayer.handBloodGas;
+                    int bloodGas = mp.handBloodGas;
                     if (bloodGas >= 0)
                     {
                         Vector2 velocity = new Vector2(speedX, speedY).RotatedBy(MathHelper.Pi / 180 * 3 * (-1));
@@ -137,6 +163,16 @@ namespace SummonHeart.Items
             {
                 string str2 = item.knockBack.ToString("f1") + " ";
                 tooltips[num5].text = str2 + (GameCulture.Chinese.IsActive ? "击退力度" : "Knockback");
+            }
+
+            if(item.magic && modPlayer.PlayerClass == 5 && modPlayer.boughtbuffList[1])
+            {
+                int num6 = tooltips.FindIndex((TooltipLine t) => t.Name.Equals("UseMana"));
+                if (num6 != -1)
+                {
+                    int str2 = (int)(player.manaCost + modPlayer.costMana);
+                    tooltips[num6].text = tooltips[num6].text  + "(额外消耗" + modPlayer.costMana + ")";
+                }
             }
         }
     }

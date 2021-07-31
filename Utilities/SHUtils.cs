@@ -19,6 +19,13 @@ namespace SummonHeart.Utilities
             if (player.statMana > player.statManaMax2) player.statMana = player.statManaMax2;
             if (visible) player.ManaEffect(amount);
         }
+
+        public static void Trans(this Player player, Vector2 pos)
+        {
+            player.Teleport(pos, 1, 0);
+            NetMessage.SendData(65, -1, -1, null, 0, player.whoAmI, pos.X, pos.Y, 1, 0, 0);
+            player.AddBuff(88, 100, true);
+        }
        
         public static bool CanHitNPC(this Projectile projectile, NPC npc) => Collision.CanHit(projectile.position, projectile.width, projectile.height, npc.position, npc.width, npc.height);
         public static void FollowPlayer(this Projectile projectile, Vector2 place, float maxDist, float minDist, Vector2 velo, float speed = 0, bool positionLerp = false, float lerpAmtFar = 0.05f, float lerpAmtClose = 0.07f, float lerpAmtPos = 0.1f)

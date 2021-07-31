@@ -160,12 +160,39 @@ namespace SummonHeart.Extensions
 					}
 					if (modPlayer.flySwordBlood < modPlayer.swordBloodMax)
 					{
-						modPlayer.flySwordBlood += (modPlayer.swordBloodMax / 10000 + 1);
+						modPlayer.flySwordBlood += (modPlayer.swordBloodMax / 2000 + 5);
 						if (modPlayer.flySwordBlood > modPlayer.swordBloodMax)
 							modPlayer.flySwordBlood = modPlayer.swordBloodMax;
 					}
 				}
 			}
+			if (player.HeldItem.modItem != null && player.HeldItem.modItem.Name == "DemonStaff")
+			{
+				if (npc.boss)
+				{
+					int swordMax = npc.getPower() / 400;
+					if (modPlayer.swordBloodMax < swordMax)
+					{
+						modPlayer.swordBloodMax = swordMax;
+						string curMax = (modPlayer.swordBloodMax * 1.0f / 100f).ToString("0.00");
+						string text = $"{player.name}手持魔力之源吞噬了{npc.FullName}的血肉，突破觉醒上限，当前觉醒上限：{curMax}%";
+						Main.NewText(text, Color.Green);
+					}
+				}
+
+				if (modPlayer.magicSwordBlood < modPlayer.swordBloodMax)
+				{
+					modPlayer.magicSwordBlood += (modPlayer.swordBloodMax / 10000 + 1);
+					if (modPlayer.magicSwordBlood > modPlayer.swordBloodMax)
+						modPlayer.magicSwordBlood = modPlayer.swordBloodMax;
+				}
+			}
+
+			if(modPlayer.PlayerClass == 5 && modPlayer.boughtbuffList[0])
+            {
+				int healMana = modPlayer.eyeBloodGas / 1000 + 10;
+				player.HealMana(healMana);
+            }
 
 			if (modPlayer.SummonHeart)
 			{
@@ -421,6 +448,29 @@ namespace SummonHeart.Extensions
 				return other;
 			}
 			return modPlayer.oscColor;
+		}
+
+		public static bool AnyBossAlive(this Player player)
+		{
+			for (int i = 0; i < Main.npc.Length; i++)
+			{
+				NPC npc = Main.npc[i];
+				if (npc.active && npc.boss) return true;
+				if (npc.active && npc.type == NPCID.EaterofWorldsHead) return true;
+			}
+			return false;
+		}
+
+		public static bool CheckItemsFromOtherMods(this Player player)
+		{
+			foreach (Item item in player.inventory)
+			{
+				if (item.modItem != null && SummonHeartMod.rejPassItemList.Contains(item.modItem.Name))
+				{
+					return true;
+				}
+			}
+			return false;
 		}
 	}
 }

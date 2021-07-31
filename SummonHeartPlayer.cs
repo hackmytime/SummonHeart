@@ -61,6 +61,7 @@ namespace SummonHeart
 		public int swordBlood = 1;
 		public int shortSwordBlood = 1;
 		public int flySwordBlood = 1;
+		public int magicSwordBlood = 1;
 		public int swordBloodMax = 100;
 
 		public bool practiceEye = false;
@@ -73,6 +74,7 @@ namespace SummonHeart
 		public float MyAccelerationMult;
 		public float MyMoveSpeedMult;
 		public float MyCritDmageMult;
+		public int costMana;
 		public bool accBuryTheLight;
 		public int buryTheLightCooldown;
 		public bool buryTheLightStarted;
@@ -142,13 +144,21 @@ namespace SummonHeart
 			MyAccelerationMult = 1f;
 			MyMoveSpeedMult = 1f;
 			MyCritDmageMult = 1f;
+			costMana = (handBloodGas / 25000) * (handBloodGas / 25000) + 5;
 		}
 
 		public override void PreUpdate()
 		{
 			if (player.HasItemInAcc(mod.ItemType("MysteriousCrystal")) != -1 && base.player.respawnTimer > 300)
 			{
-				player.respawnTimer = 300;
+                if (player.AnyBossAlive())
+                {
+					player.respawnTimer = 900;
+                }
+                else
+                {
+					player.respawnTimer = 120;
+				}
 			}
 
 			if (Main.netMode != 2)
@@ -191,7 +201,11 @@ namespace SummonHeart
 
 		public override void PostUpdateMiscEffects()
         {
-			if(PlayerClass == 1)
+			if(player.endurance > 0.8f)
+            {
+				player.endurance = 0.8f;
+			}
+			if (PlayerClass == 1)
             {
 				//战士·泰坦
 				EffectMelee();
@@ -210,9 +224,76 @@ namespace SummonHeart
 				//战士·狂战
 				EffectMelee2();
 			}
+			else if (PlayerClass == 5)
+			{
+				//法师·法神
+				EffectMagic();
+			}
 		}
 
-		private void EffectSummon()
+        public override void GetHealMana(Item item, bool quickHeal, ref int healValue)
+        {
+            base.GetHealMana(item, quickHeal, ref healValue);
+        }
+
+        private void EffectMagic()
+        {
+            int allBlood = this.getAllBloodGas();
+			player.statManaMax2 += allBlood / 20;
+			player.manaRegen = 0;
+			player.manaRegenCount = 0;
+			player.manaRegenDelay = 99999999;
+            if (player.manaCost == 0)
+            {
+				player.manaCost = 9999999;
+				if ((int)Main.time % 60 < 1)
+				{
+					Main.NewText("法师禁止使用无限魔力，否则魔法消耗增加9999999", Color.Red, false);
+				}
+			}
+
+			//魔神之眼
+			if (boughtbuffList[0])
+			{
+				MyCritDmageMult += eyeBloodGas / 1000 * 0.01f;
+			}
+
+			//魔神之躯
+			int heal = 2;
+			if (boughtbuffList[2])
+			{
+				player.noKnockback = true;
+				//计算被动
+				heal = (int)(player.statManaMax2 * (0.01 + bodyBloodGas / 100000 * 0.01f)) / 4;
+				if (heal < 2)
+					heal = 2;
+			}
+			if (player.statMana < player.statManaMax2 && bodyHealCD == 1)
+			{
+				player.HealMana(heal);
+			}
+
+			//魔神之腿
+			if (boughtbuffList[3])
+			{
+				player.noFallDmg = true;
+				MyMoveSpeedMult += (footBloodGas / 5000 + 20) * 0.01f;
+				MyAccelerationMult += (footBloodGas / 5000 + 20) * 0.01f;
+				player.wingTimeMax += (footBloodGas / 2222 + 10) * 60;
+				player.jumpSpeedBoost += (footBloodGas / 1000 + 60) * 0.01f;
+				if (footBloodGas >= 200000)
+				{
+					player.wingTime = footBloodGas / 1000 * 60;
+				}
+			}
+		}
+
+        public override void ModifyManaCost(Item item, ref float reduce, ref float mult)
+        {
+            base.ModifyManaCost(item, ref reduce, ref mult);
+        }
+
+        private void EffectSummon()
 		{
 			// 眼
 			if (boughtbuffList[0])
@@ -588,6 +669,14 @@ namespace SummonHeart
 			item.stack = 1;
 			items.Add(item);
 			item = new Item();
+			item.SetDefaults(ItemID.ManaFlower);
+			item.stack = 1;
+			items.Add(item);
+			item = new Item();
+			item.SetDefaults(ItemID.LesserManaPotion);
+			item.stack = 100;
+			items.Add(item);
+			item = new Item();
 			item.SetDefaults(ItemID.WaterBucket);
 			item.stack = 2;
 			items.Add(item);
@@ -632,6 +721,7 @@ namespace SummonHeart
 			clone.swordBlood = swordBlood;
 			clone.shortSwordBlood = shortSwordBlood;
 			clone.flySwordBlood = flySwordBlood;
+			clone.magicSwordBlood = magicSwordBlood;
 			clone.swordBloodMax = swordBloodMax;
 			clone.practiceEye = practiceEye;
 			clone.practiceHand = practiceHand;
@@ -660,6 +750,7 @@ namespace SummonHeart
 			packet.Write(swordBlood);
 			packet.Write(shortSwordBlood);
 			packet.Write(flySwordBlood);
+			packet.Write(magicSwordBlood);
 			packet.Write(swordBloodMax);
 			packet.Write(practiceEye);
 			packet.Write(practiceHand);
@@ -683,7 +774,8 @@ namespace SummonHeart
 					|| clone.eyeBloodGas != eyeBloodGas || clone.handBloodGas != handBloodGas
 					|| clone.bodyBloodGas != bodyBloodGas || clone.footBloodGas != footBloodGas
 					|| clone.bloodGasMax != bloodGasMax || clone.swordBlood != swordBlood
-					|| clone.shortSwordBlood != shortSwordBlood || clone.flySwordBlood != flySwordBlood || clone.swordBloodMax != swordBloodMax
+					|| clone.shortSwordBlood != shortSwordBlood || clone.magicSwordBlood != magicSwordBlood
+					|| clone.flySwordBlood != flySwordBlood || clone.swordBloodMax != swordBloodMax
 					|| clone.practiceEye != practiceEye || clone.practiceHand != practiceHand
 					|| clone.practiceBody != practiceBody || clone.practiceFoot != practiceFoot
 					|| clone.soulSplit != soulSplit)
@@ -717,6 +809,7 @@ namespace SummonHeart
 				packet.Write(swordBlood);
 				packet.Write(shortSwordBlood);
 				packet.Write(flySwordBlood);
+				packet.Write(magicSwordBlood);
 				packet.Write(swordBloodMax);
 				packet.Write(practiceEye);
 				packet.Write(practiceHand);
@@ -748,6 +841,7 @@ namespace SummonHeart
 			tagComp.Add("swordBlood", swordBlood);
 			tagComp.Add("shortSwordBlood", shortSwordBlood);
 			tagComp.Add("flySwordBlood", flySwordBlood);
+			tagComp.Add("magicSwordBlood", magicSwordBlood);
 			tagComp.Add("swordBloodMax", swordBloodMax);
 			tagComp.Add("killResourceCurrent", killResourceCurrent);
 			tagComp.Add("deathResourceCurrent", deathResourceCurrent);
@@ -776,6 +870,7 @@ namespace SummonHeart
 			swordBlood = tag.GetInt("swordBlood");
 			shortSwordBlood = tag.GetInt("shortSwordBlood");
 			flySwordBlood = tag.GetInt("flySwordBlood");
+			magicSwordBlood = tag.GetInt("magicSwordBlood");
 			swordBloodMax = tag.GetInt("swordBloodMax");
 			killResourceCurrent = tag.GetInt("killResourceCurrent");
 			deathResourceCurrent = tag.GetInt("deathResourceCurrent");
@@ -809,6 +904,7 @@ namespace SummonHeart
 				PanelKill.visible = false;
 				PanelSummon.visible = false;
 				PanelMelee2.visible = false;
+				PanelMagic.visible = false;
 			}
 
 			if (SummonHeartMod.ShowUI.JustPressed)
@@ -831,6 +927,10 @@ namespace SummonHeart
 				else if (PlayerClass == 4)
 				{
 					PanelMelee2.visible = !PanelMelee2.visible;
+				}
+				else if (PlayerClass == 5)
+				{
+					PanelMagic.visible = !PanelMagic.visible;
 				}
 			}
 			if (SummonHeartMod.KillSkillKey.JustPressed)
@@ -856,6 +956,37 @@ namespace SummonHeart
                 else
                 {
 					Main.NewText($"只有刺客才能使用刺杀技能", Color.Red);
+				}
+			}
+			if (SummonHeartMod.TransKey.JustPressed)
+			{
+				if (PlayerClass == 5)
+				{
+                    if (boughtbuffList[3])
+                    {
+						Main.NewText($"未修炼魔神之腿，无法使用空间传送", Color.Red);
+						return;
+					}
+					int costMana = player.statManaMax2 / 20;
+					if(costMana < 100)
+                    {
+						costMana = 100;
+                    }
+					if (player.statMana < costMana)
+					{
+						Main.NewText($"魔法值不足{costMana}，无法使用空间传送", Color.Red);
+						return;
+					}
+					Vector2 cursorPosition = new Vector2(Main.mouseX, Main.mouseY);
+					cursorPosition.X -= Main.screenWidth / 2;
+					cursorPosition.Y -= Main.screenHeight / 2;
+					Vector2 vector = player.Center + cursorPosition;
+					player.Trans(vector);
+					player.HealMana(-costMana);
+				}
+				else
+				{
+					Main.NewText($"只有法师才能使用空间传送技能", Color.Red);
 				}
 			}
 		}
@@ -944,6 +1075,21 @@ namespace SummonHeart
 				if (damage < 1)
 					damage = 1;
 			}
+			if (PlayerClass == 5 && boughtbuffList[2])
+			{
+				int manaDamage = (int)(damage * (0.75f + bodyBloodGas / 10000 * 0.01f));
+				int leftCount = 0;
+				int costMana = manaDamage;
+				if(player.statMana < manaDamage)
+                {
+					leftCount = manaDamage - player.statMana;
+					costMana = player.statMana;
+                }
+				player.HealMana(costMana * -1);
+				damage -= manaDamage + leftCount;
+				if (damage < 1)
+					damage = 1;
+			}
 		}
 		//允许您修改 NPC 弹幕对该玩家造成的伤害等
 		public override void ModifyHitByProjectile(Projectile proj, ref int damage, ref bool crit)
@@ -963,6 +1109,21 @@ namespace SummonHeart
 			if (PlayerClass == 4 && boughtbuffList[2])
 			{
 				damage = (int)(damage * (1 - bodyBloodGas / 5000 * 0.01f));
+				if (damage < 1)
+					damage = 1;
+			}
+			if (PlayerClass == 5 && boughtbuffList[2])
+			{
+				int manaDamage = (int)(damage * (0.75f + bodyBloodGas / 10000 * 0.01f));
+				int leftCount = 0;
+				int costMana = manaDamage;
+				if (player.statMana < manaDamage)
+				{
+					leftCount = manaDamage - player.statMana;
+					costMana = player.statMana;
+				}
+				player.HealMana(costMana * -1);
+				damage -= manaDamage + leftCount;
 				if (damage < 1)
 					damage = 1;
 			}
@@ -1072,6 +1233,14 @@ namespace SummonHeart
 					heartAdd += handBloodGas / 200 * 0.01f;
 				}
             }
+			if (PlayerClass == 5 && item.magic)
+			{
+				//法师
+				if (boughtbuffList[1])
+				{
+					heartAdd += handBloodGas / 200 * 0.01f;
+				}
+			}
 			add = heartAdd * baseAdd;
 			base.ModifyWeaponDamage(item, ref add, ref mult, ref flat);
         }

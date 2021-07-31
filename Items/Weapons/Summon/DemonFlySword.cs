@@ -48,9 +48,9 @@ namespace SummonHeart.Items.Weapons.Summon
             item.UseSound = SoundID.Item113;
             item.useAnimation = 30;
             item.useTime = 30;
-            item.rare = 5;
             item.noMelee = true;
             item.knockBack = 0f;
+            item.rare = -12;
             item.value = Item.sellPrice(999, 0, 0, 0);
             item.summon = true;
             item.autoReuse = true;
@@ -89,7 +89,7 @@ namespace SummonHeart.Items.Weapons.Summon
                 tooltipLine = new TooltipLine(base.mod, "SwordBloodMax", text);
                 tooltipLine.overrideColor = Color.LimeGreen;
                 tooltips.Insert(num + 2, tooltipLine);
-                text = "击杀Boss+" + (modPlayer.swordBloodMax / 10000 + 1) + "真实伤害";
+                text = "击杀Boss+" + (modPlayer.swordBloodMax / 2000 + 5) + "真实伤害";
                 tooltipLine = new TooltipLine(base.mod, "SwordBloodMax", text);
                 tooltipLine.overrideColor = Color.Red;
                 tooltips.Insert(num + 3, tooltipLine);

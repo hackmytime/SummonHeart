@@ -25,6 +25,7 @@ namespace SummonHeart
 		internal static List<BuffValue> modBuffValues = new List<BuffValue>();
 
 		static List<Projectile> slowProList = new List<Projectile>();
+		public static List<String> rejPassItemList = new List<String>();
 
 		static Dictionary<Projectile, Vector2> oldProMap = new Dictionary<Projectile, Vector2>();
 
@@ -34,6 +35,7 @@ namespace SummonHeart
 		internal static ModHotKey AutoAttackKey;
 		internal static ModHotKey ShowUI;
 		internal static ModHotKey KillSkillKey;
+		internal static ModHotKey TransKey;
 
 		internal PanelMelee PanelMeleeUI;
 		internal PanelKill PanelKillUI;
@@ -42,6 +44,9 @@ namespace SummonHeart
 
 		internal PanelMelee2 melee2UI;
 		public UserInterface melee2Interface;
+		
+		internal PanelMagic magicUI;
+		public UserInterface magicInterface;
 
 		internal KillBar ExampleResourceBar;
 		private UserInterface KillResourceBarUserInterface;
@@ -59,6 +64,12 @@ namespace SummonHeart
 			modBuffValues = new List<BuffValue>();
 			modBuffValues = VanilaBuffs.getVanilla();
 			Instance = this;
+			rejPassItemList.Add("UnlimitedManaAccessory");
+			rejPassItemList.Add("UnlimitedManaAccessory1");
+			rejPassItemList.Add("UnlimitedManaAccessory2");
+			rejPassItemList.Add("UnlimitedManaAccessory3");
+			rejPassItemList.Add("UnlimitedManaAccessory4");
+			rejPassItemList.Add("UnlimitedManaAccessory5");
 		}
 
 		public static void addSlowMap(Projectile p)
@@ -116,6 +127,7 @@ namespace SummonHeart
 			AutoAttackKey = RegisterHotKey("自动使用武器（再次点击停止使用）", "G");
 			ShowUI = RegisterHotKey("魔神炼体法", Keys.L.ToString());
 			KillSkillKey = RegisterHotKey("刺客刺杀技能(可开关)", Keys.V.ToString());
+			TransKey = RegisterHotKey("空间传送", Keys.Y.ToString());
 			// this makes sure that the UI doesn't get opened on the server
 			// the server can't see UI, can it? it's just a command prompt
 			if (!Main.dedServ)
@@ -172,6 +184,13 @@ namespace SummonHeart
 						angerBarInterface = new UserInterface();
 						angerBarInterface.SetState(angerBar);
 					}
+					else if (modPlayer.PlayerClass == 5)
+					{
+						magicUI = new PanelMagic();
+						magicUI.Initialize();
+						magicInterface = new UserInterface();
+						magicInterface.SetState(magicUI);
+					}
 				}
 				catch (Exception ex)
 				{
@@ -189,6 +208,7 @@ namespace SummonHeart
 			AutoAttackKey = null;
 			ShowUI = null;
 			KillSkillKey = null;
+			TransKey = null;
 		}
 
 		public override void PostSetupContent()
@@ -327,6 +347,7 @@ namespace SummonHeart
 						summonHeartPlayer.swordBlood = reader.ReadInt32();
 						summonHeartPlayer.shortSwordBlood = reader.ReadInt32();
 						summonHeartPlayer.flySwordBlood = reader.ReadInt32();
+						summonHeartPlayer.magicSwordBlood = reader.ReadInt32();
 						summonHeartPlayer.swordBloodMax = reader.ReadInt32();
 						summonHeartPlayer.practiceEye = reader.ReadBoolean();
 						summonHeartPlayer.practiceHand = reader.ReadBoolean();
@@ -356,6 +377,7 @@ namespace SummonHeart
 							packet.Write(summonHeartPlayer.swordBlood);
 							packet.Write(summonHeartPlayer.shortSwordBlood);
 							packet.Write(summonHeartPlayer.flySwordBlood);
+							packet.Write(summonHeartPlayer.magicSwordBlood);
 							packet.Write(summonHeartPlayer.swordBloodMax);
 							packet.Write(summonHeartPlayer.practiceEye);
 							packet.Write(summonHeartPlayer.practiceHand);
@@ -523,6 +545,24 @@ namespace SummonHeart
 					angerBarInterface?.Update(gameTime);
 				}
 			}
+			else if (modPlayer.PlayerClass == 5)
+			{
+				if (!Main.gameMenu && PanelMagic.visible)
+				{
+					magicInterface?.Update(gameTime);
+				}
+				else
+				{
+					if (magicUI == null)
+					{
+						magicUI = new PanelMagic();
+						magicUI.Initialize();
+						magicInterface = new UserInterface();
+						magicInterface.SetState(magicUI);
+					}
+					magicUI.needValidate = true;
+				}
+			}
 		}
 
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
@@ -571,6 +611,13 @@ namespace SummonHeart
 				}
 				if (angerBar != null)
 					angerBarInterface.Draw(Main.spriteBatch, new GameTime());
+			}
+			else if (modPlayer.PlayerClass == 5)
+			{
+				if (!Main.gameMenu && PanelMagic.visible)
+				{
+					magicInterface.Draw(Main.spriteBatch, new GameTime());
+				}
 			}
 			return true;
 		}

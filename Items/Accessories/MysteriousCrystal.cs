@@ -13,7 +13,7 @@ namespace SummonHeart.Items.Accessories
             DisplayName.SetDefault("MysteriousCrystal");
             Tooltip.SetDefault("Resurrection time reduced to 5 seconds");
             DisplayName.AddTranslation(GameCulture.Chinese, "神秘水晶");
-            Tooltip.AddTranslation(GameCulture.Chinese, "复活时间减为5秒" +
+            Tooltip.AddTranslation(GameCulture.Chinese, "复活时间减为2秒(Boss存活时无效)" +
                 "\n探测周围的道路" +
                 "\n使用返回死亡点" +
                 "\n给挑战者的礼物");
