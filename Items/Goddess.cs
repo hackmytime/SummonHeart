@@ -2,6 +2,9 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Localization;
+using SummonHeart.Items.Accessories;
+using Microsoft.Xna.Framework;
+using SummonHeart.Extensions;
 
 namespace SummonHeart.Items
 {
@@ -13,9 +16,9 @@ namespace SummonHeart.Items
             Tooltip.SetDefault("Use to toggle Goddess mode(Cheet Mod) Can't cancel\n" +
                 "The blessing of the goddess:swallowing  10x the soul of creatures\n" +
                 "The son of the demon God is seduced by the power given by the goddess");
-            DisplayName.AddTranslation(GameCulture.Chinese, "女神之像【已无效】");
-            Tooltip.AddTranslation(GameCulture.Chinese, "使用以切换女神模式（作弊模式),获得女神的祝福,无法取消"
-            + "\n女神的祝福：10倍灵魂获取\n魔神之子被女神给与的力量所诱惑");
+            DisplayName.AddTranslation(GameCulture.Chinese, "女神之像");
+            Tooltip.AddTranslation(GameCulture.Chinese, "使用以切换女神模式，获得女神的祝福，此模式无法取消"
+            + "\n女神的祝福：赠与魔神·神格？\n负面效果：敌人攻击翻倍，后续剧情女神获得史诗级增强");
         }
 
         public override void SetDefaults()
@@ -31,33 +34,42 @@ namespace SummonHeart.Items
 
         public override bool UseItem(Player player)
         {
-            /*if (!SummonHeartWorld.GoddessMode)
+            SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
+            if (!SummonHeartWorld.GoddessMode)
             {
-                if (Main.netMode == 0 || Main.netMode == 1)
+                if (!player.GetModPlayer<SummonHeartPlayer>().eatGodSoul && player.HasItemInInventory(mod.ItemType("GodSoul")) == -1)
                 {
-                    Main.NewText("魔神之子被女神给与的力量所诱惑，获得了女神的祝福", 255, 255, 255);
+                    Item.NewItem(player.Center, ModContent.ItemType<GodSoul>());
+                }
+                string text = player.name + "当前世界女神模式已开启，魔神之子获得了女神的祝福";
+                if (Main.netMode == NetmodeID.SinglePlayer)
+                {
+                    Main.NewText(text, new Color(175, 75, 255));
+                }
+                if (Main.netMode == NetmodeID.Server)
+                {
+                    NetMessage.BroadcastChatMessage(NetworkText.FromLiteral(text), new Color(175, 75, 255));
                 }
                 SummonHeartWorld.GoddessMode = true;
                 return true;
-            }*/
-           /* if (SummonHeartWorld.GoddessMode)
+            }
+            else
             {
-                if (Main.netMode == 0 || Main.netMode == 1)
+                if (!player.GetModPlayer<SummonHeartPlayer>().eatGodSoul && player.HasItemInInventory(mod.ItemType("GodSoul")) == -1)
                 {
-                    Main.NewText(Language.GetTextValue("Mods.AlchemistNPC.Common.AntiBuffmodeisdisabled"), 255, 255, 255);
+                    Item.NewItem(player.Center, ModContent.ItemType<GodSoul>());
                 }
-                SummonHeartWorld.GoddessMode = false;
-                return true;
-            }*/
+            }
+            
             return base.UseItem(player);
         }
 
-        /*public override void AddRecipes()
+        public override void AddRecipes()
         {
             ModRecipe recipe = new ModRecipe(mod);
             recipe.AddTile(TileID.DemonAltar);
             recipe.SetResult(this);
             recipe.AddRecipe();
-        }*/
+        }
     }
 }

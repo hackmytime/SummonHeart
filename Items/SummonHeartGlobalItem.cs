@@ -1,4 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
+using SummonHeart.Items.Accessories;
+using SummonHeart.ui.layout;
+using SummonHeart.Utilities;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;

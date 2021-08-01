@@ -76,6 +76,10 @@ namespace SummonHeart.NPCs
 				npc.defense *= 30;
 				npc.damage *= 30;
 			}
+            if (SummonHeartWorld.GoddessMode)
+            {
+				npc.damage *= 2;
+			}
 		}
 
         /*public void SyncPlayerVariables(Player player)

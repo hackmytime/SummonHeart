@@ -71,7 +71,10 @@ namespace SummonHeart.Items.Weapons.Magic
                 TooltipLine tooltipLine = new TooltipLine(base.mod, "MagicSwordBlood", text);
                 tooltipLine.overrideColor = Color.LimeGreen;
                 tooltips.Insert(num + 1, tooltipLine);
-                text = "攻击范围 " + (int)(modPlayer.magicSwordBlood / 16.7 + 200) + "格";
+                int range = (int)(modPlayer.magicSwordBlood / 16.7 + 200);
+                if(range > 800)
+                    range = 800;
+                text = "攻击范围 " + range + "格";
                 tooltipLine = new TooltipLine(base.mod, "SwordBloodMax", text);
                 tooltipLine.overrideColor = Color.LightBlue;
                 tooltips.Insert(num + 2, tooltipLine);

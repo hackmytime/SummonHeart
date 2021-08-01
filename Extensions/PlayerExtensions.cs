@@ -83,10 +83,31 @@ namespace SummonHeart.Extensions
                     return i;
                 }
             }
-            return -1;
-        } 
-        
-        public static void doKillNpcExp(this Player player, NPC npc)
+            SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
+			for (int i = 0; i < SummonHeartPlayer.MaxExtraAccessories; i++)
+			{
+				if (mp.ExtraAccessories[i].type == type)
+				{
+					return i;
+				}
+			}
+			return -1;
+        }
+
+		public static int HasItemInInventory(this Player player, int type)
+		{
+			SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
+			for (int i = 0; i < player.inventory.Length; i++)
+			{
+				if (player.inventory[i].type == type)
+				{
+					return i;
+				}
+			}
+			return -1;
+		}
+
+		public static void doKillNpcExp(this Player player, NPC npc)
         {
 			SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
 

@@ -5,7 +5,9 @@ using SummonHeart.Models;
 using SummonHeart.Projectiles.Summon;
 using SummonHeart.ui;
 using SummonHeart.Utilities;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameInput;
@@ -19,6 +21,7 @@ namespace SummonHeart
     public class SummonHeartPlayer : ModPlayer
 	{	
 		public bool SummonHeart = false;
+		public bool eatGodSoul = false;
 		public int PlayerClass = 0;
 		public int deathCount = 0;
 		public bool Berserked = false;
@@ -86,6 +89,10 @@ namespace SummonHeart
 
 		public List<bool> boughtbuffList;
 
+		public static int MaxExtraAccessories = 0;
+
+		public Item[] ExtraAccessories;
+
 		// animation helper fields
 		public AuraAnimationInfo currentAura;
 		public int lightningFrameTimer = 500000;
@@ -109,7 +116,29 @@ namespace SummonHeart
             }
 		}
 
-		public override void ResetEffects()
+        public override void Initialize()
+        {
+			this.ExtraAccessories = new Item[50];
+			for (int i = 0; i < 50; i++)
+			{
+				this.ExtraAccessories[i] = new Item();
+				this.ExtraAccessories[i].SetDefaults(0, true);
+			}
+		}
+
+        public override void UpdateEquips(ref bool wallSpeedBuff, ref bool tileSpeedBuff, ref bool tileRangeBuff)
+        {
+			for (int i = 0; i < MaxExtraAccessories; i++)
+			{
+				base.player.VanillaUpdateEquip(this.ExtraAccessories[i]);
+			}
+			for (int j = 0; j < MaxExtraAccessories; j++)
+			{
+				base.player.VanillaUpdateAccessory(base.player.whoAmI, this.ExtraAccessories[j], false, ref wallSpeedBuff, ref tileSpeedBuff, ref tileRangeBuff);
+			}
+		}
+
+        public override void ResetEffects()
 		{
 			SummonHeart = false;
 			AttackSpeed = 1f;
@@ -145,6 +174,15 @@ namespace SummonHeart
 			MyMoveSpeedMult = 1f;
 			MyCritDmageMult = 1f;
 			costMana = (handBloodGas / 33333) * (handBloodGas / 33333) * 10 + 5;
+
+			if (eatGodSoul)
+			{
+				MaxExtraAccessories = 50;
+			}
+			else
+			{
+				MaxExtraAccessories = SummonHeartWorld.WorldLevel;
+			}
 		}
 
 		public override void PreUpdate()
@@ -358,7 +396,7 @@ namespace SummonHeart
             {
 				//一刀流
 				killResourceCost += handBloodGas / 5333;
-				killResourceMulti += (handBloodGas / 3200 + 2);
+				killResourceMulti += (handBloodGas / 2000 + 2);
 			}
             if (boughtbuffList[2] && bodyBloodGas > handBloodGas)
             {
@@ -827,6 +865,7 @@ namespace SummonHeart
 		public override TagCompound Save()
 		{
 			var tagComp = new TagCompound();
+			tagComp.Add("eatGodSoul", eatGodSoul);
 			tagComp.Add("BBP", BBP);
 			tagComp.Add("SummonCrit", SummonCrit);
 			tagComp.Add("exp", exp);
@@ -851,11 +890,13 @@ namespace SummonHeart
 			tagComp.Add("practiceFoot", practiceFoot);
 			tagComp.Add("soulSplit", soulSplit);
 			tagComp.Add("boughtbuffList", boughtbuffList);
+			tagComp["ExtraAccessories"] = this.ExtraAccessories.Select(new Func<Item, TagCompound>(ItemIO.Save)).ToList<TagCompound>();
 			return tagComp;
 		}
 		
 		public override void Load(TagCompound tag)
 		{
+			eatGodSoul = tag.GetBool("eatGodSoul");
 			BBP = tag.GetInt("BBP");
 			SummonCrit = tag.GetInt("SummonCrit");
 			exp = tag.GetInt("exp");
@@ -885,6 +926,7 @@ namespace SummonHeart
 			{
 				boughtbuffList.Add(false);
 			}
+			tag.GetList<TagCompound>("ExtraAccessories").Select(new Func<TagCompound, Item>(ItemIO.Load)).ToList<Item>().CopyTo(this.ExtraAccessories);
 		}
 
 		public override void ProcessTriggers(TriggersSet triggersSet)
@@ -905,6 +947,7 @@ namespace SummonHeart
 				PanelSummon.visible = false;
 				PanelMelee2.visible = false;
 				PanelMagic.visible = false;
+				PanelGodSoul.visible = false;
 			}
 
 			if (SummonHeartMod.ShowUI.JustPressed)
@@ -989,6 +1032,10 @@ namespace SummonHeart
 					Main.NewText($"只有法师才能使用空间传送技能", Color.Red);
 				}
 			}
+			if (SummonHeartMod.ExtraAccessaryKey.JustPressed)
+			{
+				PanelGodSoul.visible = !PanelGodSoul.visible;
+			}
 		}
 
         public override void OnHitNPC(Item item, NPC target, int damage, float knockback, bool crit)
@@ -1065,7 +1112,7 @@ namespace SummonHeart
 			}
 			if (PlayerClass == 3 && boughtbuffList[2])
 			{
-				damage = (int)(damage * 0.01f);
+				damage = (int)(damage * 0.04f);
 				if (damage < 1)
 					damage = 1;
 			}

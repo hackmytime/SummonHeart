@@ -176,7 +176,7 @@ namespace SummonHeart.ui
                 modlabel_level = new UIText("魔神之手"+ praticeText + " 气血值：" + mp.handBloodGas);
                 modlabel_level.TextColor = Color.Orange;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("凝练杀意，动若崩雷：每点杀意值造成伤害+" + (mp.handBloodGas / 3200 + 2) + "点(初始2，每3200气血+1)");
+                modlabel_level = new UIText("凝练杀意，动若崩雷：每点杀意值造成伤害+" + (mp.handBloodGas / 2000 + 2) + "点(初始2，每2000气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
                 modlabel_level = new UIText("杀意掌控，登峰造极：神通消耗杀意值+" + (mp.handBloodGas / 5333) + "%(每5333气血+1%) 击杀敌人获得" + (mp.handBloodGas / 400) + "点杀意值(每400气血+1)");

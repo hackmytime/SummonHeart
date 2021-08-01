@@ -3,9 +3,12 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using SummonHeart.body;
 using SummonHeart.Extensions;
+using SummonHeart.Items;
 using SummonHeart.NPCs;
 using SummonHeart.ui;
 using SummonHeart.ui.Bar;
+using SummonHeart.ui.layout;
+using SummonHeart.Utilities;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -36,6 +39,7 @@ namespace SummonHeart
 		internal static ModHotKey ShowUI;
 		internal static ModHotKey KillSkillKey;
 		internal static ModHotKey TransKey;
+		internal static ModHotKey ExtraAccessaryKey;
 
 		internal PanelMelee PanelMeleeUI;
 		internal PanelKill PanelKillUI;
@@ -47,6 +51,9 @@ namespace SummonHeart
 		
 		internal PanelMagic magicUI;
 		public UserInterface magicInterface;
+
+		internal PanelGodSoul godSoulUI;
+		public UserInterface godSoulInterface;
 
 		internal KillBar ExampleResourceBar;
 		private UserInterface KillResourceBarUserInterface;
@@ -128,6 +135,7 @@ namespace SummonHeart
 			ShowUI = RegisterHotKey("魔神炼体法", Keys.L.ToString());
 			KillSkillKey = RegisterHotKey("刺客刺杀技能(可开关)", Keys.V.ToString());
 			TransKey = RegisterHotKey("空间传送", Keys.Y.ToString());
+			ExtraAccessaryKey = RegisterHotKey("额外饰品栏带单", Keys.Q.ToString());
 			// this makes sure that the UI doesn't get opened on the server
 			// the server can't see UI, can it? it's just a command prompt
 			if (!Main.dedServ)
@@ -191,6 +199,10 @@ namespace SummonHeart
 						magicInterface = new UserInterface();
 						magicInterface.SetState(magicUI);
 					}
+					godSoulUI = new PanelGodSoul();
+					godSoulUI.Initialize();
+					godSoulInterface = new UserInterface();
+					godSoulInterface.SetState(godSoulUI);
 				}
 				catch (Exception ex)
 				{
@@ -209,6 +221,7 @@ namespace SummonHeart
 			ShowUI = null;
 			KillSkillKey = null;
 			TransKey = null;
+			ExtraAccessaryKey = null;
 		}
 
 		public override void PostSetupContent()
@@ -563,6 +576,23 @@ namespace SummonHeart
 					magicUI.needValidate = true;
 				}
 			}
+
+			if (!Main.gameMenu && PanelGodSoul.visible)
+			{
+				godSoulInterface?.Update(gameTime);
+			}
+			else
+			{
+				if (godSoulUI == null)
+				{
+					godSoulUI = new PanelGodSoul();
+					godSoulUI.Initialize();
+					godSoulInterface = new UserInterface();
+					godSoulInterface.SetState(godSoulUI);
+				}
+				godSoulUI.needValidate = true;
+			}
+
 		}
 
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
@@ -572,6 +602,16 @@ namespace SummonHeart
 			{
 				layers.Insert(mouseTextIndex, new LegacyGameInterfaceLayer("SummonHeart", DrawSomethingUI, InterfaceScaleType.UI));
 			}
+
+			/*int MouseTextIndex = layers.FindIndex((GameInterfaceLayer layer) => layer.Name.Equals("Vanilla: Inventory"));
+			if (MouseTextIndex != -1)
+			{
+				layers.Insert(MouseTextIndex, new LegacyGameInterfaceLayer("SummonHeart: Extra Accessories", delegate ()
+				{
+					((AllItemsMenu)base.GetGlobalItem("AllItemsMenu")).DrawUpdateExtraAccessories(Main.spriteBatch);
+					return true;
+				}, (InterfaceScaleType)1));
+			}*/
 		}
 
 		private bool DrawSomethingUI()
@@ -618,6 +658,11 @@ namespace SummonHeart
 				{
 					magicInterface.Draw(Main.spriteBatch, new GameTime());
 				}
+			}
+
+			if (!Main.gameMenu && PanelGodSoul.visible)
+			{
+				godSoulInterface.Draw(Main.spriteBatch, new GameTime());
 			}
 			return true;
 		}

@@ -195,7 +195,7 @@ namespace SummonHeart.ui
                 modlabel_level = new UIText("神魂之躯" + praticeText + " 气血值：" + mp.bodyBloodGas);
                 modlabel_level.TextColor = Color.Orange;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("化身初斩，魂躯初凝：修炼需斩第一身外化身，血量永久减半。魂躯介于虚实之间，免疫99%物理接触伤害");
+                modlabel_level = new UIText("化身初斩，魂躯初凝：修炼需斩第一身外化身，血量永久减半。魂躯介于虚实之间，免疫96%物理接触伤害");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
                 modlabel_level = new UIText("化身初斩，魂躯初凝：弹幕伤害减免+" + (mp.bodyBloodGas / 5000 + 20) + "%(初始20%，每5000+1)");
