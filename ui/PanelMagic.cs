@@ -183,7 +183,7 @@ namespace SummonHeart.ui
                 modlabel_level = new UIText("多重施法：弹幕类魔法可多重施法。当前境界：" + (mp.handBloodGas / 33333 + 2) + "重施法(初始2，每33333气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("额外消耗：" + (mp.handBloodGas / 25000 + 2) + "重施法每次额外耗魔" + mp.costMana + "点");
+                modlabel_level = new UIText("额外消耗：" + (mp.handBloodGas / 33333 + 2) + "重施法每次额外耗魔" + mp.costMana + "点");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
                 modlabel_level = new UIText("魔法狂暴：以大量法力强化魔法，魔法武器基础攻击+" + (mp.handBloodGas / 200) + "%(每200气血+1%) ");
@@ -281,10 +281,7 @@ namespace SummonHeart.ui
                                             v.Buy();
                                         }
                                         mp.boughtbuffList[currentBuffIndex] = true;
-                                        if(currentBuffIndex == 2)
-                                        {
-                                            Item.NewItem(mp.player.Center, ModContent.ItemType<SoulCrystal>());
-                                        }
+                                       
                                         mp.bodyDef += buff.def;
                                         needValidate = true;
                                         if (Main.netMode == NetmodeID.MultiplayerClient)

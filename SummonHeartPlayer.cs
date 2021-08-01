@@ -144,7 +144,7 @@ namespace SummonHeart
 			MyAccelerationMult = 1f;
 			MyMoveSpeedMult = 1f;
 			MyCritDmageMult = 1f;
-			costMana = (handBloodGas / 25000) * (handBloodGas / 25000) + 5;
+			costMana = (handBloodGas / 33333) * (handBloodGas / 33333) * 10 + 5;
 		}
 
 		public override void PreUpdate()
@@ -1086,7 +1086,8 @@ namespace SummonHeart
 					costMana = player.statMana;
                 }
 				player.HealMana(costMana * -1);
-				damage -= manaDamage + leftCount;
+				damage -= manaDamage;
+				damage += +leftCount;
 				if (damage < 1)
 					damage = 1;
 			}
@@ -1123,7 +1124,8 @@ namespace SummonHeart
 					costMana = player.statMana;
 				}
 				player.HealMana(costMana * -1);
-				damage -= manaDamage + leftCount;
+				damage -= manaDamage;
+				damage += +leftCount;
 				if (damage < 1)
 					damage = 1;
 			}
