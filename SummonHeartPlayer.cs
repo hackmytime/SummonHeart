@@ -1005,7 +1005,7 @@ namespace SummonHeart
 			{
 				if (PlayerClass == 5)
 				{
-                    if (boughtbuffList[3])
+                    if (!boughtbuffList[3])
                     {
 						Main.NewText($"未修炼魔神之腿，无法使用空间传送", Color.Red);
 						return;

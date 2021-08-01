@@ -23,6 +23,20 @@ namespace SummonHeart
         [Slider]
         public float handMultiplier;
 
+        [Label("自定义额外饰品栏X坐标位置")]
+        [Increment(1)]
+        [Range(0, 1000)]
+        [DefaultValue(20)]
+        [Slider]
+        public int accX;
+
+        [Label("自定义额外饰品栏Y坐标位置")]
+        [Increment(1)]
+        [Range(0, 800)]
+        [DefaultValue(306)]
+        [Slider]
+        public int accY;
+
         [Label("自定义魔神之眼气血上限")]
         [Increment(1000)]
         [Range(0, 200000)]

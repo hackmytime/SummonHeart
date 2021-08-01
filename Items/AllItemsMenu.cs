@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SummonHeart.Extensions;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.UI;
@@ -33,15 +34,18 @@ namespace SummonHeart.Items
                     int y = i / 10;
                     float vx = Main.inventoryBack9Texture.Width * 0.918f * x;
                     float vy = Main.inventoryBack9Texture.Height * 0.918f * y;
-                    r.X = (int)(20 + vx);
-                    r.Y = (int)(306 + vy);
+                    r.X = (int)(SummonHeartConfig.Instance.accX + vx);
+                    r.Y = (int)(SummonHeartConfig.Instance.accY + vy);
                     Vector2 pos = new Vector2(r.X, r.Y);
                     if (r.Contains(value))
                     {
                         Main.LocalPlayer.mouseInterface = true;
                         Main.armorHide = true;
                         singleSlotArray[0] = accItem;
-                        ItemSlot.Handle(singleSlotArray, 10, 0);
+                        if (Main.mouseItem.type == 0 || Main.LocalPlayer.HasItemInAcc(Main.mouseItem.type) == -1)
+                        {
+                            ItemSlot.Handle(singleSlotArray, 10, 0);
+                        }
                         accItem = singleSlotArray[0];
                     }
                     singleSlotArray[0] = accItem;
