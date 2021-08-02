@@ -3,12 +3,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using SummonHeart.body;
 using SummonHeart.Extensions;
-using SummonHeart.Items;
-using SummonHeart.NPCs;
 using SummonHeart.ui;
 using SummonHeart.ui.Bar;
-using SummonHeart.ui.layout;
-using SummonHeart.Utilities;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -54,6 +50,9 @@ namespace SummonHeart
 
 		internal PanelGodSoul godSoulUI;
 		public UserInterface godSoulInterface;
+
+		internal MagicCharge magicCharge;
+		private UserInterface _magicChargeUserInterface;
 
 		internal KillBar ExampleResourceBar;
 		private UserInterface KillResourceBarUserInterface;
@@ -203,6 +202,10 @@ namespace SummonHeart
 					godSoulUI.Initialize();
 					godSoulInterface = new UserInterface();
 					godSoulInterface.SetState(godSoulUI);
+
+					magicCharge = new MagicCharge();
+					_magicChargeUserInterface = new UserInterface();
+					_magicChargeUserInterface.SetState(this.magicCharge);
 				}
 				catch (Exception ex)
 				{
@@ -593,6 +596,19 @@ namespace SummonHeart
 				godSoulUI.needValidate = true;
 			}
 
+			if (!Main.gameMenu && magicCharge != null)
+			{
+				_magicChargeUserInterface?.Update(gameTime);
+			}
+			else
+			{
+				if (magicCharge == null)
+				{
+					magicCharge = new MagicCharge();
+					_magicChargeUserInterface = new UserInterface();
+					_magicChargeUserInterface.SetState(this.magicCharge);
+				}
+			}
 		}
 
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
@@ -663,6 +679,10 @@ namespace SummonHeart
 			if (!Main.gameMenu && PanelGodSoul.visible)
 			{
 				godSoulInterface.Draw(Main.spriteBatch, new GameTime());
+			}
+			if (!Main.gameMenu && magicCharge != null)
+			{
+				_magicChargeUserInterface.Draw(Main.spriteBatch, new GameTime());
 			}
 			return true;
 		}

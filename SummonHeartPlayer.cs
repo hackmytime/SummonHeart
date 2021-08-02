@@ -48,6 +48,8 @@ namespace SummonHeart
 		public int killResourceCost;
 		public int killResourceCostCount;
 		public int killResourceMulti;
+		public bool magicChargeActive = false;
+		public float magicCharge;
 
 		public int eyeBloodGas = 0;
 		public int handBloodGas = 0;
