@@ -50,6 +50,9 @@ namespace SummonHeart
 		public int killResourceMulti;
 		public bool magicChargeActive = false;
 		public float magicCharge;
+		public float magicChargeMax = 100;
+		public float magicChargeCount = 0;
+		public float magicChargeCountMax = 3;
 
 		public int eyeBloodGas = 0;
 		public int handBloodGas = 0;

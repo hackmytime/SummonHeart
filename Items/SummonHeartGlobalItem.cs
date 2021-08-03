@@ -5,6 +5,7 @@ using SummonHeart.Utilities;
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -13,7 +14,6 @@ namespace SummonHeart.Items
 {
     public class SummonHeartGlobalItem : GlobalItem
 	{
-
         public override bool CanUseItem(Item item, Player player)
         {
             if (item.type == ItemID.SiltBlock || item.type == ItemID.SlushBlock || item.type == ItemID.DesertFossil
@@ -25,15 +25,29 @@ namespace SummonHeart.Items
             }
             if (player.altFunctionUse == 2)
             {
-                if (player.statMana < 90)
+                SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
+                if (mp.magicChargeCount <= 0)
                 {
                     return false;
                 }
-                float launchSpeed = -10f;
+                float v1 = item.shootSpeed * ((int)Math.Round(mp.magicChargeMax / 33) + 1);
+                if (mp.magicChargeCount > 0)
+                {
+                    Vector2 arrowVelocity = Vector2.Normalize(Main.MouseWorld - player.Center) * v1;
+                    if (SummonHeartMod.itemSoundMap.ContainsKey(item))
+                        Main.PlaySound(SummonHeartMod.itemSoundMap[item], player.position);
+                    item.crit = 100;
+                    int v = Projectile.NewProjectile(player.MountedCenter.X, player.MountedCenter.Y, arrowVelocity.X, arrowVelocity.Y, item.shoot, item.damage, 4f, player.whoAmI, 0f, 0f);
+                    Main.projectile[v].scale *= 3;
+                    Main.projectile[v].velocity *= 2;
+                    Main.projectile[v].damage *= 20;
+                    mp.magicChargeCount--;
+                    if(mp.magicChargeCount == 0)
+                        mp.magicChargeActive = false;
+                }
+                float launchSpeed = -11f;
                 Vector2 backstepVelocity = Vector2.Normalize(Main.MouseWorld - player.Center) * launchSpeed;
                 player.velocity = backstepVelocity;
-                player.statMana -= 90;
-                player.manaRegenDelay = 220;
                 for (int d = 0; d < 22; d++)
                 {
                     Dust.NewDust(player.Center, 0, 0, 20, 0f + Main.rand.Next(-12, 12), 0f + Main.rand.Next(-12, 12), 150, default, 0.8f);
@@ -52,9 +66,21 @@ namespace SummonHeart.Items
 
         public override void SetDefaults(Item item)
         {
-           if(item.magic)
-                item.channel = true;
-                item.UseSound = null;
+            if (item.magic)
+            {
+                if (item.channel && item.hairDye != -2)
+                {
+                    item.hairDye = -1;
+                }
+                else
+                {
+                    item.hairDye = -2;
+                    item.channel = true;
+                    if (!SummonHeartMod.itemSoundMap.ContainsKey(item))
+                        SummonHeartMod.itemSoundMap.Add(item, item.UseSound);
+                    item.UseSound = null;
+                }
+            }
         }
 
         public override void HoldItem(Item item, Player player)
@@ -74,23 +100,37 @@ namespace SummonHeart.Items
                 item.scale = curScale + 1f;
             }
 
-            if (item.magic)
+            if (item.magic && item.hairDye == -2)
             {
                 float launchSpeed = 2f + (int)Math.Round(player.GetModPlayer<SummonHeartPlayer>().magicCharge / 10f);
                 Vector2 arrowVelocity = Vector2.Normalize(Main.MouseWorld - player.Center) * launchSpeed;
                 if (player.altFunctionUse != 2)
                 {
-                    if (player.channel)
+                    SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
+                    if (player.channel && player.statMana >= item.mana)
                     {
-                        item.useTime = 0;
-                        item.useAnimation = 0;
-                        player.GetModPlayer<SummonHeartPlayer>().magicChargeActive = true;
-                        player.GetModPlayer<SummonHeartPlayer>().magicCharge += 1f;
-                        if (player.GetModPlayer<SummonHeartPlayer>().magicCharge == 1f)
+                        /*item.useTime = 0;
+                        item.useAnimation = 0;*/
+                        mp.magicChargeActive = true;
+                        
+                        if (mp.magicChargeCount == mp.magicChargeCountMax)
                         {
-                            //Main.PlaySound(50, (int)player.Center.X, (int)player.Center.Y, mod.GetSoundSlot((SoundType)50, "Sounds/Custom/bowstring"), 0.5f, 0f);
+                            mp.magicCharge = 0;
+                            return;
                         }
-                        if (player.GetModPlayer<SummonHeartPlayer>().magicCharge == 99f)
+                        else
+                        {
+                            player.GetModPlayer<SummonHeartPlayer>().magicCharge += 1f;
+                            if(Main.time % item.useTime == 0)
+                                player.statMana -= item.mana;
+                            if (mp.magicCharge == mp.magicChargeMax)
+                            {
+                                Main.PlaySound(SoundID.Item29, player.position);
+                                mp.magicCharge = 0;
+                                mp.magicChargeCount++;
+                            }
+                        }
+                        if (mp.magicCharge == 99f || mp.magicChargeCount == mp.magicChargeCountMax)
                         {
                             for (int d = 0; d < 22; d++)
                             {
@@ -104,7 +144,6 @@ namespace SummonHeart.Items
                             {
                                 Dust.NewDust(player.Center, 0, 0, 135, 0f + Main.rand.Next(-12, 12), 0f + Main.rand.Next(-12, 12), 150, default, 0.8f);
                             }
-                            Main.PlaySound(SoundID.Item29, player.position);
                         }
                         if (player.GetModPlayer<SummonHeartPlayer>().magicCharge < 100f)
                         {
@@ -131,28 +170,16 @@ namespace SummonHeart.Items
                     }
                     else
                     {
-                        item.useTime = 40;
-                        item.useAnimation = 40;
-                        if (player.GetModPlayer<SummonHeartPlayer>().magicCharge >= 100f)
+                        //mp.magicCharge = 0;
+                        if (player.statMana == 0f)
                         {
-                            Main.PlaySound(item.UseSound, player.position);
-                            item.crit = 100;
-                            int v = Projectile.NewProjectile(player.MountedCenter.X, player.MountedCenter.Y, arrowVelocity.X, arrowVelocity.Y, item.shoot, item.damage, 4f, player.whoAmI, 0f, 0f);
-                            player.GetModPlayer<SummonHeartPlayer>().magicChargeActive = false;
-                            Main.projectile[v].scale *= 3;
-                            Main.projectile[v].velocity *= 2;
-                            Main.projectile[v].damage *= 20;
-                            player.GetModPlayer<SummonHeartPlayer>().magicCharge = 0f;
-                            return;
-                        }
-                        if (player.GetModPlayer<SummonHeartPlayer>().magicCharge > 0f)
-                        {
-                            Main.PlaySound(item.UseSound, player.position);
+                           /* if(SummonHeartMod.itemSoundMap.ContainsKey(item))
+                                Main.PlaySound(SummonHeartMod.itemSoundMap[item], player.position);
                             player.GetModPlayer<SummonHeartPlayer>().magicChargeActive = false;
                             player.GetModPlayer<SummonHeartPlayer>().magicCharge = 0f;
                             int v = Projectile.NewProjectile(player.MountedCenter.X, player.MountedCenter.Y, arrowVelocity.X, arrowVelocity.Y, item.shoot, 86 + (int)Math.Round(player.GetModPlayer<SummonHeartPlayer>().magicCharge / 10f), 4 + (int)Math.Round(player.GetModPlayer<SummonHeartPlayer>().magicCharge / 10f), player.whoAmI, 0f, 0f);
-                            Main.projectile[v].scale *= 3;
-                            Main.projectile[v].velocity *= 2;
+                            Main.projectile[v].scale *= 2;
+                            Main.projectile[v].velocity *= 1.5f;*/
                         }
                     }
                 }
@@ -161,12 +188,12 @@ namespace SummonHeart.Items
 
         public override bool Shoot(Item item, Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
         {
-            if (item.magic)
+            SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
+            if (item.magic && item.hairDye == -2)
             {
                 bool channel = player.channel;
                 return false;
             }
-            SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
             if (item.magic && mp.PlayerClass == 5 && mp.boughtbuffList[1])
             {
                 if(player.statMana < mp.costMana)

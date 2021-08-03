@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
+using Terraria.Audio;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.Localization;
@@ -27,6 +28,7 @@ namespace SummonHeart
 		public static List<String> rejPassItemList = new List<String>();
 
 		static Dictionary<Projectile, Vector2> oldProMap = new Dictionary<Projectile, Vector2>();
+		public static Dictionary<Item, LegacySoundStyle> itemSoundMap = new Dictionary<Item, LegacySoundStyle>();
 
 		public static int DustIDSlashFX;
 
@@ -147,7 +149,6 @@ namespace SummonHeart
 					GameShaders.Misc["SummonHeart:SwordTrail"] = new MiscShaderData(trailRef, "SwordTrail");
 					GameShaders.Misc["SummonHeart:SolidTrail"] = new MiscShaderData(trailRef, "RacketTrail");
 					SplitGlowMask.Load();
-
 					Player player = Main.player[Main.myPlayer];
 					SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
 					if (modPlayer.PlayerClass == 1)
@@ -228,8 +229,16 @@ namespace SummonHeart
 		}
 
 		public override void PostSetupContent()
-        {
+		{
 			DustIDSlashFX = GetDust("SlashDust").Type;
+			for (int i = 0; i < ItemLoader.ItemCount; i++)
+			{
+				var mitem = ItemLoader.GetItem(i);
+				if(mitem != null && mitem.item.magic && !mitem.item.channel)
+                {
+                    string name = mitem.item.Name;
+                }
+			}
 		}
 
 		public static int getBuffLength()

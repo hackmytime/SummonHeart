@@ -52,7 +52,8 @@ namespace SummonHeart.ui.Bar
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
             base.DrawSelf(spriteBatch);
-            float quotient = Main.LocalPlayer.GetModPlayer<SummonHeartPlayer>().magicCharge / 100f;
+            SummonHeartPlayer mp = Main.LocalPlayer.GetModPlayer<SummonHeartPlayer>();
+            float quotient = mp.magicCharge / mp.magicChargeMax;
             quotient = Utils.Clamp(quotient, 0f, 1f);
             Rectangle hitbox = barFrame.GetInnerDimensions().ToRectangle();
             hitbox.X += 12;
@@ -80,8 +81,8 @@ namespace SummonHeart.ui.Bar
             {
                 return;
             }
-            Main.LocalPlayer.GetModPlayer<SummonHeartPlayer>();
-            text.SetText("");
+            SummonHeartPlayer mp = Main.LocalPlayer.GetModPlayer<SummonHeartPlayer>();
+            text.SetText($"充能魔法：{mp.magicChargeCount}个 充能：{mp.magicCharge} / {mp.magicChargeMax}");
             base.Update(gameTime);
         }
 
