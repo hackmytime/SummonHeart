@@ -50,6 +50,9 @@ namespace SummonHeart
 		internal PanelMagic magicUI;
 		public UserInterface magicInterface;
 
+		internal PanelMagic2 magic2UI;
+		public UserInterface magic2Interface;
+
 		internal PanelGodSoul godSoulUI;
 		public UserInterface godSoulInterface;
 
@@ -199,6 +202,13 @@ namespace SummonHeart
 						magicInterface = new UserInterface();
 						magicInterface.SetState(magicUI);
 					}
+					else if (modPlayer.PlayerClass == 6)
+					{
+						magic2UI = new PanelMagic2();
+						magic2UI.Initialize();
+						magic2Interface = new UserInterface();
+						magic2Interface.SetState(magic2UI);
+					}
 					godSoulUI = new PanelGodSoul();
 					godSoulUI.Initialize();
 					godSoulInterface = new UserInterface();
@@ -336,6 +346,11 @@ namespace SummonHeart
 			recipe.AddIngredient(ModLoader.GetMod("SummonHeart").ItemType("GuideNote"), 1);
 			recipe.AddIngredient(ModLoader.GetMod("SummonHeart").ItemType("MeleeScroll2"), 1);
 			recipe.SetResult(ModLoader.GetMod("SummonHeart").ItemType("DemonSword"));
+			recipe.AddRecipe();
+			recipe = new ModRecipe(this);
+			recipe.AddIngredient(ModLoader.GetMod("SummonHeart").ItemType("GuideNote"), 1);
+			recipe.AddIngredient(ModLoader.GetMod("SummonHeart").ItemType("MagicScroll2"), 1);
+			recipe.SetResult(ModLoader.GetMod("SummonHeart").ItemType("DemonStaff"));
 			recipe.AddRecipe();
 			/*Mod Calamity = ModLoader.GetMod("CalamityMod");
 			if(Calamity != null)
@@ -588,6 +603,24 @@ namespace SummonHeart
 					magicUI.needValidate = true;
 				}
 			}
+			else if (modPlayer.PlayerClass == 6)
+			{
+				if (!Main.gameMenu && PanelMagic2.visible)
+				{
+					magic2Interface?.Update(gameTime);
+				}
+				else
+				{
+					if (magic2UI == null)
+					{
+						magic2UI = new PanelMagic2();
+						magic2UI.Initialize();
+						magic2Interface = new UserInterface();
+						magic2Interface.SetState(magic2UI);
+					}
+					magic2UI.needValidate = true;
+				}
+			}
 
 			if (!Main.gameMenu && PanelGodSoul.visible)
 			{
@@ -682,6 +715,13 @@ namespace SummonHeart
 				if (!Main.gameMenu && PanelMagic.visible)
 				{
 					magicInterface.Draw(Main.spriteBatch, new GameTime());
+				}
+			}
+			else if (modPlayer.PlayerClass == 6)
+			{
+				if (!Main.gameMenu && PanelMagic2.visible)
+				{
+					magic2Interface.Draw(Main.spriteBatch, new GameTime());
 				}
 			}
 

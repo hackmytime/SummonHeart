@@ -77,11 +77,11 @@ namespace SummonHeart.ui.Bar
         // Token: 0x0600008A RID: 138 RVA: 0x00012D2F File Offset: 0x00010F2F
         public override void Update(GameTime gameTime)
         {
-            if (!Main.LocalPlayer.GetModPlayer<SummonHeartPlayer>().magicChargeActive)
+            SummonHeartPlayer mp = Main.LocalPlayer.GetModPlayer<SummonHeartPlayer>();
+            if (mp.magicCharge ==0 && mp.magicChargeCount == 0)
             {
                 return;
             }
-            SummonHeartPlayer mp = Main.LocalPlayer.GetModPlayer<SummonHeartPlayer>();
             text.SetText($"充能魔法：{mp.magicChargeCount}个 充能：{mp.magicCharge} / {mp.magicChargeMax}");
             base.Update(gameTime);
         }

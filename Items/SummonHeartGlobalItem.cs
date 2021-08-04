@@ -23,29 +23,30 @@ namespace SummonHeart.Items
                 item.useTime = 2;
                 item.useAnimation = 3;
             }
-            if (player.altFunctionUse == 2)
+            SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
+            if (mp.PlayerClass == 6 && player.altFunctionUse == 2)
             {
-                SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
                 if (mp.magicChargeCount <= 0)
                 {
                     return false;
                 }
-                float v1 = item.shootSpeed * ((int)Math.Round(mp.magicChargeMax / 33) + 1);
+                float v1 = item.shootSpeed * 2;
                 if (mp.magicChargeCount > 0)
                 {
+                    //计算伤害
+                    int damage = (int)(item.damage * 10 * (player.allDamage - 1 + player.magicDamage + mp.handBloodGas / 20000));
                     Vector2 arrowVelocity = Vector2.Normalize(Main.MouseWorld - player.Center) * v1;
                     if (SummonHeartMod.itemSoundMap.ContainsKey(item))
                         Main.PlaySound(SummonHeartMod.itemSoundMap[item], player.position);
                     item.crit = 100;
-                    int v = Projectile.NewProjectile(player.MountedCenter.X, player.MountedCenter.Y, arrowVelocity.X, arrowVelocity.Y, item.shoot, item.damage, 4f, player.whoAmI, 0f, 0f);
+                    int v = Projectile.NewProjectile(player.MountedCenter.X, player.MountedCenter.Y, arrowVelocity.X, arrowVelocity.Y, item.shoot, damage, item.knockBack, player.whoAmI, 0f, 0f);
                     Main.projectile[v].scale *= 3;
-                    Main.projectile[v].velocity *= 2;
-                    Main.projectile[v].damage *= 20;
+                    //Main.projectile[v].velocity *= 2;
                     mp.magicChargeCount--;
                     if(mp.magicChargeCount == 0)
                         mp.magicChargeActive = false;
                 }
-                float launchSpeed = -11f;
+                float launchSpeed = -10f;
                 Vector2 backstepVelocity = Vector2.Normalize(Main.MouseWorld - player.Center) * launchSpeed;
                 player.velocity = backstepVelocity;
                 for (int d = 0; d < 22; d++)
@@ -64,33 +65,14 @@ namespace SummonHeart.Items
             return true;
         }
 
-        public override void SetDefaults(Item item)
-        {
-            if (item.magic)
-            {
-                if (item.channel && item.hairDye != -2)
-                {
-                    item.hairDye = -1;
-                }
-                else
-                {
-                    item.hairDye = -2;
-                    item.channel = true;
-                    if (!SummonHeartMod.itemSoundMap.ContainsKey(item))
-                        SummonHeartMod.itemSoundMap.Add(item, item.UseSound);
-                    item.UseSound = null;
-                }
-            }
-        }
-
         public override void HoldItem(Item item, Player player)
         {
-            SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
+            SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
 
             float handMultiplier = SummonHeartConfig.Instance.handMultiplier;
-            if (item.melee && modPlayer.boughtbuffList[1])
+            if (item.melee && mp.boughtbuffList[1])
             {
-                float curScale = (modPlayer.handBloodGas / 500 * 0.01f + 0.5f) * handMultiplier;
+                float curScale = (mp.handBloodGas / 500 * 0.01f + 0.5f) * handMultiplier;
                 curScale = 1f;
                 //刺剑距离减半
                 if (item.modItem != null && item.modItem.Name == "Raiden")
@@ -100,14 +82,43 @@ namespace SummonHeart.Items
                 item.scale = curScale + 1f;
             }
 
-            if (item.magic && item.hairDye == -2)
+            if(mp.PlayerClass == 6 && item.magic && !item.channel)
             {
-                float launchSpeed = 2f + (int)Math.Round(player.GetModPlayer<SummonHeartPlayer>().magicCharge / 10f);
-                Vector2 arrowVelocity = Vector2.Normalize(Main.MouseWorld - player.Center) * launchSpeed;
+                if (Main.mouseLeft && !Main.mouseLeftRelease)
+                {
+                    mp.inMagicCharging = true;
+                }
+                else if (mp.autoAttack)
+                {
+                    mp.inMagicCharging = true;
+                }
+                else
+                {
+                    mp.magicCharge = 0;
+                }
+
+                if (item.UseSound != null)
+                {
+                    if (!SummonHeartMod.itemSoundMap.ContainsKey(item))
+                        SummonHeartMod.itemSoundMap.Add(item, item.UseSound);
+                    item.UseSound = null;
+                }
+            }
+
+            if (mp.inMagicCharging)
+            {
                 if (player.altFunctionUse != 2)
                 {
-                    SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
-                    if (player.channel && player.statMana >= item.mana)
+                    //计算魔法消耗
+                    item.mana = 0;
+                    int magicCostCount = (int)mp.magicChargeCount;
+                    magicCostCount *= magicCostCount;
+                    if(magicCostCount < 10)
+                    {
+                        magicCostCount = 10;
+                    }
+                    magicCostCount /= 10;
+                    if (player.statMana >= magicCostCount)
                     {
                         /*item.useTime = 0;
                         item.useAnimation = 0;*/
@@ -121,16 +132,22 @@ namespace SummonHeart.Items
                         else
                         {
                             player.GetModPlayer<SummonHeartPlayer>().magicCharge += 1f;
-                            if(Main.time % item.useTime == 0)
-                                player.statMana -= item.mana;
-                            if (mp.magicCharge == mp.magicChargeMax)
+                            if(Main.time % 10 == 0)
+                                player.statMana -= magicCostCount;
+                            if (mp.magicCharge >= mp.magicChargeMax)
                             {
                                 Main.PlaySound(SoundID.Item29, player.position);
                                 mp.magicCharge = 0;
-                                mp.magicChargeCount++;
+                                //计算增加的量
+                                float addCharge = 1f;
+                                if (mp.boughtbuffList[1])
+                                {
+                                    addCharge += (mp.handBloodGas / 2500 + 20) * 0.01f;
+                                }
+                                mp.magicChargeCount += addCharge;
                             }
                         }
-                        if (mp.magicCharge == 99f || mp.magicChargeCount == mp.magicChargeCountMax)
+                        if (mp.magicCharge >= 99f || mp.magicChargeCount == mp.magicChargeCountMax)
                         {
                             for (int d = 0; d < 22; d++)
                             {
@@ -170,7 +187,7 @@ namespace SummonHeart.Items
                     }
                     else
                     {
-                        //mp.magicCharge = 0;
+                        mp.magicCharge = 0;
                         if (player.statMana == 0f)
                         {
                            /* if(SummonHeartMod.itemSoundMap.ContainsKey(item))
@@ -189,9 +206,8 @@ namespace SummonHeart.Items
         public override bool Shoot(Item item, Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
         {
             SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
-            if (item.magic && item.hairDye == -2)
+            if (mp.PlayerClass == 6 && item.magic && !item.channel)
             {
-                bool channel = player.channel;
                 return false;
             }
             if (item.magic && mp.PlayerClass == 5 && mp.boughtbuffList[1])
@@ -270,8 +286,8 @@ namespace SummonHeart.Items
 
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
-            Player player = Main.player[Main.myPlayer];
-            SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
+            Player player = Main.LocalPlayer;
+            SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
 
             int num = tooltips.FindIndex((TooltipLine t) => t.Name.Equals("ItemName"));
             if (num != -1)
@@ -304,33 +320,81 @@ namespace SummonHeart.Items
                     }
                 }*/
             }
-            int num4 = tooltips.FindIndex((TooltipLine t) => t.Name.Equals("Speed"));
-            if (num4 != -1)
+           
+            if (mp.PlayerClass == 6 && item.magic && !item.channel)
             {
-                string str = (60f / (float)item.useTime).ToString("f1") + " ";
-                tooltips[num4].text = str + (GameCulture.Chinese.IsActive ? "每秒攻击次数" : "Attack Per Secend");
-            }
-            int num5 = tooltips.FindIndex((TooltipLine t) => t.Name.Equals("Knockback"));
-            if (num5 != -1)
-            {
-                string str2 = item.knockBack.ToString("f1") + " ";
-                tooltips[num5].text = str2 + (GameCulture.Chinese.IsActive ? "击退力度" : "Knockback");
-            }
-
-            if(item.magic && modPlayer.PlayerClass == 5 && modPlayer.boughtbuffList[1])
-            {
+                int num4 = tooltips.FindIndex((TooltipLine t) => t.Name.Equals("CritChance"));
+                if (num4 != -1)
+                {
+                    string str = mp.magicChargeCountMax + " ";
+                    tooltips[num4].text = str + (GameCulture.Chinese.IsActive ? "充能魔法上限" : "Attack Per Secend");
+                    tooltips[num4].overrideColor = Color.LightGreen;
+                    //计算伤害
+                    int damage = (int)(item.damage * 10 * (player.allDamage -1 + player.magicDamage + mp.handBloodGas / 20000));
+                    string text2 = "左键充能，右键施放充能魔法" +
+                   "\n充能魔法伤害 " + damage +
+                   "\n充能魔法弹幕速度 2倍" +
+                   "\n充能魔法弹幕大小 3倍";
+                    tooltips[num4 + 1].text = text2;
+                    tooltips[num4 + 1].overrideColor = Color.LightSkyBlue;
+                }
+                int num5 = tooltips.FindIndex((TooltipLine t) => t.Name.Equals("Knockback"));
+                if (num5 != -1)
+                {
+                    float addCharge = 1f;
+                    if (mp.boughtbuffList[1])
+                    {
+                        addCharge += (mp.handBloodGas / 2500 + 20) * 0.01f;
+                    }
+                   
+                    string str2 = 100 / addCharge / 60 + "秒 ";
+                    tooltips[num5].text = str2 + (GameCulture.Chinese.IsActive ? "充能完成速度" : "Knockback");
+                    tooltips[num5].overrideColor = Color.LightSkyBlue;
+                }
                 int num6 = tooltips.FindIndex((TooltipLine t) => t.Name.Equals("UseMana"));
                 if (num6 != -1)
                 {
-                    int str2 = (int)(player.manaCost + modPlayer.costMana);
-                    tooltips[num6].text = tooltips[num6].text  + "(额外消耗" + modPlayer.costMana + ")";
+                    //计算魔法消耗
+                    int magicCostCount = (int)mp.magicChargeCount;
+                    magicCostCount *= magicCostCount;
+                    if (magicCostCount < 10)
+                    {
+                        magicCostCount = 10;
+                    }
+                    tooltips[num6].text = "当前充能魔法消耗 " + magicCostCount;
+                }
+            }
+            else
+            {
+                int num4 = tooltips.FindIndex((TooltipLine t) => t.Name.Equals("Speed"));
+                if (num4 != -1)
+                {
+                    string str = (60f / (float)item.useTime).ToString("f1") + " ";
+                    tooltips[num4].text = str + (GameCulture.Chinese.IsActive ? "每秒攻击次数" : "Attack Per Secend");
+                }
+                int num5 = tooltips.FindIndex((TooltipLine t) => t.Name.Equals("Knockback"));
+                if (num5 != -1)
+                {
+                    string str2 = item.knockBack.ToString("f1") + " ";
+                    tooltips[num5].text = str2 + (GameCulture.Chinese.IsActive ? "击退力度" : "Knockback");
+                }
+
+                if (item.magic && mp.PlayerClass == 5 && mp.boughtbuffList[1])
+                {
+                    int num6 = tooltips.FindIndex((TooltipLine t) => t.Name.Equals("UseMana"));
+                    if (num6 != -1)
+                    {
+                        int str2 = (int)(player.manaCost + mp.costMana);
+                        tooltips[num6].text = tooltips[num6].text + "(额外消耗" + mp.costMana + ")";
+                    }
                 }
             }
         }
 
         public override bool AltFunctionUse(Item item, Player player)
         {
-            if (item.magic)
+            SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
+            if (mp.PlayerClass == 6 && item.magic)
                 return true;
             return base.AltFunctionUse(item, player);
         }

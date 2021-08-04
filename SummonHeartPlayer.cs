@@ -24,7 +24,7 @@ namespace SummonHeart
 		public bool eatGodSoul = false;
 		public int PlayerClass = 0;
 		public int deathCount = 0;
-		public bool Berserked = false;
+		public bool autoAttack = false;
 		public float AttackSpeed;
 		public float tungstenPrevSizeSave;
 		public bool FishSoul = false;
@@ -48,11 +48,12 @@ namespace SummonHeart
 		public int killResourceCost;
 		public int killResourceCostCount;
 		public int killResourceMulti;
+		public bool inMagicCharging = false;
 		public bool magicChargeActive = false;
 		public float magicCharge;
 		public float magicChargeMax = 100;
 		public float magicChargeCount = 0;
-		public float magicChargeCountMax = 3;
+		public float magicChargeCountMax = 10;
 
 		public int eyeBloodGas = 0;
 		public int handBloodGas = 0;
@@ -188,20 +189,14 @@ namespace SummonHeart
 			{
 				MaxExtraAccessories = SummonHeartWorld.WorldLevel;
 			}
+			inMagicCharging = false;
 		}
 
 		public override void PreUpdate()
 		{
-			if (player.HasItemInAcc(mod.ItemType("MysteriousCrystal")) != -1 && base.player.respawnTimer > 300)
+			if (player.HasItemInAcc(mod.ItemType("MysteriousCrystal")) != -1 && base.player.respawnTimer > 300 && !player.AnyBossAlive())
 			{
-                if (player.AnyBossAlive())
-                {
-					player.respawnTimer = 900;
-                }
-                else
-                {
-					player.respawnTimer = 120;
-				}
+				player.respawnTimer = 120;
 			}
 
 			if (Main.netMode != 2)
@@ -272,6 +267,11 @@ namespace SummonHeart
 				//法师·法神
 				EffectMagic();
 			}
+			else if (PlayerClass == 6)
+			{
+				//法师·魔法掌控者
+				EffectMagic2();
+			}
 		}
 
         public override void GetHealMana(Item item, bool quickHeal, ref int healValue)
@@ -279,7 +279,69 @@ namespace SummonHeart
             base.GetHealMana(item, quickHeal, ref healValue);
         }
 
-        private void EffectMagic()
+		private void EffectMagic2()
+		{
+			int allBlood = this.getAllBloodGas();
+			player.statManaMax2 += allBlood / 40;
+			player.manaRegen = 0;
+			player.manaRegenCount = 0;
+			player.manaRegenDelay = 99999999;
+			if (player.manaCost == 0)
+			{
+				player.manaCost = 9999999;
+				if ((int)Main.time % 60 < 1)
+				{
+					Main.NewText("法师禁止使用无限魔力，否则魔法消耗增加9999999", Color.Red, false);
+				}
+			}
+
+			//魔神之眼
+			if (boughtbuffList[0])
+			{
+				MyCritDmageMult += eyeBloodGas / 1000 * 0.01f;
+			}
+
+			//魔神之手
+			if (boughtbuffList[1])
+			{
+				magicChargeCountMax = handBloodGas / 2500 + 20;
+            }
+            else
+            {
+				magicChargeCountMax = 10;
+			}
+
+			//魔神之躯
+			int heal = 2;
+			if (boughtbuffList[2])
+			{
+				player.noKnockback = true;
+				//计算被动
+				heal = (int)(player.statManaMax2 * (0.01 + bodyBloodGas / 100000 * 0.01f)) / 4;
+				if (heal < 2)
+					heal = 2;
+			}
+			if (player.statMana < player.statManaMax2 && bodyHealCD == 1)
+			{
+				player.HealMana(heal);
+			}
+
+			//魔神之腿
+			if (boughtbuffList[3])
+			{
+				player.noFallDmg = true;
+				MyMoveSpeedMult += (footBloodGas / 5000 + 20) * 0.01f;
+				MyAccelerationMult += (footBloodGas / 5000 + 20) * 0.01f;
+				player.wingTimeMax += (footBloodGas / 2222 + 10) * 60;
+				player.jumpSpeedBoost += (footBloodGas / 1000 + 60) * 0.01f;
+				if (footBloodGas >= 200000)
+				{
+					player.wingTime = footBloodGas / 1000 * 60;
+				}
+			}
+		}
+
+		private void EffectMagic()
         {
             int allBlood = this.getAllBloodGas();
 			player.statManaMax2 += allBlood / 20;
@@ -288,10 +350,19 @@ namespace SummonHeart
 			player.manaRegenDelay = 99999999;
             if (player.manaCost == 0)
             {
-				player.manaCost = 9999999;
-				if ((int)Main.time % 60 < 1)
-				{
-					Main.NewText("法师禁止使用无限魔力，否则魔法消耗增加9999999", Color.Red, false);
+                Mod Luiafk = ModLoader.GetMod("Luiafk");
+
+				if (Luiafk != null)
+                {
+					player.manaCost = 9999999;
+					if ((int)Main.time % 60 < 1)
+					{
+						Main.NewText("法师禁止使用无限魔力，否则魔法消耗增加9999999", Color.Red, false);
+					}
+                }
+                else
+                {
+					player.manaCost = 500;
 				}
 			}
 
@@ -938,11 +1009,17 @@ namespace SummonHeart
 		{
 			if (SummonHeartMod.AutoAttackKey.JustPressed)
 			{
-				Berserked = !Berserked;
-				if(Berserked)
+				autoAttack = !autoAttack;
+				if (autoAttack)
+                {
 					Main.NewText($"自动使用武器: 开", Color.SkyBlue);
-				else
+					inMagicCharging = true;
+                }
+                else
+                {
 					Main.NewText($"自动使用武器: 关", Color.SkyBlue);
+					inMagicCharging = false;
+                }
 			}
 
 			if (Main.keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape))
@@ -952,6 +1029,7 @@ namespace SummonHeart
 				PanelSummon.visible = false;
 				PanelMelee2.visible = false;
 				PanelMagic.visible = false;
+				PanelMagic2.visible = false;
 				PanelGodSoul.visible = false;
 			}
 
@@ -979,6 +1057,10 @@ namespace SummonHeart
 				else if (PlayerClass == 5)
 				{
 					PanelMagic.visible = !PanelMagic.visible;
+				}
+				else if (PlayerClass == 6)
+				{
+					PanelMagic2.visible = !PanelMagic2.visible;
 				}
 			}
 			if (SummonHeartMod.KillSkillKey.JustPressed)
@@ -1098,7 +1180,7 @@ namespace SummonHeart
 
         public override bool PreItemCheck()
         {
-			if (Berserked)
+			if (autoAttack)
 			{
 				player.controlUseItem = true;
 				player.releaseUseItem = true;
@@ -1200,7 +1282,7 @@ namespace SummonHeart
 
         public override void PostItemCheck()
         {
-			if (Berserked)
+			if (autoAttack)
 			{
 				player.controlUseItem = true;
 				player.releaseUseItem = true;
