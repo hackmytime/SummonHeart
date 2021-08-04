@@ -95,6 +95,10 @@ namespace SummonHeart.Items
                 else
                 {
                     mp.magicCharge = 0;
+                    if(mp.magicChargeCount == 0)
+                    {
+                        mp.magicChargeActive = false;
+                    }
                 }
 
                 if (item.UseSound != null)
