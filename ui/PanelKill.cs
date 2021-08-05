@@ -174,7 +174,7 @@ namespace SummonHeart.ui
                 modlabel_level = new UIText("魔神之手"+ praticeText + " 气血值：" + mp.handBloodGas);
                 modlabel_level.TextColor = Color.Orange;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("凝练杀意，动若崩雷：刺杀技能储存上限：" + (mp.handBloodGas / 2000 + 20) + "倍(初始20，每2000气血+1)");
+                modlabel_level = new UIText("凝练杀意，动若崩雷：刺杀技能储存上限：" + (mp.handBloodGas / 2000 + 20) + "(初始20，每2000气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
                 modlabel_level = new UIText("凝练杀意，动若崩雷：刺杀技能伤害倍率+" + (mp.handBloodGas / 4000 + 5) + "倍(初始5，每4000气血+1)");
