@@ -102,7 +102,7 @@ namespace SummonHeart.ui
                 var modlabel = new UIText("弑灵戮神陨-魔神刺客传承：刺客之道，向死而生。死气护体，不死不休。");
                 modlabel.TextColor = new Color(232, 181, 16);
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
-                modlabel = new UIText("刺客为最强爆发职业，刺客之道了，向死而生。");
+                modlabel = new UIText("刺客为最强爆发职业，刺客之道，向死而生。");
                 modlabel.TextColor = new Color(232, 181, 16);
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
 
@@ -177,16 +177,13 @@ namespace SummonHeart.ui
                 modlabel_level = new UIText("凝练杀意，动若崩雷：刺杀技能储存上限：" + (mp.handBloodGas / 2000 + 20) + "倍(初始20，每2000气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("凝练杀意，动若崩雷：刺杀技能伤害倍率+" + (mp.handBloodGas / 4000 + 2) + "倍(初始5，每4000气血+1)");
+                modlabel_level = new UIText("凝练杀意，动若崩雷：刺杀技能伤害倍率+" + (mp.handBloodGas / 4000 + 5) + "倍(初始5，每4000气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
                 modlabel_level = new UIText("刺客之手，投掷精通：投掷武器基础攻击+" + (mp.handBloodGas / 200) + "%(每200气血+1%)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
                 modlabel_level = new UIText("刺客之手，杀意灌注：投掷武器攻击消耗1%杀意上限的杀意值造成额外"+ mp.killResourceMax2/100 * mp.killResourceMulti+"点真实伤害");
-                modlabel_level.TextColor = Color.SkyBlue;
-                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("刺客之手，杀意灌注：提高投掷类武器飞行速度" + (mp.handBloodGas / 2500) + "初始20%，2500+1%");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
                

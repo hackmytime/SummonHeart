@@ -17,8 +17,12 @@ namespace SummonHeart.ui.Bar
         public override void OnInitialize()
         {
             area = new UIElement();
-            area.Left.Set(-area.Width.Pixels - 1050f, 1f);
-            area.Top.Set(580f, 0f);
+            /*area.Left.Set(-area.Width.Pixels - 1050f, 1f);
+            area.Top.Set(580f, 0f);*/
+
+            area.Left.Set(Main.screenWidth / 2 - 182 / 2, 0);
+            area.Top.Set(Main.screenHeight / 2 - 60 / 2 + 60, 0);
+
             area.Width.Set(182f, 0f);
             area.Height.Set(60f, 0f);
             barFrame = new UIImage(ModContent.GetTexture("SummonHeart/ui/Bar/MagicChargeFrame"));
