@@ -241,7 +241,7 @@ namespace SummonHeart.Items.Weapons.Sabres
                 string damageWord = splitText.Last();
                 tt.text = damageValue + " 刺杀" + damageWord;
             }
-            if (modPlayer.showRadius)
+            if (modPlayer.killResourceSkillCount > 0)
             {
                 num = tooltips.FindIndex((TooltipLine t) => t.Name.Equals("Damage"));
                 if (num != -1)

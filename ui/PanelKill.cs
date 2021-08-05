@@ -199,7 +199,7 @@ namespace SummonHeart.ui
                 modlabel_level = new UIText("万杀炼体，杀意滔天：杀意上限+" + mp.bodyBloodGas / 20 + "(每20气血+1) 每秒回复自身" + (mp.bodyBloodGas / 400 + 15) + "杀意值(初始15，每400+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("死气护体，不死不休：使用神通死气转化率：" + (mp.bodyBloodGas/ 50000 + 1) + "%杀意上限（每50000+1%");
+                modlabel_level = new UIText("死气护体，不死不休：使用神通死气转化率：" + (mp.bodyBloodGas/ 50000 + 1) + "%杀意上限（每50000+1%) ");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
 
