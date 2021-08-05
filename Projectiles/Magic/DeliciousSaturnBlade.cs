@@ -17,7 +17,7 @@ namespace SummonHeart.Projectiles.Magic
             projectile.friendly = true;
             projectile.width = 28;
             projectile.height = 28;
-            projectile.melee = true;
+            projectile.magic = true;
             projectile.penetrate = -1;
             projectile.tileCollide = false;
             projectile.timeLeft = 500;

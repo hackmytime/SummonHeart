@@ -248,8 +248,8 @@ namespace SummonHeart.Extensions
 				//越阶战斗奖励
 				if (powerLevel > 0)
 				{
-					if (powerLevel >= 99)
-						powerLevel = 99;
+					if (powerLevel >= 10)
+						powerLevel = 10;
 					if(modPlayer.PlayerClass == 3)
                     {
 						//召唤职业最大5倍
@@ -355,8 +355,7 @@ namespace SummonHeart.Extensions
 					if (modPlayer.practiceHand)
 					{
 						int handMaxBloodGas = modPlayer.handMax;
-						if (modPlayer.PlayerClass == 2)
-							handMaxBloodGas = modPlayer.handMax * 2;
+						
 						if (modPlayer.handBloodGas < modPlayer.handMax)
 						{
 							//判断是否超上限
@@ -390,7 +389,7 @@ namespace SummonHeart.Extensions
 					if (modPlayer.practiceBody)
 					{
 						int bodyMaxBloodGas = modPlayer.bodyMax;
-						if (modPlayer.PlayerClass == 1 || modPlayer.PlayerClass == 2)
+						if (modPlayer.PlayerClass == 1)
 							bodyMaxBloodGas = modPlayer.bodyMax * 2;
 						if (modPlayer.bodyBloodGas < bodyMaxBloodGas)
 						{

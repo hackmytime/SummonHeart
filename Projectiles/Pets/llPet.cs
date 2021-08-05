@@ -47,7 +47,7 @@ namespace SummonHeart.Projectiles.Pets
             {
                 projectile.timeLeft = 2;
             }
-            Lighting.AddLight((int)((double)projectile.position.X + (double)(projectile.width / 2)) / 16, (int)((double)projectile.position.Y + (double)(projectile.height / 2)) / 16, 0.8f, 0.95f, 1f);
+            //Lighting.AddLight((int)((double)projectile.position.X + (double)(projectile.width / 2)) / 16, (int)((double)projectile.position.Y + (double)(projectile.height / 2)) / 16, 0.8f, 0.95f, 1f);
         }
     }
 }

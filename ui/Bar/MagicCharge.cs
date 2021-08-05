@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SummonHeart;
+using SummonHeart.Items.Weapons.Sabres;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader;
@@ -41,7 +42,15 @@ namespace SummonHeart.ui.Bar
         // Token: 0x06000088 RID: 136 RVA: 0x00012BFA File Offset: 0x00010DFA
         public override void Draw(SpriteBatch spriteBatch)
         {
-            if (!Main.LocalPlayer.GetModPlayer<SummonHeartPlayer>().magicChargeActive)
+            SummonHeartPlayer mp = Main.LocalPlayer.GetModPlayer<SummonHeartPlayer>();
+            if (Main.LocalPlayer.HeldItem.modItem is Raiden && mp.PlayerClass == 2)
+            {
+            }
+            else if
+            (mp.magicChargeActive)
+            {
+            }
+            else
             {
                 return;
             }
@@ -77,12 +86,20 @@ namespace SummonHeart.ui.Bar
         // Token: 0x0600008A RID: 138 RVA: 0x00012D2F File Offset: 0x00010F2F
         public override void Update(GameTime gameTime)
         {
-            if (!Main.LocalPlayer.GetModPlayer<SummonHeartPlayer>().magicChargeActive)
+            SummonHeartPlayer mp = Main.LocalPlayer.GetModPlayer<SummonHeartPlayer>();
+            if(Main.LocalPlayer.HeldItem.modItem is Raiden && mp.PlayerClass == 2)
+            {
+                text.SetText($"刺杀技能：{mp.killResourceSkillCount}个 凝练杀意：{mp.magicCharge} / {mp.magicChargeMax}");
+            }
+            else if
+            (mp.magicChargeActive)
+            {
+                text.SetText($"充能魔法：{mp.magicChargeCount}个 充能：{mp.magicCharge} / {mp.magicChargeMax}");
+            }
+            else
             {
                 return;
             }
-            SummonHeartPlayer mp = Main.LocalPlayer.GetModPlayer<SummonHeartPlayer>();
-            text.SetText($"充能魔法：{mp.magicChargeCount}个 充能：{mp.magicCharge} / {mp.magicChargeMax}");
             base.Update(gameTime);
         }
 

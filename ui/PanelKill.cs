@@ -102,19 +102,17 @@ namespace SummonHeart.ui
                 var modlabel = new UIText("弑灵戮神陨-魔神刺客传承：刺客之道，向死而生。死气护体，不死不休。");
                 modlabel.TextColor = new Color(232, 181, 16);
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
-                modlabel = new UIText("刺客分为魔神之躯神通流和魔神之手一刀流两种流派，两个部位都可特化，只可选择一个修炼。");
+                modlabel = new UIText("刺客为最强爆发职业，刺客之道了，向死而生。");
                 modlabel.TextColor = new Color(232, 181, 16);
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
-                modlabel = new UIText("如果你都修炼了，则魔神之手和魔神之躯气血值高的那个部位效果生效。");
-                modlabel.TextColor = new Color(232, 181, 16);
-                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
+
 
                 int totalBoodGas = mp.eyeBloodGas + mp.handBloodGas + mp.bodyBloodGas + mp.footBloodGas;
                
                 var modlabel_level = new UIText("当前杀意上限：" + mp.killResourceMax2 + " 总气血：" + totalBoodGas + " 死亡次数：" + mp.deathCount + " 战斗力：" + mp.getPower());
                 modlabel_level.TextColor = Color.Red;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("当前神通消耗：" + mp.killResourceCost + "%杀意上限（"+mp.killResourceCostCount+"点杀意值） 杀意伤害倍率：" + mp.killResourceMulti + " 神通附加伤害：" + mp.killResourceCostCount * mp.killResourceMulti);
+                modlabel_level = new UIText("杀意伤害倍率：" + mp.killResourceMulti + " 神通附加伤害：" + mp.shortSwordBlood * mp.killResourceMulti + "转化死气：" + mp.killResourceMax2/100 * (mp.bodyBloodGas / 50000 + 1));
                 modlabel_level.TextColor = Color.Red;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
 
@@ -176,13 +174,22 @@ namespace SummonHeart.ui
                 modlabel_level = new UIText("魔神之手"+ praticeText + " 气血值：" + mp.handBloodGas);
                 modlabel_level.TextColor = Color.Orange;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("凝练杀意，动若崩雷：每点杀意值造成伤害+" + (mp.handBloodGas / 2000 + 2) + "点(初始2，每2000气血+1)");
+                modlabel_level = new UIText("凝练杀意，动若崩雷：刺杀技能储存上限：" + (mp.handBloodGas / 2000 + 20) + "倍(初始20，每2000气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("杀意掌控，登峰造极：神通消耗杀意值+" + (mp.handBloodGas / 5333) + "%(每5333气血+1%) 击杀敌人获得" + (mp.handBloodGas / 400) + "点杀意值(每400气血+1)");
+                modlabel_level = new UIText("凝练杀意，动若崩雷：刺杀技能伤害倍率+" + (mp.handBloodGas / 4000 + 2) + "倍(初始5，每4000气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-
+                modlabel_level = new UIText("刺客之手，投掷精通：投掷武器基础攻击+" + (mp.handBloodGas / 200) + "%(每200气血+1%)");
+                modlabel_level.TextColor = Color.SkyBlue;
+                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
+                modlabel_level = new UIText("刺客之手，杀意灌注：投掷武器攻击消耗1%杀意上限的杀意值造成额外"+ mp.killResourceMax2/100 * mp.killResourceMulti+"点真实伤害");
+                modlabel_level.TextColor = Color.SkyBlue;
+                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
+                modlabel_level = new UIText("刺客之手，杀意灌注：提高投掷类武器飞行速度" + (mp.handBloodGas / 2500) + "初始20%，2500+1%");
+                modlabel_level.TextColor = Color.SkyBlue;
+                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
+               
                 if (!mp.boughtbuffList[2])
                     praticeText = "【未修炼】";
                 else if (mp.practiceBody)
@@ -195,7 +202,7 @@ namespace SummonHeart.ui
                 modlabel_level = new UIText("万杀炼体，杀意滔天：杀意上限+" + mp.bodyBloodGas / 20 + "(每20气血+1) 每秒回复自身" + (mp.bodyBloodGas / 400 + 15) + "杀意值(初始15，每400+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("死气护体，不死不休：死气转化+" + (mp.bodyDef + 500) / 10 + "%（每10肉身强度+1%）神通消耗-" + (mp.bodyBloodGas / 40000 + 10) + "%(初始10%，每40000+1)");
+                modlabel_level = new UIText("死气护体，不死不休：使用神通死气转化率：" + (mp.bodyBloodGas/ 50000 + 1) + "1%杀意上限（每50000+1%");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
 
@@ -320,119 +327,7 @@ namespace SummonHeart.ui
 
                 panelwrapper.children.Add(modbuffpanel);
             }
-
-            buffIndex = 0;
-            {
-                var modbuffpanel = new Layout(10, 0, 0, 0, 10, new LayoutVertical());
-
-                var modlabel = new UIText("干凝万锻，魔体終成：可消耗灵魂之力用外物淬体，整体提升肉身强度");
-                modlabel.TextColor = new Color(232, 181, 16);
-                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
-
-                var modbuffgridpanel = new Layout(0, 0, 0, 0, 10, buffGrid);
-                modbuffpanel.children.Add(modbuffgridpanel);
-
-                //populate modbuffgridpanel
-
-                foreach (var buffValue in SummonHeartMod.modBuffValues)
-                {
-                    var currentBuffIndex = buffIndex;
-                    buffIndex += 1;
-                    if (currentBuffIndex <= 4)
-                        continue;
-
-                    var buffpanel = new Layout(0, 0, 0, 0, 10, new LayoutVertical());
-
-                    var buff = SummonHeartMod.getBuff(currentBuffIndex);
-
-                    buff.texture = Main.itemTexture[buff.id];
-
-                    {
-                        LayoutWrapperUIElement lv = new LayoutWrapperUIElement(panel, 0, 0, 0, 0, 32, new LayoutVertical());
-                        UIImage icon = new UIImage(buff.texture);
-
-                        int w = buff.texture.Width;
-                        int h = buff.texture.Height;
-                        lv.PaddingTop = (32 - h) / 2;
-                        lv.PaddingLeft = (32 - w) / 2;
-
-                        lv.children.Add(new LayoutElementWrapperUIElement(icon));
-                        buffpanel.children.Add(lv);
-
-                        if (!mp.boughtbuffList[currentBuffIndex])
-                        {
-                            var ownedImages = new UIImageButtonLabel(unownedTexture, "Buy buff " + buff.name);
-
-                            buffpanel.children.Add(new LayoutElementWrapperUIElement(ownedImages));
-
-                            ownedImages.OnClick += delegate (UIMouseEvent evt, UIElement listeningElement)
-                            {
-                                var tempBuff = SummonHeartMod.getBuff(currentBuffIndex);
-
-                                if (!mp.boughtbuffList[currentBuffIndex])
-                                {
-                                    if (!mp.boughtbuffList[2])
-                                    {
-                                        Main.NewText("你还没有修炼魔神之躯，无法炼化外物淬体，请先修炼魔神之躯!", new Color(255, 0, 0));
-                                        return;
-                                    }
-                                    bool canbuy = true;
-                                    foreach (var v in tempBuff.cost)
-                                    {
-                                        if (!v.CheckBuy())
-                                        {
-                                            canbuy = false;
-                                            break;
-                                        }
-                                    }
-
-                                    if (canbuy)
-                                    {
-                                        foreach (var v in tempBuff.cost)
-                                        {
-                                            v.Buy();
-                                        }
-                                        mp.boughtbuffList[currentBuffIndex] = true;
-                                        mp.bodyDef += buff.def;
-                                        needValidate = true;
-                                    }
-                                    else
-                                    {
-                                        Main.NewText("你没有足够的材料炼化!", new Color(255, 0, 0));
-                                    }
-                                }
-                            };
-
-                            ownedImages.OnMouseOver += delegate (UIMouseEvent evt, UIElement listeningElement)
-                            {
-                                var tip = "修炼魔神淬体法炼化";
-                                TooltipPanel.Instance.SetInfo(buff.cost, buff, buff.name, buff.effect, buff.texture, tip);
-                            };
-                        }
-                        else
-                        {
-
-                            var toggleButtons = new UIHoverImageToggleButton(buttonPlayTexture1, buttonPlayTexture2, "Disable buff " + buff.name, "Use buff " + buff.name, false);
-
-                            toggleButtons.SetImage(buttonPlayTexture1);
-
-                            toggleButtons.OnMouseOver += delegate (UIMouseEvent evt, UIElement listeningElement)
-                            {
-                                TooltipPanel.Instance.SetInfo(buff, buff.name, buff.effect, buff.texture);
-                            };
-
-                            buffpanel.children.Add(new LayoutElementWrapperUIElement(toggleButtons));
-                        }
-                    }
-
-                    modbuffgridpanel.children.Add(buffpanel);
-                }
-
-                panelwrapper.children.Add(modbuffpanel);
-            }
-
             panelwrapper.Recalculate();
-
         }
 
 

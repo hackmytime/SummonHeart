@@ -662,7 +662,7 @@ namespace SummonHeart.NPCs
 			{
 				if (modPlayer.PlayerClass == 2 && modPlayer.chargeAttack)
 				{
-					damage += modPlayer.killResourceCostCount * modPlayer.killResourceMulti;
+					damage += modPlayer.shortSwordBlood * modPlayer.killResourceMulti;
 				}
 			}
 			
@@ -700,13 +700,15 @@ namespace SummonHeart.NPCs
 				}
 			}
 			this.CauseDirectDamage(npc, damage, crit, addRealDmage);
-			/*if (modPlayer.boughtbuffList[0])
-            {
-				if (projectile.minion && Main.rand.Next(101) <= (modPlayer.eyeBloodGas + 30000) / 1500)
-				{
-					crit = true;
-				}
-            }*/
+			//投手附加伤害
+			if (modPlayer.PlayerClass == 2)
+			{
+				int killCost = modPlayer.killResourceMax2 / 100;
+				if (modPlayer.killResourceCurrent >= killCost)
+					modPlayer.killResourceCurrent -= killCost;
+				int realDmage = killCost * modPlayer.killResourceMulti;
+				this.CauseRealDamage(npc, realDmage);
+			}
 		}
     }
 }

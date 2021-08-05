@@ -147,6 +147,7 @@ namespace SummonHeart.Items.Weapons.Sabres
     /// </summary>
     public class Raiden : KillItem
     {
+        private const int dustId = MyDustId.BlueMagic;//106
 
         public override void SetStaticDefaults()
         {
@@ -245,7 +246,7 @@ namespace SummonHeart.Items.Weapons.Sabres
                 num = tooltips.FindIndex((TooltipLine t) => t.Name.Equals("Damage"));
                 if (num != -1)
                 {
-                    string text = "刺杀技能 " + (modPlayer.killResourceCostCount * modPlayer.killResourceMulti) + "附加刺杀伤害";
+                    string text = "刺杀技能 " + (modPlayer.shortSwordBlood * modPlayer.killResourceMulti) + "附加刺杀伤害";
                     TooltipLine tooltipLine = new TooltipLine(base.mod, "SwordBloodMax", text);
                     tooltipLine.overrideColor = Color.SkyBlue;
                     tooltips.Insert(num + 1, tooltipLine);
@@ -255,7 +256,7 @@ namespace SummonHeart.Items.Weapons.Sabres
 
         public override void GetWeaponCrit(Player player, ref int crit)
         {
-            crit = 0;
+            crit = 100;
         }
 
        /* public override void GetWeaponDamage(Player player, ref int damage)
@@ -266,12 +267,13 @@ namespace SummonHeart.Items.Weapons.Sabres
 */
         public override void HoldItem(Player player)
         {
-            SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
-            bool charge = modPlayer.showRadius;
+            SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
+            bool charge = mp.showRadius;
+            
             //消耗
-            if (modPlayer.killResourceCurrent < modPlayer.killResourceCostCount)
+            if (mp.killResourceSkillCount > 0)
             {
-                charge = false;
+                charge = true;
             }
            
             WeaponSabres.HoldItemManager(player, item, mod.ProjectileType("RaidenSlash"),
@@ -288,6 +290,81 @@ namespace SummonHeart.Items.Weapons.Sabres
                     Vector2 mouse = new Vector2(Main.screenPosition.X + Main.mouseX, Main.screenPosition.Y + Main.mouseY);
                     List<NPC> targets = RaidenUtils.GetTargettableNPCs(player.Center, mouse, radius, RaidenUtils.focusTargets);
                     RaidenUtils.DrawOrderedTargets(player, targets);
+                }
+            }
+
+            if (mp.showRadius)
+            {
+                //计算杀意消耗
+                int killCostCount = (int)mp.killResourceSkillCount;
+                killCostCount *= killCostCount;
+                if (killCostCount < 25)
+                {
+                    killCostCount = 25;
+                }
+                killCostCount /= 10;
+                if (mp.killResourceCurrent >= killCostCount)
+                {
+                    if (mp.killResourceSkillCount == mp.killResourceSkillCountMax)
+                    {
+                        mp.magicCharge = 0;
+                        return;
+                    }
+                    else
+                    {
+                        player.GetModPlayer<SummonHeartPlayer>().magicCharge += 1f;
+                        if (Main.time % 10 == 0)
+                            mp.killResourceCurrent -= killCostCount;
+                        if (mp.magicCharge >= mp.magicChargeMax)
+                        {
+                            Main.PlaySound(SoundID.Item29, player.position);
+                            mp.magicCharge = 0;
+                            mp.killResourceSkillCount++;
+                        }
+                    }
+                    if (mp.magicCharge >= 99f || mp.magicChargeCount == mp.magicChargeCountMax)
+                    {
+                        for (int d = 0; d < 22; d++)
+                        {
+                            Dust.NewDust(player.Center, 0, 0, dustId, 0f + Main.rand.Next(-12, 12), 0f + Main.rand.Next(-12, 12), 150, default, 0.8f);
+                        }
+                        for (int d2 = 0; d2 < 12; d2++)
+                        {
+                            Dust.NewDust(player.Center, 0, 0, dustId, 0f + Main.rand.Next(-12, 12), 0f + Main.rand.Next(-12, 12), 150, default, 0.8f);
+                        }
+                        for (int d3 = 0; d3 < 88; d3++)
+                        {
+                            Dust.NewDust(player.Center, 0, 0, dustId, 0f + Main.rand.Next(-12, 12), 0f + Main.rand.Next(-12, 12), 150, default, 0.8f);
+                        }
+                    }
+                    if (player.GetModPlayer<SummonHeartPlayer>().magicCharge < 100f)
+                    {
+                        for (int i = 0; i < 30; i++)
+                        {
+                            Vector2 offset = default;
+                            double angle = Main.rand.NextDouble() * 2.0 * 3.141592653589793;
+                            offset.X += (float)(Math.Sin(angle) * (100f - player.GetModPlayer<SummonHeartPlayer>().magicCharge));
+                            offset.Y += (float)(Math.Cos(angle) * (100f - player.GetModPlayer<SummonHeartPlayer>().magicCharge));
+                            Dust dust = Dust.NewDustPerfect(player.MountedCenter + offset, dustId, new Vector2?(player.velocity), 200, default, 0.5f);
+                            dust.fadeIn = 0.1f;
+                            dust.noGravity = true;
+                        }
+                        Vector2 vector = new Vector2(Main.rand.Next(-28, 28) * -9.88f, Main.rand.Next(-28, 28) * -9.88f);
+                        Dust dust2 = Main.dust[Dust.NewDust(player.MountedCenter + vector, 1, 1, 20, 0f, 0f, 255, new Color(0.8f, 0.4f, 1f), 0.8f)];
+                        dust2.velocity = -vector / 12f;
+                        dust2.velocity -= player.velocity / 8f;
+                        dust2.noLight = true;
+                        dust2.noGravity = true;
+                        return;
+                    }
+                    Dust.NewDust(player.Center, 0, 0, dustId, 0f + Main.rand.Next(-5, 5), 0f + Main.rand.Next(-5, 5), 150, default, 0.8f);
+                    return;
+                }
+                else
+                {
+                    mp.magicCharge = 0;
+                    mp.showRadius = false;
+                    Main.NewText($"杀意不足，自动关闭凝练杀意", Color.Red);
                 }
             }
         }
@@ -403,11 +480,10 @@ namespace SummonHeart.Items.Weapons.Sabres
             {
                 if(FrameCheck == 0)
                 {
-                    if (modPlayer.showRadius && modPlayer.killResourceCurrent < modPlayer.killResourceCostCount)
+                    if (modPlayer.showRadius && modPlayer.killResourceSkillCount < 1)
                     {
-                        //Main.NewText($"杀意值不足{modPlayer.killResourceCostCount}，无法使用刺杀技能，自动变为普通攻击", Color.Red);
                         modPlayer.showRadius = false;
-                        Main.NewText($"杀意值不足{modPlayer.killResourceCostCount}，无法使用刺杀技能，刺杀技能自动关闭", Color.Red);
+                        Main.NewText($"刺杀技能储备不足，无法使用刺杀技能，刺杀技能自动关闭", Color.Red);
                     }
                 }
                 FrameCheck += 1f;
@@ -434,11 +510,11 @@ namespace SummonHeart.Items.Weapons.Sabres
                         Main.PlaySound(SoundID.Item71, projectile.Center); sndOnce = false;
 
                         //消耗
-                        if(modPlayer.killResourceCurrent >= modPlayer.killResourceCostCount)
+                        if(modPlayer.killResourceSkillCount > 0)
                         {
-                            modPlayer.killResourceCurrent -= modPlayer.killResourceCostCount;
+                            modPlayer.killResourceSkillCount --;
                             //转换死气值
-                            float addDeath = modPlayer.killResourceCostCount * (modPlayer.bodyDef + 500) / 1000;
+                            float addDeath = modPlayer.killResourceMax2 / 100 * (modPlayer.bodyBloodGas / 50000 + 1);
                             modPlayer.deathResourceCurrent += (int)addDeath;
                             if (modPlayer.deathResourceCurrent > modPlayer.deathResourceMax)
                                 modPlayer.deathResourceCurrent = modPlayer.deathResourceMax;
@@ -447,7 +523,7 @@ namespace SummonHeart.Items.Weapons.Sabres
                         else
                         {
                             modPlayer.showRadius = false;
-                            Main.NewText($"杀意值不足{modPlayer.killResourceCostCount}，无法使用刺杀技能，刺杀技能自动关闭", Color.Red);
+                            Main.NewText($"刺杀技能储备不足，无法使用刺杀技能，刺杀技能自动关闭", Color.Red);
                             return;
                         }
 

@@ -45,11 +45,12 @@ namespace SummonHeart
 		public bool onanger = false;
 		public int killResourceMax;
 		public int killResourceMax2;
-		public int killResourceCost;
-		public int killResourceCostCount;
+		public int killResourceSkillCount = 0;
+		public int killResourceSkillCountMax = 10;
 		public int killResourceMulti;
 		public bool inMagicCharging = false;
 		public bool magicChargeActive = false;
+		public bool magicBook = false;
 		public float magicCharge;
 		public float magicChargeMax = 100;
 		public float magicChargeCount = 0;
@@ -190,6 +191,7 @@ namespace SummonHeart
 				MaxExtraAccessories = SummonHeartWorld.WorldLevel;
 			}
 			inMagicCharging = false;
+			magicBook = false;
 		}
 
 		public override void PreUpdate()
@@ -269,7 +271,7 @@ namespace SummonHeart
 			}
 			else if (PlayerClass == 6)
 			{
-				//法师·魔法掌控者
+				//法师·控法者
 				EffectMagic2();
 			}
 		}
@@ -282,16 +284,20 @@ namespace SummonHeart
 		private void EffectMagic2()
 		{
 			int allBlood = this.getAllBloodGas();
-			player.statManaMax2 += allBlood / 40;
+			player.statManaMax2 += allBlood / 80;
+
+			if (magicBook)
+				player.statManaMax2 *= 2;
+
 			player.manaRegen = 0;
 			player.manaRegenCount = 0;
 			player.manaRegenDelay = 99999999;
 			if (player.manaCost == 0)
 			{
-				player.manaCost = 9999999;
+				player.magicDamage = 0;
 				if ((int)Main.time % 60 < 1)
 				{
-					Main.NewText("法师禁止使用无限魔力，否则魔法消耗增加9999999", Color.Red, false);
+					Main.NewText("控法者禁止使用无限魔力，否则魔法攻击力变为0", Color.Red, false);
 				}
 			}
 
@@ -323,6 +329,8 @@ namespace SummonHeart
 			}
 			if (player.statMana < player.statManaMax2 && bodyHealCD == 1)
 			{
+				if (magicBook)
+					heal *= 2;
 				player.HealMana(heal);
 			}
 
@@ -357,7 +365,7 @@ namespace SummonHeart
 					player.manaCost = 9999999;
 					if ((int)Main.time % 60 < 1)
 					{
-						Main.NewText("法师禁止使用无限魔力，否则魔法消耗增加9999999", Color.Red, false);
+						Main.NewText("法神禁止使用无限魔力，否则魔法消耗增加9999999", Color.Red, false);
 					}
                 }
                 else
@@ -457,8 +465,8 @@ namespace SummonHeart
 		private void EffectKill()
         {
 			killResourceMax = 100 + shortSwordBlood;
-			killResourceMulti = 3;
-			killResourceCost = 25;
+			killResourceMulti = 5;
+			killResourceSkillCountMax = 20;
             if (boughtbuffList[0] && killHealCD == 0)
             {
 				int heal = (int)(killResourceMax2 * (0.01 + eyeBloodGas / 100000 * 0.01f)) / 4;
@@ -468,25 +476,23 @@ namespace SummonHeart
 				if (killResourceCurrent > killResourceMax2)
 					killResourceCurrent = killResourceMax2;
 			}
-            if (boughtbuffList[1] && handBloodGas >= bodyBloodGas)
+
+			//魔神之手
+            if (boughtbuffList[1])
             {
-				//一刀流
-				killResourceCost += handBloodGas / 5333;
-				killResourceMulti += (handBloodGas / 2000 + 2);
+				killResourceMulti += (handBloodGas / 4000 + 5);
+				killResourceSkillCountMax = (handBloodGas / 2000 + 20);
 			}
-            if (boughtbuffList[2] && bodyBloodGas > handBloodGas)
+            if (boughtbuffList[2])
             {
 				//神通流
 				killResourceMax += bodyBloodGas / 20;
-				killResourceCost -= (bodyBloodGas / 40000 + 10);
 			}
-			killResourceCostCount = killResourceMax * killResourceCost / 100;
 			if (killResourceCurrent < killResourceMax2 && killHealCD == 0)
 			{
 				int heal = 1;
 				if (boughtbuffList[2] && bodyBloodGas > handBloodGas)
 				{
-					//神通流
 					heal += (bodyBloodGas / 400 + 15) / 4;
 				}
 				killResourceCurrent += heal;
@@ -1067,12 +1073,6 @@ namespace SummonHeart
 			{
 				if(PlayerClass == 2)
                 {
-                    if (killResourceCurrent < killResourceCostCount)
-                    {
-						showRadius = false;
-						Main.NewText($"杀意值不足{killResourceCostCount}，无法开启刺杀技能", Color.Red);
-						return;
-					}
 					showRadius = !showRadius;
                     if (showRadius)
                     {
@@ -1361,7 +1361,15 @@ namespace SummonHeart
 					heartAdd += handBloodGas / 200 * 0.01f;
 				}
 			}
-			if(PlayerClass == 3 && item.summon)
+			if (PlayerClass == 2 && item.thrown)
+			{
+				//刺客
+				if (boughtbuffList[1])
+				{
+					heartAdd += handBloodGas / 200 * 0.01f;
+				}
+			}
+			if (PlayerClass == 3 && item.summon)
             {
                 //召唤师
                 if (boughtbuffList[1])

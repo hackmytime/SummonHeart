@@ -90,7 +90,8 @@ namespace SummonHeart.Items
                 }
                 else if (mp.autoAttack)
                 {
-                    mp.inMagicCharging = true;
+                    if(mp.magicBook && player.statManaMax2 >= 1000)
+                        mp.inMagicCharging = true;
                 }
                 else
                 {
@@ -330,8 +331,8 @@ namespace SummonHeart.Items
                 int num4 = tooltips.FindIndex((TooltipLine t) => t.Name.Equals("CritChance"));
                 if (num4 != -1)
                 {
-                    string str = mp.magicChargeCountMax + " ";
-                    tooltips[num4].text = str + (GameCulture.Chinese.IsActive ? "充能魔法上限" : "Attack Per Secend");
+                    string str = " " + mp.magicChargeCountMax;
+                    tooltips[num4].text = (GameCulture.Chinese.IsActive ? "充能魔法储存上限" : "Power Magic MaxStack" + str);
                     tooltips[num4].overrideColor = Color.LightGreen;
                     //计算伤害
                     int damage = (int)(item.damage * 10 * (player.allDamage -1 + player.magicDamage + mp.handBloodGas / 20000));

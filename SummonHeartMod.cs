@@ -347,11 +347,7 @@ namespace SummonHeart
 			recipe.AddIngredient(ModLoader.GetMod("SummonHeart").ItemType("MeleeScroll2"), 1);
 			recipe.SetResult(ModLoader.GetMod("SummonHeart").ItemType("DemonSword"));
 			recipe.AddRecipe();
-			recipe = new ModRecipe(this);
-			recipe.AddIngredient(ModLoader.GetMod("SummonHeart").ItemType("GuideNote"), 1);
-			recipe.AddIngredient(ModLoader.GetMod("SummonHeart").ItemType("MagicScroll2"), 1);
-			recipe.SetResult(ModLoader.GetMod("SummonHeart").ItemType("DemonStaff"));
-			recipe.AddRecipe();
+			
 			/*Mod Calamity = ModLoader.GetMod("CalamityMod");
 			if(Calamity != null)
             {

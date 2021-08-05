@@ -11,7 +11,7 @@ namespace SummonHeart.Items.Scrolls
         {
             DisplayName.SetDefault("MagicScroll");
             Tooltip.SetDefault("Can synthesize the roulette of destiny of each difficulty");
-            DisplayName.AddTranslation(GameCulture.Chinese, "魔神传承·法师·魔法掌控者");
+            DisplayName.AddTranslation(GameCulture.Chinese, "魔神传承·法师·控法者");
             Tooltip.AddTranslation(GameCulture.Chinese, "魔神之子使用可领悟魔神淬法诀" +
                 "\n魔神领悟道之本源用杀戮法则所创，万物皆有法力存于体内" +
                 "\n击杀可炼化其血肉中蕴含的法力入体，大大提升肉身法力储量" +
@@ -41,7 +41,7 @@ namespace SummonHeart.Items.Scrolls
             {
                 if (Main.netMode == 0 || Main.netMode == 1)
                 {
-                    Main.NewText("已领悟魔法掌控者传承，请按L查看详情", 255, 255, 255);
+                    Main.NewText("已领悟控法者传承，请按L查看详情", 255, 255, 255);
                 }
                 modPlayer.PlayerClass = 6;
                 return true;

@@ -100,7 +100,7 @@ namespace SummonHeart.ui
             {
                 var modbuffpanel = new Layout(10, 0, 0, 0, 10, new LayoutVertical());
 
-                var modlabel = new UIText("魔神淬法诀-魔神法师·魔法掌控者传承：魔神领悟道之本源用杀戮法则所创，掠夺万物法力练体");
+                var modlabel = new UIText("魔神淬法诀-魔神法师·控法者传承：魔神领悟道之本源用杀戮法则所创，掠夺万物法力练体");
                 modlabel.TextColor = new Color(232, 181, 16);
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
                 modlabel = new UIText("炼至巅峰，成就不灭法体。可充能叠加魔法，万法不侵");
@@ -112,10 +112,10 @@ namespace SummonHeart.ui
 
                 int totalBoodGas = mp.eyeBloodGas + mp.handBloodGas + mp.bodyBloodGas + mp.footBloodGas;
 
-                var modlabel_level = new UIText("魔法掌控者被动：解锁充能魔法系统，每40点气血增加1点最大法力值，");
+                var modlabel_level = new UIText("控法者被动：解锁充能魔法系统，每80点气血增加1点最大法力值，");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("魔法掌控者被动：原版法力回复无效，获得独立基础回蓝8点每秒。");
+                modlabel_level = new UIText("控法者被动：原版法力回复无效，获得独立基础回蓝8点每秒。");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
                 modlabel_level = new UIText("魔法上限+" + totalBoodGas/10 + " 总气血：" + totalBoodGas + " 死亡次数：" + mp.deathCount + " 战斗力：" + mp.getPower() + " 当前暴击伤害" + mp.MyCritDmageMult * 100 + "%");
