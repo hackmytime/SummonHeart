@@ -704,8 +704,17 @@ namespace SummonHeart.NPCs
 			if (modPlayer.PlayerClass == 2)
 			{
 				int killCost = modPlayer.killResourceMax2 / 100;
+				if (modPlayer.boughtbuffList[1] && modPlayer.shortSwordBlood <= 1)
+					killCost *= 3;
 				if (modPlayer.killResourceCurrent >= killCost)
+                {
 					modPlayer.killResourceCurrent -= killCost;
+					//转换死气值
+					float addDeath = killCost / 2;
+					modPlayer.deathResourceCurrent += (int)addDeath;
+					if (modPlayer.deathResourceCurrent > modPlayer.deathResourceMax)
+						modPlayer.deathResourceCurrent = modPlayer.deathResourceMax;
+				}
 				int realDmage = killCost * modPlayer.killResourceMulti;
 				this.CauseRealDamage(npc, realDmage);
 			}

@@ -135,7 +135,7 @@ namespace SummonHeart.Extensions
 			{
 				if (npc.boss)
 				{
-					int swordMax = npc.getPower() / 200;
+					int swordMax = npc.getPower() / 400;
 					if (modPlayer.swordBloodMax < swordMax)
 					{
 						modPlayer.swordBloodMax = swordMax;
@@ -155,7 +155,7 @@ namespace SummonHeart.Extensions
 					int heal = 5 * SummonHeartWorld.WorldLevel;
 					if (modPlayer.boughtbuffList[1])
 					{
-						heal += (modPlayer.handBloodGas / 400);
+						heal += (modPlayer.eyeBloodGas / 400);
 					}
 					modPlayer.killResourceCurrent += heal;
 					CombatText.NewText(player.getRect(), new Color(0, 255, 0), "+" + heal + "杀意值");

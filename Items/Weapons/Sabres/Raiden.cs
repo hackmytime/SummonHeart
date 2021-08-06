@@ -163,7 +163,7 @@ namespace SummonHeart.Items.Weapons.Sabres
             Tooltip.AddTranslation(GameCulture.Chinese, "" +
                 "炼体八境·武道巅峰·远古魔神临死之前碎裂不朽右臂所铸造" +
                 "\n魔神之子的护道传承武器，唯魔神之子可用精血召唤使用" +
-                "\n众生之怨：不受任何伤害暴击攻击范围加成，无法附魔，减少2倍攻速加成" +
+                "\n众生之怨：不受任何伤害暴击攻击范围加成，无法附魔，减少2倍攻速加成,觉醒难度翻倍" +
                 "\n弑神之力：击杀任意生物增加攻击力，然受觉醒上限限制。" +
                 "\n魔剑觉醒：击杀强者摄其血肉灵魂修复剑身，可突破觉醒上限。" +
                 "\n空间法则：自身蕴含魔神所悟空间法则之力，剑出必中！50%觉醒刺杀可穿墙");
@@ -298,9 +298,11 @@ namespace SummonHeart.Items.Weapons.Sabres
                 //计算杀意消耗
                 int killCostCount = (int)mp.killResourceSkillCount;
                 killCostCount *= killCostCount;
-                if (killCostCount < 25)
+                int minCost = (int)(mp.killResourceMax2 * 0.03);
+                killCostCount += minCost;
+                if (killCostCount < 20)
                 {
-                    killCostCount = 25;
+                    killCostCount = 20;
                 }
                 killCostCount /= 10;
                 if (mp.killResourceCurrent >= killCostCount)
@@ -315,6 +317,11 @@ namespace SummonHeart.Items.Weapons.Sabres
                         player.GetModPlayer<SummonHeartPlayer>().magicCharge += 1f;
                         if (Main.time % 10 == 0)
                             mp.killResourceCurrent -= killCostCount;
+                            //转换死气值
+                            float addDeath = killCostCount / 2;
+                            mp.deathResourceCurrent += (int)addDeath;
+                            if (mp.deathResourceCurrent > mp.deathResourceMax)
+                                mp.deathResourceCurrent = mp.deathResourceMax;
                         if (mp.magicCharge >= mp.magicChargeMax)
                         {
                             Main.PlaySound(SoundID.Item29, player.position);
@@ -513,11 +520,7 @@ namespace SummonHeart.Items.Weapons.Sabres
                         if(modPlayer.killResourceSkillCount > 0)
                         {
                             modPlayer.killResourceSkillCount --;
-                            //转换死气值
-                            float addDeath = modPlayer.killResourceMax2 / 100 * (modPlayer.bodyBloodGas / 50000 + 1);
-                            modPlayer.deathResourceCurrent += (int)addDeath;
-                            if (modPlayer.deathResourceCurrent > modPlayer.deathResourceMax)
-                                modPlayer.deathResourceCurrent = modPlayer.deathResourceMax;
+                            
                             modPlayer.chargeAttack = true;
                         }
                         else

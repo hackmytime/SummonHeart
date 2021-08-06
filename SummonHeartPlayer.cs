@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using SummonHeart.Effects.Animations.Aura;
 using SummonHeart.Extensions;
+using SummonHeart.Items.Weapons.Magic;
 using SummonHeart.Models;
 using SummonHeart.Projectiles.Summon;
 using SummonHeart.ui;
@@ -464,37 +465,43 @@ namespace SummonHeart
 
 		private void EffectKill()
         {
-			killResourceMax = 100 + shortSwordBlood;
-			killResourceMulti = 5;
+			int addMax = shortSwordBlood;
+			if (addMax > 10000)
+				addMax = 10000;
+			killResourceMax = 100 + addMax;
+			killResourceMulti = 10;
 			killResourceSkillCountMax = 20;
-            if (boughtbuffList[0] && killHealCD == 0)
-            {
-				int heal = (int)(killResourceMax2 * (0.01 + eyeBloodGas / 100000 * 0.01f)) / 4;
-				if (heal < 1)
-					heal = 1;
-				killResourceCurrent += heal;
-				if (killResourceCurrent > killResourceMax2)
-					killResourceCurrent = killResourceMax2;
-			}
+			//被动
+			int allBlood = this.getAllBloodGas();
+			killResourceMax += allBlood / 20 + deathCount * 2;
 
 			//魔神之手
-            if (boughtbuffList[1])
+			
+			if (boughtbuffList[1])
             {
-				killResourceMulti += (handBloodGas / 4000 + 5);
+				AttackSpeed += (handBloodGas / 4000 + 30) * 0.01f;
+				player.thrownVelocity += (handBloodGas / 4000 + 30) * 0.01f;
+				killResourceMulti += (handBloodGas / 10000);
 				killResourceSkillCountMax = (handBloodGas / 2000 + 20);
+				//隐藏路线：叛道者
+				if (shortSwordBlood <= 1)
+					killResourceMax2 *= 3;
 			}
-            if (boughtbuffList[2])
+			int heal = 1;
+			if (boughtbuffList[2])
             {
 				//神通流
-				killResourceMax += bodyBloodGas / 20;
-			}
+                heal = (int)(killResourceMax2 * (0.01 + eyeBloodGas / 100000 * 0.01f)) / 4;
+				heal += (bodyBloodGas / 400 + 15) / 4;
+				if (heal < 1)
+					heal = 1;
+            }
+            else
+            {
+				heal = 2;
+            }
 			if (killResourceCurrent < killResourceMax2 && killHealCD == 0)
 			{
-				int heal = 1;
-				if (boughtbuffList[2] && bodyBloodGas > handBloodGas)
-				{
-					heal += (bodyBloodGas / 400 + 15) / 4;
-				}
 				killResourceCurrent += heal;
 				if (killResourceCurrent > killResourceMax2)
 					killResourceCurrent = killResourceMax2;
@@ -504,9 +511,10 @@ namespace SummonHeart
 			if (boughtbuffList[3])
 			{
 				player.noFallDmg = true;
-				player.moveSpeed += (footBloodGas / 10000 + 10) * 0.01f;
-				player.wingTimeMax += (footBloodGas / 2222 + 10) * 60;
-				player.jumpSpeedBoost += (footBloodGas / 1333 + 50) * 0.01f;
+				MyMoveSpeedMult += (footBloodGas / 5000 + 30) * 0.01f;
+				MyAccelerationMult += (footBloodGas / 5000 + 30) * 0.01f;
+				player.wingTimeMax += (footBloodGas / 1000 + 10) * 60;
+				player.jumpSpeedBoost += (footBloodGas / 500 + 100) * 0.01f;
 			}
 		}
 
@@ -1318,7 +1326,7 @@ namespace SummonHeart
 				int heal = 5 * SummonHeartWorld.WorldLevel;
 				if (boughtbuffList[1])
 				{
-					heal += (handBloodGas / 400);
+					heal += (eyeBloodGas / 400);
 				}
 				CombatText.NewText(player.getRect(), new Color(0, 255, 0), "+" + heal + "杀意值");
 				killResourceCurrent += heal;
@@ -1327,7 +1335,7 @@ namespace SummonHeart
 			}
 		}
 
-		public override float MeleeSpeedMultiplier(Item item)
+		public override float UseTimeMultiplier(Item item)
         {
 			int useTime = item.useTime;
 			int useAnimate = item.useAnimation;
@@ -1345,9 +1353,13 @@ namespace SummonHeart
 			{
 				return AttackSpeed / 2 + 0.5f;
 			}
-
+			if (item.modItem is DemonStaff)
+			{
+				return 1f;
+			}
 			return AttackSpeed;
 		}
+
 
         public override void ModifyWeaponDamage(Item item, ref float add, ref float mult, ref float flat)
         {
@@ -1443,7 +1455,7 @@ namespace SummonHeart
 			if (PlayerClass == 2)
             {
 				swordBloodMax += 2;
-				string text = $"{player.name}身为刺客，向死而生。以自身血肉喂养魔剑·神陨，使其突破觉醒上限，觉醒上限+0.02%";
+				string text = $"{player.name}身为刺客，向死而生，杀意上限+2点";
 				Main.NewText(text, Color.Green);
 			}
             base.Kill(damage, hitDirection, pvp, damageSource);

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using SummonHeart.Items.Accessories;
+using SummonHeart.Items.Weapons.Magic;
 using SummonHeart.ui.layout;
 using SummonHeart.Utilities;
 using System;
@@ -24,7 +25,7 @@ namespace SummonHeart.Items
                 item.useAnimation = 3;
             }
             SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
-            if (mp.PlayerClass == 6 && player.altFunctionUse == 2)
+            if (mp.PlayerClass == 6 && item.magic && player.altFunctionUse == 2)
             {
                 if (mp.magicChargeCount <= 0)
                 {
@@ -215,7 +216,7 @@ namespace SummonHeart.Items
             {
                 return false;
             }
-            if (item.magic && mp.PlayerClass == 5 && mp.boughtbuffList[1])
+            if (item.magic && mp.PlayerClass == 5 && mp.boughtbuffList[1] && !(item.modItem is DemonStaff))
             {
                 if(player.statMana < mp.costMana)
                 {
@@ -399,7 +400,7 @@ namespace SummonHeart.Items
         public override bool AltFunctionUse(Item item, Player player)
         {
             SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
-            if (mp.PlayerClass == 6 && item.magic)
+            if (mp.PlayerClass == 6 && item.magic && !item.summon)
                 return true;
             return base.AltFunctionUse(item, player);
         }

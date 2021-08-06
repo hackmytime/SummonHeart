@@ -25,7 +25,6 @@ namespace SummonHeart.Projectiles.Magic
             projectile.aiStyle = 0;
             projectile.scale = 0.6f;
             projectile.localNPCHitCooldown = 6;
-            ProjectileID.Sets.TrailCacheLength[projectile.type] = 8;
             ProjectileID.Sets.TrailingMode[projectile.type] = 0;
         }
 

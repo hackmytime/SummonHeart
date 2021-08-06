@@ -99,20 +99,28 @@ namespace SummonHeart.ui
             {
                 var modbuffpanel = new Layout(10, 0, 0, 0, 10, new LayoutVertical());
 
-                var modlabel = new UIText("弑灵戮神陨-魔神刺客传承：刺客之道，向死而生。死气护体，不死不休。");
-                modlabel.TextColor = new Color(232, 181, 16);
-                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
-                modlabel = new UIText("刺客为最强爆发职业，刺客之道，向死而生。");
+                var modlabel = new UIText("弑灵戮神陨-魔神刺客传承：最强爆发职业，刺客之道，向死而生。死气护体，不死不休。");
                 modlabel.TextColor = new Color(232, 181, 16);
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
 
 
                 int totalBoodGas = mp.eyeBloodGas + mp.handBloodGas + mp.bodyBloodGas + mp.footBloodGas;
-               
-                var modlabel_level = new UIText("当前杀意上限：" + mp.killResourceMax2 + " 总气血：" + totalBoodGas + " 死亡次数：" + mp.deathCount + " 战斗力：" + mp.getPower());
+                var modlabel_level = new UIText("刺客被动：杀意入体，向死而生，每20点气血增加1点杀意上限，从气血之中凝练杀意，以杀意炼体。");
+                modlabel_level.TextColor = Color.SkyBlue;
+                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
+                modlabel_level = new UIText("死亡一次+2杀意上限");
+                modlabel_level.TextColor = Color.SkyBlue;
+                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
+                modlabel_level = new UIText("刺客被动：死气护体，不死不休，赋予从消耗的杀意中提取死气的能力。");
+                modlabel_level.TextColor = Color.SkyBlue;
+                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
+                modlabel_level = new UIText("每消耗2点杀意增加1点死气值，每1点死气值可以抵挡1点致命攻击伤害。");
+                modlabel_level.TextColor = Color.SkyBlue;
+                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
+                modlabel_level = new UIText("当前杀意上限：" + mp.killResourceMax2 + " 总气血：" + totalBoodGas + " 死亡次数：" + mp.deathCount + " 战斗力：" + mp.getPower());
                 modlabel_level.TextColor = Color.Red;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("杀意伤害倍率：" + mp.killResourceMulti + " 神通附加伤害：" + mp.shortSwordBlood * mp.killResourceMulti + "转化死气：" + mp.killResourceMax2/100 * (mp.bodyBloodGas / 50000 + 1));
+                modlabel_level = new UIText("杀意伤害倍率：" + mp.killResourceMulti + " 神通附加伤害：" + mp.shortSwordBlood * mp.killResourceMulti);
                 modlabel_level.TextColor = Color.Red;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
 
@@ -161,7 +169,7 @@ namespace SummonHeart.ui
                 modlabel_level = new UIText("神念摄魂心为眼：刺杀范围+" + (mp.eyeBloodGas / 800 + 30)+ "格(初始30，每800气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("以杀入道，看破轮回：每秒回复自身+" + (mp.eyeBloodGas / 100000 + 1) + "%杀意值(初始1%，每100000气血+1)");
+                modlabel_level = new UIText("以杀入道，看破轮回：击杀敌人+" + (mp.eyeBloodGas / 400) + "点杀意值(每100000气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
 
@@ -177,10 +185,10 @@ namespace SummonHeart.ui
                 modlabel_level = new UIText("凝练杀意，动若崩雷：刺杀技能储存上限：" + (mp.handBloodGas / 2000 + 20) + "(初始20，每2000气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("凝练杀意，动若崩雷：刺杀技能伤害倍率+" + (mp.handBloodGas / 4000 + 5) + "倍(初始5，每4000气血+1)");
+                modlabel_level = new UIText("凝练杀意，动若崩雷：刺杀技能伤害倍率+" + (mp.handBloodGas / 10000) + "倍(每10000+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("刺客之手，投掷精通：投掷武器基础攻击+" + (mp.handBloodGas / 200) + "%(每200气血+1%)");
+                modlabel_level = new UIText("刺客之手，投掷精通：投掷武器基础攻击+" + (mp.handBloodGas / 200) + "%(每200气血+1%) 投掷速度+" + (mp.handBloodGas / 4000 + 30) + "%(初始30%，每4000气血+1%)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
                 modlabel_level = new UIText("刺客之手，杀意灌注：投掷武器攻击消耗1%杀意上限的杀意值造成额外"+ mp.killResourceMax2/100 * mp.killResourceMulti+"点真实伤害");
@@ -196,10 +204,10 @@ namespace SummonHeart.ui
                 modlabel_level = new UIText("魔神之躯" + praticeText + " 气血值：" + mp.bodyBloodGas);
                 modlabel_level.TextColor = Color.Orange;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("万杀炼体，杀意滔天：杀意上限+" + mp.bodyBloodGas / 20 + "(每20气血+1) 每秒回复自身" + (mp.bodyBloodGas / 400 + 15) + "杀意值(初始15，每400+1)");
+                modlabel_level = new UIText("万杀炼体，杀意滔天：每秒回复自身" + (mp.bodyBloodGas / 200 + 15) + "杀意值(初始15，每200+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("死气护体，不死不休：使用神通死气转化率：" + (mp.bodyBloodGas/ 50000 + 1) + "%杀意上限（每50000+1%) ");
+                modlabel_level = new UIText("万杀炼体，杀意滔天：每秒回复自身+" + (mp.eyeBloodGas / 100000 + 1) + "%杀意值(初始1%，每100000气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
 
@@ -212,7 +220,10 @@ namespace SummonHeart.ui
                 modlabel_level = new UIText("魔神之腿" + praticeText + " 气血值：" + mp.footBloodGas);
                 modlabel_level.TextColor = Color.Orange;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("风驰电掣，雷厉风行：跳跃速度+" + (mp.footBloodGas / 500 + 100) + "%(初始100%，每400气血+1)");
+                modlabel_level = new UIText("风驰电掣，雷厉风行：移动速度+" + (mp.footBloodGas / 5000 + 30) + "%(初始30%，每5000气血+1)");
+                modlabel_level.TextColor = Color.SkyBlue;
+                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
+                modlabel_level = new UIText("风驰电掣，雷厉风行：跳跃速度+" + (mp.footBloodGas / 500 + 100) + "%(初始100%，每500气血+1)免疫摔落伤害");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
                 modlabel_level = new UIText("天涯海角，一步跨之：飞行时间+" + (mp.footBloodGas/1000 + 10) + "秒(初始10，每1000气血+1)");
