@@ -372,7 +372,6 @@ namespace SummonHeart
 						SummonHeartPlayer summonHeartPlayer = Main.player[playernumber].GetModPlayer<SummonHeartPlayer>();
 						summonHeartPlayer.BBP = reader.ReadInt32();
 						summonHeartPlayer.SummonCrit = reader.ReadInt32();
-						summonHeartPlayer.exp = reader.ReadInt32();
 						summonHeartPlayer.PlayerClass = reader.ReadInt32();
 						//summonHeartPlayer.deathCount = reader.ReadInt32();
 						summonHeartPlayer.bodyDef = reader.ReadSingle();

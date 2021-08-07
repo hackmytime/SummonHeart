@@ -18,7 +18,8 @@ namespace SummonHeart.Items.Material
                 "He has boundless power and can be obtained when he cuts off his external incarnation\n");
             DisplayName.AddTranslation(GameCulture.Chinese, "本命神魂");
             Tooltip.AddTranslation(GameCulture.Chinese, "魔神之子本命神魂，带有高纬生命体气息，具有超脱伟力" +
-                "\n泰拉世界生物不可直视，仅魔神之子斩身外化身时可获得");
+                "\n泰拉世界生物不可直视，魔神之子斩身外化身时可获得" +
+                "\n魔神之子吞噬众多史莱姆的灵魂力量后也可分离自身一部分灵魂合成");
         }
 
         public override void SetDefaults()
@@ -60,6 +61,14 @@ namespace SummonHeart.Items.Material
         public override bool CanUseItem(Player player)
         {
             return false;
+        }
+
+        public override void AddRecipes()
+        {
+            ModRecipe recipe = new ModRecipe(mod);
+            recipe.AddIngredient(ItemID.SlimeBanner, 250);
+            recipe.SetResult(this);
+            recipe.AddRecipe();
         }
     }
 }

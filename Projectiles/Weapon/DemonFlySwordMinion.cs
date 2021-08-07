@@ -28,16 +28,16 @@ namespace SummonHeart.Projectiles.Weapon
         {
             projectile.netImportant = true;
             projectile.width = 10;
-            projectile.height = 20;
+            projectile.height = 10;
             projectile.penetrate = -1;
             projectile.usesLocalNPCImmunity = true;
             projectile.ignoreWater = true;
             projectile.tileCollide = false;
             projectile.friendly = true;
             projectile.minion = true;
-            projectile.minionSlots = 3f;
+            projectile.minionSlots = 2f;
             projectile.timeLeft = 60;
-            projectile.localNPCHitCooldown = 10;
+            projectile.localNPCHitCooldown = 6;
         }
 
         public override bool MinionContactDamage()

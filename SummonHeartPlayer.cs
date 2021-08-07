@@ -35,7 +35,7 @@ namespace SummonHeart
 		public bool showRadius = false;
 		public int BBP = 0;
 		public int SummonCrit = 0;
-		public int exp = 0;
+		public int exp;
 		public int addLife = 0;
 		public float bodyDef = 0;
 		public int killResourceCurrent = 0;
@@ -750,16 +750,16 @@ namespace SummonHeart
 		public void dealLevel()
 		{
 			int lvExp = 1;
-			int exp = lvExp;
+			int curExp = lvExp;
 			int level = 0;
-			while (exp <= BBP)
+			while (curExp <= BBP)
 			{
-				exp += lvExp;
+				curExp += lvExp;
 				level++;
-				lvExp += 1;
+				lvExp += 10;
 			}
-			int needExp = exp - BBP;
-			exp = needExp;
+			int needExp = curExp - BBP;
+			this.exp = needExp;
 			SummonCrit = level;
 			if (!Main.hardMode && SummonCrit > 299)
 				SummonCrit = 299;
@@ -839,7 +839,6 @@ namespace SummonHeart
 			SummonHeartPlayer clone = clientClone as SummonHeartPlayer;
 			clone.BBP = BBP;
 			clone.SummonCrit = SummonCrit;
-			clone.exp = exp;
 			clone.PlayerClass = PlayerClass;
 			//clone.deathCount = deathCount;
 			clone.bodyDef = bodyDef;
@@ -868,7 +867,6 @@ namespace SummonHeart
 			packet.Write((byte)player.whoAmI);
 			packet.Write(BBP);
 			packet.Write(SummonCrit);
-			packet.Write(exp);
 			packet.Write(PlayerClass);
 			//packet.Write(deathCount);
 			packet.Write(bodyDef);
@@ -899,7 +897,7 @@ namespace SummonHeart
 			SummonHeartPlayer clone = clientPlayer as SummonHeartPlayer;
 			bool send = false;
 
-			if (clone.BBP != BBP || clone.SummonCrit != SummonCrit || clone.exp != exp
+			if (clone.BBP != BBP || clone.SummonCrit != SummonCrit
 					|| clone.bodyDef != bodyDef || clone.PlayerClass != PlayerClass || clone.deathCount != deathCount
 					|| clone.eyeBloodGas != eyeBloodGas || clone.handBloodGas != handBloodGas
 					|| clone.bodyBloodGas != bodyBloodGas || clone.footBloodGas != footBloodGas
@@ -927,7 +925,6 @@ namespace SummonHeart
 				packet.Write((byte)player.whoAmI);
 				packet.Write(BBP);
 				packet.Write(SummonCrit);
-				packet.Write(exp);
 				packet.Write(PlayerClass);
 				//packet.Write(deathCount);
 				packet.Write(bodyDef);
