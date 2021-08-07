@@ -27,8 +27,8 @@ namespace SummonHeart.Projectiles.Weapon
         public sealed override void SetDefaults()
         {
             projectile.netImportant = true;
-            projectile.width = 10;
-            projectile.height = 10;
+            projectile.width = 26;
+            projectile.height = 58;
             projectile.penetrate = -1;
             projectile.usesLocalNPCImmunity = true;
             projectile.ignoreWater = true;
