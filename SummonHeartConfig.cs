@@ -23,17 +23,17 @@ namespace SummonHeart
         [Slider]
         public float handMultiplier;
 
-        [Label("自定义额外饰品栏X坐标位置")]
+        [Label("自定义额外饰品栏X坐标偏移量")]
         [Increment(1)]
-        [Range(0, 1000)]
-        [DefaultValue(20)]
+        [Range(-1000, 1000)]
+        [DefaultValue(0)]
         [Slider]
         public int accX;
 
-        [Label("自定义额外饰品栏Y坐标位置")]
+        [Label("自定义额外饰品栏Y坐标偏移量")]
         [Increment(1)]
-        [Range(0, 800)]
-        [DefaultValue(306)]
+        [Range(-500, 500)]
+        [DefaultValue(0)]
         [Slider]
         public int accY;
 

@@ -18,7 +18,7 @@ namespace SummonHeart.Items.Accessories
                 "He has boundless power and can be obtained when he cuts off his external incarnation\n");
             DisplayName.AddTranslation(GameCulture.Chinese, "魔神·神格？");
             Tooltip.AddTranslation(GameCulture.Chinese, "女神模式专属饰品，女神赠予的神格。" +
-                "\n吞噬获得神格之力：额外饰品栏上限增加至50" +
+                "\n吞噬获得神格之力：额外饰品栏上限增加至24" +
                 "\n泰拉世界生物不可直视，仅魔神之子开启女神模式时可获得");
         }
 
@@ -41,7 +41,7 @@ namespace SummonHeart.Items.Accessories
             if (!mp.eatGodSoul)
             {
                 mp.eatGodSoul = true;
-                string text = player.name + "吞噬了魔神·神格？获得神格之力，额外饰品栏增加至50";
+                string text = player.name + "吞噬了魔神·神格？获得神格之力，额外饰品栏增加至32";
                 if (Main.netMode == NetmodeID.SinglePlayer)
                 {
                     Main.NewText(text, new Color(175, 75, 255));

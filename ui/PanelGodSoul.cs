@@ -23,7 +23,7 @@ namespace SummonHeart.ui
         }
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
-            ((AllItemsMenu)SummonHeartMod.Instance.GetGlobalItem("AllItemsMenu")).DrawUpdateExtraAccessories(spriteBatch);
+            //((AllItemsMenu)SummonHeartMod.Instance.GetGlobalItem("AllItemsMenu")).DrawUpdateExtraAccessories(spriteBatch);
         }
 
         public bool needValidate = false;

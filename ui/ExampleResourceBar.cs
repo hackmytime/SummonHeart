@@ -38,7 +38,7 @@ namespace SummonHeart.ui
             text.Width.Set(138, 0f);
             text.Height.Set(20, 0f);
             text.Top.Set(30, 0f);
-            text.Left.Set(10, 0f);
+            text.Left.Set(20, 0f);
 
             gradientA = new Color(123, 25, 138); // A dark purple
             gradientB = new Color(187, 91, 201); // A light purple
@@ -67,7 +67,7 @@ namespace SummonHeart.ui
             // Here we get the screen dimensions of the barFrame element, then tweak the resulting rectangle to arrive at a rectangle within the barFrame texture that we will draw the gradient. These values were measured in a drawing program.
             Rectangle hitbox = barFrame.GetInnerDimensions().ToRectangle();
             hitbox.X += 12;
-            hitbox.Width -= 24;
+            hitbox.Width -= 22;
             hitbox.Y += 8;
             hitbox.Height -= 16;
 

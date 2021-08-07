@@ -185,11 +185,13 @@ namespace SummonHeart
 
 			if (eatGodSoul)
 			{
-				MaxExtraAccessories = 50;
+				MaxExtraAccessories = 24;
 			}
 			else
 			{
 				MaxExtraAccessories = SummonHeartWorld.WorldLevel;
+				if (SummonHeartWorld.WorldLevel == 5)
+					MaxExtraAccessories += 3;
 			}
 			inMagicCharging = false;
 			magicBook = false;
@@ -1127,10 +1129,10 @@ namespace SummonHeart
 					Main.NewText($"只有法师才能使用空间传送技能", Color.Red);
 				}
 			}
-			if (SummonHeartMod.ExtraAccessaryKey.JustPressed)
+			/*if (SummonHeartMod.ExtraAccessaryKey.JustPressed)
 			{
 				PanelGodSoul.visible = !PanelGodSoul.visible;
-			}
+			}*/
 		}
 
         public override void OnHitNPC(Item item, NPC target, int damage, float knockback, bool crit)

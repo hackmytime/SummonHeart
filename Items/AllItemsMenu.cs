@@ -20,22 +20,38 @@ namespace SummonHeart.Items
         // Token: 0x06000014 RID: 20 RVA: 0x00002288 File Offset: 0x00000488
         internal void DrawUpdateExtraAccessories(SpriteBatch spriteBatch)
         {
-            if (Main.EquipPage == 0)
+            if (Main.playerInventory && Main.EquipPage == 0)
             {
                 Point value = new Point(Main.mouseX, Main.mouseY);
                 Rectangle r = new Rectangle(0, 0, (int)(Main.inventoryBackTexture.Width * Main.inventoryScale), (int)(Main.inventoryBackTexture.Height * Main.inventoryScale));
 
                 var mp = Main.LocalPlayer.GetModPlayer<SummonHeartPlayer>();
+                int mH = 0;
+                if (Main.mapEnabled)
+                {
+                    if (!Main.mapFullscreen && Main.mapStyle == 1)
+                    {
+                        mH = 256;
+                    }
+                    if (mH + 600 > Main.screenHeight)
+                    {
+                        mH = Main.screenHeight - 600;
+                    }
+                }
+                int baseX = Main.screenWidth - 92 - 141 - 47;
+                int baseY = mH + 174;
+              /*  r.X = baseX;
+                r.Y = baseY;*/
                 for (int i = 0; i < SummonHeartPlayer.MaxExtraAccessories; i++)
                 {
                     Main.inventoryScale = 0.85f;
                     Item accItem = mp.ExtraAccessories[i];
-                    int x = i % 10;
-                    int y = i / 10;
+                    int y = i % 8;
+                    int x = i / 8;
                     float vx = Main.inventoryBack9Texture.Width * 0.918f * x;
                     float vy = Main.inventoryBack9Texture.Height * 0.918f * y;
-                    r.X = (int)(SummonHeartConfig.Instance.accX + vx);
-                    r.Y = (int)(SummonHeartConfig.Instance.accY + vy);
+                    r.X = (int)(SummonHeartConfig.Instance.accX + baseX - vx);
+                    r.Y = (int)(SummonHeartConfig.Instance.accY + baseY + vy);
                     Vector2 pos = new Vector2(r.X, r.Y);
                     if (r.Contains(value))
                     {
