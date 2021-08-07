@@ -177,7 +177,7 @@ namespace SummonHeart.Projectiles.Weapon
         public override void AI()
         {
             Player player = Main.player[projectile.owner];
-            Vector2 vector = player.Top + new Vector2(-10f, -20f);
+            Vector2 vector = player.Top + new Vector2(0f, -35f);
             int BladeMinionBuff = ModContent.BuffType<BladeStaffBuff>();
             if (player.HasBuff(BladeMinionBuff))
             {
