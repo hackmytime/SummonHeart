@@ -114,7 +114,7 @@ namespace SummonHeart.ui
                 modlabel_level = new UIText("刺客被动：死气护体，不死不休，赋予从消耗的杀意中提取死气的能力。");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("每消耗2点杀意增加1点死气值，每1点死气值可以抵挡1点致命攻击伤害。");
+                modlabel_level = new UIText("每消耗2点杀意增加1点死气值，每1点死气值可以抵挡1点伤害。");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
                 modlabel_level = new UIText("当前杀意上限：" + mp.killResourceMax2 + " 总气血：" + totalBoodGas + " 死亡次数：" + mp.deathCount + " 战斗力：" + mp.getPower());

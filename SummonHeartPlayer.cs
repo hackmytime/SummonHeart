@@ -1221,7 +1221,8 @@ namespace SummonHeart
 					defDmage = deathResourceCurrent;
                 }
 				deathResourceCurrent -= defDmage;
-				CombatText.NewText(player.getRect(), Color.DarkGray, "-" + defDmage + "死气值");
+				if (defDmage > 0)
+					CombatText.NewText(player.getRect(), Color.DarkGray, "-" + defDmage + "死气值");
 				if (deathResourceCurrent <= 0)
 				{
 					deathResourceCurrent = 0;
@@ -1281,7 +1282,8 @@ namespace SummonHeart
 					defDmage = deathResourceCurrent;
 				}
 				deathResourceCurrent -= defDmage;
-				CombatText.NewText(player.getRect(), Color.DarkGray, "-" + defDmage + "死气值");
+				if(defDmage > 0)
+					CombatText.NewText(player.getRect(), Color.DarkGray, "-" + defDmage + "死气值");
 				if (deathResourceCurrent <= 0)
 				{
 					deathResourceCurrent = 0;

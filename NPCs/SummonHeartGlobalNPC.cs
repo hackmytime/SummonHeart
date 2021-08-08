@@ -701,7 +701,7 @@ namespace SummonHeart.NPCs
 			}
 			this.CauseDirectDamage(npc, damage, crit, addRealDmage);
 			//投手附加伤害
-			if (modPlayer.PlayerClass == 2)
+			if (modPlayer.PlayerClass == 2 && player.HeldItem.thrown == true)
 			{
 				int killCost = modPlayer.killResourceMax2 / 100;
 				if (modPlayer.boughtbuffList[1] && modPlayer.shortSwordBlood <= 1)

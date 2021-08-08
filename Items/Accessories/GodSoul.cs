@@ -38,19 +38,16 @@ namespace SummonHeart.Items.Accessories
         public override bool UseItem(Player player)
         {
             SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
-            if (!mp.eatGodSoul)
+           
+            mp.eatGodSoul = true;
+            string text = player.name + "吞噬了魔神·神格？获得神格之力，额外饰品栏增加至24";
+            if (Main.netMode == NetmodeID.SinglePlayer)
             {
-                mp.eatGodSoul = true;
-                string text = player.name + "吞噬了魔神·神格？获得神格之力，额外饰品栏增加至32";
-                if (Main.netMode == NetmodeID.SinglePlayer)
-                {
-                    Main.NewText(text, new Color(175, 75, 255));
-                }
-                if (Main.netMode == NetmodeID.Server)
-                {
-                    NetMessage.BroadcastChatMessage(NetworkText.FromLiteral(text), new Color(175, 75, 255));
-                }
-                return true;
+                Main.NewText(text, new Color(175, 75, 255));
+            }
+            if (Main.netMode == NetmodeID.Server)
+            {
+                NetMessage.BroadcastChatMessage(NetworkText.FromLiteral(text), new Color(175, 75, 255));
             }
 
             return base.UseItem(player);

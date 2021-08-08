@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using SummonHeart.Buffs.Weapon;
+using SummonHeart.Extensions;
 using SummonHeart.Utilities;
 using Terraria;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.World.Generation;
@@ -54,6 +57,21 @@ namespace SummonHeart.Projectiles.Weapon
         {
             return new Color?(Color.White);
         }
+        /*// Token: 0x04000298 RID: 664
+        private readonly VertexStrip vertexStrip = new VertexStrip();
+        public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
+        {
+            Main.spriteBatch.End();
+            Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
+            var swordShader = GameShaders.Misc["SummonHeart:SwordTrail"];
+            if (swordShader != null)
+                swordShader.Apply(null);
+            Color color = Main.player[projectile.owner].GetModPlayer<SummonHeartPlayer>().ColorOrOther(new Color(200, 255, 248));
+            vertexStrip.PrepareStripWithProceduralPadding(projectile.oldPos, projectile.oldRot, (p) => Color.Lerp(color.MultiplyAlpha(p <= 0.1f ? p / 0.1f : 1f), Color.Lerp(color, Color.DarkViolet, 0.5f), p), (p) => 48f, -Main.screenPosition + projectile.Size / 2f, true, true);
+            vertexStrip.DrawTrail();
+            Main.pixelShader.CurrentTechnique.Passes[0].Apply();
+            return false;
+        }*/
 
         private void AI_GetMyGroupIndexAndFillBlackListMod(List<int> blackListedTargets, out int index, out int totalIndexesInGroup)
         {
