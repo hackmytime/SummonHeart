@@ -807,6 +807,10 @@ namespace SummonHeart
 			item.stack = 100;
 			items.Add(item);
 			item = new Item();
+			item.SetDefaults(ItemID.Torch);
+			item.stack = 99;
+			items.Add(item);
+			item = new Item();
 			item.SetDefaults(ItemID.WaterBucket);
 			item.stack = 2;
 			items.Add(item);
@@ -1204,6 +1208,28 @@ namespace SummonHeart
 				if (damage < 1)
 					damage = 1;
 			}
+			if (PlayerClass == 2)
+			{
+				//判断死气值是否够减
+				int defDmage = 0;
+                if (deathResourceCurrent >= damage)
+                {
+					defDmage = damage;
+                }
+                else
+                {
+					defDmage = deathResourceCurrent;
+                }
+				deathResourceCurrent -= defDmage;
+				CombatText.NewText(player.getRect(), Color.DarkGray, "-" + defDmage + "死气值");
+				if (deathResourceCurrent <= 0)
+				{
+					deathResourceCurrent = 0;
+				}
+				if (crit)
+					defDmage /= 2;
+				damage -= defDmage;
+			}
 			if (PlayerClass == 3 && boughtbuffList[2])
 			{
 				damage = (int)(damage * 0.04f);
@@ -1241,6 +1267,28 @@ namespace SummonHeart
 				damage = (int)(damage * (1 - 0.5 - bodyBloodGas / 13333 * 0.01f));
 				if (damage < 1)
 					damage = 1;
+			}
+			if (PlayerClass == 2)
+			{
+				//判断死气值是否够减
+				int defDmage = 0;
+				if (deathResourceCurrent >= damage)
+				{
+					defDmage = damage;
+				}
+				else
+				{
+					defDmage = deathResourceCurrent;
+				}
+				deathResourceCurrent -= defDmage;
+				CombatText.NewText(player.getRect(), Color.DarkGray, "-" + defDmage + "死气值");
+				if (deathResourceCurrent <= 0)
+				{
+					deathResourceCurrent = 0;
+				}
+				if (crit)
+					defDmage /= 2;
+				damage -= defDmage;
 			}
 			if (PlayerClass == 3 && boughtbuffList[2])
 			{
@@ -1402,23 +1450,7 @@ namespace SummonHeart
 
         public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource)
         {
-			if (PlayerClass == 2)
-			{
-				deathResourceCurrent -= (int)damage;
-				CombatText.NewText(player.getRect(), Color.DarkGray, "-" + damage + "死气值");
-				if (deathResourceCurrent <= 0)
-                {
-					deathResourceCurrent = 0;
-					return true;
-                }
-                else
-                {
-					player.statLife = 1;
-					return false;
-                }
-			}
-			else if
-			(PlayerClass == 4)
+			if(PlayerClass == 4)
 			{
 				if (angerResourceCurrent >= angerResourceMax)
 					onanger = true;

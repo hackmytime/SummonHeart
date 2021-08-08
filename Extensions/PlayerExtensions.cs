@@ -136,6 +136,8 @@ namespace SummonHeart.Extensions
 				if (npc.boss)
 				{
 					int swordMax = npc.getPower() / 400;
+					if (swordMax > 999999)
+						swordMax = 999999;
 					if (modPlayer.swordBloodMax < swordMax)
 					{
 						modPlayer.swordBloodMax = swordMax;
