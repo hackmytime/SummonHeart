@@ -18,7 +18,10 @@ namespace SummonHeart.Items
                 "The son of the demon God is seduced by the power given by the goddess");
             DisplayName.AddTranslation(GameCulture.Chinese, "女神之像");
             Tooltip.AddTranslation(GameCulture.Chinese, "使用以切换女神模式，获得女神的祝福，此模式无法取消"
-            + "\n女神的祝福：赠与魔神·神格？\n负面效果：敌人攻击翻倍，后续剧情女神获得史诗级增强");
+            + "\n女神的祝福：赠予玩家魔神·神格？（效果：吞噬炼化+24饰品栏）" +
+            "\n负面效果：" +
+            "\n1、所有泰拉瑞亚世界原生生物也会获得女神的祝福buff，增加66%独立伤害减免（减免对真实伤害有效）" +
+            "\n2、后续剧情女神获得史诗级增强");
         }
 
         public override void SetDefaults()

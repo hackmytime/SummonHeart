@@ -49,8 +49,7 @@ namespace SummonHeart.Items.Accessories
             {
                 NetMessage.BroadcastChatMessage(NetworkText.FromLiteral(text), new Color(175, 75, 255));
             }
-
-            return base.UseItem(player);
+            return true;
         }
 
         public override bool PreDrawTooltipLine(DrawableTooltipLine line, ref int yOffset)

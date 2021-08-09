@@ -169,9 +169,7 @@ namespace SummonHeart
 				killHealCD = 0;
 			}
 			killResourceMax2 = killResourceMax;
-			deathResourceMax = killResourceMax2 / 2;
-			if (deathResourceMax > SummonHeartWorld.WorldBloodGasMax)
-				deathResourceMax = SummonHeartWorld.WorldBloodGasMax;
+			
 
 			eyeMax = SummonHeartConfig.Instance.eyeMax;
 			handMax = SummonHeartConfig.Instance.handMax;
@@ -195,6 +193,8 @@ namespace SummonHeart
 			}
 			inMagicCharging = false;
 			magicBook = false;
+			//刷新上限
+			ModPlayerEffects.UpdateMax(player);
 		}
 
 		public override void PreUpdate()
@@ -472,23 +472,27 @@ namespace SummonHeart
 				addMax = 10000;
 			killResourceMax = 100 + addMax;
 			killResourceMulti = 10;
-			killResourceSkillCountMax = 20;
+			killResourceSkillCountMax = 10;
 			//被动
 			int allBlood = this.getAllBloodGas();
-			killResourceMax += allBlood / 20 + deathCount * 2;
+			int deathAdd = deathCount * 10;
+			if(deathAdd > 40000)
+            {
+				deathAdd = 40000;
+            }
+			killResourceMax += allBlood / 20 + deathAdd;
 
 			//魔神之手
-			
 			if (boughtbuffList[1])
             {
 				AttackSpeed += (handBloodGas / 4000 + 30) * 0.01f;
 				player.thrownVelocity += (handBloodGas / 4000 + 30) * 0.01f;
-				killResourceMulti += (handBloodGas / 10000);
-				killResourceSkillCountMax = (handBloodGas / 2000 + 20);
+				killResourceSkillCountMax = (handBloodGas / 5000 + 10);
 				//隐藏路线：叛道者
 				if (shortSwordBlood <= 1)
-					killResourceMax2 *= 3;
+					killResourceMax2 *= 4;
 			}
+			deathResourceMax = killResourceMax2;
 			int heal = 1;
 			if (boughtbuffList[2])
             {
@@ -513,8 +517,8 @@ namespace SummonHeart
 			if (boughtbuffList[3])
 			{
 				player.noFallDmg = true;
-				MyMoveSpeedMult += (footBloodGas / 5000 + 30) * 0.01f;
-				MyAccelerationMult += (footBloodGas / 5000 + 30) * 0.01f;
+				MyMoveSpeedMult += (footBloodGas / 5000 + 33) * 0.01f;
+				MyAccelerationMult += (footBloodGas / 5000 + 33) * 0.01f;
 				player.wingTimeMax += (footBloodGas / 1000 + 10) * 60;
 				player.jumpSpeedBoost += (footBloodGas / 500 + 100) * 0.01f;
 			}
@@ -1488,7 +1492,7 @@ namespace SummonHeart
 			if (PlayerClass == 2)
             {
 				swordBloodMax += 2;
-				string text = $"{player.name}身为刺客，向死而生，杀意上限+2点";
+				string text = $"{player.name}身为刺客，向死而生，杀意上限+10点";
 				Main.NewText(text, Color.Green);
 			}
             base.Kill(damage, hitDirection, pvp, damageSource);
