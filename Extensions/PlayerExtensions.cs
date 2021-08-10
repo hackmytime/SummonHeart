@@ -317,7 +317,7 @@ namespace SummonHeart.Extensions
 				//修炼开始
 				int bloodGasMax = modPlayer.bloodGasMax;
 
-				if (modPlayer.getAllBloodGas() < bloodGasMax * 4)
+				if (modPlayer.getAllBloodGas() < SummonHeartWorld.WorldBloodGasMax)
 				{
 					addBloodGas = addExp;
 
@@ -486,6 +486,105 @@ namespace SummonHeart.Extensions
 				}
 			}
 			return false;
+		}
+
+		///<摘要>
+		///通过免疫和摄像机lerp管理破折号的逻辑。
+		///也接管了sparket.frame，所以在一个普通的斜杠ai之后调用它。
+		///</summary>
+		///<param name=“dashFrameDuration”>要冲刺的帧数
+		///<param name=“dashSpeed”>短跑速度，例如player.maxRunSpeed*5f</param>
+		///<param name=“freezeFrame”>要在例如2处冻结的帧
+		///<param name=“dashEndVelocity”>结束速度，或为空以使用短划线速度，例如preDashVelocity</param>
+		///<returns>如果当前在破折号中，则为True</returns>
+		public static bool AIDashSlash(this Player player, Projectile projectile, float dashFrameDuration, float dashSpeed, int freezeFrame, ref Vector2? dashEndVelocity)
+		{
+			if (player.dead || !player.active)
+			{
+				projectile.timeLeft = 0;
+				return false;
+			}
+			if (freezeFrame < 1) freezeFrame = 1;
+
+			bool dashing = false;
+			if ((int)projectile.ai[0] < dashFrameDuration)
+			{
+				// Fine-tuned tilecollision
+				player.armorEffectDrawShadow = true;
+				Vector2 projVel = projectile.velocity;
+				if (player.gravDir < 0) projVel.Y = -projVel.Y;
+				for (int i = 0; i < 4; i++)
+				{
+					player.position += Collision.TileCollision(player.position, projVel * dashSpeed / 4,
+						player.width, player.height, false, false, (int)player.gravDir);
+				}
+
+				if (player.velocity.Y == 0)
+				{ player.velocity = new Vector2(0, (projectile.velocity * dashSpeed).Y); }
+				else
+				{ player.velocity = new Vector2(0, player.gravDir * player.gravity); }
+
+				// Prolong mid-slash player animation
+				if (player.direction < 0) projectile.position.X += projectile.width;
+
+				float dist = Math.Max(0, projectile.width - projectile.height); // total distance covered by the moving hitbox
+
+				Vector2 direction = new Vector2(
+					(float)Math.Cos(projectile.rotation),
+					(float)Math.Sin(projectile.rotation));
+				direction.Y *= player.gravDir;
+				Vector2 centre = player.MountedCenter;
+				Vector2 playerOffset = player.Size.X * projectile.scale * direction;
+
+				projectile.Center = centre
+					+ direction * (dist + projectile.height) / 2
+					- playerOffset;
+				if (player.itemAnimation <= player.itemAnimationMax - freezeFrame)
+				{ player.itemAnimation = player.itemAnimationMax - freezeFrame; }
+
+				// Set immunities
+				player.immune = true;
+				player.immuneTime = Math.Max(player.immuneTime, 6);
+				player.immuneNoBlink = true;
+
+				dashing = true;
+			}
+			else if ((int)projectile.ai[0] >= dashFrameDuration && dashEndVelocity != new Vector2(float.MinValue, float.MinValue))
+			{
+				if (dashEndVelocity == null)
+				{
+					Vector2 projVel = projectile.velocity.SafeNormalize(Vector2.Zero);
+					if (player.gravDir < 0) projVel.Y = -projVel.Y;
+					float speed = dashSpeed / 4f;
+					if (speed < player.maxFallSpeed)
+					{ player.velocity = projVel * speed; }
+					else
+					{ player.velocity = projVel * player.maxFallSpeed; }
+
+					// Reset fall damage
+					player.fallStart = (int)(player.position.Y / 16f);
+					player.fallStart2 = player.fallStart;
+				}
+				else
+				{
+					player.velocity = (Vector2)dashEndVelocity;
+				}
+
+				// Set the vector to a "reset" state
+				dashEndVelocity = new Vector2(float.MinValue, float.MinValue);
+			}
+
+			// Trigger lerp by offsetting camera
+			if (projectile.timeLeft == 60)
+			{
+				Main.SetCameraLerp(0.1f, 10);
+				Main.screenPosition -= projectile.velocity * 2;
+			}
+
+			// Set new projectile frame
+			projectile.frame = (int)Math.Max(0, projectile.ai[0] - dashFrameDuration);
+
+			return dashing;
 		}
 	}
 }

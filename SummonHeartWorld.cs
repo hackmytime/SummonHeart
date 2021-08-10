@@ -14,14 +14,11 @@ namespace SummonHeart
 
         public static int WorldBloodGasMax = 0;
 
-        public static int PlayerBloodGasMax = 0;
-
         public override void Initialize()
         {
             GoddessMode = false;
             WorldLevel = 0;
             WorldBloodGasMax = 100000;
-            PlayerBloodGasMax = 10000;
         }
 
         public override TagCompound Save()
@@ -30,7 +27,6 @@ namespace SummonHeart
             tagComp.Add("GoddessMode", GoddessMode);
             tagComp.Add("WorldLevel", WorldLevel);
             tagComp.Add("WorldBloodGasMax", WorldBloodGasMax);
-            tagComp.Add("PlayerBloodGasMax", PlayerBloodGasMax);
             return tagComp;
         }
 
@@ -42,7 +38,6 @@ namespace SummonHeart
 
             writer.Write(WorldLevel);
             writer.Write(WorldBloodGasMax);
-            writer.Write(PlayerBloodGasMax);
         }
 
         public override void NetReceive(BinaryReader reader)
@@ -51,7 +46,6 @@ namespace SummonHeart
             GoddessMode = flags[0];
             WorldLevel = reader.ReadInt32();
             WorldBloodGasMax = reader.ReadInt32();
-            PlayerBloodGasMax = reader.ReadInt32();
         }
 
         public override void Load(TagCompound tag)
@@ -61,27 +55,22 @@ namespace SummonHeart
             if(WorldLevel <= 1)
             {
                 WorldBloodGasMax = 400000;
-                PlayerBloodGasMax = 20000;
             }
             else if(WorldLevel == 2)
             {
                 WorldBloodGasMax = 500000;
-                PlayerBloodGasMax = 30000;
             }
             else if (WorldLevel == 3)
             {
                 WorldBloodGasMax = 600000;
-                PlayerBloodGasMax = 36000;
             }
             else if (WorldLevel == 4)
             {
                 WorldBloodGasMax = 700000;
-                PlayerBloodGasMax = 40000;
             }
             else if (WorldLevel == 5)
             {
                 WorldBloodGasMax = 800000;
-                PlayerBloodGasMax = 60000;
             }
         }
     }

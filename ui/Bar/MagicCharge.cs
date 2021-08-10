@@ -21,7 +21,7 @@ namespace SummonHeart.ui.Bar
             area.Top.Set(580f, 0f);*/
 
             area.Left.Set(Main.screenWidth / 2 - 182 / 2, 0);
-            area.Top.Set(Main.screenHeight / 2 - 60 / 2 + 60, 0);
+            area.Top.Set(Main.screenHeight / 2 - 60 / 2 + 80, 0);
 
             area.Width.Set(182f, 0f);
             area.Height.Set(60f, 0f);

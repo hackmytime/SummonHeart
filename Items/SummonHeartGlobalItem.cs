@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using SummonHeart.Items.Accessories;
 using SummonHeart.Items.Weapons.Magic;
+using SummonHeart.Projectiles.Melee;
 using SummonHeart.ui.layout;
 using SummonHeart.Utilities;
 using System;
@@ -61,6 +62,57 @@ namespace SummonHeart.Items
                 for (int d3 = 0; d3 < 88; d3++)
                 {
                     Dust.NewDust(player.Center, 0, 0, 135, 0f + Main.rand.Next(-12, 12), 0f + Main.rand.Next(-12, 12), 150, default, 0.8f);
+                }
+            }
+            //刺客
+            if (mp.PlayerClass == 2 && item.thrown && player.altFunctionUse == 2)
+            {
+               /* if (mp.dashingLeft || mp.dashingRight)
+                    return false;*/
+
+                int killCost = (int)(mp.killResourceMax2 * 0.01f);
+                if (mp.killResourceCurrent < killCost)
+                {
+                    CombatText.NewText(player.getRect(), Color.Red, "杀意不足，无法使用杀意闪");
+                    return false;
+                }
+                Main.PlaySound(2, player.Center, 28);
+                mp.killResourceCurrent -= killCost;
+                CombatText.NewText(player.getRect(), Color.Red, "-" + killCost + "杀意值");
+               
+                if (player.direction == 1 && player.controlRight)
+                {
+                    player.controlRight = false;
+                    mp.dashingRight = true;
+                }
+                else if (player.direction == -1 && player.controlLeft)
+                {
+                    player.controlLeft = false;
+                    mp.dashingLeft = true;
+                }
+                else if (player.direction == 1)
+                {
+                    mp.dashingLeft = true;
+                }
+                else if (player.direction == -1)
+                {
+                    mp.dashingRight = true;
+                }
+
+                float launchSpeed = -12f;
+                Vector2 backstepVelocity = Vector2.Normalize(Main.MouseWorld - player.Center) * launchSpeed;
+                player.velocity = backstepVelocity;
+                for (int d = 0; d < 22; d++)
+                {
+                    Dust.NewDust(player.Center, 0, 0, MyDustId.BlueMagic, 0f + Main.rand.Next(-12, 12), 0f + Main.rand.Next(-12, 12), 150, default, 0.8f);
+                }
+                for (int d2 = 0; d2 < 12; d2++)
+                {
+                    Dust.NewDust(player.Center, 0, 0, MyDustId.BlueMagic, 0f + Main.rand.Next(-12, 12), 0f + Main.rand.Next(-12, 12), 150, default, 0.8f);
+                }
+                for (int d3 = 0; d3 < 88; d3++)
+                {
+                    Dust.NewDust(player.Center, 0, 0, MyDustId.BlueMagic, 0f + Main.rand.Next(-12, 12), 0f + Main.rand.Next(-12, 12), 150, default, 0.8f);
                 }
             }
             return true;
@@ -370,6 +422,17 @@ namespace SummonHeart.Items
                     tooltips[num6].text = "当前充能魔法消耗 " + magicCostCount;
                 }
             }
+            else if(mp.PlayerClass == 2 && item.thrown && !item.channel)
+            {
+                int num4 = tooltips.FindIndex((TooltipLine t) => t.Name.Equals("CritChance"));
+                if (num4 != -1)
+                {
+                    int damage = (int)(item.damage * 10 * (player.allDamage - 1 + player.magicDamage + mp.handBloodGas / 20000));
+                    string text2 = "右键消耗1%最大杀意值施放杀意闪";
+                    tooltips.Insert(num4-1, new TooltipLine(base.mod, "KillMove", text2));
+                    tooltips[num4-1].overrideColor = Color.LightGreen;
+                }
+            }
             else
             {
                 int num4 = tooltips.FindIndex((TooltipLine t) => t.Name.Equals("Speed"));
@@ -400,6 +463,8 @@ namespace SummonHeart.Items
         public override bool AltFunctionUse(Item item, Player player)
         {
             SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
+            if (mp.PlayerClass == 2 && item.thrown && !item.summon)
+                return true;
             if (mp.PlayerClass == 6 && item.magic && !item.summon)
                 return true;
             return base.AltFunctionUse(item, player);

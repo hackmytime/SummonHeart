@@ -114,6 +114,12 @@ namespace SummonHeart
 		public bool useOscGradient;
 		public bool colorsInitialized;
 
+		//位移
+		public int leftTimer;
+		public bool dashingLeft;
+		public int rightTimer;
+		public bool dashingRight;
+
 		public SummonHeartPlayer()
 		{
 			var size = SummonHeartMod.getBuffLength();
@@ -195,6 +201,8 @@ namespace SummonHeart
 			magicBook = false;
 			//刷新上限
 			ModPlayerEffects.UpdateMax(player);
+
+			
 		}
 
 		public override void PreUpdate()
@@ -521,6 +529,46 @@ namespace SummonHeart
 				MyAccelerationMult += (footBloodGas / 5000 + 33) * 0.01f;
 				player.wingTimeMax += (footBloodGas / 1000 + 10) * 60;
 				player.jumpSpeedBoost += (footBloodGas / 500 + 100) * 0.01f;
+			}
+
+			//位移
+			if (this.dashingLeft)
+			{
+				this.dashingRight = false;
+				this.rightTimer = 0;
+				this.leftTimer++;
+				if (this.leftTimer == 1)
+				{
+					base.player.controlLeft = true;
+					base.player.releaseLeft = true;
+					return;
+				}
+				if (this.leftTimer >= 2)
+				{
+					base.player.controlLeft = true;
+					base.player.releaseLeft = true;
+					this.leftTimer = 0;
+					this.dashingLeft = false;
+					return;
+				}
+			}
+			else if (this.dashingRight)
+			{
+				this.dashingLeft = false;
+				this.leftTimer = 0;
+				this.rightTimer++;
+				if (this.rightTimer == 1)
+				{
+					base.player.controlRight = true;
+					base.player.releaseRight = true;
+				}
+				if (this.rightTimer >= 2)
+				{
+					base.player.controlRight = true;
+					base.player.releaseRight = true;
+					this.rightTimer = 0;
+					this.dashingRight = false;
+				}
 			}
 		}
 

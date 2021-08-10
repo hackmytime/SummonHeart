@@ -43,9 +43,13 @@ namespace SummonHeart.Items.Level
                 {
                     Main.NewText("当前世界难度为：？？？？", 255, 255, 255);
                 }
+                if (ModLoader.GetMod("Luiafk") != null)
+                {
+                    Item.NewItem(player.Center, ModLoader.GetMod("Luiafk").ItemType("TimeChanger"));
+                    Main.NewText("神秘的声音：勇气可嘉，送你一件礼物，减少你的自闭概率", 255, 255, 255);
+                }
                 SummonHeartWorld.WorldLevel = 5;
                 SummonHeartWorld.WorldBloodGasMax = 800000;
-                SummonHeartWorld.PlayerBloodGasMax = 60000;
                 return true;
             }
             else

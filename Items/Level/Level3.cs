@@ -18,7 +18,6 @@ namespace SummonHeart.Items.Level
                 "\n所有敌人8倍攻击" +
                 "\n灵魂气血获取倍率：3倍" +
                 "\n世界肉身总气血上限：60W" +
-                "\n初始肉身极限：36000" +
                 "\n额外饰品栏：3个" +
                 "\n评价：硬核高手，你有点强");
         }
@@ -45,7 +44,6 @@ namespace SummonHeart.Items.Level
                 }
                 SummonHeartWorld.WorldLevel = 3;
                 SummonHeartWorld.WorldBloodGasMax = 600000;
-                SummonHeartWorld.PlayerBloodGasMax = 36000;
                 return true;
             }
             else

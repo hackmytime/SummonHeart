@@ -137,8 +137,6 @@ namespace SummonHeart.ui
                 modlabel_max.TextColor = Color.Red;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_max));
 
-                if (mp.bloodGasMax < SummonHeartWorld.PlayerBloodGasMax && SummonHeartWorld.PlayerBloodGasMax <= 30000)
-                    mp.bloodGasMax = SummonHeartWorld.PlayerBloodGasMax;
                 modlabel_max = new UIText("当前单部位肉身极限：" + mp.bloodGasMax + "(击败原版特定boss可突破极限)");
                 modlabel_max.TextColor = Color.Magenta;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_max));

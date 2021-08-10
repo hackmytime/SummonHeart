@@ -97,7 +97,7 @@ namespace SummonHeart
             {
 				mp.swordBloodMax = swordMax;
 			}
-			mp.bodyMax = bodyMax;
+			mp.bloodGasMax = bodyMax;
 		}
 
 		public static void UpdateColors(Player player)
