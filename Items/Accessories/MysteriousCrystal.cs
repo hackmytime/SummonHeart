@@ -55,11 +55,12 @@ namespace SummonHeart.Items.Accessories
                     {
                         if (WorldGen.InWorld(i, j, 0))
                         {
-                            Main.Map.Update(i, j, (byte)(200 - 2 * (byte)Vector2.Distance(player.Center / 16f, new Vector2(i, j))));
+                            //Main.Map.Update(i, j, (byte)(200 - 2 * (byte)Vector2.Distance(player.Center / 16f, new Vector2(i, j))));
+                            Main.Map.Update(i, j, 100);
                         }
                     }
                 }
-                //Main.refreshMap = true;
+                Main.refreshMap = true;
             }
         }
     }

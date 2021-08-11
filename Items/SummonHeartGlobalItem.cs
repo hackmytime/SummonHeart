@@ -70,7 +70,7 @@ namespace SummonHeart.Items
                /* if (mp.dashingLeft || mp.dashingRight)
                     return false;*/
 
-                int killCost = (int)(mp.killResourceMax2 * 0.01f);
+                int killCost = (int)(mp.killResourceMax2 * 0.02f);
                 if (mp.killResourceCurrent < killCost)
                 {
                     CombatText.NewText(player.getRect(), Color.Red, "杀意不足，无法使用杀意闪");
@@ -80,7 +80,7 @@ namespace SummonHeart.Items
                 mp.killResourceCurrent -= killCost;
                 CombatText.NewText(player.getRect(), Color.Red, "-" + killCost + "杀意值");
                
-                if (player.direction == 1 && player.controlRight)
+                /*if (player.direction == 1 && player.controlRight)
                 {
                     player.controlRight = false;
                     mp.dashingRight = true;
@@ -97,7 +97,7 @@ namespace SummonHeart.Items
                 else if (player.direction == -1)
                 {
                     mp.dashingRight = true;
-                }
+                }*/
 
                 float launchSpeed = -12f;
                 Vector2 backstepVelocity = Vector2.Normalize(Main.MouseWorld - player.Center) * launchSpeed;
@@ -428,7 +428,7 @@ namespace SummonHeart.Items
                 if (num4 != -1)
                 {
                     int damage = (int)(item.damage * 10 * (player.allDamage - 1 + player.magicDamage + mp.handBloodGas / 20000));
-                    string text2 = "右键消耗1%最大杀意值施放杀意闪";
+                    string text2 = "右键消耗2%最大杀意值施放杀意闪";
                     tooltips.Insert(num4-1, new TooltipLine(base.mod, "KillMove", text2));
                     tooltips[num4-1].overrideColor = Color.LightGreen;
                 }

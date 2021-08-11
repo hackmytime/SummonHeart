@@ -333,7 +333,7 @@ namespace SummonHeart.NPCs
 				}
 			}
 			//投手附加伤害
-			if (modPlayer.PlayerClass == 2 && player.HeldItem.thrown == true)
+			if (modPlayer.PlayerClass == 2 && player.HeldItem.thrown == true && projectile.thrown)
 			{
 				int killCost = modPlayer.killResourceMax2 / 100;
 				if (modPlayer.killResourceCurrent >= killCost)

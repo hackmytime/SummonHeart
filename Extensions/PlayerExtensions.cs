@@ -171,10 +171,10 @@ namespace SummonHeart.Extensions
 			}
 			if (player.HeldItem.modItem != null && player.HeldItem.modItem.Name == "DemonFlySword")
 			{
-				if (npc.boss && NPC.downedMoonlord)
+				if (npc.boss)
 				{
 					int swordMax = npc.getPower() / 800;
-					if (modPlayer.swordBloodMax < swordMax)
+					if (modPlayer.swordBloodMax < swordMax && NPC.downedMoonlord)
 					{
 						modPlayer.swordBloodMax = swordMax;
 						string curMax = (modPlayer.swordBloodMax * 1.0f / 100f).ToString("0.00");

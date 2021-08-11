@@ -27,7 +27,7 @@ namespace SummonHeart.Items.Material
             item.width = 32;
             item.height = 32;
             item.rare = -12;
-            item.value = Item.sellPrice(999, 0, 0, 0);
+            item.value = Item.sellPrice(9999, 0, 0, 0);
         }
 
         public override bool PreDrawTooltipLine(DrawableTooltipLine line, ref int yOffset)
@@ -66,7 +66,7 @@ namespace SummonHeart.Items.Material
         public override void AddRecipes()
         {
             ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(ItemID.SlimeBanner, 250);
+            recipe.AddIngredient(ItemID.SlimeBanner, 125);
             recipe.SetResult(this);
             recipe.AddRecipe();
         }
