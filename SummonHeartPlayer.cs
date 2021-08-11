@@ -888,6 +888,21 @@ namespace SummonHeart
 				item.stack = 16;
 				items.Add(item);
 			}
+			if (ModLoader.GetMod("MagicStorageExtra") != null)
+			{
+				item = new Item();
+				item.SetDefaults(ModLoader.GetMod("MagicStorageExtra").ItemType("StorageHeart"));
+				item.stack = 1;
+				items.Add(item);
+				item = new Item();
+				item.SetDefaults(ModLoader.GetMod("MagicStorageExtra").ItemType("CraftingAccess"));
+				item.stack = 1;
+				items.Add(item);
+				item = new Item();
+				item.SetDefaults(ModLoader.GetMod("MagicStorageExtra").ItemType("StorageUnit"));
+				item.stack = 16;
+				items.Add(item);
+			}
 		}
 
         public override void clientClone(ModPlayer clientClone)
