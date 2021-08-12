@@ -114,7 +114,7 @@ namespace SummonHeart.ui
                 modlabel_level = new UIText("刺客被动：死气护体，不死不休，赋予从消耗的杀意中提取死气的能力。");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("每消耗4点杀意增加1点死气值，每1点死气值可以抵挡1点伤害。");
+                modlabel_level = new UIText("每消耗2点杀意增加1点死气值，每1点死气值可以抵挡1点伤害。");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
                 modlabel_level = new UIText("当前杀意上限：" + mp.killResourceMax2 + " 总气血：" + totalBoodGas + " 死亡次数：" + mp.deathCount + " 战斗力：" + mp.getPower());
@@ -205,7 +205,7 @@ namespace SummonHeart.ui
                 modlabel_level = new UIText("万杀炼体，杀意滔天：每秒回复自身" + (mp.bodyBloodGas / 200 + 15) + "杀意值(初始15，每200+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("万杀炼体，杀意滔天：每秒回复自身+" + (mp.eyeBloodGas / 100000 + 1) + "%杀意值(初始1%，每100000气血+1)");
+                modlabel_level = new UIText("万杀炼体，杀意滔天：每秒回复自身+" + (mp.eyeBloodGas / 50000 + 1) + "%杀意值(初始2%，每50000气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
 

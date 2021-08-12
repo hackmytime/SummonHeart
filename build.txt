@@ -3,4 +3,4 @@ author = lun
 version = 1.3.6.12
 hideCode = true
 hideResources  = true
-sortAfter = ThoriumMod, CalamityMod, QwertysRandomContent, Luiafk
+sortAfter = ThoriumMod, CalamityMod, QwertysRandomContent, Luiafk, MagicStorageExtra

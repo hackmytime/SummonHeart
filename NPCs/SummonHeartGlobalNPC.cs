@@ -340,7 +340,7 @@ namespace SummonHeart.NPCs
 				{
 					modPlayer.killResourceCurrent -= killCost;
 					//转换死气值
-					float addDeath = killCost / 4;
+					float addDeath = killCost / 2;
 					if (addDeath < 1)
 						addDeath = 1;
 					modPlayer.deathResourceCurrent += (int)addDeath;

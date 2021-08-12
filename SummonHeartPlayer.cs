@@ -505,8 +505,8 @@ namespace SummonHeart
 			if (boughtbuffList[2])
             {
 				//神通流
-                heal = (int)(killResourceMax2 * (0.01 + eyeBloodGas / 100000 * 0.01f)) / 4;
-				heal += (bodyBloodGas / 400 + 15) / 4;
+                heal = (int)(killResourceMax2 * (0.02 + eyeBloodGas / 50000 * 0.01f)) / 4;
+				heal += (bodyBloodGas / 200 + 15) / 4;
 				if (heal < 1)
 					heal = 1;
             }
@@ -1275,7 +1275,7 @@ namespace SummonHeart
 				if (damage < 1)
 					damage = 1;
 			}
-			if (PlayerClass == 2)
+			/*if (PlayerClass == 2)
 			{
 				//判断死气值是否够减
 				int defDmage = 0;
@@ -1297,7 +1297,7 @@ namespace SummonHeart
 				if (crit)
 					defDmage /= 2;
 				damage -= defDmage;
-			}
+			}*/
 			if (PlayerClass == 3 && boughtbuffList[2])
 			{
 				damage = (int)(damage * 0.04f);
@@ -1336,7 +1336,7 @@ namespace SummonHeart
 				if (damage < 1)
 					damage = 1;
 			}
-			if (PlayerClass == 2)
+			/*if (PlayerClass == 2)
 			{
 				//判断死气值是否够减
 				int defDmage = 0;
@@ -1358,7 +1358,7 @@ namespace SummonHeart
 				if (crit)
 					defDmage /= 2;
 				damage -= defDmage;
-			}
+			}*/
 			if (PlayerClass == 3 && boughtbuffList[2])
 			{
 				damage = (int)(damage * (1 - 0.2 - bodyBloodGas / 5000 * 0.01f));
@@ -1519,7 +1519,22 @@ namespace SummonHeart
 
         public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource)
         {
-			if(PlayerClass == 4)
+			if (PlayerClass == 2)
+			{
+				deathResourceCurrent -= (int)damage;
+				CombatText.NewText(player.getRect(), Color.DarkGray, "-" + damage + "死气值");
+				if (deathResourceCurrent <= 0)
+				{
+					deathResourceCurrent = 0;
+					return true;
+				}
+				else
+				{
+					player.statLife = 1;
+					return false;
+				}
+			}
+			else if (PlayerClass == 4)
 			{
 				if (angerResourceCurrent >= angerResourceMax)
 					onanger = true;

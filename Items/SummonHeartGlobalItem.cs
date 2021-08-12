@@ -1,13 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
-using SummonHeart.Items.Accessories;
 using SummonHeart.Items.Weapons.Magic;
-using SummonHeart.Projectiles.Melee;
-using SummonHeart.ui.layout;
 using SummonHeart.Utilities;
 using System;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.Audio;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -16,6 +12,7 @@ namespace SummonHeart.Items
 {
     public class SummonHeartGlobalItem : GlobalItem
 	{
+
         public override bool CanUseItem(Item item, Player player)
         {
             if (item.type == ItemID.SiltBlock || item.type == ItemID.SlushBlock || item.type == ItemID.DesertFossil
@@ -79,7 +76,13 @@ namespace SummonHeart.Items
                 Main.PlaySound(2, player.Center, 28);
                 mp.killResourceCurrent -= killCost;
                 CombatText.NewText(player.getRect(), Color.Red, "-" + killCost + "杀意值");
-               
+                //转换死气值
+                float addDeath = killCost / 2;
+                if (addDeath < 1)
+                    addDeath = 1;
+                mp.deathResourceCurrent += (int)addDeath;
+                if (mp.deathResourceCurrent > mp.deathResourceMax)
+                    mp.deathResourceCurrent = mp.deathResourceMax;
                 /*if (player.direction == 1 && player.controlRight)
                 {
                     player.controlRight = false;
@@ -99,7 +102,8 @@ namespace SummonHeart.Items
                     mp.dashingRight = true;
                 }*/
 
-                float launchSpeed = -12f;
+                float launchSpeed = -player.maxRunSpeed * 2;
+                
                 Vector2 backstepVelocity = Vector2.Normalize(Main.MouseWorld - player.Center) * launchSpeed;
                 player.velocity = backstepVelocity;
                 for (int d = 0; d < 22; d++)
