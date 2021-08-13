@@ -248,7 +248,7 @@ namespace SummonHeart.Extensions
 					addExp = 1;
 				}
 				//越阶战斗奖励
-				if (powerLevel > 0)
+				if (npc.boss && powerLevel > 0)
 				{
 					if (powerLevel >= 10)
 						powerLevel = 10;

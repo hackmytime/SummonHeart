@@ -205,7 +205,7 @@ namespace SummonHeart.ui
                 modlabel_level = new UIText("万杀炼体，杀意滔天：每秒回复自身" + (mp.bodyBloodGas / 200 + 15) + "杀意值(初始15，每200+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("万杀炼体，杀意滔天：每秒回复自身+" + (mp.eyeBloodGas / 50000 + 1) + "%杀意值(初始2%，每50000气血+1)");
+                modlabel_level = new UIText("万杀炼体，杀意滔天：每秒回复自身+" + (mp.eyeBloodGas / 50000 + 5) + "%杀意值(初始5%，每50000气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
 
@@ -284,6 +284,10 @@ namespace SummonHeart.ui
                                             v.Buy();
                                         }
                                         mp.boughtbuffList[currentBuffIndex] = true;
+                                        if (currentBuffIndex == 3)
+                                        {
+                                            Item.NewItem(mp.player.Center, ItemID.JimsWings);
+                                        }
                                         mp.bodyDef += buff.def;
                                         needValidate = true;
                                         if (Main.netMode == NetmodeID.MultiplayerClient)

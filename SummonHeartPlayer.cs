@@ -81,10 +81,6 @@ namespace SummonHeart
 		public bool practiceFoot = false;
 		public bool soulSplit = false;
 
-		public Projectile eyeProjectile;
-		public float MyAccelerationMult;
-		public float MyMoveSpeedMult;
-		public float MyCritDmageMult;
 		public int costMana;
 		public bool accBuryTheLight;
 		public int buryTheLightCooldown;
@@ -119,6 +115,14 @@ namespace SummonHeart
 		public bool dashingLeft;
 		public int rightTimer;
 		public bool dashingRight;
+
+		//属性
+		public float MyAccelerationMult;
+		public float MyMoveSpeedMult;
+		public float MyCritDmageMult;
+		public float myDamageReduceMult;
+		public float enemyDamageReduceMult;
+
 
 		public SummonHeartPlayer()
 		{
@@ -201,8 +205,9 @@ namespace SummonHeart
 			magicBook = false;
 			//刷新上限
 			ModPlayerEffects.UpdateMax(player);
-
-			
+			//减伤倍率
+			myDamageReduceMult = 1f;
+			enemyDamageReduceMult = SummonHeartWorld.WorldLevel;
 		}
 
 		public override void PreUpdate()
@@ -505,7 +510,7 @@ namespace SummonHeart
 			if (boughtbuffList[2])
             {
 				//神通流
-                heal = (int)(killResourceMax2 * (0.02 + eyeBloodGas / 50000 * 0.01f)) / 4;
+                heal = (int)(killResourceMax2 * (0.05 + eyeBloodGas / 50000 * 0.01f)) / 4;
 				heal += (bodyBloodGas / 200 + 15) / 4;
 				if (heal < 1)
 					heal = 1;

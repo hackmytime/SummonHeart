@@ -25,55 +25,34 @@ namespace SummonHeart.NPCs
 
 		public override void SetDefaults(NPC npc)
 		{
-            bool overLoadConfig = SummonHeartConfig.Instance.OverLoadConfig;
 			if(SummonHeartWorld.WorldLevel <= 1)
             {
-				npc.lifeMax *= 5;
-				npc.defense *= 5;
-				npc.damage *= 2;
+				npc.lifeMax *= 2;
+				npc.value *= 5;
+				npc.damage *= 4;
             }
 			else if(SummonHeartWorld.WorldLevel == 2)
 			{
-				if(overLoadConfig)
-					npc.lifeMax *= 10;
-				else if (npc.lifeMax * 10 >= 2100000000)
-					npc.lifeMax = 2100000000;
-				else
-					npc.lifeMax *= 10;
-				npc.defense *= 10;
-				npc.damage *= 5;
+				npc.lifeMax *= 4;
+				npc.value *= 10;
+				npc.damage *= 8;
 			}
 			else if (SummonHeartWorld.WorldLevel == 3)
 			{
-				if (overLoadConfig)
-					npc.lifeMax *= 15;
-				else if (npc.lifeMax * 15 >= 2100000000)
-					npc.lifeMax = 2100000000;
-				else
-					npc.lifeMax *= 15;
-				npc.defense *= 15;
-				npc.damage *= 8;
+				npc.lifeMax *= 6;
+				npc.value *= 15;
+				npc.damage *= 12;
 			}
 			else if (SummonHeartWorld.WorldLevel == 4)
 			{
-				if (overLoadConfig)
-					npc.lifeMax *= 20;
-				else if (npc.lifeMax * 20 >= 2100000000)
-					npc.lifeMax = 2100000000;
-				else
-					npc.lifeMax *= 20;
-				npc.defense *= 20;
-				npc.damage *= 10;
+				npc.lifeMax *= 8;
+				npc.value *= 20;
+				npc.damage *= 16;
 			}
 			else if (SummonHeartWorld.WorldLevel == 5)
 			{
-				if (overLoadConfig)
-					npc.lifeMax *= 30;
-				else if (npc.lifeMax * 30 >= 2100000000)
-					npc.lifeMax = 2100000000;
-				else
-					npc.lifeMax *= 30;
-				npc.defense *= 30;
+				npc.lifeMax *= 10;
+				npc.value *= 30;
 				npc.damage *= 30;
 			}
             

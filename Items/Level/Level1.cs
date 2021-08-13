@@ -14,8 +14,10 @@ namespace SummonHeart.Items.Level
             DisplayName.AddTranslation(GameCulture.Chinese, "命运轮盘·魔神之子");
             Tooltip.AddTranslation(GameCulture.Chinese, 
                 "Lv1魔神之子(默认难度)" +
-                "\n所有敌人5倍血防" +
-                "\n所有敌人2倍攻击" +
+                "\n所有敌人2倍血量" +
+                "\n所有敌人4倍攻击" +
+                "\n所有敌人减伤倍率：1倍" +
+                "\n所有敌人金钱掉落倍率：5倍" +
                 "\n灵魂气血获取倍率：1倍" +
                 "\n世界肉身总气血上限：40W" +
                 "\n额外饰品栏：1个" +

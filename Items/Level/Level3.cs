@@ -14,8 +14,10 @@ namespace SummonHeart.Items.Level
             DisplayName.AddTranslation(GameCulture.Chinese, "命运轮盘·弑神屠魔");
             Tooltip.AddTranslation(GameCulture.Chinese,
                 "\nLv3弑神屠魔(ss级难度)" +
-                "\n所有敌人15倍血防" +
-                "\n所有敌人8倍攻击" +
+                "\n所有敌人6倍血量" +
+                "\n所有敌人12倍攻击" +
+                "\n所有敌人减伤倍率：3倍" +
+                "\n所有敌人金钱掉落倍率：15倍" +
                 "\n灵魂气血获取倍率：3倍" +
                 "\n世界肉身总气血上限：60W" +
                 "\n额外饰品栏：3个" +

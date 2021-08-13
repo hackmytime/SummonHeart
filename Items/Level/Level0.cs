@@ -13,7 +13,7 @@ namespace SummonHeart.Items.Level
             Tooltip.SetDefault("Can synthesize the roulette of destiny of each difficulty");
             DisplayName.AddTranslation(GameCulture.Chinese, "命运轮盘·原初");
             Tooltip.AddTranslation(GameCulture.Chinese, "可合成各个难度的命运轮盘，请玩家开局务必选择世界难度" +
-                "\n建议难度选择，量力而行，除了？？？？难度，我都保证不是高玩也可以通关");
+                "\n建议难度选择，量力而行。【请慎重选择，难度选择之后无法更改。】");
         }
 
         public override void SetDefaults()

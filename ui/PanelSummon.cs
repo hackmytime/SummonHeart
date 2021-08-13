@@ -282,6 +282,10 @@ namespace SummonHeart.ui
                                         {
                                             Item.NewItem(mp.player.Center, ModContent.ItemType<SoulCrystal>());
                                         }
+                                        if (currentBuffIndex == 3)
+                                        {
+                                            Item.NewItem(mp.player.Center, ItemID.JimsWings);
+                                        }
                                         mp.bodyDef += buff.def;
                                         needValidate = true;
                                         if (Main.netMode == NetmodeID.MultiplayerClient)

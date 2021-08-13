@@ -13,10 +13,6 @@ namespace SummonHeart
         [Label("炼体特效")]
         public bool EffectVisualConfig;
 
-        [DefaultValue(false)]
-        [Label("突破21亿32位系统上限，非64位tml不要开")]
-        public bool OverLoadConfig;
-
         [Label("魔神之手攻击范围倍率")]
         [Range(0, 1f)]
         [DefaultValue(1)]

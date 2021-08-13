@@ -279,7 +279,10 @@ namespace SummonHeart.ui
                                             v.Buy();
                                         }
                                         mp.boughtbuffList[currentBuffIndex] = true;
-                                       
+                                        if (currentBuffIndex == 3)
+                                        {
+                                            Item.NewItem(mp.player.Center, ItemID.JimsWings);
+                                        }
                                         mp.bodyDef += buff.def;
                                         needValidate = true;
                                         if (Main.netMode == NetmodeID.MultiplayerClient)

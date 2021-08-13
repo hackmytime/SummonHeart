@@ -14,8 +14,10 @@ namespace SummonHeart.Items.Level
             DisplayName.AddTranslation(GameCulture.Chinese, "命运轮盘·逆天而行");
             Tooltip.AddTranslation(GameCulture.Chinese,
                 "\nLv4逆天而行(sss级难度)" +
-                "\n所有敌人20倍血防" +
-                "\n所有敌人10倍攻击" +
+                "\n所有敌人8倍血量" +
+                "\n所有敌人16倍攻击" +
+                "\n所有敌人减伤倍率：4倍" +
+                "\n所有敌人金钱掉落倍率：20倍" +
                 "\n灵魂气血获取倍率：4倍" +
                 "\n世界肉身总气血上限：70W" +
                 "\n额外饰品栏：4个" +
