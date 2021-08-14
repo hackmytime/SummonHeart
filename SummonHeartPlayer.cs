@@ -1560,9 +1560,9 @@ namespace SummonHeart
 
         public override void ModifyHitNPC(Item item, NPC target, ref int damage, ref float knockback, ref bool crit)
         {
-			if (crit && PlayerClass == 4 && !onanger)
+			if (PlayerClass == 4 && !onanger)
 			{
-				angerResourceCurrent += 3;
+				angerResourceCurrent += 1;
 				if (angerResourceCurrent > angerResourceMax)
 					angerResourceCurrent = angerResourceMax;
 			}
@@ -1570,9 +1570,9 @@ namespace SummonHeart
 
         public override void ModifyHitNPCWithProj(Projectile proj, NPC target, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
         {
-			if (crit && PlayerClass == 4 && !onanger)
+			if (PlayerClass == 4 && !onanger)
 			{
-				angerResourceCurrent += 3;
+				angerResourceCurrent += 1;
 				if (angerResourceCurrent > angerResourceMax)
 					angerResourceCurrent = angerResourceMax;
 			}

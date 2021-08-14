@@ -341,7 +341,7 @@ namespace SummonHeart.NPCs
 				}
 			}
 			damage = (int)Math.Ceiling(damage / modPlayer.enemyDamageReduceMult);
-			addRealDmage = (int)Math.Ceiling(damage / modPlayer.enemyDamageReduceMult);
+			addRealDmage = (int)Math.Ceiling(addRealDmage / modPlayer.enemyDamageReduceMult);
 			this.CauseDirectDamage(npc, damage, crit, addRealDmage);
 		}
     }

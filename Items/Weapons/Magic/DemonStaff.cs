@@ -26,19 +26,7 @@ namespace SummonHeart.Items.Weapons.Magic
                 "\n众生之怨：不受任何伤害攻速加成，无法附魔，无法多重施法" +
                 "\n弑神之力：击杀任意生物增加攻击力，然受觉醒上限限制。" +
                 "\n破灭法则：暴击几率翻倍，并且暴击伤害翻倍" +
-                "\n魔源觉醒：击杀强者摄其血肉灵魂增强魔力之源，可突破觉醒上限。" +
-                "\n史莱姆王：觉醒上限突破至5%" +
-                "\n克苏鲁之眼：觉醒上限突破至10%" +
-                "\n世吞/克脑：觉醒上限突破至20%" +
-                "\n蜂王：觉醒上限突破至30%" +
-                "\n骷髅王：觉醒上限突破至40%" +
-                "\n血肉之墙：觉醒上限突破至50%" +
-                "\n任意新三王：觉醒上限突破至80%" +
-                "\n世纪之花：觉醒上限突破至100%" +
-                "\n猪鲨公爵：觉醒上限突破至120%" +
-                "\n石巨人：觉醒上限突破至150%" +
-                "\n邪教徒：觉醒上限突破至200%" +
-                "\n月球领主：击杀强者可以一直突破，觉醒无上限");
+                "\n魔源觉醒：击杀强者摄其血肉灵魂增强魔力之源，可突破觉醒上限。");
         }
 
         // Token: 0x0600135B RID: 4955 RVA: 0x000B4E18 File Offset: 0x000B3018
@@ -54,7 +42,7 @@ namespace SummonHeart.Items.Weapons.Magic
             item.value = Item.sellPrice(999, 0, 0, 0);
             item.autoReuse = true;
             item.magic = true;
-            item.mana = 20;
+            item.mana = 10;
             item.noMelee = true;
             Item.staff[item.type] = true;
             item.UseSound = SoundID.Item20;
@@ -128,6 +116,11 @@ namespace SummonHeart.Items.Weapons.Magic
                 tooltipLine = new TooltipLine(base.mod, "SwordBloodMax", text);
                 tooltipLine.overrideColor = Color.LimeGreen;
                 tooltips.Insert(num + 4, tooltipLine);
+
+                text = player.getDownedBoss();
+                tooltipLine = new TooltipLine(base.mod, "SwordBloodMax", text);
+                tooltipLine.overrideColor = Color.LightGreen;
+                tooltips.Insert(tooltips.Count, tooltipLine);
             }
         }
 

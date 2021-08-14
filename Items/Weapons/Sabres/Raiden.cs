@@ -11,6 +11,7 @@ using Terraria.Localization;
 using System.Linq;
 using Terraria.Utilities;
 using SummonHeart.Utilities;
+using SummonHeart.Extensions;
 
 namespace SummonHeart.Items.Weapons.Sabres
 {
@@ -166,19 +167,7 @@ namespace SummonHeart.Items.Weapons.Sabres
                 "\n众生之怨：不受任何伤害暴击攻击范围加成，无法附魔，减少2倍攻速加成,觉醒难度翻倍,觉醒上限为9999%" +
                 "\n弑神之力：击杀任意生物增加攻击力，然受觉醒上限限制。" +
                 "\n空间法则：自身蕴含魔神所悟空间法则之力，剑出必中！50%觉醒刺杀可穿墙" +
-                "\n魔剑觉醒：击杀强者摄其血肉灵魂修复剑身，可突破觉醒上限。" +
-                "\n史莱姆王：觉醒上限突破至5%" +
-                "\n克苏鲁之眼：觉醒上限突破至10%" +
-                "\n世吞/克脑：觉醒上限突破至20%" +
-                "\n蜂王：觉醒上限突破至30%" +
-                "\n骷髅王：觉醒上限突破至40%" +
-                "\n血肉之墙：觉醒上限突破至50%" +
-                "\n任意新三王：觉醒上限突破至80%" +
-                "\n世纪之花：觉醒上限突破至100%" +
-                "\n猪鲨公爵：觉醒上限突破至120%" +
-                "\n石巨人：觉醒上限突破至150%" +
-                "\n邪教徒：觉醒上限突破至200%" +
-                "\n月球领主：击杀强者可以一直突破，觉醒上限9999%");
+                "\n魔剑觉醒：击杀强者摄其血肉灵魂修复剑身，可突破觉醒上限。");
         }
         public override void SetDefaults()
         {
@@ -264,6 +253,11 @@ namespace SummonHeart.Items.Weapons.Sabres
                     tooltips.Insert(num + 1, tooltipLine);
                 }
             }
+
+            string text1 = player.getDownedBoss();
+            TooltipLine tooltipLine1 = new TooltipLine(base.mod, "SwordBloodMax", text1);
+            tooltipLine1.overrideColor = Color.LightGreen;
+            tooltips.Insert(tooltips.Count, tooltipLine1);
         }
 
         public override void GetWeaponCrit(Player player, ref int crit)

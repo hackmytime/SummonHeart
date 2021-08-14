@@ -32,6 +32,8 @@ namespace SummonHeart.Projectiles.Melee
             projectile.width = 72;
             projectile.extraUpdates = 2;
             projectile.melee = true;
+            projectile.usesLocalNPCImmunity = true;
+            projectile.localNPCHitCooldown = 30;
         }
 
         // Token: 0x060005B3 RID: 1459 RVA: 0x00036230 File Offset: 0x00034430
@@ -96,7 +98,11 @@ namespace SummonHeart.Projectiles.Melee
             {
                 center = projectile.Center;
                 projectile.ai[0] = (float)Main.rand.Choose(-1, 1);
-                Main.PlaySound(mod.GetLegacySoundSlot(SoundType.Custom, "Sounds/Attack06"), projectile.Center);
+                if (altSound > 3)
+                {
+                    altSound = 1;
+                }
+                Main.PlaySound(50, (int)projectile.position.X, (int)projectile.position.Y, mod.GetSoundSlot(SoundType.Custom, string.Format("Sounds/Items/buryTheLightHit{0}", altSound++)), 0.8f, 0f);
             }
             Vector2 vel = projectile.velocity.RotatedBy((Ease(f) - 0.5f) * projectile.ai[0] * 2.8274333f, default);
             projectile.rotation = vel.ToRotation() - 1.5707964f;
@@ -109,6 +115,6 @@ namespace SummonHeart.Projectiles.Melee
 
         private Vector2 center;
 
-        private static bool altSound;
+        private static int altSound;
     }
 }

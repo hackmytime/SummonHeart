@@ -587,5 +587,88 @@ namespace SummonHeart.Extensions
 
 			return dashing;
 		}
+
+		public static string getDownedBoss(this Player player)
+		{
+			string[] bossTips = new string[]
+			{
+				"未吞噬任何Boss：觉醒上限初始1%",
+				"已吞噬史莱姆王：觉醒上限突破至5%",
+				"已吞噬克苏鲁之眼：觉醒上限突破至10%",
+				"已吞噬世吞/克脑：觉醒上限突破至20%",
+				"已吞噬蜂王：觉醒上限突破至30%",
+				"已吞噬骷髅王：觉醒上限突破至40%",
+				"已吞噬血肉之墙：觉醒上限突破至50%",
+				"已吞噬任意新三王：觉醒上限突破至80%",
+				"已吞噬世纪之花：觉醒上限突破至100%",
+				"已吞噬猪鲨公爵：觉醒上限突破至120%",
+				"已吞噬石巨人：觉醒上限突破至150%",
+				"已吞噬邪教徒：觉醒上限突破至200%",
+				"已吞噬月球领主：击杀强者可以一直突破，觉醒无上限"
+			};
+			int downedIndex = 0;
+			//1、2W - king slime5 %
+			if (NPC.downedSlimeKing)
+			{
+				downedIndex = 1;
+			}
+			//2、3W - bigEye10
+			if (NPC.downedBoss1)
+			{
+				downedIndex = 2;
+			}
+			//3、4W - 世吞 / 克脑20
+			if (NPC.downedBoss2)
+			{
+				downedIndex = 3;
+			}
+			//4、6W - 蜂王30
+			if (NPC.downedQueenBee)
+			{
+				downedIndex = 4;
+			}
+			//5、7W - 吴克40
+			if (NPC.downedBoss3)
+			{
+				downedIndex = 5;
+			}
+			//6、8W - 肉山50
+			if (Main.hardMode)
+			{
+				downedIndex = 6;
+			}
+			//7、10W-新三王80
+			if (NPC.downedMechBossAny)
+			{
+				downedIndex = 7;
+			}
+			//8、12W - 小花100
+			if (NPC.downedPlantBoss)
+			{
+				downedIndex = 8;
+			}
+			//9、14W - 小怪120
+			if (NPC.downedFishron)
+			{
+				downedIndex = 9;
+			}
+			//10、16W - 石头150
+			if (NPC.downedGolemBoss)
+			{
+				downedIndex = 10;
+			}
+			//11、18W - 教徒200
+			if (NPC.downedAncientCultist)
+			{
+				downedIndex = 11;
+			}
+
+			//12、20W - 月总无上限*/
+			if (NPC.downedMoonlord)
+			{
+				downedIndex = 12;
+			}
+			return bossTips[downedIndex];
+		}
 	}
 }
