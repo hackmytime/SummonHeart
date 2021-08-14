@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using SummonHeart.Utilities;
+using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -31,6 +32,51 @@ namespace SummonHeart.Projectiles
                 Main.dust[dust].position = projectile.Center - vel * 34f;
             }
             return base.PreAI(projectile);
+        }
+
+        public override void AI(Projectile projectile)
+        {
+			if (projectile.type == 116)
+			{
+				Player player = Main.player[Main.myPlayer];
+				SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
+				int range = (int)(modPlayer.magicSwordBlood / 16.7 + 200);
+				if (range > 800)
+					range = 800;
+				float B3 = projectile.Center.X;
+				float C3 = projectile.Center.Y;
+				float D2 = range;
+				bool flag18 = false;
+				for (int A3 = 0; A3 < 200; A3++)
+				{
+					if (Main.npc[A3].CanBeChasedBy(projectile, false) && Collision.CanHit(projectile.Center, 1, 1, Main.npc[A3].Center, 1, 1))
+					{
+						float G2 = Main.npc[A3].position.X + (float)(Main.npc[A3].width / 2);
+						float A4 = Main.npc[A3].position.Y + (float)(Main.npc[A3].height / 2);
+						float B4 = Math.Abs(projectile.position.X + (float)(projectile.width / 2) - G2) + Math.Abs(projectile.position.Y + (float)(projectile.height / 2) - A4);
+						if (B4 < D2)
+						{
+							D2 = B4;
+							B3 = G2;
+							C3 = A4;
+							flag18 = true;
+						}
+					}
+				}
+				if (flag18)
+				{
+					float num2 = 8f;
+					Vector2 vector3 = new Vector2(projectile.position.X + (float)projectile.width * 0.5f, projectile.position.Y + (float)projectile.height * 0.5f);
+					float E2 = B3 - vector3.X;
+					float F2 = C3 - vector3.Y;
+					float C4 = (float)Math.Sqrt((double)(E2 * E2 + F2 * F2));
+					C4 = num2 / C4;
+					E2 *= C4;
+					F2 *= C4;
+					projectile.velocity.X = (projectile.velocity.X * 10f + E2) / 10.5f;
+					projectile.velocity.Y = (projectile.velocity.Y * 10f + F2) / 10.5f;
+				}
+			}
         }
     }
 }

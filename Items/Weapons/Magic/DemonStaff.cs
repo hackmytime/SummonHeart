@@ -18,7 +18,7 @@ namespace SummonHeart.Items.Weapons.Magic
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Delicious Saturn");
-            DisplayName.AddTranslation(GameCulture.Chinese, "魔力之源");
+            DisplayName.AddTranslation(GameCulture.Chinese, "魔剑·万剑归宗");
             Tooltip.SetDefault("Creates a whirlwind of blades upon hit\nEach blade increases your defense");
             Tooltip.AddTranslation(GameCulture.Chinese, "" +
                 "炼体八境·武道巅峰·远古魔神临死之前碎裂不朽右臂所铸造" +
@@ -45,24 +45,54 @@ namespace SummonHeart.Items.Weapons.Magic
         public override void SetDefaults()
         {
             item.damage = 1;
-            item.width = item.height = 32;
+            item.width = 46;
+            item.height = 46;
             /* item.useTime = 20;
             item.useAnimation = 20;*/
             item.knockBack = 3.0f;
             item.rare = -12;
             item.value = Item.sellPrice(999, 0, 0, 0);
-            item.scale = 1.25f;
             item.autoReuse = true;
-            item.noUseGraphic = true;
             item.magic = true;
-            item.mana = 5;
+            item.mana = 20;
             item.noMelee = true;
-            item.UseSound = SoundID.DD2_LightningAuraZap;
-            item.useAnimation = 24;
-            item.useTime = 8;
-            item.useStyle = 5;
-            item.shoot = ModContent.ProjectileType<DeliciousSaturnBlade>();
-            item.shootSpeed = 1f;
+            Item.staff[item.type] = true;
+            item.UseSound = SoundID.Item20;
+            item.useAnimation = 30;
+            item.useTime = 30;
+            item.useStyle = ItemUseStyleID.HoldingOut;
+            //item.shoot = ModContent.ProjectileType<MagicSword>();
+            item.shoot = 116;
+            item.shootSpeed = 1.5f;
+        }
+
+        public override Vector2? HoldoutOrigin()
+        {
+            return new Vector2(0, 8);
+        }
+
+        public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
+        {
+            SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
+            position = Main.MouseWorld;
+            //计算距离
+            //Vector2 basePos = Vector2.Normalize(Main.MouseWorld - player.Center);
+            //position = basePos * 100f + player.Center;
+            position = player.Center + new Vector2(0, -150);
+            for (int i = 1; i <= 9; i++)
+            {
+                int param = i / 2;
+                if (i % 2 == 0)
+                {
+                    param *= -1;
+                }
+                Vector2 velocity = new Vector2(speedX, speedY).RotatedBy(MathHelper.Pi / 180 * 8 * param);
+                Vector2 newPos = position;
+                newPos.X += velocity.X * 60;
+                newPos.Y += velocity.Y * 60;
+                Projectile.NewProjectile(newPos.X, newPos.Y, velocity.X, velocity.Y, type, damage, knockBack, player.whoAmI);
+            }
+            return false;
         }
 
         public override void ModifyTooltips(List<TooltipLine> tooltips)
@@ -86,7 +116,7 @@ namespace SummonHeart.Items.Weapons.Magic
                 int range = (int)(modPlayer.magicSwordBlood / 16.7 + 200);
                 if(range > 800)
                     range = 800;
-                text = "攻击范围 " + range + "格";
+                text = "追踪范围 " + range + "格";
                 tooltipLine = new TooltipLine(base.mod, "SwordBloodMax", text);
                 tooltipLine.overrideColor = Color.LightBlue;
                 tooltips.Insert(num + 2, tooltipLine);

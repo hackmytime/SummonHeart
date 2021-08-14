@@ -35,7 +35,8 @@ namespace SummonHeart.Projectiles.Summon
             projectile.timeLeft = 60 * 60 * 24 * 30;
             projectile.soundDelay = 0;
             projectile.friendly = true;
-            projectile.localNPCHitCooldown = 10;
+            projectile.usesLocalNPCImmunity = true;
+            projectile.localNPCHitCooldown = 6;
             Role = 0;
             WeaponRotation = 0f;
             WeaponPosition = Vector2.Zero;

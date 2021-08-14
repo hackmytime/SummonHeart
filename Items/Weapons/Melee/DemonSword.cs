@@ -70,7 +70,7 @@ namespace SummonHeart.Items.Weapons.Melee
             position = Main.MouseWorld;
             //计算距离
             float dist = Vector2.Distance(position, player.Center);
-            float attackRange = 200f + mp.swordBlood / 10;
+            float attackRange = 200f + mp.swordBlood / 20;
             if (attackRange > 500)
                 attackRange = 500f;
             if (dist > attackRange)
@@ -153,7 +153,7 @@ namespace SummonHeart.Items.Weapons.Melee
                 tooltips[num + 1].overrideColor = Color.LimeGreen;
                 tooltips[num + 1].text = str + (GameCulture.Chinese.IsActive ? "觉醒度" : "Arousal Level");
                 string text;
-                float attackRange = 200f + modPlayer.swordBlood / 10;
+                float attackRange = 200f + modPlayer.swordBlood / 20;
                 if (attackRange > 500)
                     attackRange = 500f;
                 text = "攻击范围 " + attackRange + "格";
