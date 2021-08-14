@@ -40,7 +40,7 @@ namespace SummonHeart.Projectiles.Weapon
             projectile.minion = true;
             projectile.minionSlots = 2f;
             projectile.timeLeft = 60;
-            projectile.localNPCHitCooldown = 6;
+            projectile.localNPCHitCooldown = 10;
         }
 
         public override bool MinionContactDamage()

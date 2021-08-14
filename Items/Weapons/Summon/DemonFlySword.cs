@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using SummonHeart.Buffs.Weapon;
 using SummonHeart.Projectiles.Weapon;
+using SummonHeart.Utilities;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
@@ -27,7 +28,7 @@ namespace SummonHeart.Items.Weapons.Summon
             Tooltip.AddTranslation(GameCulture.Chinese, "" +
                 "炼体八境·武道巅峰·远古魔神临死之前碎裂不朽右臂所铸造" +
                 "\n魔神之子的护道传承武器，唯魔神之子可用精血召唤使用" +
-                "\n众生之怨：1把神灭占用2召唤栏，召唤伤害恒为1，无法附魔，觉醒上限减半" +
+                "\n众生之怨：1把神灭占用2召唤栏，最多召唤10把，召唤伤害恒为1，无法附魔，觉醒上限减半" +
                 "\n弑神之力：击杀任意BOSS增加觉醒度，然受觉醒上限限制。" +
                 "\n灵魂法则：自身蕴含魔神所悟灵魂法则之力，攻击造成附加真实伤害" +
                 "\n魔剑觉醒：击杀强者摄其灵魂喂养剑灵，可突破觉醒上限。" +
@@ -126,7 +127,14 @@ namespace SummonHeart.Items.Weapons.Summon
         {
             player.AddBuff(item.buffType, 2, true);
             position = Main.MouseWorld;
-            return true;
+            if (player.ownedProjectileCounts(mod.ProjectileType("DemonFlySwordMinion")) < 10)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public override void AddRecipes()

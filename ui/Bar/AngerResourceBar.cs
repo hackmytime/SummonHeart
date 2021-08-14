@@ -66,7 +66,7 @@ namespace SummonHeart.ui.Bar
             // Here we get the screen dimensions of the barFrame element, then tweak the resulting rectangle to arrive at a rectangle within the barFrame texture that we will draw the gradient. These values were measured in a drawing program.
             Rectangle hitbox = barFrame.GetInnerDimensions().ToRectangle();
             hitbox.X += 12;
-            hitbox.Width -= 24;
+            hitbox.Width -= 22;
             hitbox.Y += 8;
             hitbox.Height -= 16;
 

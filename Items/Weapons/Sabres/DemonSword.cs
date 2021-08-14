@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿/*using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
@@ -113,7 +113,7 @@ namespace SummonHeart.Items.Weapons.Sabres
                 Color.Red, 1.0f, specialCharge ? 0f : 1f, customCharge, 12);
 
             // Blade sheen once fully charged
-            /*if (true)
+            *//*if (true)
             {
                 Vector2 dustPos = getBladeDustPos(player, Main.rand.NextFloat());
                 Dust d = Dust.NewDustDirect(dustPos, 0, 0, 90);
@@ -121,7 +121,7 @@ namespace SummonHeart.Items.Weapons.Sabres
                 d.noGravity = true;
                 d.scale = 0.2f;
                 d.fadeIn = 0.8f;
-            }*/
+            }*//*
         }
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
@@ -165,7 +165,7 @@ namespace SummonHeart.Items.Weapons.Sabres
         public Action<Player, bool> customCharge = CustomCharge;
         public static void CustomCharge(Player player, bool flashFrame)
         {
-            /*if (flashFrame) //Charge burst
+            *//*if (flashFrame) //Charge burst
             {
                 Vector2 dustPos = getBladeDustPos(player, 0f);
                 //Main.PlaySound(25, player.position);
@@ -182,7 +182,7 @@ namespace SummonHeart.Items.Weapons.Sabres
                 Dust d = Dust.NewDustDirect(dustPos, 0, 0, 71);
                 d.scale = 0.5f;
                 d.velocity *= chargeNormal / 2f;
-            }*/
+            }*//*
         }
         private static Vector2 getBladeDustPos(Player player, float distanceNormal)
         {
@@ -199,7 +199,7 @@ namespace SummonHeart.Items.Weapons.Sabres
             return bladePosition;
         }
 
-        /*public override bool HoldItemFrame(Player player) //called on player holding but not swinging
+        *//*public override bool HoldItemFrame(Player player) //called on player holding but not swinging
         {
             if (hasDemonSwordSpecialCharge(player)) //ready to slash
             {
@@ -207,7 +207,7 @@ namespace SummonHeart.Items.Weapons.Sabres
                 return true;
             }
             return false;
-        }*/
+        }*//*
 
         public override bool UseItemFrame(Player player)
         {
@@ -349,3 +349,4 @@ namespace SummonHeart.Items.Weapons.Sabres
         }
     }
 }
+*/

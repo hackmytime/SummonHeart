@@ -110,7 +110,8 @@ namespace SummonHeart.Extensions
 		public static void doKillNpcExp(this Player player, NPC npc)
         {
 			SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
-
+			if (npc.boss)
+				modPlayer.killAnyBoss = true;
 			if (player.HeldItem.modItem != null && player.HeldItem.modItem.Name == "DemonSword")
 			{
 				if (npc.boss && NPC.downedMoonlord)

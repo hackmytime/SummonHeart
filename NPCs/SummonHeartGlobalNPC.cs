@@ -191,6 +191,20 @@ namespace SummonHeart.NPCs
 
 		public override void UpdateLifeRegen(NPC npc, ref int damage)
 		{
+            if (SummonHeartWorld.GoddessMode)
+            {
+				int heal = 0;
+				//女神模式回血
+				if (npc.boss)
+                {
+					heal = (int)(npc.lifeMax / 200);
+                }
+                else
+                {
+					heal = (int)Math.Ceiling(npc.lifeMax * SummonHeartWorld.WorldLevel * 0.01);
+				}
+				npc.lifeRegen += heal * 2;
+            }
 			if (npc.HasBuff(mod.BuffType("SoulSplit")))
             {
 				Player player = Main.player[Main.myPlayer];
@@ -274,10 +288,7 @@ namespace SummonHeart.NPCs
 					damage += modPlayer.shortSwordBlood * modPlayer.killResourceMulti;
 				}
 			}
-			if (SummonHeartWorld.GoddessMode)
-			{
-				damage /= 3;
-			}
+			damage = (int)Math.Ceiling(damage / modPlayer.enemyDamageReduceMult);
 			this.CauseDirectDamage(npc, damage, crit, 0);
 		}
 
@@ -314,7 +325,7 @@ namespace SummonHeart.NPCs
 			//投手附加伤害
 			if (modPlayer.PlayerClass == 2 && player.HeldItem.thrown == true && projectile.thrown)
 			{
-				int killCost = modPlayer.killResourceMax2 / 100;
+				int killCost = modPlayer.killResourceMax2 / 200;
 				if (modPlayer.killResourceCurrent >= killCost)
 				{
 					modPlayer.killResourceCurrent -= killCost;
@@ -329,11 +340,8 @@ namespace SummonHeart.NPCs
 					addRealDmage += realDmage;
 				}
 			}
-			if (SummonHeartWorld.GoddessMode)
-			{
-				damage /= 3;
-				addRealDmage /= 3;
-			}
+			damage = (int)Math.Ceiling(damage / modPlayer.enemyDamageReduceMult);
+			addRealDmage = (int)Math.Ceiling(damage / modPlayer.enemyDamageReduceMult);
 			this.CauseDirectDamage(npc, damage, crit, addRealDmage);
 		}
     }

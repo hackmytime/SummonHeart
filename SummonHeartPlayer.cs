@@ -23,6 +23,7 @@ namespace SummonHeart
 	{	
 		public bool SummonHeart = false;
 		public bool eatGodSoul = false;
+		public bool killAnyBoss = false;
 		public int PlayerClass = 0;
 		public int deathCount = 0;
 		public bool autoAttack = false;
@@ -193,7 +194,7 @@ namespace SummonHeart
 
 			if (eatGodSoul)
 			{
-				MaxExtraAccessories = 24;
+				MaxExtraAccessories = 14 + SummonHeartWorld.WorldLevel * 2;
 			}
 			else
 			{
@@ -208,6 +209,11 @@ namespace SummonHeart
 			//减伤倍率
 			myDamageReduceMult = 1f;
 			enemyDamageReduceMult = SummonHeartWorld.WorldLevel;
+			//魔神的庇佑
+			if (swordBloodMax > 100)
+				killAnyBoss = true;
+			if(!killAnyBoss)
+				player.AddBuff(mod.BuffType("DemonDefBuff"), 120);
 		}
 
 		public override void PreUpdate()
@@ -290,6 +296,11 @@ namespace SummonHeart
 				//法师·控法者
 				EffectMagic2();
 			}
+			//无限飞行
+			if (footBloodGas >= 200000)
+			{
+				player.wingTime = 200 * 60;
+			}
 		}
 
         public override void GetHealMana(Item item, bool quickHeal, ref int healValue)
@@ -320,7 +331,7 @@ namespace SummonHeart
 			//魔神之眼
 			if (boughtbuffList[0])
 			{
-				MyCritDmageMult += eyeBloodGas / 1000 * 0.01f;
+				MyCritDmageMult += eyeBloodGas / 500 * 0.01f + 1;
 			}
 
 			//魔神之手
@@ -356,12 +367,9 @@ namespace SummonHeart
 				player.noFallDmg = true;
 				MyMoveSpeedMult += (footBloodGas / 5000 + 20) * 0.01f;
 				MyAccelerationMult += (footBloodGas / 5000 + 20) * 0.01f;
-				player.wingTimeMax += (footBloodGas / 2222 + 10) * 60;
+				player.wingTimeMax += (footBloodGas / 2222 + 5) * 60;
 				player.jumpSpeedBoost += (footBloodGas / 1000 + 60) * 0.01f;
-				if (footBloodGas >= 200000)
-				{
-					player.wingTime = footBloodGas / 1000 * 60;
-				}
+				
 			}
 		}
 
@@ -393,7 +401,7 @@ namespace SummonHeart
 			//魔神之眼
 			if (boughtbuffList[0])
 			{
-				MyCritDmageMult += eyeBloodGas / 1000 * 0.01f;
+				MyCritDmageMult += eyeBloodGas / 500 * 0.01f + 1;
 			}
 
 			//魔神之躯
@@ -417,12 +425,9 @@ namespace SummonHeart
 				player.noFallDmg = true;
 				MyMoveSpeedMult += (footBloodGas / 5000 + 20) * 0.01f;
 				MyAccelerationMult += (footBloodGas / 5000 + 20) * 0.01f;
-				player.wingTimeMax += (footBloodGas / 2222 + 10) * 60;
+				player.wingTimeMax += (footBloodGas / 2222 + 5) * 60;
 				player.jumpSpeedBoost += (footBloodGas / 1000 + 60) * 0.01f;
-				if (footBloodGas >= 200000)
-				{
-					player.wingTime = footBloodGas / 1000 * 60;
-				}
+				
 			}
 		}
 
@@ -444,7 +449,8 @@ namespace SummonHeart
                 {
 					player.ownedProjectileKill(mod.ProjectileType("Overgrowth"));
                 }
-            }
+				MyCritDmageMult += eyeBloodGas / 500 * 0.01f + 1;
+			}
 
 			// 手
 			if (boughtbuffList[1])
@@ -455,6 +461,7 @@ namespace SummonHeart
 			// 躯
 			if (boughtbuffList[2])
 			{
+				myDamageReduceMult = 20f;
                 if (player.whoAmI == Main.myPlayer)
                 {
 					if (practiceBody && player.ownedProjectileCounts(ModContent.ProjectileType<EmpyreanSpectre>()) < 1)
@@ -532,7 +539,7 @@ namespace SummonHeart
 				player.noFallDmg = true;
 				MyMoveSpeedMult += (footBloodGas / 5000 + 33) * 0.01f;
 				MyAccelerationMult += (footBloodGas / 5000 + 33) * 0.01f;
-				player.wingTimeMax += (footBloodGas / 1000 + 10) * 60;
+				player.wingTimeMax += (footBloodGas / 1000 + 5) * 60;
 				player.jumpSpeedBoost += (footBloodGas / 500 + 100) * 0.01f;
 			}
 
@@ -593,7 +600,7 @@ namespace SummonHeart
 			if (boughtbuffList[0])
             {
 				player.meleeCrit += eyeBloodGas / 2222 + 10;
-				MyCritDmageMult += eyeBloodGas / 2000 * 0.01f;
+				MyCritDmageMult += eyeBloodGas / 500 * 0.01f + 1;
 			}
 
 			//魔神之手
@@ -605,6 +612,7 @@ namespace SummonHeart
 			//魔神之躯
 			if (boughtbuffList[2])
 			{
+				myDamageReduceMult += (bodyBloodGas / 500 + 200) * 0.01f;
 				player.noKnockback = true;
 				player.statLifeMax2 += (bodyBloodGas / 200 + 300);
 				//计算被动
@@ -636,7 +644,7 @@ namespace SummonHeart
 				player.noFallDmg = true;
 				MyMoveSpeedMult += (footBloodGas / 10000 + 20) * 0.01f;
 				MyAccelerationMult += (footBloodGas / 10000 + 20) * 0.01f;
-				player.wingTimeMax += (footBloodGas / 2222 + 10) * 60;
+				player.wingTimeMax += (footBloodGas / 2222 + 5) * 60;
 				player.jumpSpeedBoost += (footBloodGas / 1333 + 50) * 0.01f;
 				/*if (footBloodGas >= 150000)
 				{
@@ -677,7 +685,7 @@ namespace SummonHeart
 			if (boughtbuffList[0])
 			{
 				player.meleeCrit += eyeBloodGas / 2222 + 10;
-				MyCritDmageMult += eyeBloodGas / 1000 * 0.01f;
+				MyCritDmageMult += eyeBloodGas / 500 * 0.01f + 1;
 			}
 
 			//魔神之手
@@ -690,6 +698,7 @@ namespace SummonHeart
 			//魔神之躯
 			if (boughtbuffList[2])
 			{
+				myDamageReduceMult += (bodyBloodGas / 500 + 100) * 0.01f;
 				player.noKnockback = true;
 				player.statLifeMax2 += bodyBloodGas / 200;
 			}
@@ -698,14 +707,11 @@ namespace SummonHeart
 			if (boughtbuffList[3])
 			{
 				player.noFallDmg = true;
-				MyMoveSpeedMult += (footBloodGas / 5000 + 20) * 0.01f;
-				MyAccelerationMult += (footBloodGas / 5000 + 20) * 0.01f;
-				player.wingTimeMax += (footBloodGas / 2222 + 10) * 60;
-				player.jumpSpeedBoost += (footBloodGas / 1000 + 60) * 0.01f;
-				if (footBloodGas >= 200000)
-				{
-					player.wingTime = footBloodGas / 1000 * 60;
-				}
+				MyMoveSpeedMult += (footBloodGas / 5000 + 33) * 0.01f;
+				MyAccelerationMult += (footBloodGas / 5000 + 33) * 0.01f;
+				player.wingTimeMax += (footBloodGas / 1000 + 5) * 60;
+				player.jumpSpeedBoost += (footBloodGas / 500 + 100) * 0.01f;
+				
 			}
 		}
 
@@ -1031,6 +1037,7 @@ namespace SummonHeart
 		{
 			var tagComp = new TagCompound();
 			tagComp.Add("eatGodSoul", eatGodSoul);
+			tagComp.Add("killAnyBoss", killAnyBoss);
 			tagComp.Add("BBP", BBP);
 			tagComp.Add("SummonCrit", SummonCrit);
 			tagComp.Add("exp", exp);
@@ -1062,6 +1069,7 @@ namespace SummonHeart
 		public override void Load(TagCompound tag)
 		{
 			eatGodSoul = tag.GetBool("eatGodSoul");
+			killAnyBoss = tag.GetBool("killAnyBoss");
 			BBP = tag.GetInt("BBP");
 			SummonCrit = tag.GetInt("SummonCrit");
 			exp = tag.GetInt("exp");
@@ -1240,6 +1248,7 @@ namespace SummonHeart
 			if (target.type == NPCID.TargetDummy || target.friendly)
 				return;
 			SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
+			
 			if (PlayerClass == 4 && boughtbuffList[2])
 			{
 				int heal = (int)(damage * (bodyBloodGas / 100000 * 0.01f + 0.01));
@@ -1274,35 +1283,12 @@ namespace SummonHeart
 		//允许您修改 NPC 对该玩家造成的伤害等
 		public override void ModifyHitByNPC(NPC npc, ref int damage, ref bool crit)
         {
-			if (PlayerClass == 1 && boughtbuffList[2])
+			/*if (PlayerClass == 1 && boughtbuffList[2])
 			{
 				damage = (int)(damage * (1 - 0.5 - bodyBloodGas / 13333 * 0.01f));
 				if (damage < 1)
 					damage = 1;
 			}
-			/*if (PlayerClass == 2)
-			{
-				//判断死气值是否够减
-				int defDmage = 0;
-                if (deathResourceCurrent >= damage)
-                {
-					defDmage = damage;
-                }
-                else
-                {
-					defDmage = deathResourceCurrent;
-                }
-				deathResourceCurrent -= defDmage;
-				if (defDmage > 0)
-					CombatText.NewText(player.getRect(), Color.DarkGray, "-" + defDmage + "死气值");
-				if (deathResourceCurrent <= 0)
-				{
-					deathResourceCurrent = 0;
-				}
-				if (crit)
-					defDmage /= 2;
-				damage -= defDmage;
-			}*/
 			if (PlayerClass == 3 && boughtbuffList[2])
 			{
 				damage = (int)(damage * 0.04f);
@@ -1314,7 +1300,7 @@ namespace SummonHeart
 				damage = (int)(damage * (1 - bodyBloodGas / 5000 * 0.01f));
 				if (damage < 1)
 					damage = 1;
-			}
+			}*/
 			if (PlayerClass == 5 && boughtbuffList[2])
 			{
 				int manaDamage = (int)(damage * (0.75f + bodyBloodGas / 10000 * 0.01f));
@@ -1331,39 +1317,17 @@ namespace SummonHeart
 				if (damage < 1)
 					damage = 1;
 			}
+			damage = (int)Math.Ceiling(damage / myDamageReduceMult);
 		}
 		//允许您修改 NPC 弹幕对该玩家造成的伤害等
 		public override void ModifyHitByProjectile(Projectile proj, ref int damage, ref bool crit)
         {
-			if (PlayerClass == 1 && boughtbuffList[2])
+			/*if (PlayerClass == 1 && boughtbuffList[2])
 			{
 				damage = (int)(damage * (1 - 0.5 - bodyBloodGas / 13333 * 0.01f));
 				if (damage < 1)
 					damage = 1;
 			}
-			/*if (PlayerClass == 2)
-			{
-				//判断死气值是否够减
-				int defDmage = 0;
-				if (deathResourceCurrent >= damage)
-				{
-					defDmage = damage;
-				}
-				else
-				{
-					defDmage = deathResourceCurrent;
-				}
-				deathResourceCurrent -= defDmage;
-				if(defDmage > 0)
-					CombatText.NewText(player.getRect(), Color.DarkGray, "-" + defDmage + "死气值");
-				if (deathResourceCurrent <= 0)
-				{
-					deathResourceCurrent = 0;
-				}
-				if (crit)
-					defDmage /= 2;
-				damage -= defDmage;
-			}*/
 			if (PlayerClass == 3 && boughtbuffList[2])
 			{
 				damage = (int)(damage * (1 - 0.2 - bodyBloodGas / 5000 * 0.01f));
@@ -1375,7 +1339,7 @@ namespace SummonHeart
 				damage = (int)(damage * (1 - bodyBloodGas / 5000 * 0.01f));
 				if (damage < 1)
 					damage = 1;
-			}
+			}*/
 			if (PlayerClass == 5 && boughtbuffList[2])
 			{
 				int manaDamage = (int)(damage * (0.75f + bodyBloodGas / 10000 * 0.01f));
@@ -1391,6 +1355,11 @@ namespace SummonHeart
 				damage += +leftCount;
 				if (damage < 1)
 					damage = 1;
+			}
+			damage = (int)Math.Ceiling(damage / myDamageReduceMult);
+			if (PlayerClass == 3 && boughtbuffList[2])
+			{
+				damage *= 10;
 			}
 		}
 
@@ -1491,7 +1460,7 @@ namespace SummonHeart
 				//战士
 				if (boughtbuffList[1])
 				{
-					heartAdd += handBloodGas / 200 * 0.01f;
+					heartAdd += (handBloodGas / 500 + 100) * 0.01f;
 				}
 			}
 			if (PlayerClass == 2 && item.thrown)
@@ -1499,7 +1468,7 @@ namespace SummonHeart
 				//刺客
 				if (boughtbuffList[1])
 				{
-					heartAdd += handBloodGas / 200 * 0.01f;
+					heartAdd += (handBloodGas / 500 + 100) * 0.01f;
 				}
 			}
 			if (PlayerClass == 3 && item.summon)
@@ -1507,15 +1476,23 @@ namespace SummonHeart
                 //召唤师
                 if (boughtbuffList[1])
                 {
-					heartAdd += handBloodGas / 200 * 0.01f;
+					heartAdd += (handBloodGas / 500 + 100) * 0.01f;
 				}
             }
+			if (PlayerClass == 4 && item.melee)
+			{
+				//狂战
+				if (boughtbuffList[1])
+				{
+					heartAdd += (handBloodGas / 500 + 100) * 0.01f;
+				}
+			}
 			if (PlayerClass == 5 && item.magic)
 			{
 				//法师
 				if (boughtbuffList[1])
 				{
-					heartAdd += handBloodGas / 200 * 0.01f;
+					heartAdd += (handBloodGas / 500 + 100) * 0.01f;
 				}
 			}
 			add = heartAdd * baseAdd;

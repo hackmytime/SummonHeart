@@ -11,6 +11,7 @@ using SummonHeart.Projectiles.Melee;
 using SummonHeart.Extensions;
 using System;
 using SummonHeart.Items.Weapons.Sabres;
+using SummonHeart.Items.Weapons.Melee;
 
 namespace SummonHeart.Projectiles.Summon
 {

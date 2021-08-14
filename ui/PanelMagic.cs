@@ -135,7 +135,7 @@ namespace SummonHeart.ui
                 modlabel_max.TextColor = Color.Red;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_max));
 
-                modlabel_max = new UIText("当前肉身极限：" + mp.bloodGasMax + "(与战力大于你肉身极限的斩命1重或以上强敌战斗可突破极限)");
+                modlabel_max = new UIText("当前肉身极限：" + mp.bloodGasMax + " 当前暴击伤害" + mp.MyCritDmageMult * 100 + "%" + " 当前减伤倍率" + mp.myDamageReduceMult + "倍");
                 modlabel_max.TextColor = Color.Magenta;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_max));
 
@@ -162,7 +162,7 @@ namespace SummonHeart.ui
                 modlabel_level = new UIText("魔神法眼" + praticeText + " 气血值：" + mp.eyeBloodGas);
                 modlabel_level.TextColor = Color.Orange;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("洞破妄虚：魔法暴击伤害+" + (mp.eyeBloodGas / 1000)+ "%(每1000气血+1)");
+                modlabel_level = new UIText("洞破妄虚：魔法暴击伤害+" + (mp.eyeBloodGas / 500 + 100)+ "%(初始100%，每500气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
                 modlabel_level = new UIText("万法归宗：击杀敌人回复" + (mp.eyeBloodGas / 1000 + 10) + "点法力(初始10，每1000气血+1)");
@@ -184,7 +184,7 @@ namespace SummonHeart.ui
                 modlabel_level = new UIText("额外消耗：" + (mp.handBloodGas / 33333 + 2) + "重施法每次额外耗魔" + mp.costMana + "点");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("魔法狂暴：以大量法力强化魔法，魔法武器基础攻击+" + (mp.handBloodGas / 200) + "%(每200气血+1%) ");
+                modlabel_level = new UIText("魔法狂暴：以大量法力强化魔法，魔法武器基础攻击+" + (mp.handBloodGas / 500 + 100) + "%(初始100%，每500气血+1%) ");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
 
@@ -216,7 +216,7 @@ namespace SummonHeart.ui
                 modlabel_level = new UIText("风驰电掣，雷厉风行：移动速度+" + (mp.footBloodGas / 5000 + 20) + "%(初始20%，每5000气血+1) 跳跃速度+" + (mp.footBloodGas / 1000 + 60) + "%(初始60%，每1000气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("天涯海角，一步跨之：飞行时间+" + (mp.footBloodGas / 2222 + 10) + "秒(初始10，每2222气血+1)免疫摔落伤害，20W气血时无限飞行");
+                modlabel_level = new UIText("天涯海角，一步跨之：飞行时间+" + (mp.footBloodGas / 2222 + 5) + "秒(初始5，每2222气血+1)免疫摔落伤害，20W气血时无限飞行");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
                 modlabel_level = new UIText("空间传送：可以消耗当前5%魔力（最低100）使用强力空间传送（无视地形），需要设置按键");

@@ -123,7 +123,7 @@ namespace SummonHeart
 				else
 				{
 					Vector2 vector2 = oldProMap[p];
-					p.velocity = vector2 *= (1 - (modPlayer.eyeBloodGas / 5000 * 0.01f + 0.2f));
+					p.velocity = vector2 *= (1 - 0.33f);
 				}
 			}
 

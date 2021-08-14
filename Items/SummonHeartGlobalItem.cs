@@ -129,14 +129,17 @@ namespace SummonHeart.Items
             float handMultiplier = SummonHeartConfig.Instance.handMultiplier;
             if (item.melee && mp.boughtbuffList[1])
             {
-                float curScale = (mp.handBloodGas / 500 * 0.01f + 0.5f) * handMultiplier;
-                curScale = 1f;
-                //刺剑距离减半
-                if (item.modItem != null && item.modItem.Name == "Raiden")
+                if(mp.PlayerClass == 1 || mp.PlayerClass == 4)
                 {
-                    curScale = 0.5f;
+                    float curScale = (mp.handBloodGas / 500 * 0.01f + 0.5f) * handMultiplier;
+                    curScale = 1f;
+                    //刺剑距离减半
+                    if (item.modItem != null && item.modItem.Name == "Raiden")
+                    {
+                        curScale = 0.5f;
+                    }
+                    item.scale = curScale + 1f;
                 }
-                item.scale = curScale + 1f;
             }
 
             if(mp.PlayerClass == 6 && item.magic && !item.channel)
@@ -472,6 +475,15 @@ namespace SummonHeart.Items
             if (mp.PlayerClass == 6 && item.magic && !item.summon)
                 return true;
             return base.AltFunctionUse(item, player);
+        }
+
+        public override void OpenVanillaBag(string context, Player player, int arg)
+        {
+            if (context == "bossBag")
+            {
+                player.QuickSpawnItem(ItemID.LifeCrystal, Main.rand.Next(1, 2));
+            }
+            base.OpenVanillaBag(context, player, arg);
         }
     }
 }

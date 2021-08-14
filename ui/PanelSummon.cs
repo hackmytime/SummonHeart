@@ -129,7 +129,7 @@ namespace SummonHeart.ui
                 modlabel_max.TextColor = Color.Red;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_max));
 
-                modlabel_max = new UIText("当前肉身极限：" + mp.bloodGasMax + "(与战力大于你肉身极限的斩命1重或以上强敌战斗可突破极限)");
+                modlabel_max = new UIText("当前肉身极限：" + mp.bloodGasMax + " 当前暴击伤害" + mp.MyCritDmageMult * 100 + "%" + " 当前减伤倍率" + mp.myDamageReduceMult + "倍");
                 modlabel_max.TextColor = Color.Magenta;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_max));
 
@@ -159,13 +159,13 @@ namespace SummonHeart.ui
                 modlabel_level = new UIText("环视八方：神魂之眸视线范围+" + (mp.eyeBloodGas / 400 + 100)+ "格(初始100，每400气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("死亡之眼：视线范围内的敌人移动速度和弹幕飞行速度降低" + (mp.eyeBloodGas / 5000 + 10) + "%(初始10%，每5000气血+1)");
+                modlabel_level = new UIText("死亡之眼：视线范围内的敌人移动速度和弹幕飞行速度降低33%");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
                 modlabel_level = new UIText("震慑神魂：视线范围内的敌人每秒受到10次灵魂攻击，每次攻击造成" + (mp.eyeBloodGas / 1000 + 1) + "点真实伤害(初始1，每1000气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("灵魂颤栗：视线范围内的敌人受到攻击必定暴击");
+                modlabel_level = new UIText("灵魂颤栗：视线范围内的敌人受到攻击必定暴击，暴击伤害+" + (mp.eyeBloodGas / 500 + 100) + "%(初始100%，每500气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
                 if (!mp.boughtbuffList[1])
@@ -180,7 +180,7 @@ namespace SummonHeart.ui
                 modlabel_level = new UIText("灵手附身：灵手分裂附身召唤物，召唤物真实伤害+" + (mp.handBloodGas / 2000 + 10) + "点(初始10，每2000气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("万灵狂暴：以灵魂之力强化召唤物，召唤武器基础攻击+" + (mp.handBloodGas / 200) + "%(每200气血+1%) ");
+                modlabel_level = new UIText("万灵狂暴：以灵魂之力强化召唤物，召唤武器基础攻击+" + (mp.handBloodGas / 500 + 100) + "%(初始100%，每500气血+1%) ");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
 
@@ -193,10 +193,10 @@ namespace SummonHeart.ui
                 modlabel_level = new UIText("神魂之躯" + praticeText + " 气血值：" + mp.bodyBloodGas);
                 modlabel_level.TextColor = Color.Orange;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("化身初斩，魂躯初凝：修炼需斩第一身外化身，血量永久减半。魂躯介于虚实之间，免疫96%物理接触伤害");
+                modlabel_level = new UIText("化身初斩，魂躯初凝：修炼需斩第一身外化身，血量永久减半。魂躯介于虚实之间，减伤倍率+20。");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("化身初斩，魂躯初凝：弹幕伤害减免+" + (mp.bodyBloodGas / 5000 + 20) + "%(初始20%，每5000+1)");
+                modlabel_level = new UIText("化身初斩，魂躯初凝：灵躯会额外受到10倍弹幕伤害");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
                 modlabel_level = new UIText("近乎灵体，形若鬼魅：移动速度+66%，免疫摔落伤害");
@@ -215,10 +215,10 @@ namespace SummonHeart.ui
                 modlabel_level = new UIText("神魂之腿" + praticeText + " 气血值：" + mp.footBloodGas);
                 modlabel_level.TextColor = Color.Orange;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("灵魂漫步：跳跃速度+" + (mp.footBloodGas / 500 + 100) + "%(初始100%，每400气血+1)");
+                modlabel_level = new UIText("灵魂漫步：跳跃速度+" + (mp.footBloodGas / 500 + 100) + "%(初始100%，每500气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("天涯海角，一步跨之：飞行时间+" + (mp.footBloodGas/1000 + 10) + "秒(初始10，每1000气血+1)");
+                modlabel_level = new UIText("天涯海角，一步跨之：飞行时间+" + (mp.footBloodGas/1000 + 5) + "秒(初始5，每1000气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
 

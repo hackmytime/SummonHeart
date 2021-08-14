@@ -96,7 +96,7 @@ namespace SummonHeart.Projectiles.Melee
             {
                 center = projectile.Center;
                 projectile.ai[0] = (float)Main.rand.Choose(-1, 1);
-                Main.PlaySound(50, (int)projectile.position.X, (int)projectile.position.Y, mod.GetSoundSlot((SoundType)50, (altSound = !altSound) ? "Sounds/Items/solstice1" : "Sounds/Items/solstice2"), 0.8f, Main.rand.NextFloat(0f, 0.15f));
+                Main.PlaySound(mod.GetLegacySoundSlot(SoundType.Custom, "Sounds/Attack06"), projectile.Center);
             }
             Vector2 vel = projectile.velocity.RotatedBy((Ease(f) - 0.5f) * projectile.ai[0] * 2.8274333f, default);
             projectile.rotation = vel.ToRotation() - 1.5707964f;
