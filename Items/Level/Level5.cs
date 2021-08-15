@@ -14,9 +14,9 @@ namespace SummonHeart.Items.Level
             DisplayName.AddTranslation(GameCulture.Chinese, "命运轮盘·？？？？");
             Tooltip.AddTranslation(GameCulture.Chinese,
                 "Lv5？？？？(？？？级难度)" +
-                "\n所有敌人10倍血量" +
+                "\n所有敌人3倍血量" +
                 "\n所有敌人30倍攻击" +
-                "\n所有敌人减伤倍率：5倍" +
+                "\n所有敌人减伤倍率：10倍" +
                 "\n所有敌人金钱掉落倍率：30倍" +
                 "\n灵魂气血获取倍率：5倍" +
                 "\n世界肉身总气血上限：80W" +
@@ -39,7 +39,7 @@ namespace SummonHeart.Items.Level
 
         public override bool UseItem(Player player)
         {
-            if(SummonHeartWorld.WorldLevel == 0)
+            if(SummonHeartWorld.WorldLevel < 5)
             {
                 if (Main.netMode == 0 || Main.netMode == 1)
                 {
@@ -47,7 +47,7 @@ namespace SummonHeart.Items.Level
                 }
                 if (ModLoader.GetMod("Luiafk") != null)
                 {
-                    Item.NewItem(player.Center, ModLoader.GetMod("Luiafk").ItemType("TimeChanger"));
+                    player.QuickSpawnItem(ModLoader.GetMod("Luiafk").ItemType("TimeChanger"), 1);
                     Main.NewText("神秘的声音：勇气可嘉，送你一件礼物，减少你的自闭概率", 255, 255, 255);
                 }
                 SummonHeartWorld.WorldLevel = 5;

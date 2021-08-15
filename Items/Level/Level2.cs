@@ -13,9 +13,9 @@ namespace SummonHeart.Items.Level
             Tooltip.SetDefault("Change the World Level to Lv2");
             DisplayName.AddTranslation(GameCulture.Chinese, "命运轮盘·魔神之路");
             Tooltip.AddTranslation(GameCulture.Chinese,
-                "\n所有敌人4倍血量" +
+                "\n所有敌人1.5倍血量" +
                 "\n所有敌人8倍攻击" +
-                "\n所有敌人减伤倍率：2倍" +
+                "\n所有敌人减伤倍率：4倍" +
                 "\n所有敌人金钱掉落倍率：10倍" +
                 "\n灵魂气血获取倍率：2倍" +
                 "\n世界肉身总气血上限：50W" +
@@ -37,7 +37,7 @@ namespace SummonHeart.Items.Level
 
         public override bool UseItem(Player player)
         {
-            if(SummonHeartWorld.WorldLevel == 0)
+            if(SummonHeartWorld.WorldLevel < 2)
             {
                 if (Main.netMode == 0 || Main.netMode == 1)
                 {
