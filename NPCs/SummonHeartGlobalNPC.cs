@@ -74,15 +74,20 @@ namespace SummonHeart.NPCs
 
 		public override void NPCLoot(NPC npc)
 		{
-			Player player = Main.player[npc.lastInteraction];
-			SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
-
 			if (Main.netMode == NetmodeID.Server)
 			{
-				SyncPlayerNpcVar(player, npc);
+				for (int k = 0; k < 255; k++)
+				{
+					Player player = Main.player[k];
+					if (player.active)
+					{
+						SyncPlayerNpcVar(player, npc);
+					}
+				}
             }
             else
             {
+				Player player = Main.player[npc.lastInteraction];
 				player.doKillNpcExp(npc);
 			}
 		}

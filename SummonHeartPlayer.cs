@@ -593,10 +593,10 @@ namespace SummonHeart
 			player.jumpSpeedBoost -= 0.33f;
 
 			player.statDefense += (int)bodyDef * 2;
-			int addDef = deathCount / 5;
+			/*int addDef = deathCount;
 			if (addDef > bodyDef)
-				addDef = (int)bodyDef;
-			player.statDefense += addDef;
+				addDef = (int)bodyDef;*/
+			player.statDefense += deathCount;
 			//魔神之眼
 			if (boughtbuffList[0])
             {
@@ -613,7 +613,7 @@ namespace SummonHeart
 			//魔神之躯
 			if (boughtbuffList[2])
 			{
-				myDamageReduceMult += (bodyBloodGas / 500 + 400) * 0.01f;
+				myDamageReduceMult += (bodyBloodGas / 200 + 900) * 0.01f;
 				player.noKnockback = true;
 				player.statLifeMax2 += (bodyBloodGas / 200 + 300);
 				//计算被动
@@ -699,7 +699,7 @@ namespace SummonHeart
 			//魔神之躯
 			if (boughtbuffList[2])
 			{
-				myDamageReduceMult += (bodyBloodGas / 500 + 100) * 0.01f;
+				myDamageReduceMult += (bodyBloodGas / 200 + 100) * 0.01f;
 				player.noKnockback = true;
 				player.statLifeMax2 += bodyBloodGas / 200;
 			}
@@ -1372,7 +1372,7 @@ namespace SummonHeart
 			damage = (int)Math.Ceiling(damage / myDamageReduceMult);
 			if (PlayerClass == 3 && boughtbuffList[2])
 			{
-				damage *= 10;
+				damage *= 3;
 			}
 		}
 
@@ -1559,7 +1559,7 @@ namespace SummonHeart
 			deathCount++;
 			if (PlayerClass == 1)
 			{
-				string text = $"{player.name}拥有战者之心，不畏死亡。已从死亡之中获得力量，生命上限+1，防御力+0.2";
+				string text = $"{player.name}拥有战者之心，不畏死亡。已从死亡之中获得力量，生命上限+1，防御力+1";
 				Main.NewText(text, Color.Green);
 			}
 			if (PlayerClass == 2)

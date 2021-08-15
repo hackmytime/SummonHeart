@@ -51,7 +51,7 @@ namespace SummonHeart.Items.Weapons.Magic
             item.useStyle = ItemUseStyleID.HoldingOut;
             //item.shoot = ModContent.ProjectileType<MagicSword>();
             item.shoot = 116;
-            item.shootSpeed = 1.5f;
+            item.shootSpeed = 3f;
         }
 
         public override Vector2? HoldoutOrigin()
@@ -66,19 +66,26 @@ namespace SummonHeart.Items.Weapons.Magic
             //计算距离
             //Vector2 basePos = Vector2.Normalize(Main.MouseWorld - player.Center);
             //position = basePos * 100f + player.Center;
-            position = player.Center + new Vector2(0, -150);
-            for (int i = 1; i <= 9; i++)
+            position = player.Center + new Vector2(0, -225);
+            //计算速度
+            Vector2 baseV = Vector2.Normalize(Main.MouseWorld - position);
+            baseV *= item.shootSpeed;
+            int maxPro = 1;
+            if (mp.PlayerClass == 5 && mp.boughtbuffList[1])
+                maxPro += mp.handBloodGas / 33333 + 1;
+            for (int i = 1; i <= maxPro; i++)
             {
                 int param = i / 2;
                 if (i % 2 == 0)
                 {
                     param *= -1;
                 }
-                Vector2 velocity = new Vector2(speedX, speedY).RotatedBy(MathHelper.Pi / 180 * 8 * param);
+                Vector2 velocity = baseV.RotatedBy(MathHelper.Pi / 180 * 5 * param);
                 Vector2 newPos = position;
-                newPos.X += velocity.X * 60;
-                newPos.Y += velocity.Y * 60;
-                Projectile.NewProjectile(newPos.X, newPos.Y, velocity.X, velocity.Y, type, damage, knockBack, player.whoAmI);
+                newPos.X += velocity.X * 60 * 0.5f;
+                newPos.Y += velocity.Y * 60 * 0.5f;
+                int p = Projectile.NewProjectile(newPos.X, newPos.Y, velocity.X, velocity.Y, type, damage, knockBack, player.whoAmI);
+                Main.projectile[p].timeLeft = 60 * 4;
             }
             return false;
         }

@@ -208,7 +208,7 @@ namespace SummonHeart.ui
                 modlabel_level = new UIText("万灵炼体，不死不灭：生命上限+" + mp.bodyBloodGas / 200 + "(每200气血+1) 生命偷取+" + (mp.bodyBloodGas / 100000 + 1) + "%(初始1%，每100000气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("干凝万锻，魔体終成：免疫击退，防御+" + mp.bodyDef + " 减伤倍率+" + (mp.bodyBloodGas / 500 + 100) * 0.01 + "倍(初始1，每500气血+0.01)");
+                modlabel_level = new UIText("干凝万锻，魔体終成：免疫击退，防御+" + mp.bodyDef + " 减伤倍率+" + (mp.bodyBloodGas / 200 + 100) * 0.01 + "倍(初始1，每200气血+0.01)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
 
