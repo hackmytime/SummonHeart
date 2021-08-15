@@ -169,6 +169,15 @@ namespace SummonHeart.Items.Weapons.Melee
         public override void GetWeaponCrit(Player player, ref int crit)
         {
             crit = 0;
+            SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
+            if(mp.PlayerClass == 1)
+            {
+                crit = 50;
+            }
+            else if(mp.PlayerClass == 4)
+            {
+                crit = mp.angerResourceCurrent;
+            }
         }
 
         public override void GetWeaponDamage(Player player, ref int damage)

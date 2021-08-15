@@ -162,6 +162,9 @@ namespace SummonHeart.ui
                 modlabel_level = new UIText("魔神法眼" + praticeText + " 气血值：" + mp.eyeBloodGas);
                 modlabel_level.TextColor = Color.Orange;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
+                modlabel_level = new UIText("洞破妄虚：魔法暴击率+" + (mp.eyeBloodGas / 2222 + 10) + "%(初始10%，每2222气血+1)");
+                modlabel_level.TextColor = Color.SkyBlue;
+                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
                 modlabel_level = new UIText("洞破妄虚：魔法暴击伤害+" + (mp.eyeBloodGas / 500 + 100)+ "%(初始100%，每500气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
@@ -281,7 +284,7 @@ namespace SummonHeart.ui
                                         mp.boughtbuffList[currentBuffIndex] = true;
                                         if (currentBuffIndex == 3)
                                         {
-                                            Item.NewItem(mp.player.Center, ItemID.JimsWings);
+                                            mp.player.QuickSpawnItem(ItemID.JimsWings, 1);
                                         }
                                         mp.bodyDef += buff.def;
                                         needValidate = true;

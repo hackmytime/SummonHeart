@@ -287,7 +287,7 @@ namespace SummonHeart.ui
                                         mp.boughtbuffList[currentBuffIndex] = true;
                                         if (currentBuffIndex == 3)
                                         {
-                                            Item.NewItem(mp.player.Center, ItemID.JimsWings);
+                                            mp.player.QuickSpawnItem(ItemID.JimsWings, 1);
                                         }
                                         mp.bodyDef += buff.def;
                                         needValidate = true;

@@ -211,7 +211,7 @@ namespace SummonHeart.ui
                 modlabel_level = new UIText("万灵炼体，不死不灭：生命上限+" + (mp.bodyBloodGas / 200 + 300) + "(初始300，每200气血+1) 每秒回复自身" + (mp.bodyBloodGas / 20000 + 1) + "%生命(初始1%，每20000气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("干凝万锻，魔体終成：免疫击退，防御+" + mp.bodyDef * 2 + " 减伤倍率+" + (mp.bodyBloodGas / 500 + 200) * 0.01 + "倍(初始2，每500气血+0.01)");
+                modlabel_level = new UIText("干凝万锻，魔体終成：免疫击退，防御+" + mp.bodyDef * 2 + " 减伤倍率+" + (mp.bodyBloodGas / 500 + 400) * 0.01 + "倍(初始4，每500气血+0.01)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
 
@@ -290,7 +290,7 @@ namespace SummonHeart.ui
                                         mp.boughtbuffList[currentBuffIndex] = true;
                                         if (currentBuffIndex == 3)
                                         {
-                                            Item.NewItem(mp.player.Center, ItemID.JimsWings);
+                                            mp.player.QuickSpawnItem(ItemID.JimsWings, 1);
                                         }
                                         mp.bodyDef += buff.def;
                                         needValidate = true;

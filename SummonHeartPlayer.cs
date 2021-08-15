@@ -208,7 +208,7 @@ namespace SummonHeart
 			ModPlayerEffects.UpdateMax(player);
 			//减伤倍率
 			myDamageReduceMult = 1f;
-			enemyDamageReduceMult = SummonHeartWorld.WorldLevel;
+			enemyDamageReduceMult = SummonHeartWorld.WorldLevel * 2;
 			//魔神的庇佑
 			if (swordBloodMax > 100)
 				killAnyBoss = true;
@@ -401,6 +401,7 @@ namespace SummonHeart
 			//魔神之眼
 			if (boughtbuffList[0])
 			{
+				player.magicCrit += eyeBloodGas / 2222 + 10;
 				MyCritDmageMult += eyeBloodGas / 500 * 0.01f + 1;
 			}
 
@@ -612,7 +613,7 @@ namespace SummonHeart
 			//魔神之躯
 			if (boughtbuffList[2])
 			{
-				myDamageReduceMult += (bodyBloodGas / 500 + 200) * 0.01f;
+				myDamageReduceMult += (bodyBloodGas / 500 + 400) * 0.01f;
 				player.noKnockback = true;
 				player.statLifeMax2 += (bodyBloodGas / 200 + 300);
 				//计算被动
@@ -1208,6 +1209,18 @@ namespace SummonHeart
 				else
 				{
 					Main.NewText($"只有法师才能使用空间传送技能", Color.Red);
+				}
+			}
+			if (SummonHeartMod.BackDieKey.JustPressed)
+			{
+				if (player.HasItemInAcc(mod.ItemType("MysteriousCrystal")) != -1 && player.statLife > 0)
+				{
+					Vector2 vector = new Vector2(player.lastDeathPostion.X - 16f, player.lastDeathPostion.Y - 24f);
+					player.Teleport(vector, 0, 0);
+                }
+                else
+                {
+					Main.NewText($"你未装备神秘水晶", Color.Red);
 				}
 			}
 			/*if (SummonHeartMod.ExtraAccessaryKey.JustPressed)

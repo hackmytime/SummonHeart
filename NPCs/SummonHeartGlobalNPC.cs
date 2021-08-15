@@ -1,13 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using SummonHeart.Extensions;
+using SummonHeart.Items.Weapons.Melee;
+using SummonHeart.Projectiles.Melee;
 using System;
 using Terraria;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
-using static SummonHeart.SummonHeartMod;
 
 namespace SummonHeart.NPCs
 {
@@ -25,33 +24,38 @@ namespace SummonHeart.NPCs
 
 		public override void SetDefaults(NPC npc)
 		{
+			Mod fargowiltasSouls = ModLoader.GetMod("FargowiltasSouls");
+			if (fargowiltasSouls != null && npc.type != 0 && npc.type == fargowiltasSouls.NPCType("MutantBoss"))
+			{
+				npc.lifeMax = 7000000;
+			}
 			if(SummonHeartWorld.WorldLevel <= 1)
             {
-				npc.lifeMax *= 2;
+				npc.lifeMax *= 1;
 				npc.value *= 5;
 				npc.damage *= 4;
             }
 			else if(SummonHeartWorld.WorldLevel == 2)
 			{
-				npc.lifeMax *= 4;
+				npc.lifeMax = (int)(npc.lifeMax * 1.5f);
 				npc.value *= 10;
 				npc.damage *= 8;
 			}
 			else if (SummonHeartWorld.WorldLevel == 3)
 			{
-				npc.lifeMax *= 6;
+				npc.lifeMax *= 2;
 				npc.value *= 15;
 				npc.damage *= 12;
 			}
 			else if (SummonHeartWorld.WorldLevel == 4)
 			{
-				npc.lifeMax *= 8;
+				npc.lifeMax = (int)(npc.lifeMax * 2.5f);
 				npc.value *= 20;
 				npc.damage *= 16;
 			}
 			else if (SummonHeartWorld.WorldLevel == 5)
 			{
-				npc.lifeMax *= 10;
+				npc.lifeMax *= 3;
 				npc.value *= 30;
 				npc.damage *= 30;
 			}
@@ -297,6 +301,16 @@ namespace SummonHeart.NPCs
 			Mod Calamity = ModLoader.GetMod("CalamityMod");
 			Player player = Main.player[projectile.owner];
             SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
+			if (player.HeldItem.modItem is DemonSword && projectile.type == ModContent.ProjectileType<DragonLegacyBlue>())
+			{
+				int critChance = 50;
+				if(modPlayer.PlayerClass == 4)
+                {
+					critChance = modPlayer.angerResourceCurrent;
+                }
+				if(Main.rand.Next(101) <= critChance)
+					crit = true;
+			}
 			if (npc.HasBuff(mod.BuffType("EyeBuff")))
             {
 				crit = true;

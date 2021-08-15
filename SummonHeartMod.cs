@@ -38,6 +38,7 @@ namespace SummonHeart
 		internal static ModHotKey ShowUI;
 		internal static ModHotKey KillSkillKey;
 		internal static ModHotKey TransKey;
+		internal static ModHotKey BackDieKey;
 		//internal static ModHotKey ExtraAccessaryKey;
 
 		internal PanelMelee PanelMeleeUI;
@@ -140,6 +141,7 @@ namespace SummonHeart
 			ShowUI = RegisterHotKey("魔神炼体法", Keys.L.ToString());
 			KillSkillKey = RegisterHotKey("刺客刺杀技能(可开关)", Keys.V.ToString());
 			TransKey = RegisterHotKey("空间传送", Keys.Y.ToString());
+			BackDieKey = RegisterHotKey("神秘水晶返回死亡点", Keys.Z.ToString());
 			//ExtraAccessaryKey = RegisterHotKey("额外饰品栏带单", Keys.Q.ToString());
 			// this makes sure that the UI doesn't get opened on the server
 			// the server can't see UI, can it? it's just a command prompt
@@ -236,6 +238,7 @@ namespace SummonHeart
 			ShowUI = null;
 			KillSkillKey = null;
 			TransKey = null;
+			BackDieKey = null;
 			//ExtraAccessaryKey = null;
 		}
 
