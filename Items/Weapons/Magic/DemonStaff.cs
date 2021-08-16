@@ -51,7 +51,7 @@ namespace SummonHeart.Items.Weapons.Magic
             item.useStyle = ItemUseStyleID.HoldingOut;
             //item.shoot = ModContent.ProjectileType<MagicSword>();
             item.shoot = 116;
-            item.shootSpeed = 3f;
+            item.shootSpeed = 6f;
         }
 
         public override Vector2? HoldoutOrigin()
@@ -66,7 +66,7 @@ namespace SummonHeart.Items.Weapons.Magic
             //计算距离
             //Vector2 basePos = Vector2.Normalize(Main.MouseWorld - player.Center);
             //position = basePos * 100f + player.Center;
-            position = player.Center + new Vector2(0, -225);
+            position = player.Center + new Vector2(0, -0);
             //计算速度
             Vector2 baseV = Vector2.Normalize(Main.MouseWorld - position);
             baseV *= item.shootSpeed;
@@ -82,10 +82,10 @@ namespace SummonHeart.Items.Weapons.Magic
                 }
                 Vector2 velocity = baseV.RotatedBy(MathHelper.Pi / 180 * 5 * param);
                 Vector2 newPos = position;
-                newPos.X += velocity.X * 60 * 0.5f;
-                newPos.Y += velocity.Y * 60 * 0.5f;
+                newPos.X += velocity.X * 60 * 0.2f;
+                newPos.Y += velocity.Y * 60 * 0.2f;
                 int p = Projectile.NewProjectile(newPos.X, newPos.Y, velocity.X, velocity.Y, type, damage, knockBack, player.whoAmI);
-                Main.projectile[p].timeLeft = 60 * 4;
+                Main.projectile[p].timeLeft = 60 * 6;
             }
             return false;
         }
@@ -109,8 +109,8 @@ namespace SummonHeart.Items.Weapons.Magic
                 tooltipLine.overrideColor = Color.LimeGreen;
                 tooltips.Insert(num + 1, tooltipLine);
                 int range = (int)(modPlayer.magicSwordBlood / 16.7 + 200);
-                if(range > 800)
-                    range = 800;
+                if(range > 1000)
+                    range = 1000;
                 text = "追踪范围 " + range + "格";
                 tooltipLine = new TooltipLine(base.mod, "SwordBloodMax", text);
                 tooltipLine.overrideColor = Color.LightBlue;

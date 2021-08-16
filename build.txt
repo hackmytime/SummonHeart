@@ -1,6 +1,6 @@
 ﻿displayName = SoulEatingHeart（噬魂之心&魔神之路）
 author = lun
-version = 1.3.7.4
+version = 1.3.7.5
 hideCode = true
 hideResources  = true
 sortAfter = ThoriumMod, CalamityMod, QwertysRandomContent, Luiafk, MagicStorageExtra

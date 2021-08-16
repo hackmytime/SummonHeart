@@ -46,6 +46,8 @@ namespace SummonHeart.Extensions
 				power = npc.lifeMax + npc.damage * 30 * x + npc.defense * 30;
             }
 			power *= SummonHeartWorld.WorldLevel;
+			if (SummonHeartWorld.GoddessMode)
+				power *= 2;
 			return power;
 		}
 

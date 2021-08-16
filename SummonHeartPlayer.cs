@@ -192,7 +192,7 @@ namespace SummonHeart
 			MyCritDmageMult = 1f;
 			costMana = (handBloodGas / 33333) * (handBloodGas / 33333) * 10 + 5;
 
-			if (eatGodSoul)
+			if (SummonHeartWorld.GoddessMode)
 			{
 				MaxExtraAccessories = 14 + SummonHeartWorld.WorldLevel * 2;
 			}
@@ -917,7 +917,7 @@ namespace SummonHeart
 			}
 		}
 
-        public override void clientClone(ModPlayer clientClone)
+       /* public override void clientClone(ModPlayer clientClone)
 		{
 			SummonHeartPlayer clone = clientClone as SummonHeartPlayer;
 			clone.BBP = BBP;
@@ -968,10 +968,10 @@ namespace SummonHeart
 			packet.Write(practiceBody);
 			packet.Write(practiceFoot);
 			packet.Write(soulSplit);
-			/*for (int i = 0; i < boughtbuffList.Count; i++)
+			*//*for (int i = 0; i < boughtbuffList.Count; i++)
 			{
 				packet.Write(boughtbuffList[i]);
-			}*/
+			}*//*
 			packet.Send(toWho, fromWho);
 		}
 
@@ -993,13 +993,13 @@ namespace SummonHeart
 			{
 				send = true;
 			}
-			/*for (int i = 0; i < boughtbuffList.Count; i++)
+			*//*for (int i = 0; i < boughtbuffList.Count; i++)
 			{ 
 				if (clone.boughtbuffList[i] != boughtbuffList[i])
 				{
 					send = true;
 				}
-			}*/
+			}*//*
 
 			if (send)
 			{
@@ -1026,13 +1026,13 @@ namespace SummonHeart
 				packet.Write(practiceBody);
 				packet.Write(practiceFoot);
 				packet.Write(soulSplit);
-				/*for (int i = 0; i < boughtbuffList.Count; i++)
+				*//*for (int i = 0; i < boughtbuffList.Count; i++)
 				{
 					packet.Write(boughtbuffList[i]);
-				}*/
+				}*//*
 				packet.Send();
 			}
-		}
+		}*/
 
 		public override TagCompound Save()
 		{
@@ -1111,12 +1111,10 @@ namespace SummonHeart
 				if (autoAttack)
                 {
 					Main.NewText($"自动使用武器: 开", Color.SkyBlue);
-					inMagicCharging = true;
                 }
                 else
                 {
 					Main.NewText($"自动使用武器: 关", Color.SkyBlue);
-					inMagicCharging = false;
                 }
 			}
 
@@ -1327,21 +1325,24 @@ namespace SummonHeart
 				if (damage < 1)
 					damage = 1;
 			}*/
-			if (PlayerClass == 5 && boughtbuffList[2])
+			if (PlayerClass == 5 || PlayerClass == 6)
 			{
-				int manaDamage = (int)(damage * (0.75f + bodyBloodGas / 10000 * 0.01f));
-				int leftCount = 0;
-				int costMana = manaDamage;
-				if(player.statMana < manaDamage)
+				if (boughtbuffList[2])
                 {
-					leftCount = manaDamage - player.statMana;
-					costMana = player.statMana;
+					int manaDamage = (int)(damage * 0.95f);
+					int leftCount = 0;
+					int costMana = manaDamage;
+					if(player.statMana < manaDamage)
+					{
+						leftCount = manaDamage - player.statMana;
+						costMana = player.statMana;
+					}
+					player.HealMana(costMana * -1);
+					damage -= manaDamage;
+					damage += +leftCount;
+					if (damage < 1)
+						damage = 1;
                 }
-				player.HealMana(costMana * -1);
-				damage -= manaDamage;
-				damage += +leftCount;
-				if (damage < 1)
-					damage = 1;
 			}
 			damage = (int)Math.Ceiling(damage / myDamageReduceMult);
 		}
@@ -1366,21 +1367,24 @@ namespace SummonHeart
 				if (damage < 1)
 					damage = 1;
 			}*/
-			if (PlayerClass == 5 && boughtbuffList[2])
+			if (PlayerClass == 5 || PlayerClass == 6)
 			{
-				int manaDamage = (int)(damage * (0.75f + bodyBloodGas / 10000 * 0.01f));
-				int leftCount = 0;
-				int costMana = manaDamage;
-				if (player.statMana < manaDamage)
-				{
-					leftCount = manaDamage - player.statMana;
-					costMana = player.statMana;
-				}
-				player.HealMana(costMana * -1);
-				damage -= manaDamage;
-				damage += +leftCount;
-				if (damage < 1)
-					damage = 1;
+                if (boughtbuffList[2])
+                {
+					int manaDamage = (int)(damage * 0.95f);
+					int leftCount = 0;
+					int costMana = manaDamage;
+					if (player.statMana < manaDamage)
+					{
+						leftCount = manaDamage - player.statMana;
+						costMana = player.statMana;
+					}
+					player.HealMana(costMana * -1);
+					damage -= manaDamage;
+					damage += +leftCount;
+					if (damage < 1)
+						damage = 1;
+                }
 			}
 			damage = (int)Math.Ceiling(damage / myDamageReduceMult);
 			if (PlayerClass == 3 && boughtbuffList[2])

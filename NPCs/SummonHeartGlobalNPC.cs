@@ -213,8 +213,17 @@ namespace SummonHeart.NPCs
 					heal = (int)Math.Ceiling(npc.lifeMax * SummonHeartWorld.WorldLevel * 0.01);
 				}
 				npc.lifeRegen += heal * 2;
-            }
-			if (npc.HasBuff(mod.BuffType("SoulSplit")))
+				if (npc.HasBuff(mod.BuffType("SoulSplit")))
+				{
+					Player player = Main.player[Main.myPlayer];
+					SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
+					int lifeDmage = 2 * modPlayer.SummonCrit / 50 * soulSplitCount;
+					if (lifeDmage < 2)
+						lifeDmage = 2;
+					npc.lifeRegen -= lifeDmage;
+				}
+			}
+			else if (npc.HasBuff(mod.BuffType("SoulSplit")))
             {
 				Player player = Main.player[Main.myPlayer];
 				SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
@@ -224,10 +233,7 @@ namespace SummonHeart.NPCs
 					lifeDmage = 2;
 				npc.lifeRegen -= lifeDmage;
 				damage = soulSplitCount;
-				/*if (npc.life == 1 && Main.netMode == 1 || Main.netMode == 2)
-				{
-					NetMessage.SendData(28, -1, -1, null, npc.whoAmI, 9999f);
-				}*/
+				
 				if (Main.netMode == 1)
 				{
 					SyncNpcVariables(npc);

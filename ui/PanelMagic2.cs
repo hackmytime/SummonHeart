@@ -200,7 +200,7 @@ namespace SummonHeart.ui
                 modlabel_level = new UIText("法力之源：每秒回复自身" + (mp.bodyBloodGas / 100000 + 1) + "%法力值(初始1%，每100000气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("不灭法躯：免疫击退，受到伤害的+" + (mp.bodyBloodGas / 10000 + 75) + "%变为消耗法力值(初始75%，每10000+1)");
+                modlabel_level = new UIText("不灭法躯：免疫击退，受到伤害的95%变为消耗法力值");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
 

@@ -41,8 +41,8 @@ namespace SummonHeart.Projectiles
 				Player player = Main.player[Main.myPlayer];
 				SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
 				int range = (int)(modPlayer.magicSwordBlood / 16.7 + 200);
-				if (range > 800)
-					range = 800;
+				if (range > 1000)
+					range = 1000;
 				float B3 = projectile.Center.X;
 				float C3 = projectile.Center.Y;
 				float D2 = range;

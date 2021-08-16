@@ -368,7 +368,7 @@ namespace SummonHeart
 			byte msgType = reader.ReadByte();
 			switch (msgType)
 			{
-				case 0:
+				/*case 0:
                     {
 						// 同步噬魂之心
 						byte playernumber = reader.ReadByte();
@@ -394,10 +394,10 @@ namespace SummonHeart
 						summonHeartPlayer.practiceFoot = reader.ReadBoolean();
 						summonHeartPlayer.soulSplit = reader.ReadBoolean();
 
-						/*for (int i = 0; i < getBuffLength(); i++)
+						*//*for (int i = 0; i < getBuffLength(); i++)
 						{
 							summonHeartPlayer.boughtbuffList[i] = reader.ReadBoolean();
-						}*/
+						}*//*
 						if (Main.netMode == NetmodeID.Server)
 						{
 							var packet = GetPacket();
@@ -423,15 +423,15 @@ namespace SummonHeart
 							packet.Write(summonHeartPlayer.practiceBody);
 							packet.Write(summonHeartPlayer.practiceFoot);
 							packet.Write(summonHeartPlayer.soulSplit);
-							/*for (int i = 0; i < getBuffLength(); i++)
+							*//*for (int i = 0; i < getBuffLength(); i++)
 							{
 								packet.Write(summonHeartPlayer.boughtbuffList[i]);
-							}*/
+							}*//*
 							packet.Send(-1, playernumber);
 						}
 					}
 					break;
-
+*/
 				case 1:
                     {
 						byte npc = reader.ReadByte();
