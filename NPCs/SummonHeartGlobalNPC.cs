@@ -151,7 +151,7 @@ namespace SummonHeart.NPCs
 				originalDamage *= 2;
 
 			if (modPlayer.SummonHeart)
-				num = originalDamage * modPlayer.SummonCrit / 5000 + modPlayer.SummonCrit / 5 + SummonHeartWorld.WorldLevel * 5;
+				num = originalDamage * modPlayer.SummonCrit / 5000 + modPlayer.SummonCrit / 5;
 
 			if (modPlayer.PlayerClass == 3 && modPlayer.boughtbuffList[1])
 				num += 10 + modPlayer.handBloodGas / 2000;
@@ -344,7 +344,7 @@ namespace SummonHeart.NPCs
 			//投手附加伤害
 			if (modPlayer.PlayerClass == 2 && player.HeldItem.thrown == true && projectile.thrown)
 			{
-				int killCost = modPlayer.killResourceMax2 / 200;
+				int killCost = modPlayer.killResourceMax2 / 1000;
 				if (modPlayer.killResourceCurrent >= killCost)
 				{
 					modPlayer.killResourceCurrent -= killCost;

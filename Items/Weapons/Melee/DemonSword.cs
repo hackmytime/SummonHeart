@@ -39,7 +39,7 @@ namespace SummonHeart.Items.Weapons.Melee
         {
             item.useStyle = 3;
             item.shootSpeed = 1f;
-            item.shoot = ModContent.ProjectileType<DragonLegacyBlue>();
+            item.shoot = ModContent.ProjectileType<DragonLegacyRed>();
             item.noUseGraphic = true;
             item.melee = true;
             item.noMelee = true;

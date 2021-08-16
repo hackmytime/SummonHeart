@@ -14,7 +14,6 @@ namespace SummonHeart.Items.Accessories
             Tooltip.SetDefault("Resurrection time reduced to 5 seconds");
             DisplayName.AddTranslation(GameCulture.Chinese, "神秘水晶");
             Tooltip.AddTranslation(GameCulture.Chinese, "复活时间减为2秒(Boss存活时无效)" +
-                "\n探测周围的道路" +
                 "\n使用返回死亡点，可设置快捷键使用，默认Z" +
                 "\n给挑战者的礼物");
         }
@@ -41,7 +40,7 @@ namespace SummonHeart.Items.Accessories
             return base.ConsumeItem(player);
         }
 
-        public override void UpdateAccessory(Player player, bool hideVisual)
+        /*public override void UpdateAccessory(Player player, bool hideVisual)
         {
             if (Main.time % 10.0 == 0.0)
             {
@@ -62,6 +61,6 @@ namespace SummonHeart.Items.Accessories
                 }
                 Main.refreshMap = true;
             }
-        }
+        }*/
     }
 }

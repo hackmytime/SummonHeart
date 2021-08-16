@@ -98,7 +98,7 @@ namespace SummonHeart.ui.Bar
             else if
             (mp.magicChargeActive)
             {
-                text.SetText($"充能魔法：{mp.magicChargeCount}个 充能：{mp.magicCharge} / {mp.magicChargeMax}");
+                text.SetText($"充能魔法：{mp.magicChargeCount}个 充能：{(int)mp.magicCharge} / {mp.magicChargeMax}");
             }
             else
             {

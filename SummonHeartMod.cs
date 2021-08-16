@@ -139,7 +139,7 @@ namespace SummonHeart
         {
 			AutoAttackKey = RegisterHotKey("自动使用武器（再次点击停止使用）", "G");
 			ShowUI = RegisterHotKey("魔神炼体法", Keys.L.ToString());
-			KillSkillKey = RegisterHotKey("刺客刺杀技能(可开关)", Keys.V.ToString());
+			KillSkillKey = RegisterHotKey("刺客刺杀技能/控法者充能(可开关)", Keys.V.ToString());
 			TransKey = RegisterHotKey("空间传送", Keys.Y.ToString());
 			BackDieKey = RegisterHotKey("神秘水晶返回死亡点", Keys.Z.ToString());
 			//ExtraAccessaryKey = RegisterHotKey("额外饰品栏带单", Keys.Q.ToString());

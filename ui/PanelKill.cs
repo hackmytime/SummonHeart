@@ -189,7 +189,7 @@ namespace SummonHeart.ui
                 modlabel_level = new UIText("刺客之手，投掷精通：投掷武器基础攻击+" + (mp.handBloodGas / 500 + 100) + "%(初始100%，每500气血+1%) 投掷速度+" + (mp.handBloodGas / 4000 + 30) + "%(初始30%，每4000气血+1%)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("刺客之手，杀意灌注：投掷武器攻击消耗0.5%杀意上限的杀意值造成额外"+ mp.killResourceMax2/100 * mp.killResourceMulti+"点真实伤害");
+                modlabel_level = new UIText("刺客之手，杀意灌注：投掷武器攻击消耗0.1%杀意上限的杀意值造成额外" + mp.killResourceMax2/100 + "点真实伤害");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
                

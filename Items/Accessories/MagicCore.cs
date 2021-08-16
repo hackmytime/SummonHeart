@@ -16,7 +16,7 @@ namespace SummonHeart.Items.Accessories
             Tooltip.AddTranslation(GameCulture.Chinese, "控法者职业传承饰品" +
                 "\n魔法上限翻倍" +
                 "\n魔法回复速度翻倍" +
-                "\n法力上限2000时可以自动充能" +
+                "\n可以使用快捷键自动充能，默认V请设置控件" +
                 "\n仅对控法者职业有效");
         }
 

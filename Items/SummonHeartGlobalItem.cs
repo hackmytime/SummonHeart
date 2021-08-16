@@ -45,7 +45,7 @@ namespace SummonHeart.Items
                     if(mp.magicChargeCount == 0)
                         mp.magicChargeActive = false;
                 }
-                float launchSpeed = -10f;
+                /*float launchSpeed = -10f;
                 Vector2 backstepVelocity = Vector2.Normalize(Main.MouseWorld - player.Center) * launchSpeed;
                 player.velocity = backstepVelocity;
                 for (int d = 0; d < 22; d++)
@@ -59,7 +59,7 @@ namespace SummonHeart.Items
                 for (int d3 = 0; d3 < 88; d3++)
                 {
                     Dust.NewDust(player.Center, 0, 0, 135, 0f + Main.rand.Next(-12, 12), 0f + Main.rand.Next(-12, 12), 150, default, 0.8f);
-                }
+                }*/
             }
             //刺客
             if (mp.PlayerClass == 2 && item.thrown && player.altFunctionUse == 2)
@@ -150,16 +150,8 @@ namespace SummonHeart.Items
                 }
                 else if (mp.autoAttack)
                 {
-                    if(mp.magicBook && player.statManaMax2 >= 1000)
+                    if(mp.magicBook && player.statManaMax2 >= 200)
                         mp.inMagicCharging = true;
-                }
-                else
-                {
-                    mp.magicCharge = 0;
-                    if(mp.magicChargeCount == 0)
-                    {
-                        mp.magicChargeActive = false;
-                    }
                 }
 
                 if (item.UseSound != null)
@@ -196,20 +188,20 @@ namespace SummonHeart.Items
                         }
                         else
                         {
-                            player.GetModPlayer<SummonHeartPlayer>().magicCharge += 1f;
+                            //计算增加的量
+                            float addCharge = 1f;
+                            if (mp.boughtbuffList[1])
+                            {
+                                addCharge += (mp.handBloodGas / 2500 + 20) * 0.01f;
+                            }
+                            mp.magicCharge += addCharge;
                             if(Main.time % 10 == 0)
                                 player.statMana -= magicCostCount;
                             if (mp.magicCharge >= mp.magicChargeMax)
                             {
                                 Main.PlaySound(SoundID.Item29, player.position);
                                 mp.magicCharge = 0;
-                                //计算增加的量
-                                float addCharge = 1f;
-                                if (mp.boughtbuffList[1])
-                                {
-                                    addCharge += (mp.handBloodGas / 2500 + 20) * 0.01f;
-                                }
-                                mp.magicChargeCount += addCharge;
+                                mp.magicChargeCount++;
                             }
                         }
                         if (mp.magicCharge >= 99f || mp.magicChargeCount == mp.magicChargeCountMax)
@@ -252,16 +244,18 @@ namespace SummonHeart.Items
                     }
                     else
                     {
+                        //mp.inMagicCharging = false;
                         mp.magicCharge = 0;
-                        if (player.statMana == 0f)
+                        mp.inMagicCharging = false;
+                        if (player.statMana <= 0f)
                         {
-                           /* if(SummonHeartMod.itemSoundMap.ContainsKey(item))
-                                Main.PlaySound(SummonHeartMod.itemSoundMap[item], player.position);
-                            player.GetModPlayer<SummonHeartPlayer>().magicChargeActive = false;
-                            player.GetModPlayer<SummonHeartPlayer>().magicCharge = 0f;
-                            int v = Projectile.NewProjectile(player.MountedCenter.X, player.MountedCenter.Y, arrowVelocity.X, arrowVelocity.Y, item.shoot, 86 + (int)Math.Round(player.GetModPlayer<SummonHeartPlayer>().magicCharge / 10f), 4 + (int)Math.Round(player.GetModPlayer<SummonHeartPlayer>().magicCharge / 10f), player.whoAmI, 0f, 0f);
-                            Main.projectile[v].scale *= 2;
-                            Main.projectile[v].velocity *= 1.5f;*/
+                            /* if(SummonHeartMod.itemSoundMap.ContainsKey(item))
+                                 Main.PlaySound(SummonHeartMod.itemSoundMap[item], player.position);
+                             player.GetModPlayer<SummonHeartPlayer>().magicChargeActive = false;
+                             player.GetModPlayer<SummonHeartPlayer>().magicCharge = 0f;
+                             int v = Projectile.NewProjectile(player.MountedCenter.X, player.MountedCenter.Y, arrowVelocity.X, arrowVelocity.Y, item.shoot, 86 + (int)Math.Round(player.GetModPlayer<SummonHeartPlayer>().magicCharge / 10f), 4 + (int)Math.Round(player.GetModPlayer<SummonHeartPlayer>().magicCharge / 10f), player.whoAmI, 0f, 0f);
+                             Main.projectile[v].scale *= 2;
+                             Main.projectile[v].velocity *= 1.5f;*/
                         }
                     }
                 }

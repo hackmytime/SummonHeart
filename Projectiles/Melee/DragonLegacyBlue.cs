@@ -36,7 +36,7 @@ namespace SummonHeart.Projectiles.Melee
             projectile.width = 72;
             projectile.extraUpdates = 1;
             projectile.usesLocalNPCImmunity = true;
-            projectile.localNPCHitCooldown = 30;
+            projectile.localNPCHitCooldown = 6;
         }
 
         // Token: 0x060005B3 RID: 1459 RVA: 0x000361A4 File Offset: 0x000343A4

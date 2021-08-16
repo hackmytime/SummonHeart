@@ -202,7 +202,7 @@ namespace SummonHeart
 				if (SummonHeartWorld.WorldLevel == 5)
 					MaxExtraAccessories += 3;
 			}
-			inMagicCharging = false;
+			//inMagicCharging = false;
 			magicBook = false;
 			//刷新上限
 			ModPlayerEffects.UpdateMax(player);
@@ -1166,7 +1166,8 @@ namespace SummonHeart
 				if(PlayerClass == 2)
                 {
 					showRadius = !showRadius;
-                    if (showRadius)
+					inMagicCharging = true;
+					if (showRadius)
                     {
 						Main.NewText($"已开启刺杀技能", Color.White);
 					}
@@ -1175,9 +1176,21 @@ namespace SummonHeart
 						Main.NewText($"已关闭刺杀技能", Color.White);
 					}
                 }
-                else
+				else if (PlayerClass == 6)
+				{
+					inMagicCharging = !inMagicCharging;
+					if (inMagicCharging)
+					{
+						Main.NewText($"已开启自动充能", Color.White);
+					}
+					else
+					{
+						Main.NewText($"已关闭自动技能", Color.White);
+					}
+				}
+				else
                 {
-					Main.NewText($"只有刺客才能使用刺杀技能", Color.Red);
+					Main.NewText($"只有刺客和控法才能使用刺杀技能或者充能", Color.Red);
 				}
 			}
 			if (SummonHeartMod.TransKey.JustPressed)
