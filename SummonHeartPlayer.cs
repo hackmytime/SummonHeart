@@ -696,7 +696,7 @@ namespace SummonHeart
 			if (boughtbuffList[1])
 			{
 				//player.meleeDamage += handBloodGas / 200 * 0.01f;
-				AttackSpeed += (handBloodGas / 1111 + 20) * 0.01f;
+				AttackSpeed += (handBloodGas / 2222 + 20) * 0.01f;
 			}
 
 			//魔神之躯
