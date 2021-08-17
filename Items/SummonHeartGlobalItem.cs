@@ -265,6 +265,7 @@ namespace SummonHeart.Items
         public override bool Shoot(Item item, Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
         {
             SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
+            
             if (mp.PlayerClass == 6 && item.magic && !item.channel)
             {
                 return false;

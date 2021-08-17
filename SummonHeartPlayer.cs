@@ -22,7 +22,6 @@ namespace SummonHeart
     public class SummonHeartPlayer : ModPlayer
 	{	
 		public bool SummonHeart = false;
-		public bool eatGodSoul = false;
 		public bool killAnyBoss = false;
 		public int PlayerClass = 0;
 		public int deathCount = 0;
@@ -263,10 +262,13 @@ namespace SummonHeart
 
 		public override void PostUpdateMiscEffects()
         {
-			if(player.endurance > 0.8f)
+			if(player.endurance > 0.9f)
             {
-				player.endurance = 0.8f;
+				player.endurance = 0.9f;
 			}
+			//计算减伤倍率
+			myDamageReduceMult += player.endurance * 10;
+			player.endurance = 0f;
 			if (PlayerClass == 1)
             {
 				//战士·泰坦
@@ -301,6 +303,7 @@ namespace SummonHeart
 			{
 				player.wingTime = 200 * 60;
 			}
+			
 		}
 
         public override void GetHealMana(Item item, bool quickHeal, ref int healValue)
@@ -593,10 +596,10 @@ namespace SummonHeart
 			player.jumpSpeedBoost -= 0.33f;
 
 			player.statDefense += (int)bodyDef * 2;
-			/*int addDef = deathCount;
-			if (addDef > bodyDef)
-				addDef = (int)bodyDef;*/
-			player.statDefense += deathCount;
+			int addDef = deathCount;
+			if (addDef > SummonCrit * 4)
+				addDef = SummonCrit * 4;
+			player.statDefense += addDef;
 			//魔神之眼
 			if (boughtbuffList[0])
             {
@@ -607,13 +610,13 @@ namespace SummonHeart
 			//魔神之手
 			if (boughtbuffList[1])
 			{
-				AttackSpeed += (handBloodGas / 1111 + 20) * 0.01f;
+				AttackSpeed += (handBloodGas / 2222 + 20) * 0.01f;
 			}
 
 			//魔神之躯
 			if (boughtbuffList[2])
 			{
-				myDamageReduceMult += (bodyBloodGas / 200 + 900) * 0.01f;
+				myDamageReduceMult += (bodyBloodGas / 200 + 400) * 0.01f;
 				player.noKnockback = true;
 				player.statLifeMax2 += (bodyBloodGas / 200 + 300);
 				//计算被动
@@ -633,7 +636,7 @@ namespace SummonHeart
             else
             {
 				//计算被动
-				addLife = deathCount;
+				addLife = addDef;
 				if (addLife > player.statLifeMax2)
 					addLife = player.statLifeMax2;
 				player.statLifeMax2 += addLife;
@@ -1037,7 +1040,6 @@ namespace SummonHeart
 		public override TagCompound Save()
 		{
 			var tagComp = new TagCompound();
-			tagComp.Add("eatGodSoul", eatGodSoul);
 			tagComp.Add("killAnyBoss", killAnyBoss);
 			tagComp.Add("BBP", BBP);
 			tagComp.Add("SummonCrit", SummonCrit);
@@ -1069,7 +1071,6 @@ namespace SummonHeart
 		
 		public override void Load(TagCompound tag)
 		{
-			eatGodSoul = tag.GetBool("eatGodSoul");
 			killAnyBoss = tag.GetBool("killAnyBoss");
 			BBP = tag.GetInt("BBP");
 			SummonCrit = tag.GetInt("SummonCrit");

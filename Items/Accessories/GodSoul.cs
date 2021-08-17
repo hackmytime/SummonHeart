@@ -39,7 +39,6 @@ namespace SummonHeart.Items.Accessories
         {
             SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
            
-            mp.eatGodSoul = true;
             int extraAccessories = 14 + SummonHeartWorld.WorldLevel * 2;
             string text = player.name + "吞噬了魔神·神格？获得神格之力，额外饰品栏增加至" + extraAccessories;
             if (Main.netMode == NetmodeID.SinglePlayer)

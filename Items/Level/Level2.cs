@@ -13,7 +13,7 @@ namespace SummonHeart.Items.Level
             Tooltip.SetDefault("Change the World Level to Lv2");
             DisplayName.AddTranslation(GameCulture.Chinese, "命运轮盘·魔神之路");
             Tooltip.AddTranslation(GameCulture.Chinese,
-                "\n所有敌人1.5倍血量" +
+                "\n所有敌人3倍血量" +
                 "\n所有敌人8倍攻击" +
                 "\n所有敌人减伤倍率：4倍" +
                 "\n所有敌人金钱掉落倍率：10倍" +

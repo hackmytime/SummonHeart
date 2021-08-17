@@ -23,9 +23,9 @@ namespace SummonHeart.Items.Weapons.Magic
             Tooltip.AddTranslation(GameCulture.Chinese, "" +
                 "炼体八境·武道巅峰·远古魔神临死之前碎裂不朽右臂所铸造" +
                 "\n魔神之子的护道传承武器，唯魔神之子可用精血召唤使用" +
-                "\n众生之怨：不受任何伤害攻速加成，无法附魔，可以多重施法" +
+                "\n众生之怨：不受任何伤害攻速加成，无法附魔，可以享受2倍多重施法加成" +
                 "\n弑神之力：击杀任意生物增加攻击力，然受觉醒上限限制。" +
-                "\n破灭法则：暴击几率翻倍，并且暴击伤害翻倍" +
+                "\n破灭法则：暴击几率翻倍" +
                 "\n魔源觉醒：击杀强者摄其血肉灵魂增强魔力之源，可突破觉醒上限。");
         }
 
@@ -73,6 +73,7 @@ namespace SummonHeart.Items.Weapons.Magic
             int maxPro = 1;
             if (mp.PlayerClass == 5 && mp.boughtbuffList[1])
                 maxPro += mp.handBloodGas / 33333 + 1;
+            maxPro *= 2;
             for (int i = 1; i <= maxPro; i++)
             {
                 int param = i / 2;
@@ -86,6 +87,10 @@ namespace SummonHeart.Items.Weapons.Magic
                 newPos.Y += velocity.Y * 60 * 0.2f;
                 int p = Projectile.NewProjectile(newPos.X, newPos.Y, velocity.X, velocity.Y, type, damage, knockBack, player.whoAmI);
                 Main.projectile[p].timeLeft = 60 * 6;
+                Main.projectile[p].melee = false;
+                Main.projectile[p].magic = true;
+                Main.projectile[p].tileCollide = false;
+                Main.projectile[p].ignoreWater = true;
             }
             return false;
         }
@@ -108,7 +113,7 @@ namespace SummonHeart.Items.Weapons.Magic
                 TooltipLine tooltipLine = new TooltipLine(base.mod, "MagicSwordBlood", text);
                 tooltipLine.overrideColor = Color.LimeGreen;
                 tooltips.Insert(num + 1, tooltipLine);
-                int range = (int)(modPlayer.magicSwordBlood / 16.7 + 200);
+                int range = (int)(modPlayer.magicSwordBlood / 16.7 + 500);
                 if(range > 1000)
                     range = 1000;
                 text = "追踪范围 " + range + "格";
@@ -150,14 +155,6 @@ namespace SummonHeart.Items.Weapons.Magic
         public override bool? PrefixChance(int pre, UnifiedRandom rand)
         {
             return new bool?(false);
-        }
-
-        public override void OnHitNPC(Player player, NPC target, int damage, float knockback, bool crit)
-        {
-            if (crit)
-            {
-                damage *= 2;
-            }
         }
 
         public override void AddRecipes()

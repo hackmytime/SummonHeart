@@ -36,11 +36,12 @@ namespace SummonHeart.Projectiles
 
         public override void AI(Projectile projectile)
         {
+			Player player = Main.player[Main.myPlayer];
+			SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
+			
 			if (projectile.type == 116)
 			{
-				Player player = Main.player[Main.myPlayer];
-				SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
-				int range = (int)(modPlayer.magicSwordBlood / 16.7 + 200);
+				int range = (int)(modPlayer.magicSwordBlood / 16.7 + 500);
 				if (range > 1000)
 					range = 1000;
 				float B3 = projectile.Center.X;

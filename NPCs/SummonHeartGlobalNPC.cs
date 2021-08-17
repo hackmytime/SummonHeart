@@ -31,31 +31,31 @@ namespace SummonHeart.NPCs
 			}
 			if(SummonHeartWorld.WorldLevel <= 1)
             {
-				npc.lifeMax *= 1;
+				npc.lifeMax *= 2;
 				npc.value *= 5;
 				npc.damage *= 4;
             }
 			else if(SummonHeartWorld.WorldLevel == 2)
 			{
-				npc.lifeMax = (int)(npc.lifeMax * 1.5f);
+				npc.lifeMax = (int)(npc.lifeMax * 3f);
 				npc.value *= 10;
 				npc.damage *= 8;
 			}
 			else if (SummonHeartWorld.WorldLevel == 3)
 			{
-				npc.lifeMax *= 2;
+				npc.lifeMax *= 4;
 				npc.value *= 15;
 				npc.damage *= 12;
 			}
 			else if (SummonHeartWorld.WorldLevel == 4)
 			{
-				npc.lifeMax = (int)(npc.lifeMax * 2.5f);
+				npc.lifeMax = (int)(npc.lifeMax * 5f);
 				npc.value *= 20;
 				npc.damage *= 16;
 			}
 			else if (SummonHeartWorld.WorldLevel == 5)
 			{
-				npc.lifeMax *= 3;
+				npc.lifeMax *= 6;
 				npc.value *= 30;
 				npc.damage *= 30;
 			}
@@ -314,13 +314,16 @@ namespace SummonHeart.NPCs
             SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
 			if (player.HeldItem.modItem is DemonSword && projectile.type == ModContent.ProjectileType<DragonLegacyBlue>())
 			{
-				int critChance = 50;
-				if(modPlayer.PlayerClass == 4)
-                {
-					critChance = modPlayer.angerResourceCurrent;
-                }
-				if(Main.rand.Next(101) <= critChance)
+				if (modPlayer.PlayerClass == 1)
+				{
 					crit = true;
+				}
+				if (modPlayer.PlayerClass == 4)
+                {
+					int critChance = modPlayer.angerResourceCurrent;
+					if(Main.rand.Next(101) <= critChance)
+						crit = true;
+                }
 			}
 			if (npc.HasBuff(mod.BuffType("EyeBuff")))
             {

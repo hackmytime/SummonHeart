@@ -280,7 +280,7 @@ namespace SummonHeart.ui
                                         mp.boughtbuffList[currentBuffIndex] = true;
                                         if(currentBuffIndex == 2)
                                         {
-                                            mp.player.QuickSpawnItem(ModContent.ItemType<SoulCrystal>(), 1);
+                                            //mp.player.QuickSpawnItem(ModContent.ItemType<SoulCrystal>(), 1);
                                         }
                                         if (currentBuffIndex == 3)
                                         {

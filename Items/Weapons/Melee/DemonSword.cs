@@ -172,7 +172,7 @@ namespace SummonHeart.Items.Weapons.Melee
             SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
             if(mp.PlayerClass == 1)
             {
-                crit = 50;
+                crit = 100;
             }
             else if(mp.PlayerClass == 4)
             {

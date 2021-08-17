@@ -131,7 +131,7 @@ namespace SummonHeart.ui
                 int addDef = mp.deathCount / 5;
                 if (addDef > mp.bodyDef)
                     addDef = (int)mp.bodyDef;
-                modlabel_level = new UIText("被动：战者之心【每次复活都能变得更加强大】死亡次数：" + mp.deathCount + " 生命上限+" + mp.addLife + " 防御力+" + addDef);
+                modlabel_level = new UIText("被动：战者之心【每次复活都能变得更加强大,最大值为魂心等级x4】死亡次数：" + mp.deathCount + " 生命上限+" + mp.addLife + " 防御力+" + addDef);
                 modlabel_level.TextColor = Color.Red;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
                 string worldLevel = "Lv1魔神之子";
@@ -191,7 +191,7 @@ namespace SummonHeart.ui
                 modlabel_level.TextColor = Color.Orange;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
                 //手 攻击速度+200% 2/1，000 攻击范围+200% 2%/1，000 伤害+1000% 1%/100
-                modlabel_level = new UIText("掌凝万灵肇天撼地：近战攻速+" + (mp.handBloodGas / 1111 + 20) + "%(初始20%，每1111气血+1) 攻击范围+" + (mp.handBloodGas / 1333 + 50) + "%(初始50%，每1333气血+1)");
+                modlabel_level = new UIText("掌凝万灵肇天撼地：近战攻速+" + (mp.handBloodGas / 2222 + 20) + "%(初始20%，每2222气血+1) 攻击范围+" + (mp.handBloodGas / 1333 + 50) + "%(初始50%，每1333气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
                 modlabel_level = new UIText("指天天裂划地地崩：近战武器基础攻击+" + (mp.handBloodGas / 500 + 100) + "%(初始100%，每500气血+1) 近战额外弹幕+" + (mp.handBloodGas / 50000 + 1) + "(初始1，每50000+1,练满额外+1)");
@@ -211,7 +211,7 @@ namespace SummonHeart.ui
                 modlabel_level = new UIText("万灵炼体，不死不灭：生命上限+" + (mp.bodyBloodGas / 200 + 300) + "(初始300，每200气血+1) 每秒回复自身" + (mp.bodyBloodGas / 20000 + 1) + "%生命(初始1%，每20000气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("干凝万锻，魔体終成：免疫击退，防御+" + mp.bodyDef * 2 + " 减伤倍率+" + (mp.bodyBloodGas / 200 + 900) * 0.01 + "倍(初始9，每200气血+0.01)");
+                modlabel_level = new UIText("干凝万锻，魔体終成：免疫击退，防御+" + mp.bodyDef * 2 + " 减伤倍率+" + (mp.bodyBloodGas / 200 + 400) * 0.01 + "倍(初始4，每200气血+0.01)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
 

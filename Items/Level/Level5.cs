@@ -14,7 +14,7 @@ namespace SummonHeart.Items.Level
             DisplayName.AddTranslation(GameCulture.Chinese, "命运轮盘·？？？？");
             Tooltip.AddTranslation(GameCulture.Chinese,
                 "Lv5？？？？(？？？级难度)" +
-                "\n所有敌人3倍血量" +
+                "\n所有敌人6倍血量" +
                 "\n所有敌人30倍攻击" +
                 "\n所有敌人减伤倍率：10倍" +
                 "\n所有敌人金钱掉落倍率：30倍" +
