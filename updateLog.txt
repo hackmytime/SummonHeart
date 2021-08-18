@@ -1,0 +1,505 @@
+噬魂之心、魔神之路模组
+噬魂之心是一件可成长饰品，通过吞噬击败敌人的灵魂进行升级，逐步获取远古魔神之力，最大等级500级。
+魔神之路：新增魔神炼体功能，可以在泰拉世界修炼功法。
+共分为：战、法、技、灵、杀5条炼体之道。
+分别对应：战士、法师、射手、召唤、刺客5个职业。
+目前开发完成了战、法、杀和灵四条道，模组支持联机。
+模组浏览器地址：https://mirror.sgkoi.dev/Mods/Details/SummonHeart
+增加世界难度选择，可以自行调节难度，获得最佳体验。
+开局赠送豪华大礼包，亲民。
+最重要的，添加了自动攻击功能，没错，你可以自动使用武器进行攻击了，超级亲民，拯救鼠标，拯救你的手指头，可通过热键配置。
+加群:1136043760讨论制作，群内可以提前玩最新内测版本
+尽情享受吧，希望此mod能带给你不一样的泰拉修炼体验。
+-------------------------------------------
+更新1.3.7.7版本：
+1、给法神加穿透
+2、给控法伤害翻倍，控法加蓝翻倍
+3、把召唤眼的aoe去了，减速去了
+4、修复快捷键冲突的bug
+5、修复控法无法传送的bug
+6、初始觉醒上限给到2%
+7、召唤灵体增加99倍减伤倍率，+10倍弹幕伤害，血量永久减半
+-------------------------------------------
+更新1.3.7.6版本：
+一、魔剑·万剑归宗增强
+1、初始弹幕2，每次额外弹幕增加2最多16
+2、初始追踪范围300-500，最大追踪范围600-1000
+3、可以穿墙
+4、移除暴击双倍伤害
+二、原版减伤效果变更为减伤倍率
+计算公式如下
+10%减伤=1减伤倍率
+17%减伤=1.7减伤倍率
+原版减伤上限为90%
+最高增加9减伤倍率
+三、狂战削弱
+手炼体攻速加成砍半
+四、泰坦削弱
+1、初始炼体9减伤倍率-4，最高24
+2、泰坦传承武器暴击率50%提升至100%
+3、泰坦炼体手部攻速加成砍半
+4、泰坦死亡增加的防御力和生命值不能超过噬魂之心等级x4
+五、难度调整
+调整后
+生命	2	3	4	5	6
+防御	1	1	1	1	1
+攻击	4	8	12	16	30
+金钱掉落	5	10	15	20	30
+减伤倍率	2	4	6	8	10
+-------------------------------------------
+更新1.3.7.5版本：
+1、修复了联机时数值异常大的bug
+2、修复了自动攻击会自动充能的bug
+3、法师和控法者的不灭法躯增强：免疫击退，受到伤害的95%变为消耗法力值
+4、女神模式下敌人战力翻倍
+5、女神模式开启不再给神格，而是地图内所有人饰品栏提升
+6、修复女神模式下灵魂撕裂造成异常回血的问题
+7、法师传承武器增强
+-------------------------------------------
+更新1.3.7.4版本：
+1、修复了控法者的充能显示异常bug
+2、给控法者增加了自动充能，移除了控法者的后座力。
+3、移除了世界难度给与的噬魂之心初始真实伤害
+4、刺客投掷武器造成的真实伤害减少5倍
+5、移除了神秘水晶的探图功能
+6、增强了召唤身外化身的hit为每秒10次攻击
+7、命运轮盘原初现在可以在恶魔祭坛合成以提升世界难度
+-------------------------------------------
+更新1.3.7.3版本：
+1、多人模式下所有存活的人都能获得boss击杀灵魂气血奖励
+2、增强泰坦职业的坦度：初始炼体给9倍减伤倍率，最高30倍
+3、增强召唤的坦度：敌方弹幕造成额外10倍伤害==>3倍
+4、法师传承武器大幅度削弱
+初始弹幕9==>1,受炼体额外弹幕成长
+弹幕持续时间由无限==>4秒
+-------------------------------------------
+更新1.3.7.2版本：
+1、增强战士
+2、增强召唤
+3、增强法师
+4、大幅度削弱高难度敌人的血量
+5、炼体所需生命水晶降低8==>5
+6、神秘水晶使用返回死亡点，可设置快捷键使用，默认Z
+7、世界难度可以向上升级，无法降低。
+-------------------------------------------
+更新1.3.7.1版本：
+1、修复真实伤害异常的bug
+2、其他的一些小优化
+-------------------------------------------
+更新1.3.7.0版本：
+大版本更新
+主要目标：优化玩家游戏体验
+优化原因
+我玩了究极难度的叛道者，对于游戏体验有了最新的认知。
+明白了之前的设计有很多不合理的地方，需要改进以提高游戏体验。
+总体方向
+1、游戏时间调整，减少刷怪等无意义无聊的时间，增加打boss的时间
+2、增强初期玩家的游戏体验，减少后期的强度，防止玩家无双。【防止你们变负数】
+3、高级难度敌人的强度不再无脑增加属性，而是采用全新机制提高敌人每1点血量的性价比。【防止你们变负数】
+4、防止武器面板数值过度膨胀，增强后期输出能力。【防止你们变负数】
+具体措施
+引入新的属性：减伤倍率
+效果：受到的伤害减少n倍，n为减伤倍率，n的最小值为1，敌人与玩家都拥有该属性。
+1、极大幅度降低初始修炼所需灵魂数量。由10000==>100，所需生命水晶数量变为8。【已完成】，
+2、极大幅度降低击杀小怪给与的灵魂、气血奖励。1级世界难度杀1只怪+1,5级+5。恒定。【已完成】
+3、大幅度增强初始移动力，炼体增加1个初始翅膀，点亮腿时获得。【提升初期生存】【已完成】
+3.1、各职业初始移动速度和跳跃速度加成重新平衡【已完成】
+目前
+职业：	泰坦	刺客	召唤	狂战	法神	控法
+初始移速	20%	33	66	20	20	20
+最大移速	40%	73	66	40	40	40
+初始跳跃	50%	100	100	60	60	60
+最大跳跃	200%	500	600	260	260	260
+初始飞行	10s	10	10	10	10	10
+最大飞行	100s	200	200	200	200	200
+调整后
+职业：	泰坦	刺客	召唤	狂战	法神	控法
+初始移速	20%	33	66	33	20	20
+最大移速	40%	73	66	73	40	40
+初始跳跃	50%	100	100	100	60	60
+最大跳跃	200%	500	500	500	260	260
+初始飞行	5s	5	5	5	5	5
+最大飞行	100s	200	200	200	200	200【练满均可无限飞行】
+4、大幅度增强初始伤害类炼体奖励，初始获得2倍基础攻击。【已完成】
+5、大幅度削弱后期基础伤害类炼体奖励：10倍基础攻击加成==>5倍【已完成】
+6、大幅度提升魔神之眼的暴击伤害。初始100%-最高500%【已完成】
+7、女神模式额外饰品奖励大幅度削弱：24==>14+世界难度x2）【已完成】
+8、魔神的庇佑：玩家在击败任何boss前，自身减伤倍率+3【提升初期生存】【已完成】
+8.1、召唤：点亮灵躯后，减伤倍率恒定为20，不受任何饰品、神器技能的加成，但是灵体会受到10倍弹幕攻击伤害。
+9、战士传承武器重做、法师传承武器重做。【已完成，非常强力，非常帅】
+10、世界难度调整【已完成】
+目前
+世界难度	1	2	3	4	5
+生命防御	5	10	15	20	30
+攻击	2	5	8	10	30
+调整后
+生命	2	4	6	8	10
+防御	1	1	1	1	1
+攻击	4	8	12	16	30
+金钱掉落	5	10	15	20	30
+减伤倍率	1	2	3	4	5
+说明：减伤倍率指你对敌人造成的伤害会减少n倍，n为减伤倍率
+11、女神模式调整【已完成】
+女神模式减伤2/3调整为：女神模式不再增加独立减伤
+所有敌人获得女神的祝福：每秒恢复自身1%*世界难度的生命恢复【boss类单位上限为0.5%】
+12、战力计算公式调整
+敌人战力=原战力*世界难度【已完成】
+13、召唤削弱，眼的减速效果由上限50%削弱为恒定33%【已完成】
+14、所有宝藏袋都可以随机开出1-2个生命水晶【已完成】
+-------------------------------------------
+更新1.3.6.12版本：
+1、开局物品添加对MagicStorageExtra的联动兼容
+2、增强刺客职业炼体杀意值回复速度
+3、增强刺客职业死气值转化速度
+4、初始解锁炼体所需的灵魂数量大幅度减少。10000==>100
+-------------------------------------------
+更新1.3.6.11版本：
+1、修复神灭击杀boss不增加觉醒度的bug
+2、本命神魂合成所需材料减半
+3、刺客杀意闪消耗翻倍，现在消耗2%上限的杀意值。
+4、投手武器的额外真实伤害只对投掷类武器生效。
+-------------------------------------------
+更新1.3.6.10版本：
+1、初始修炼单部位所需的20000灵魂减少到10000。
+2、给投手类武器增加杀意闪【位移技能】
+-------------------------------------------
+更新1.3.6.8版本：
+1、刺客平衡性调整，削弱伤害，增强生存
+2、女神模式重做
+3、炼体突破和传承武器觉醒机制修改为击杀固定boss解锁
+这里的限制都是单部位限制，意味着大家要均衡发展
+只有打败月总单部位才能练满。
+传承武器觉醒上限也改为击败特定boss解锁
+0、1W-初始-1%
+1、2W-史莱姆王-5%
+2、3W-克眼-10%
+3、4W-世吞/克脑-20%
+4、6W-蜂王-30%
+5、7W-吴克-40%
+6、8W-肉山-50%
+7、10W-新三王-80%
+8、12W-小花-100%
+9、14W-小怪-120%
+10、16W-石头-150%
+11、18W-教徒-200%
+12、20W-月总-之前觉醒机制，无上限
+-------------------------------------------
+更新1.3.6.7版本：
+1、修复刺客的附加伤害使用非投掷武器也能触发的bug
+2、修复了多人模式下无法吃神格的bug
+-------------------------------------------
+更新1.3.6.6版本：
+1、刺客死气值不在濒死状态下生效，而是先扣除死气，再扣除生命
+2、刺客弑神觉醒上限为9999%
+3、开局赠送99火把
+-------------------------------------------
+更新1.3.6.5版本：
+1、为本命神魂添加合成方式
+2、神灭增强
+2、修复了噬魂之心升级所需灵魂一直为0的bug
+-------------------------------------------
+更新1.3.6.4版本：
+1、额外饰品栏UI展示优化
+2、女神模式额外饰品栏削弱：50==>24
+3、？难度福利增加，额外饰品栏：5==>8
+4、刺客UI优化
+-------------------------------------------
+更新1.3.6.3版本：
+1、刺客职业进行平衡性调整
+2、修复控法者无限召唤的bug
+-------------------------------------------
+更新1.3.6.2版本：
+1、重做刺客职业，现在兼容投手
+2、现在越级挑战奖励最大10倍，召唤为5倍
+-------------------------------------------
+更新1.3.6.0版本：
+1、新增控法者职业
+2、现在神秘水晶在boss存活的时候15秒复活
+-------------------------------------------
+更新1.3.5.3版本：
+1、削弱：额外饰品栏无法重复装备
+2、修复了法师无法传送的bug
+3、增加了额外饰品栏位置配置项
+-------------------------------------------
+更新1.3.5.2版本：
+1、女神模式重做，开启女神模式吞噬神格获得额外24饰品栏
+2、为每一级难度增加一个额外饰品栏
+-------------------------------------------
+更新1.3.5.1版本：
+1、修复减伤bug
+2、修复其他bug
+-------------------------------------------
+更新1.3.5.0版本：
+1、新增法师·法神职业
+魔神领悟道之本源用杀戮法则所创，万物皆有法力存于体内
+击杀可炼化其血肉中蕴含的法力入体，大大提升肉身法力储量
+炼至巅峰，成就不灭法体。可多重施法，万法不侵。
+-------------------------------------------
+更新1.3.4.5版本：
+1、狂战职业大幅调整【大幅增强】
+2、魔剑·弑神增强
+3、修复了狂战职业怒气值超过100暴击伤害异常低的bug
+4、修复了泰坦职业初始伤害减免不生效的bug
+-------------------------------------------
+更新1.3.4.4版本：
+1、现在1把神灭占用3个召唤栏位
+2、神魂之眸的减速效果上限由60%削弱为50%
+3、战士大增强，战士新增2个子职业：泰坦和狂战
+
+泰坦被动：战者之心，死亡后增加1基础生命上限，0.2基础防御力
+增加的生命值最大不能超过玩家当前生命值，增加的防御力最大不能超过肉体强度
+玩家肉体强度增加的防御力翻倍" +
+转职为泰坦初始即可获得300基础生命上限，减少20%移动速度，33%跳跃速度
+泰坦魔神之躯的初始奖励提升为+300基础生命上限+50%独立伤害减免
+
+狂战被动：无尽怒火，解锁怒气系统，死亡后增加1怒气上限
+怒气系统，暴击时+3怒气值，初始上限100，每一点怒气值增加1%近战暴击率
+怒气值超过100时，每1点怒气值增加0.5%近战暴击伤害
+死亡时，如果怒气值满，则触发被动，不灭怒火，每秒消耗25点怒气值，免疫一切伤害，归0时死亡
+不灭怒火状态下，暴击无法增加怒气
+怒气值上限500，最多无敌20秒，最多增加200%暴击伤害
+-------------------------------------------
+更新1.3.4.3版本：
+新增召唤初始武器
+-------------------------------------------
+更新1.3.4.2版本：
+修复了召唤师的一些bug
+召唤师第二波削弱
+一些利于召唤师操作的功能优化
+-------------------------------------------
+更新1.3.4.1版本：
+召唤师最大越级挑战奖励为5倍
+噬魂之心召唤栏位加成减半
+-------------------------------------------
+更新1.3.4.0版本：
+新增召唤职业的炼体功法和传承武器
+-------------------------------------------
+更新1.3.3.9版本：
+修复死亡次数退出重进归0的bug
+刺客现在初始就能每秒自动回复5点杀意值
+-------------------------------------------
+更新1.3.3.6版本：
+修复多人模式下战力评级异常导致额外获得数十倍经验的bug
+修改刺客死气值上限为杀意值的一半，死气值上限最大不能超过世界极限
+大幅提升一刀流的杀气回复速度，满级状态下，需要33秒回满
+-------------------------------------------
+更新1.3.3.5版本：
+修复刺客职业多人模式下击杀敌人不加杀意值的bug
+增强刺客技能流
+增强魔剑的攻击力成长
+-------------------------------------------
+更新1.3.3.4版本：
+战士职业新增特性战者之心，每死亡一次最大生命值+1防御+0.1
+战士的魔神之躯独立伤害减免对弹幕生效
+刺客职业新增特性向死而生，每死亡一次魔剑·神陨觉醒上限+0.02%
+刺客新增死气值，受到致命攻击时消耗死气值
+神秘水晶增加使用返还死亡点的功能
+-------------------------------------------
+更新1.3.3.3版本：
+修复一系列bug。
+-------------------------------------------
+更新1.3.3.2版本：
+刺客职业开发完成
+新增炼体上限自定义配置
+新手福利：神秘水晶增加探图功能
+-------------------------------------------
+更新1.3.2.1版本：
+修复联机bug
+新增战士职业
+刺客职业暂未开发完，开局不要选刺客
+-------------------------------------------
+更新1.3.1.6版本：
+新增敌人生命值最大为21亿,64位tml可通过配置突破上限。
+越阶战斗奖励，最大为100倍
+噬魂之心现在每升一级所需灵魂数量+10
+升到500级共需125W灵魂
+新增噬魂之心灵魂上限为500W
+-------------------------------------------
+更新1.3.1.5版本：
+修复了多人模式下灵魂撕裂无法正常工作的bug.
+修复了多人模式下击杀boss无吞噬灵魂气血提示的bug.
+修复了世界上限数据有时候会异常的bug.
+-------------------------------------------
+更新1.3.1.4版本：
+魔剑·弑神新增破灭法则，重击3倍暴击
+魔剑·神陨优化了武器特效。
+魔剑·神陨新增50%觉醒刺杀可穿墙
+修复了多人模式下的一些bug，现在多人模式能够顺畅游玩。
+-------------------------------------------
+更新1.3.1.3版本：
+修复了魔剑·弑神满觉醒时无法突破觉醒上限的bug。
+现在世界难度的额外灵魂气血获取量不再对boss生效。
+-------------------------------------------
+更新1.3.1.2版本：
+修复了真实伤害击杀敌人不掉落物品，不加灵魂的bug。
+修复了多人模式下敌人会复活的bug，修复了其他已知bug。
+-------------------------------------------
+更新1.3.1.1版本：
+新增魔剑·弑神·传承武器【分短剑和长剑2把，开局2选1】
+炼体八境·武道巅峰·远古魔神临死之前碎裂不朽右臂所铸造
+魔神之子的护道传承武器，唯魔神之子可用精血召唤使用
+众生之怨：不受任何伤害暴击攻击范围加成，无法附魔，减少3倍攻速加成
+弑神之力：击杀任意生物+1攻击力，然受觉醒上限限制
+魔剑觉醒：击杀强者摄其血肉灵魂修复剑身，增加觉醒上限
+空间法则：自身蕴含魔神所悟空间法则之力，剑出必中！
+新增世界难度选择，需新建人物。
+修复了多人模式下敌人会复活的bug，修复了其他已知bug.
+-------------------------------------------
+更新1.3.1.0版本：
+新增战力系统，新增肉身极限系统，新增突破系统。
+炼体平衡性大幅度调整
+噬魂之心无视护甲能力移除，改为真实伤害。
+难度现在拥有额外福利。
+10倍hp和防御难度已经5倍攻击难度下创建新玩家增加挑战者礼物
+噬魂之心存储灵魂数量将不存在上限，但噬魂之心等级有上限。
+-------------------------------------------
+更新1.3.0版本：
+大版本更新，新增魔神炼体功能，可以在泰拉世界修炼功法了，设置控件打开炼体菜单，增加新手指引
+增加难度配置项，可以自行调节难度，获得最佳体验（默认最低5倍生命值，5倍防御力，2倍攻击力）
+炼体简介：详情请自行在游戏中体验。遇到bug请加群反馈
+魔神炼体法-魔神传承自动领悟：魔神突破极限时自创的魔神级炼体功法，直达炼体第七境。
+崩碎身躯把灵魂之力炼化溶于肉身，大幅提升肉身极限，使得肉身拥有吞血肉凝练的逆天之力。
+炼体七境：淬体入门、炼皮成牛、炼骨如钢、练髓如汞、金刚之躯、肉身圆满、不死之身七大境界
+噬魂之心，吞噬万灵， 铸我魔魂，挡我者死! ! !
+吞噬万灵，铸我魔魂:吞噬灵魂增加生命偷取，效果视吞噬灵魂数量而定。
+挡我者死，效果: 吞噬灵魂增加护甲穿透，无视敌人护甲%。效果视灵魂数量而定。
+魔神之眼，命运之路，看破妄虚。生死轮转，介入吾眼！
+命运之路，勘破妄虚：极大提升暴击概率！
+生死轮转，介入吾眼：巨幅提升暴击伤害！
+魔神之躯，万灵炼体，铸我身躯。千凝万锻，魔体终成!
+万灵炼体，不死不灭: 吞噬气血增加生命回复与生命上限，生命回复效果无视任何负面状态。效果视吞噬灵魂数量而定。
+干凝万锻，魔体終成:吞噬气血增加防御效果视吞噬灵魂数量而走。
+魔神之手掌凝万灵擎天撼地，指天天裂划地地崩!
+掌凝万灵肇天撼地:吞噬气血增加攻击速度与攻击范围，效果视吞噬气血数量而定。
+指天天裂划地地崩:吞噬气血增加攻击力,效果视吞噬气血数量而定，
+魔神之腿风驰电掣，雷厉风行。天涯海角，一步跨之! ! !
+风驰电掣，雷厉风行：巨幅提升跳跃速度。
+天涯海角，一步跨之：巨幅增加飞行时间
+-------------------------------------------
+更新1.2.6版本：
+装备噬魂之心新增魔神级能力：每次攻击对会给敌人施加灵魂撕裂（持续时间无限，可叠加，最大叠加500层）
+灵魂撕裂伤害计算公式：噬魂之心等级/50的伤害*层数（噬魂之心等级）
+最大伤害：10*500=5000
+图标更改为灵魂撕裂buff图标
+-------------------------------------------
+更新1.2.5版本：
+添加女神之像，恶魔祭坛合成，可开启女神模式（作弊模式：10倍灵魂获取）
+大幅提升击杀boss的奖励：boss增加的灵魂值=boss最大生命值/100
+肉前击杀boss最低提升5级，boss灵魂值不足，自动补齐。最大提升20级，超过20级的灵魂值无效（越级击杀boss限制）
+新增肉前噬魂之心等级上限为299级
+肉后击杀boss无最低提升等级福利，防止肉后刷肉前boss快速升级，最大提升10级，超过10级的灵魂值无效（越级击杀boss限制）
+-------------------------------------------
+更新1.2.4版本：
+添加狱石、沙漠化石、泥沙、淤泥可被洞穴探险药剂探索到
+-------------------------------------------
+更新1.2.3版本：
+噬魂之心新版本增加和调整以下内容：
+为所有物品添加英文翻译
+现在击败Boss能获得更多灵魂，计算公式为：Boss最大生命值/1000（上限为噬魂之心等级x5）
+-------------------------------------------
+更新1.2.1版本：
+噬魂之心新版本增加和调整以下内容：
+装备噬魂之心时生效
+1、为所有近战，远程，魔法，投手增加额外弹幕
+初始一个额外弹幕：每150级增加一个
+Lv0-149 1个
+Lv150-299 2个
+Lv300-449 3个
+LV450-500 4个
+2、更改所有悠悠球持续时间为无限
+3、召唤师5倍召唤栏位（仅装备增加的召唤栏生效，饰品增加的不受此加成）
+4、生命偷取效果削弱，增加双重吸血上限限制，每50级增加1%生命偷取，500级为10%，满级比吸血鬼刀7.5%强
+但是限制每次攻击偷取生命上限值为噬魂之心等级除以25
+100级时，每次攻击最大偷取量为4，200级时为8，500级时为20
+限制每秒（60帧）最大吸血量为噬魂之心等级，满级时为500
+
+github地址(完全开源)：https://github.com/hackmytime/SummonHeart
+English：
+Heart of soul & The road of the devil module
+Soul eating heart is a growth ornament. It can be upgraded by swallowing and defeating the soul of the enemy, and gradually gain the power of ancient demons. The maximum level is 500.
+The way of the demon God: add the function of refining the body of the demon God, you can practice the Dharma in the world of Tara
+Magic spirit refining method - Magic spirit inheritance automatic understanding: the magic spirit level refining method created by the magic God when breaking through the limit can reach the seventh realm of refining.
+Breaking the body, refining and dissolving the power of the soul into the body, greatly increasing the limit of the body, making the body possess the power of swallowing blood and flesh.
+The Seven Realms of refining body: the entry of quenching body, refining skin into cattle, refining bone as steel, refining marrow as mercury, body of Vajra, perfect body of flesh and body of immortality
+Loading mod will automatically release the power of the ancient demon God, increasing all enemies and creatures of Tara. Please be prepared. Enemies and boss of other mod will also receive this bonus.
+At the beginning, we will present a luxury gift package, which is close to the people.
+The most important, add the automatic attack function, yes, you can automatically use weapons to attack, super Pro people, save the mouse, save your fingers, can be configured through the hotkey.
+Plus group: 1136043760 discussion production, the group can play the latest beta version in advance
+Enjoy it. I hope this mod can bring you a different experience of Tara cultivation.
+-------------------------------------------
+Update 1.3.0:
+Big version update, new demon refining function, you can practice in Tara world, set control to open the refining menu, add novice guide
+Increase the difficulty configuration item, you can adjust the difficulty by yourself to get the best experience (default minimum 5 times of health, 5 times of defense, 2 times of attack)
+Brief introduction: for details, please experience in the game by yourself. If you encounter a bug, please add group feedback
+Magic spirit refining method - Magic spirit inheritance automatic understanding: the magic spirit level refining method created by the magic God when breaking through the limit can reach the seventh realm of refining.
+Breaking the body, refining and dissolving the power of the soul into the body, greatly increasing the limit of the body, making the body possess the power of swallowing blood and flesh.
+The Seven Realms of refining body: the entry of quenching body, refining skin into cattle, refining bone as steel, refining marrow as mercury, body of Vajra, perfect body of flesh and body of immortality
+Devour the soul of the heart, devour all souls, cast my ghost, block me to die!
+Devour all souls, cast my spirit: devour souls, increase life steal, the effect depends on the number of devoured souls.
+Kill those who block me. Effect: devours souls, increases armor penetration, and ignores enemy armor by%. The effect depends on the number of souls.
+The eye of the devil, the road of destiny, sees through the false. Life and death in my eyes!
+The road of destiny, explore and break the false: greatly improve the critical hit probability!
+Rotation of life and death, intervene in my eyes: greatly increase critical hit damage!
+The body of demons and gods, refined by all spirits, cast my body. Thousands of solidification and thousands of forging, the magic body is finally formed!
+All souls refine the body, never die, never die: devour Qi and blood, increase HP recovery and maximum HP, HP recovery effect ignores any negative state. The effect depends on the number of souls consumed.
+Dry coagulation ten thousand forging, the devil body finally becomes: devour Qi and blood, increase defense effect, depending on the number of souls devoured.
+The hand of the demon God is holding up the sky and shaking the ground, pointing to the collapse of the earth every day!
+Zhang Ning: engulfs Qi and blood to increase attack speed and range. The effect depends on the amount of Qi and blood engulfed.
+It means to split and collapse every day: engulf Qi and blood to increase attack power. The effect depends on the amount of Qi and blood engulfed,
+The leg of the devil is fast and vigorous. The ends of the earth, step forward!
+Fast and vigorous: greatly improve the jumping speed.
+The ends of the earth, one step: a huge increase in flight time
+-------------------------------------------
+Update 1.2.6:
+Equip soul eating heart add new ability of demon level: each attack will tear the enemy's soul (unlimited duration, can stack up to 500 layers)
+Soul tearing damage calculation formula: heart of soul level / 50 damage * layers (heart of soul level)
+Maximum damage: 10 * 500 = 5000
+The icon changes to the soul rip buff icon
+-------------------------------------------
+Update 1.2.5:
+Add the statue of goddess, the devil altar synthesis, can open the goddess mode (cheating mode: 10 times soul gain)
+Greatly increase the reward for killing the boss: the increased soul value of the boss = the maximum health value of the boss / 100
+The minimum level of killing boss before meat is increased by 5. If the soul value of boss is insufficient, it will be automatically supplemented. The maximum increase is 20 levels. The soul value beyond 20 levels is invalid (exceed the boss limit)
+The maximum level of soul eating heart before adding meat is 299
+There is no minimum promotion level benefit for killing boss after meat, which prevents the boss from upgrading quickly after meat and before brushing meat. The maximum promotion level is 10, and the soul value above 10 is invalid (skip the level to kill boss limit)
+-------------------------------------------
+Update version 1.2.4:
+DesertFossil、Hellstone、SlushBlock、SiltBlock now can be affected by spelunker highlighting.
+-------------------------------------------
+Update version 1.2.3:
+
+Add English translation for all items
+Now you can gain more souls by defeating boss. The formula is: max health of boss / 1000 (the upper limit is soul eating heart level x5)
+------------------------------------------------------
+
+Update 1.21:
+
+The new version of soul eating heart adds the following contents:
+
+It takes effect when equipped with soul eating heart
+
+1. Add extra barrage to all melee, ranged, magic, pitchers
+
+Initial additional projectiles: one for every 150 levels
+
+Lv0-149 1 additional projectile
+
+Lv150-299 2 additional projectile
+
+Lv300-449 3 additional projectile
+
+Lv450-500 4 additional projectile
+
+2. Change all Yo Yo duration to infinite
+
+3. Summoner's 5 times of summon max num (only the summon field added by equipment takes effect, and the accessary added is not subject to the second bonus)
+
+4. The effect of life stealing is weakened, and the upper limit of double blood sucking is increased. Life stealing increases by 1% every 50 levels, 10% at 500 levels, and 7.5% at full level
+
+However, the limit for each attack to steal maximum health is divided by 25
+
+At level 100, the maximum amount of theft per attack is 4200, 8500 and 20
+
+Limit the maximum amount of blood drawn per second (60 frames) to the heart of soul level, and 500 at full level
+
+just enjoy it! I hope this mod can bring you a different Tara experience.

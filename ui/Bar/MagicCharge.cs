@@ -51,7 +51,7 @@ namespace SummonHeart.ui.Bar
             {
             }
             else if
-            (mp.magicChargeActive)
+            (mp.magicChargeActive && Main.LocalPlayer.HeldItem.magic && mp.PlayerClass == 6)
             {
             }
             else
@@ -96,7 +96,7 @@ namespace SummonHeart.ui.Bar
                 text.SetText($"刺杀技能：{mp.killResourceSkillCount}个 凝练杀意：{mp.magicCharge} / {mp.magicChargeMax}");
             }
             else if
-            (mp.magicChargeActive)
+            (mp.magicChargeActive && Main.LocalPlayer.HeldItem.magic && mp.PlayerClass == 6)
             {
                 text.SetText($"充能魔法：{mp.magicChargeCount}个 充能：{(int)mp.magicCharge} / {mp.magicChargeMax}");
             }

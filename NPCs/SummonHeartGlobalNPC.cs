@@ -259,21 +259,6 @@ namespace SummonHeart.NPCs
 						Main.dust[dust].scale *= 0.5f;
 					}
 				}
-				Player player = Main.player[Main.myPlayer];
-				SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
-				if (Main.time % 6 == 0)
-                {
-                    int dmage = modPlayer.eyeBloodGas / 1000 + 1;
-					this.CauseRealDamage(npc, dmage);
-					if (modPlayer.soulSplit)
-					{
-						if (!npc.HasBuff(mod.BuffType("SoulSplit")))
-						{
-							soulSplitCount = 1;
-						}
-						npc.AddBuff(mod.BuffType("SoulSplit"), 200);
-					}
-				}
 			}
 		}
 

@@ -70,19 +70,6 @@ namespace SummonHeart.Projectiles.Weapon
             {
                 dist += modPlayer.eyeBloodGas / 400 + 100;
             }
-            for (int i = 0; i < Main.projectile.Length; ++i)
-            {
-                Projectile targetPro = Main.projectile[i];
-                if (targetPro.active && !targetPro.friendly && targetPro.Distance(projectile.Center) <= dist)
-                {
-                    Projectile p = Main.projectile[i];
-                    if(p != null)
-                        SummonHeartMod.addSlowMap(p);
-                }else if (targetPro.Distance(projectile.Center) > dist)
-                {
-                    SummonHeartMod.deleteSlowMap(targetPro);
-                }
-            }
 
             for (int i = 0; i < Main.maxNPCs; i++)
             {
@@ -90,7 +77,6 @@ namespace SummonHeart.Projectiles.Weapon
                 if (npc.active && !npc.friendly && npc.lifeMax > 5 && npc.Distance(projectile.Center) < dist)
                 {
                     npc.AddBuff(mod.BuffType("EyeBuff"), 120);
-                    npc.velocity *= (1 - 0.33f);
                 }
             }
 

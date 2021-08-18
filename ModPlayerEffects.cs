@@ -20,7 +20,7 @@ namespace SummonHeart
 		{
 			SummonHeartPlayer mp = player.SummonHeart();
 			int bodyMax = 10000;
-			int swordMax = 100;
+			int swordMax = 200;
 			//1、2W - king slime5 %
 			if (NPC.downedSlimeKing)
 			{

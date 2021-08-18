@@ -50,7 +50,7 @@ namespace SummonHeart.Projectiles
 				bool flag18 = false;
 				for (int A3 = 0; A3 < 200; A3++)
 				{
-					if (Main.npc[A3].CanBeChasedBy(projectile, false) && Collision.CanHit(projectile.Center, 1, 1, Main.npc[A3].Center, 1, 1))
+					if (Main.npc[A3].CanBeChasedBy(projectile, false) /*&& Collision.CanHit(projectile.Center, 1, 1, Main.npc[A3].Center, 1, 1)*/)
 					{
 						float G2 = Main.npc[A3].position.X + (float)(Main.npc[A3].width / 2);
 						float A4 = Main.npc[A3].position.Y + (float)(Main.npc[A3].height / 2);

@@ -209,7 +209,7 @@ namespace SummonHeart
 			myDamageReduceMult = 1f;
 			enemyDamageReduceMult = SummonHeartWorld.WorldLevel * 2;
 			//魔神的庇佑
-			if (swordBloodMax > 100)
+			if (swordBloodMax > 200)
 				killAnyBoss = true;
 			if(!killAnyBoss)
 				player.AddBuff(mod.BuffType("DemonDefBuff"), 120);
@@ -314,7 +314,7 @@ namespace SummonHeart
 		private void EffectMagic2()
 		{
 			int allBlood = this.getAllBloodGas();
-			player.statManaMax2 += allBlood / 80;
+			player.statManaMax2 += allBlood / 40;
 
 			if (magicBook)
 				player.statManaMax2 *= 2;
@@ -465,7 +465,7 @@ namespace SummonHeart
 			// 躯
 			if (boughtbuffList[2])
 			{
-				myDamageReduceMult = 20f;
+				myDamageReduceMult = 99f;
                 if (player.whoAmI == Main.myPlayer)
                 {
 					if (practiceBody && player.ownedProjectileCounts(ModContent.ProjectileType<EmpyreanSpectre>()) < 1)
@@ -1165,7 +1165,6 @@ namespace SummonHeart
 				if(PlayerClass == 2)
                 {
 					showRadius = !showRadius;
-					inMagicCharging = true;
 					if (showRadius)
                     {
 						Main.NewText($"已开启刺杀技能", Color.White);
@@ -1175,7 +1174,14 @@ namespace SummonHeart
 						Main.NewText($"已关闭刺杀技能", Color.White);
 					}
                 }
-				else if (PlayerClass == 6)
+				else
+                {
+					Main.NewText($"只有刺客才能使用刺杀技能", Color.Red);
+				}
+			}
+			if (SummonHeartMod.magicSkillKey.JustPressed)
+			{
+				if (PlayerClass == 6)
 				{
 					inMagicCharging = !inMagicCharging;
 					if (inMagicCharging)
@@ -1189,12 +1195,12 @@ namespace SummonHeart
 				}
 				else
                 {
-					Main.NewText($"只有刺客和控法才能使用刺杀技能或者充能", Color.Red);
+					Main.NewText($"只有控法才能使用充能", Color.Red);
 				}
 			}
 			if (SummonHeartMod.TransKey.JustPressed)
 			{
-				if (PlayerClass == 5)
+				if (PlayerClass == 5 || PlayerClass == 6)
 				{
                     if (!boughtbuffList[3])
                     {
@@ -1390,7 +1396,7 @@ namespace SummonHeart
 			damage = (int)Math.Ceiling(damage / myDamageReduceMult);
 			if (PlayerClass == 3 && boughtbuffList[2])
 			{
-				damage *= 3;
+				damage *= 10;
 			}
 		}
 

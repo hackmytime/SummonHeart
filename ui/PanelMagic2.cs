@@ -112,13 +112,13 @@ namespace SummonHeart.ui
 
                 int totalBoodGas = mp.eyeBloodGas + mp.handBloodGas + mp.bodyBloodGas + mp.footBloodGas;
 
-                var modlabel_level = new UIText("控法者被动：解锁充能魔法系统，每80点气血增加1点最大法力值，");
+                var modlabel_level = new UIText("控法者被动：解锁充能魔法系统，每40点气血增加1点最大法力值，");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
                 modlabel_level = new UIText("控法者被动：原版法力回复无效，获得独立基础回蓝8点每秒。");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("魔法上限+" + totalBoodGas/80 + " 总气血：" + totalBoodGas + " 死亡次数：" + mp.deathCount + " 战斗力：" + mp.getPower() + " 当前暴击伤害" + mp.MyCritDmageMult * 100 + "%");
+                modlabel_level = new UIText("魔法上限+" + totalBoodGas/40 + " 总气血：" + totalBoodGas + " 死亡次数：" + mp.deathCount + " 战斗力：" + mp.getPower() + " 当前暴击伤害" + mp.MyCritDmageMult * 100 + "%");
                 modlabel_level.TextColor = Color.Red;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
 

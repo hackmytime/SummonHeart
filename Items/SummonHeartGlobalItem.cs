@@ -33,7 +33,7 @@ namespace SummonHeart.Items
                 if (mp.magicChargeCount > 0)
                 {
                     //计算伤害
-                    int damage = (int)(item.damage * 10 * (player.allDamage - 1 + player.magicDamage + mp.handBloodGas / 20000));
+                    int damage = (int)(item.damage * 20 * (player.allDamage - 1 + player.magicDamage + mp.handBloodGas / 20000));
                     Vector2 arrowVelocity = Vector2.Normalize(Main.MouseWorld - player.Center) * v1;
                     if (SummonHeartMod.itemSoundMap.ContainsKey(item))
                         Main.PlaySound(SummonHeartMod.itemSoundMap[item], player.position);

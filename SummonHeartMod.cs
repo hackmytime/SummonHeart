@@ -37,6 +37,7 @@ namespace SummonHeart
 		internal static ModHotKey AutoAttackKey;
 		internal static ModHotKey ShowUI;
 		internal static ModHotKey KillSkillKey;
+		internal static ModHotKey magicSkillKey;
 		internal static ModHotKey TransKey;
 		internal static ModHotKey BackDieKey;
 		//internal static ModHotKey ExtraAccessaryKey;
@@ -139,7 +140,8 @@ namespace SummonHeart
         {
 			AutoAttackKey = RegisterHotKey("自动使用武器（再次点击停止使用）", "G");
 			ShowUI = RegisterHotKey("魔神炼体法", Keys.L.ToString());
-			KillSkillKey = RegisterHotKey("刺客刺杀技能/控法者充能(可开关)", Keys.V.ToString());
+			KillSkillKey = RegisterHotKey("刺客刺杀技能(可开关)", Keys.V.ToString());
+			magicSkillKey = RegisterHotKey("控法者充能(可开关)", Keys.B.ToString());
 			TransKey = RegisterHotKey("空间传送", Keys.Y.ToString());
 			BackDieKey = RegisterHotKey("神秘水晶返回死亡点", Keys.Z.ToString());
 			//ExtraAccessaryKey = RegisterHotKey("额外饰品栏带单", Keys.Q.ToString());
@@ -237,6 +239,7 @@ namespace SummonHeart
 			AutoAttackKey = null;
 			ShowUI = null;
 			KillSkillKey = null;
+			magicSkillKey = null;
 			TransKey = null;
 			BackDieKey = null;
 			//ExtraAccessaryKey = null;

@@ -25,7 +25,7 @@ namespace SummonHeart.Items.Weapons.Magic
                 "\n魔神之子的护道传承武器，唯魔神之子可用精血召唤使用" +
                 "\n众生之怨：不受任何伤害攻速加成，无法附魔，可以享受2倍多重施法加成" +
                 "\n弑神之力：击杀任意生物增加攻击力，然受觉醒上限限制。" +
-                "\n破灭法则：暴击几率翻倍" +
+                "\n破灭法则：暴击几率翻倍，穿透+3" +
                 "\n魔源觉醒：击杀强者摄其血肉灵魂增强魔力之源，可突破觉醒上限。");
         }
 
@@ -91,6 +91,7 @@ namespace SummonHeart.Items.Weapons.Magic
                 Main.projectile[p].magic = true;
                 Main.projectile[p].tileCollide = false;
                 Main.projectile[p].ignoreWater = true;
+                Main.projectile[p].penetrate = 3;
             }
             return false;
         }

@@ -159,12 +159,12 @@ namespace SummonHeart.ui
                 modlabel_level = new UIText("环视八方：神魂之眸视线范围+" + (mp.eyeBloodGas / 400 + 100)+ "格(初始100，每400气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("死亡之眼：视线范围内的敌人移动速度和弹幕飞行速度降低33%");
+               /* modlabel_level = new UIText("死亡之眼：视线范围内的敌人移动速度和弹幕飞行速度降低33%");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
                 modlabel_level = new UIText("震慑神魂：视线范围内的敌人每秒受到10次灵魂攻击，每次攻击造成" + (mp.eyeBloodGas / 1000 + 1) + "点真实伤害(初始1，每1000气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
-                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
+                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));*/
                 modlabel_level = new UIText("灵魂颤栗：视线范围内的敌人受到攻击必定暴击，暴击伤害+" + (mp.eyeBloodGas / 500 + 100) + "%(初始100%，每500气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
@@ -193,10 +193,10 @@ namespace SummonHeart.ui
                 modlabel_level = new UIText("神魂之躯" + praticeText + " 气血值：" + mp.bodyBloodGas);
                 modlabel_level.TextColor = Color.Orange;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("化身初斩，魂躯初凝：修炼需斩第一身外化身，血量永久减半。魂躯介于虚实之间，减伤倍率+20。");
+                modlabel_level = new UIText("化身初斩，魂躯初凝：修炼需斩第一身外化身，血量永久减半。魂躯介于虚实之间，几乎物理免疫，减伤倍率+99。");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("化身初斩，魂躯初凝：灵躯会额外受到3倍弹幕伤害");
+                modlabel_level = new UIText("化身初斩，魂躯初凝：灵躯会额外受到10倍弹幕伤害");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
                 modlabel_level = new UIText("近乎灵体，形若鬼魅：移动速度+66%，免疫摔落伤害");
