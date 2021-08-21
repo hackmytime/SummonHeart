@@ -159,10 +159,10 @@ namespace SummonHeart.ui
                 modlabel_level = new UIText("环视八方：神魂之眸视线范围+" + (mp.eyeBloodGas / 400 + 100)+ "格(初始100，每400气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-               /* modlabel_level = new UIText("死亡之眼：视线范围内的敌人移动速度和弹幕飞行速度降低33%");
+                modlabel_level = new UIText("死亡之眼：召唤暴击几率+" + (mp.eyeBloodGas / 2500 + 20) + "%(初始20%，每2500气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("震慑神魂：视线范围内的敌人每秒受到10次灵魂攻击，每次攻击造成" + (mp.eyeBloodGas / 1000 + 1) + "点真实伤害(初始1，每1000气血+1)");
+                /*modlabel_level = new UIText("震慑神魂：视线范围内的敌人每秒受到10次灵魂攻击，每次攻击造成" + (mp.eyeBloodGas / 1000 + 1) + "点真实伤害(初始1，每1000气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));*/
                 modlabel_level = new UIText("灵魂颤栗：视线范围内的敌人受到攻击必定暴击，暴击伤害+" + (mp.eyeBloodGas / 500 + 100) + "%(初始100%，每500气血+1)");

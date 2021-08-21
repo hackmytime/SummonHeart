@@ -29,10 +29,8 @@ namespace SummonHeart.Items.Weapons.Melee
             Tooltip.AddTranslation(GameCulture.Chinese, "" +
                 "炼体八境·武道巅峰·远古魔神临死之前碎裂不朽右臂所铸造" +
                 "\n魔神之子的护道传承武器，唯魔神之子可用精血召唤使用" +
-                "\n众生之怨：不受任何伤害暴击加成，无法附魔，减少2倍攻速加成" +
-                "\n弑神之力：击杀任意生物增加攻击力，然受觉醒上限限制。" +
                 "\n空间法则：攻击范围内攻击无视距离" +
-                "\n魔剑觉醒：击杀强者摄其血肉灵魂修复剑身，可突破觉醒上限。");
+                "\n魔剑觉醒：击杀强者摄其血肉灵魂修复剑身可增加基础伤害。");
         }
 
         public override void SetDefaults()
@@ -43,7 +41,7 @@ namespace SummonHeart.Items.Weapons.Melee
             item.noUseGraphic = true;
             item.melee = true;
             item.noMelee = true;
-            item.damage = 1; //DPS 126
+            item.damage = getDownedBossDmage();
             item.knockBack = 3;
             item.autoReuse = true;
             //item.useStyle = 1;
@@ -59,9 +57,7 @@ namespace SummonHeart.Items.Weapons.Melee
             position = Main.MouseWorld;
             //计算距离
             float dist = Vector2.Distance(position, player.Center);
-            float attackRange = 200f + mp.swordBlood / 20;
-            if (attackRange > 500)
-                attackRange = 500f;
+            float attackRange = 500f;
             if (dist > attackRange)
             {
                 Vector2 basePos = Vector2.Normalize(Main.MouseWorld - player.Center);
@@ -83,39 +79,7 @@ namespace SummonHeart.Items.Weapons.Melee
             position -= vel * 120f;
             return true;
         }
-
-        /*public override void HoldItem(Player player)
-        {
-            SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
-            attackRange = 500f + mp.swordBlood / 20;
-            if (attackRange > 500)
-                attackRange = 500f;
-            float speedFactor = Math.Max(Math.Abs(player.velocity.X), Math.Abs(player.velocity.Y / 2));
-            float radius =  Math.Max(64, attackRange);
-            for (int i = 0; i < 10; i++)
-            {
-                Vector2 offset = new Vector2();
-                double angle = Main.rand.NextDouble() * 2d * Math.PI;
-                offset.X += (float)(Math.Sin(angle) * radius);
-                offset.Y += (float)(Math.Cos(angle) * radius);
-
-                Dust d = Dust.NewDustPerfect(player.Center + offset, dustId, player.velocity, 200, default, 0.3f);
-                d.fadeIn = 0.5f;
-                d.noGravity = true;
-            }
-            base.HoldItem(player);
-        }*/
-
-        public override bool AllowPrefix(int pre)
-        {
-            return false;
-        }
-
-        public override bool? PrefixChance(int pre, UnifiedRandom rand)
-        {
-            return new bool?(false);
-        }
-
+       
         public override void AddRecipes()
         {
             ModRecipe recipe = new ModRecipe(mod);
@@ -127,43 +91,16 @@ namespace SummonHeart.Items.Weapons.Melee
 
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
-            Player player = Main.player[Main.myPlayer];
-            SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
-
-            if (modPlayer.swordBlood == 0)
-                modPlayer.swordBlood = 1;
-            if (modPlayer.swordBloodMax < 100)
-                modPlayer.swordBloodMax = 100;
-
             int num = tooltips.FindIndex((TooltipLine t) => t.Name.Equals("CritChance"));
             if (num != -1)
             {
-                string str = (modPlayer.swordBlood * 1.0f / 100f).ToString("0.00") + "%";
-                tooltips[num + 1].overrideColor = Color.LimeGreen;
-                tooltips[num + 1].text = str + (GameCulture.Chinese.IsActive ? "觉醒度" : "Arousal Level");
                 string text;
-                float attackRange = 200f + modPlayer.swordBlood / 20;
-                if (attackRange > 500)
-                    attackRange = 500f;
+                float attackRange = 500f;
                 text = "攻击范围 " + attackRange + "格";
                 TooltipLine tooltipLine = new TooltipLine(base.mod, "SwordBloodMax", text);
                 tooltipLine.overrideColor = Color.LightGreen;
-                tooltips.Insert(num + 2, tooltipLine);
-                text = "击杀敌人+" + (modPlayer.swordBloodMax / 10000 + 1) + "攻击力";
-                tooltipLine = new TooltipLine(base.mod, "SwordBloodMax", text);
-                tooltipLine.overrideColor = Color.LightGreen;
-                tooltips.Insert(num + 3, tooltipLine);
-                text = (modPlayer.swordBloodMax * 1.0f / 100f).ToString("0.00") + "%觉醒上限";
-                tooltipLine = new TooltipLine(base.mod, "SwordBloodMax", text);
-                tooltipLine.overrideColor = Color.Red;
-                tooltips.Insert(num + 4, tooltipLine);
-
-                text = player.getDownedBoss();
-                tooltipLine = new TooltipLine(base.mod, "SwordBloodMax", text);
-                tooltipLine.overrideColor = Color.LightGreen;
-                tooltips.Insert(tooltips.Count, tooltipLine);
+                tooltips.Insert(num + 1, tooltipLine);
             }
-            
         }
 
         public override void GetWeaponCrit(Player player, ref int crit)
@@ -180,18 +117,87 @@ namespace SummonHeart.Items.Weapons.Melee
             }
         }
 
-        public override void GetWeaponDamage(Player player, ref int damage)
+        public int getDownedBossDmage()
         {
-            SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
-            damage = modPlayer.swordBlood;
-        }
-
-        public override void OnHitNPC(Player player, NPC target, int damage, float knockback, bool crit)
-        {
-            if (crit)
+            int[] bossTips = new int[]
             {
-                damage *= 2;
+                25,
+                26,
+                28,
+                30,
+                35,
+                42,
+                56,
+                70,
+                90,
+                120,
+                140,
+                160,
+                200
+            };
+            int downedIndex = 0;
+            //1、2W - king slime5 %
+            if (NPC.downedSlimeKing)
+            {
+                downedIndex = 1;
             }
+            //2、3W - bigEye10
+            if (NPC.downedBoss1)
+            {
+                downedIndex = 2;
+            }
+            //3、4W - 世吞 / 克脑20
+            if (NPC.downedBoss2)
+            {
+                downedIndex = 3;
+            }
+            //4、6W - 蜂王30
+            if (NPC.downedQueenBee)
+            {
+                downedIndex = 4;
+            }
+            //5、7W - 吴克40
+            if (NPC.downedBoss3)
+            {
+                downedIndex = 5;
+            }
+            //6、8W - 肉山50
+            if (Main.hardMode)
+            {
+                downedIndex = 6;
+            }
+            //7、10W-新三王80
+            if (NPC.downedMechBossAny)
+            {
+                downedIndex = 7;
+            }
+            //8、12W - 小花100
+            if (NPC.downedPlantBoss)
+            {
+                downedIndex = 8;
+            }
+            //9、14W - 小怪120
+            if (NPC.downedFishron)
+            {
+                downedIndex = 9;
+            }
+            //10、16W - 石头150
+            if (NPC.downedGolemBoss)
+            {
+                downedIndex = 10;
+            }
+            //11、18W - 教徒200
+            if (NPC.downedAncientCultist)
+            {
+                downedIndex = 11;
+            }
+
+            //12、20W - 月总无上限*/
+            if (NPC.downedMoonlord)
+            {
+                downedIndex = 12;
+            }
+            return bossTips[downedIndex];
         }
     }
 }

@@ -104,14 +104,7 @@ namespace SummonHeart.Items.Weapons.Sabres
                     if (distance <= radius)
                     {
                         float distanceToFocus = (targetCentre - npc.Center).Length();
-                        if(modPlayer.shortSwordBlood >= 5000)
-                        {
-                            targets.Add(npc, distanceToFocus);
-                        }
-                        else if(Collision.CanHit(center - new Vector2(12, 12), 24, 24, npc.position, npc.width, npc.height))
-                        {
-                            targets.Add(npc, distanceToFocus);
-                        }
+                        targets.Add(npc, distanceToFocus);
                     }
                 }
             }
@@ -146,7 +139,7 @@ namespace SummonHeart.Items.Weapons.Sabres
     /// <summary>
     /// Yo it's like, a homing weapon or something.
     /// </summary>
-    public class Raiden : KillItem
+    public class Raiden : ModItem
     {
         private const int dustId = MyDustId.BlueMagic;//106
 
@@ -164,18 +157,15 @@ namespace SummonHeart.Items.Weapons.Sabres
             Tooltip.AddTranslation(GameCulture.Chinese, "" +
                 "炼体八境·武道巅峰·远古魔神临死之前碎裂不朽右臂所铸造" +
                 "\n魔神之子的护道传承武器，唯魔神之子可用精血召唤使用" +
-                "\n众生之怨：不受任何伤害暴击攻击范围加成，无法附魔，减少2倍攻速加成,觉醒难度翻倍,觉醒上限为9999%" +
-                "\n弑神之力：击杀任意生物增加攻击力，然受觉醒上限限制。" +
-                "\n空间法则：自身蕴含魔神所悟空间法则之力，剑出必中！50%觉醒刺杀可穿墙" +
-                "\n魔剑觉醒：击杀强者摄其血肉灵魂修复剑身，可突破觉醒上限。");
+                "\n空间法则：自身蕴含魔神所悟空间法则之力，剑出必中！刺杀可穿墙" +
+                "\n魔剑觉醒：击杀强者摄其血肉灵魂修复剑身，可增加武器基础攻击");
         }
         public override void SetDefaults()
         {
             item.width = 40;
             item.height = 40;
 
-            //item.melee = true;
-            item.damage = 1;
+            item.damage = getDownedBossDmage();
             item.knockBack = 3;
             item.autoReuse = true;
 
@@ -183,9 +173,10 @@ namespace SummonHeart.Items.Weapons.Sabres
             item.UseSound = SoundID.Item1;
             item.useTime = 60 / 4;
             item.useAnimation = 17;
+            item.thrown = true;
 
             item.rare = -12;
-            item.value = Item.sellPrice(999, 0, 0, 0);
+            item.value = Item.sellPrice(9999, 0, 0, 0);
         }
 
         public override bool AllowPrefix(int pre)
@@ -212,42 +203,13 @@ namespace SummonHeart.Items.Weapons.Sabres
             Player player = Main.player[Main.myPlayer];
             SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
 
-            if (modPlayer.shortSwordBlood == 0)
-                modPlayer.shortSwordBlood = 1;
-            if (modPlayer.swordBloodMax < 100)
-                modPlayer.swordBloodMax = 100;
-
-            int num = tooltips.FindIndex((TooltipLine t) => t.Name.Equals("CritChance"));
-            if (num != -1)
-            {
-                string str = (modPlayer.shortSwordBlood * 1.0f / 100f).ToString("0.00") + "%";
-                tooltips[num].overrideColor = Color.LimeGreen;
-                tooltips[num].text = str + (GameCulture.Chinese.IsActive ? "觉醒度" : "Arousal Level");
-                string text;
-                text = "击杀敌人+" + (modPlayer.swordBloodMax / 10000 + 1) + "攻击力";
-                TooltipLine tooltipLine = new TooltipLine(base.mod, "SwordBloodMax", text);
-                tooltipLine.overrideColor = Color.Red;
-                tooltips.Insert(num + 1, tooltipLine);
-                text = (modPlayer.swordBloodMax * 1.0f / 100f).ToString("0.00") + "%觉醒上限";
-                tooltipLine = new TooltipLine(base.mod, "SwordBloodMax", text);
-                tooltipLine.overrideColor = Color.Red;
-                tooltips.Insert(num + 2, tooltipLine);
-            }
-
             TooltipLine tt = tooltips.FirstOrDefault(x => x.Name == "Damage" && x.mod == "Terraria");
-            if (tt != null)
-            {
-                string[] splitText = tt.text.Split(' ');
-                string damageValue = splitText.First();
-                string damageWord = splitText.Last();
-                tt.text = damageValue + " 刺杀" + damageWord;
-            }
             if (modPlayer.killResourceSkillCount > 0)
             {
-                num = tooltips.FindIndex((TooltipLine t) => t.Name.Equals("Damage"));
+                int num = tooltips.FindIndex((TooltipLine t) => t.Name.Equals("Damage"));
                 if (num != -1)
                 {
-                    string text = "刺杀技能 " + (modPlayer.shortSwordBlood * modPlayer.killResourceMulti) + "附加刺杀伤害";
+                    string text = "刺杀技能 " + (player.HeldItem.damage * modPlayer.killResourceMulti) + "附加刺杀伤害";
                     TooltipLine tooltipLine = new TooltipLine(base.mod, "SwordBloodMax", text);
                     tooltipLine.overrideColor = Color.SkyBlue;
                     tooltips.Insert(num + 1, tooltipLine);
@@ -265,12 +227,6 @@ namespace SummonHeart.Items.Weapons.Sabres
             crit = 100;
         }
 
-       /* public override void GetWeaponDamage(Player player, ref int damage)
-        {
-            SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
-            damage = modPlayer.shortSwordBlood;
-        }
-*/
         public override void HoldItem(Player player)
         {
             SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
@@ -320,7 +276,7 @@ namespace SummonHeart.Items.Weapons.Sabres
                     }
                     else
                     {
-                        player.GetModPlayer<SummonHeartPlayer>().magicCharge += 1f;
+                        player.GetModPlayer<SummonHeartPlayer>().magicCharge += 2f;
                         if (Main.time % 10 == 0)
                             mp.killResourceCurrent -= killCostCount;
                             //转换死气值
@@ -447,6 +403,90 @@ namespace SummonHeart.Items.Weapons.Sabres
             d.position -= direction * 25f;
             d.velocity = direction * 5f;
         }
+
+
+        public int getDownedBossDmage()
+        {
+            int[] bossTips = new int[]
+            {
+                25,
+                26,
+                28,
+                30,
+                35,
+                42,
+                56,
+                70,
+                90,
+                120,
+                140,
+                160,
+                200
+            };
+            int downedIndex = 0;
+            //1、2W - king slime5 %
+            if (NPC.downedSlimeKing)
+            {
+                downedIndex = 1;
+            }
+            //2、3W - bigEye10
+            if (NPC.downedBoss1)
+            {
+                downedIndex = 2;
+            }
+            //3、4W - 世吞 / 克脑20
+            if (NPC.downedBoss2)
+            {
+                downedIndex = 3;
+            }
+            //4、6W - 蜂王30
+            if (NPC.downedQueenBee)
+            {
+                downedIndex = 4;
+            }
+            //5、7W - 吴克40
+            if (NPC.downedBoss3)
+            {
+                downedIndex = 5;
+            }
+            //6、8W - 肉山50
+            if (Main.hardMode)
+            {
+                downedIndex = 6;
+            }
+            //7、10W-新三王80
+            if (NPC.downedMechBossAny)
+            {
+                downedIndex = 7;
+            }
+            //8、12W - 小花100
+            if (NPC.downedPlantBoss)
+            {
+                downedIndex = 8;
+            }
+            //9、14W - 小怪120
+            if (NPC.downedFishron)
+            {
+                downedIndex = 9;
+            }
+            //10、16W - 石头150
+            if (NPC.downedGolemBoss)
+            {
+                downedIndex = 10;
+            }
+            //11、18W - 教徒200
+            if (NPC.downedAncientCultist)
+            {
+                downedIndex = 11;
+            }
+
+            //12、20W - 月总无上限*/
+            if (NPC.downedMoonlord)
+            {
+                downedIndex = 12;
+            }
+            return bossTips[downedIndex];
+        }
     }
 
     public class RaidenSlash : ModProjectile
@@ -498,7 +538,7 @@ namespace SummonHeart.Items.Weapons.Sabres
                     if (modPlayer.showRadius && modPlayer.killResourceSkillCount < 1)
                     {
                         modPlayer.showRadius = false;
-                        Main.NewText($"刺杀技能储备不足，无法使用刺杀技能，刺杀技能自动关闭", Color.Red);
+                        //Main.NewText($"刺杀技能储备不足，无法使用刺杀技能，刺杀技能自动关闭", Color.Red);
                     }
                 }
                 FrameCheck += 1f;
@@ -534,7 +574,7 @@ namespace SummonHeart.Items.Weapons.Sabres
                         else
                         {
                             modPlayer.showRadius = false;
-                            Main.NewText($"刺杀技能储备不足，无法使用刺杀技能，刺杀技能自动关闭", Color.Red);
+                            //Main.NewText($"刺杀技能储备不足，无法使用刺杀技能，刺杀技能自动关闭", Color.Red);
                             return;
                         }
 

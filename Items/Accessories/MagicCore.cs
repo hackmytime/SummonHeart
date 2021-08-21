@@ -34,13 +34,13 @@ namespace SummonHeart.Items.Accessories
             player.GetModPlayer<SummonHeartPlayer>().magicBook = true;
         }
 
-        public override void AddRecipes()
+       /* public override void AddRecipes()
         {
             ModRecipe modRecipe = new ModRecipe(mod);
             modRecipe.AddIngredient(ModContent.ItemType<GuideNote>(), 1);
             modRecipe.AddIngredient(ModContent.ItemType<MagicScroll2>(), 1);
             modRecipe.SetResult(this, 1);
             modRecipe.AddRecipe();
-        }
+        }*/
     }
 }

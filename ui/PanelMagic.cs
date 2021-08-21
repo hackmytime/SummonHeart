@@ -99,25 +99,33 @@ namespace SummonHeart.ui
             int buffIndex = 0;
             {
                 var modbuffpanel = new Layout(10, 0, 0, 0, 10, new LayoutVertical());
-
-                var modlabel = new UIText("魔神淬法诀-魔神法师·法神传承：魔神领悟道之本源用杀戮法则所创，掠夺万物法力练体");
-                modlabel.TextColor = new Color(232, 181, 16);
-                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
-                modlabel = new UIText("炼至巅峰，成就不灭法体。可多重施法，万法不侵");
-                modlabel.TextColor = new Color(232, 181, 16);
-                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
-                modlabel = new UIText("杀戮众生淬法体，月华灵眸破妄虚。意起身随凌空至，掌过星流化荒芜！");
-                modlabel.TextColor = new Color(232, 181, 16);
-                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
+                bool show = true;
+                if(Main.screenWidth == 1366)
+                {
+                    show = false;
+                }
+                if (show)
+                {
+                    var modlabel = new UIText("魔神淬法诀-魔神法师·法神传承：魔神领悟道之本源用杀戮法则所创，掠夺万物法力练体");
+                    modlabel.TextColor = new Color(232, 181, 16);
+                    modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
+                    modlabel = new UIText("炼至巅峰，成就不灭法体。可多重施法，万法不侵");
+                    modlabel.TextColor = new Color(232, 181, 16);
+                    modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
+                    modlabel = new UIText("杀戮众生淬法体，月华灵眸破妄虚。意起身随凌空至，掌过星流化荒芜！");
+                    modlabel.TextColor = new Color(232, 181, 16);
+                    modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
+                }
 
                 int totalBoodGas = mp.eyeBloodGas + mp.handBloodGas + mp.bodyBloodGas + mp.footBloodGas;
 
-                var modlabel_level = new UIText("法神被动：每20点气血增加1点最大法力值，从气血之中提取法力，从而获得近乎无尽的法力。");
+                var modlabel_level = new UIText("法神被动：每20点气血增加1点最大法力值，从气血之中提取法力，获得无尽的法力。");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
                 modlabel_level = new UIText("法神被动：原版法力回复无效，获得独立基础回蓝8点每秒。");
                 modlabel_level.TextColor = Color.SkyBlue;
-                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
+                if(show)
+                    modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
                 modlabel_level = new UIText("魔法上限+" + totalBoodGas/20 + " 总气血：" + totalBoodGas + " 死亡次数：" + mp.deathCount + " 战斗力：" + mp.getPower() + " 当前暴击伤害" + mp.MyCritDmageMult * 100 + "%");
                 modlabel_level.TextColor = Color.Red;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
@@ -216,13 +224,16 @@ namespace SummonHeart.ui
                 modlabel_level = new UIText("魔神之腿" + praticeText + " 气血值：" + mp.footBloodGas);
                 modlabel_level.TextColor = Color.Orange;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("风驰电掣，雷厉风行：移动速度+" + (mp.footBloodGas / 5000 + 20) + "%(初始20%，每5000气血+1) 跳跃速度+" + (mp.footBloodGas / 1000 + 60) + "%(初始60%，每1000气血+1)");
+                modlabel_level = new UIText("风驰电掣，雷厉风行：移动速度+" + (mp.footBloodGas / 5000 + 20) + "%(初始20%，每5000气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("天涯海角，一步跨之：飞行时间+" + (mp.footBloodGas / 2222 + 5) + "秒(初始5，每2222气血+1)免疫摔落伤害，20W气血时无限飞行");
+                modlabel_level = new UIText("风驰电掣，雷厉风行：跳跃速度+" + (mp.footBloodGas / 1000 + 60) + "%(初始60%，每1000气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("空间传送：可以消耗当前5%魔力（最低100）使用强力空间传送（无视地形），需要设置按键");
+                modlabel_level = new UIText("天涯海角，一步跨之：飞行时间+" + (mp.footBloodGas / 2222 + 5) + "秒(初始5，每2222气血+1)20W气血时无限飞行");
+                modlabel_level.TextColor = Color.SkyBlue;
+                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
+                modlabel_level = new UIText("空间传送：可以消耗当前5%魔力（最低100）使用强力空间传送（无视地形）需要设置按键");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
 

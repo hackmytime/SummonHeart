@@ -23,16 +23,14 @@ namespace SummonHeart.Items.Weapons.Magic
             Tooltip.AddTranslation(GameCulture.Chinese, "" +
                 "炼体八境·武道巅峰·远古魔神临死之前碎裂不朽右臂所铸造" +
                 "\n魔神之子的护道传承武器，唯魔神之子可用精血召唤使用" +
-                "\n众生之怨：不受任何伤害攻速加成，无法附魔，可以享受2倍多重施法加成" +
-                "\n弑神之力：击杀任意生物增加攻击力，然受觉醒上限限制。" +
-                "\n破灭法则：暴击几率翻倍，穿透+3" +
-                "\n魔源觉醒：击杀强者摄其血肉灵魂增强魔力之源，可突破觉醒上限。");
+                "\n破灭法则：暴击几率翻倍，穿透+6" +
+                "\n魔源觉醒：击杀强者摄其血肉灵魂可增加基础攻击。");
         }
 
         // Token: 0x0600135B RID: 4955 RVA: 0x000B4E18 File Offset: 0x000B3018
         public override void SetDefaults()
         {
-            item.damage = 1;
+            item.damage = getDownedBossDmage();
             item.width = 46;
             item.height = 46;
             /* item.useTime = 20;
@@ -73,7 +71,6 @@ namespace SummonHeart.Items.Weapons.Magic
             int maxPro = 1;
             if (mp.PlayerClass == 5 && mp.boughtbuffList[1])
                 maxPro += mp.handBloodGas / 33333 + 1;
-            maxPro *= 2;
             for (int i = 1; i <= maxPro; i++)
             {
                 int param = i / 2;
@@ -101,34 +98,25 @@ namespace SummonHeart.Items.Weapons.Magic
             Player player = Main.player[Main.myPlayer];
             SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
 
-            if (modPlayer.swordBlood == 0)
-                modPlayer.swordBlood = 1;
-            if (modPlayer.swordBloodMax < 100)
-                modPlayer.swordBloodMax = 100;
-
             int num = tooltips.FindIndex((TooltipLine t) => t.Name.Equals("CritChance"));
             if (num != -1)
             {
-                string str = (modPlayer.magicSwordBlood * 1.0f / 100f).ToString("0.00") + "%";
-                string text = str + (GameCulture.Chinese.IsActive ? "觉醒度" : "Arousal Level");
+                string text = "";
                 TooltipLine tooltipLine = new TooltipLine(base.mod, "MagicSwordBlood", text);
-                tooltipLine.overrideColor = Color.LimeGreen;
-                tooltips.Insert(num + 1, tooltipLine);
-                int range = (int)(modPlayer.magicSwordBlood / 16.7 + 500);
-                if(range > 1000)
-                    range = 1000;
-                text = "追踪范围 " + range + "格";
+                /*tooltipLine.overrideColor = Color.LimeGreen;
+                tooltips.Insert(num + 1, tooltipLine);*/
+                text = "追踪范围1000格";
                 tooltipLine = new TooltipLine(base.mod, "SwordBloodMax", text);
                 tooltipLine.overrideColor = Color.LightBlue;
-                tooltips.Insert(num + 2, tooltipLine);
-                text = (modPlayer.swordBloodMax * 1.0f / 100f).ToString("0.00") + "%觉醒上限";
+                tooltips.Insert(num + 1, tooltipLine);
+               /* text = (modPlayer.swordBloodMax * 1.0f / 100f).ToString("0.00") + "%觉醒上限";
                 tooltipLine = new TooltipLine(base.mod, "SwordBloodMax", text);
                 tooltipLine.overrideColor = Color.Red;
                 tooltips.Insert(num + 3, tooltipLine);
                 text = "击杀敌人+" + (modPlayer.swordBloodMax / 10000 + 1) + "攻击力";
                 tooltipLine = new TooltipLine(base.mod, "SwordBloodMax", text);
                 tooltipLine.overrideColor = Color.LimeGreen;
-                tooltips.Insert(num + 4, tooltipLine);
+                tooltips.Insert(num + 4, tooltipLine);*/
 
                 text = player.getDownedBoss();
                 tooltipLine = new TooltipLine(base.mod, "SwordBloodMax", text);
@@ -142,22 +130,6 @@ namespace SummonHeart.Items.Weapons.Magic
             crit *= 2;
         }
 
-        public override void GetWeaponDamage(Player player, ref int damage)
-        {
-            SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
-            damage = modPlayer.magicSwordBlood;
-        }
-
-        public override bool AllowPrefix(int pre)
-        {
-            return false;
-        }
-
-        public override bool? PrefixChance(int pre, UnifiedRandom rand)
-        {
-            return new bool?(false);
-        }
-
         public override void AddRecipes()
         {
             ModRecipe recipe = new ModRecipe(mod);
@@ -165,6 +137,89 @@ namespace SummonHeart.Items.Weapons.Magic
             recipe.AddIngredient(mod.GetItem("MagicScroll"), 1);
             recipe.SetResult(this);
             recipe.AddRecipe();
+        }
+
+        public int getDownedBossDmage()
+        {
+            int[] bossTips = new int[]
+            {
+                25,
+                26,
+                28,
+                30,
+                35,
+                42,
+                56,
+                70,
+                90,
+                120,
+                140,
+                160,
+                200
+            };
+            int downedIndex = 0;
+            //1、2W - king slime5 %
+            if (NPC.downedSlimeKing)
+            {
+                downedIndex = 1;
+            }
+            //2、3W - bigEye10
+            if (NPC.downedBoss1)
+            {
+                downedIndex = 2;
+            }
+            //3、4W - 世吞 / 克脑20
+            if (NPC.downedBoss2)
+            {
+                downedIndex = 3;
+            }
+            //4、6W - 蜂王30
+            if (NPC.downedQueenBee)
+            {
+                downedIndex = 4;
+            }
+            //5、7W - 吴克40
+            if (NPC.downedBoss3)
+            {
+                downedIndex = 5;
+            }
+            //6、8W - 肉山50
+            if (Main.hardMode)
+            {
+                downedIndex = 6;
+            }
+            //7、10W-新三王80
+            if (NPC.downedMechBossAny)
+            {
+                downedIndex = 7;
+            }
+            //8、12W - 小花100
+            if (NPC.downedPlantBoss)
+            {
+                downedIndex = 8;
+            }
+            //9、14W - 小怪120
+            if (NPC.downedFishron)
+            {
+                downedIndex = 9;
+            }
+            //10、16W - 石头150
+            if (NPC.downedGolemBoss)
+            {
+                downedIndex = 10;
+            }
+            //11、18W - 教徒200
+            if (NPC.downedAncientCultist)
+            {
+                downedIndex = 11;
+            }
+
+            //12、20W - 月总无上限*/
+            if (NPC.downedMoonlord)
+            {
+                downedIndex = 12;
+            }
+            return bossTips[downedIndex];
         }
     }
 }

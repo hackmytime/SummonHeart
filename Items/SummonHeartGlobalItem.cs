@@ -33,7 +33,7 @@ namespace SummonHeart.Items
                 if (mp.magicChargeCount > 0)
                 {
                     //计算伤害
-                    int damage = (int)(item.damage * 20 * (player.allDamage - 1 + player.magicDamage + mp.handBloodGas / 20000));
+                    int damage = (int)(item.damage * 50 * (player.allDamage - 1 + player.magicDamage + mp.handBloodGas / 20000));
                     Vector2 arrowVelocity = Vector2.Normalize(Main.MouseWorld - player.Center) * v1;
                     if (SummonHeartMod.itemSoundMap.ContainsKey(item))
                         Main.PlaySound(SummonHeartMod.itemSoundMap[item], player.position);
@@ -133,11 +133,6 @@ namespace SummonHeart.Items
                 {
                     float curScale = (mp.handBloodGas / 500 * 0.01f + 0.5f) * handMultiplier;
                     curScale = 1f;
-                    //刺剑距离减半
-                    if (item.modItem != null && item.modItem.Name == "Raiden")
-                    {
-                        curScale = 0.5f;
-                    }
                     item.scale = curScale + 1f;
                 }
             }
@@ -189,7 +184,7 @@ namespace SummonHeart.Items
                         else
                         {
                             //计算增加的量
-                            float addCharge = 1f;
+                            float addCharge = 2f;
                             if (mp.boughtbuffList[1])
                             {
                                 addCharge += (mp.handBloodGas / 2500 + 20) * 0.01f;

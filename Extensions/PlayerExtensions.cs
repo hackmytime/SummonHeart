@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SummonHeart.Models;
@@ -8,7 +6,6 @@ using SummonHeart.NPCs;
 using SummonHeart.Utilities;
 using Terraria;
 using Terraria.ID;
-using Terraria.ModLoader;
 
 namespace SummonHeart.Extensions
 {
@@ -112,105 +109,6 @@ namespace SummonHeart.Extensions
 			SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
 			if (npc.boss)
 				modPlayer.killAnyBoss = true;
-			if (player.HeldItem.modItem != null && player.HeldItem.modItem.Name == "DemonSword")
-			{
-				if (npc.boss && NPC.downedMoonlord)
-				{
-					int swordMax = npc.getPower() / 400;
-					if (modPlayer.swordBloodMax < swordMax)
-					{
-						modPlayer.swordBloodMax = swordMax;
-						string curMax = (modPlayer.swordBloodMax * 1.0f / 100f).ToString("0.00");
-						string text = $"{player.name}手持魔剑·弑神吞噬了{npc.FullName}的血肉，突破觉醒上限，当前觉醒上限：{curMax}%";
-						Main.NewText(text, Color.Green);
-					}
-				}
-				if (modPlayer.swordBlood < modPlayer.swordBloodMax)
-				{
-					modPlayer.swordBlood += (modPlayer.swordBloodMax / 10000 + 1);
-					if (modPlayer.swordBlood > modPlayer.swordBloodMax)
-						modPlayer.swordBlood = modPlayer.swordBloodMax;
-				}
-			}
-			if (player.HeldItem.modItem != null && player.HeldItem.modItem.Name == "Raiden")
-			{
-				if (npc.boss && NPC.downedMoonlord)
-				{
-					int swordMax = npc.getPower() / 800;
-					if (swordMax > 999999)
-						swordMax = 999999;
-					if (modPlayer.swordBloodMax < swordMax)
-					{
-						modPlayer.swordBloodMax = swordMax;
-						string curMax = (modPlayer.swordBloodMax * 1.0f / 100f).ToString("0.00");
-						string text = $"{player.name}手持魔剑·神陨吞噬了{npc.FullName}的血肉，突破觉醒上限，当前觉醒上限：{curMax}%";
-						Main.NewText(text, Color.Green);
-					}
-				}
-				if (modPlayer.shortSwordBlood < modPlayer.swordBloodMax)
-				{
-					modPlayer.shortSwordBlood += (modPlayer.swordBloodMax / 10000 + 1);
-					if (modPlayer.shortSwordBlood > modPlayer.swordBloodMax)
-						modPlayer.shortSwordBlood = modPlayer.swordBloodMax;
-				}
-				if (modPlayer.PlayerClass == 2)
-				{
-					int heal = 5 * SummonHeartWorld.WorldLevel;
-					if (modPlayer.boughtbuffList[1])
-					{
-						heal += (modPlayer.eyeBloodGas / 400);
-					}
-					modPlayer.killResourceCurrent += heal;
-					CombatText.NewText(player.getRect(), new Color(0, 255, 0), "+" + heal + "杀意值");
-					if (modPlayer.killResourceCurrent > modPlayer.killResourceMax2)
-						modPlayer.killResourceCurrent = modPlayer.killResourceMax2;
-					if (Main.netMode == NetmodeID.Server)
-					{
-						modPlayer.KillResourceCountMsg();
-					}
-				}
-			}
-			if (player.HeldItem.modItem != null && player.HeldItem.modItem.Name == "DemonFlySword")
-			{
-				if (npc.boss)
-				{
-					int swordMax = npc.getPower() / 800;
-					if (modPlayer.swordBloodMax < swordMax && NPC.downedMoonlord)
-					{
-						modPlayer.swordBloodMax = swordMax;
-						string curMax = (modPlayer.swordBloodMax * 1.0f / 100f).ToString("0.00");
-						string text = $"{player.name}手持魔剑·神灭吞噬了{npc.FullName}的血肉，突破觉醒上限，当前觉醒上限：{curMax}%";
-						Main.NewText(text, Color.Green);
-					}
-					if (modPlayer.flySwordBlood < modPlayer.swordBloodMax)
-					{
-						modPlayer.flySwordBlood += (modPlayer.swordBloodMax / 2000 + 5);
-						if (modPlayer.flySwordBlood > modPlayer.swordBloodMax)
-							modPlayer.flySwordBlood = modPlayer.swordBloodMax;
-					}
-				}
-			}
-			if (player.HeldItem.modItem != null && player.HeldItem.modItem.Name == "DemonStaff")
-			{
-				if (npc.boss && NPC.downedMoonlord)
-				{
-					int swordMax = npc.getPower() / 400;
-					if (modPlayer.swordBloodMax < swordMax)
-					{
-						modPlayer.swordBloodMax = swordMax;
-						string curMax = (modPlayer.swordBloodMax * 1.0f / 100f).ToString("0.00");
-						string text = $"{player.name}手持魔力之源吞噬了{npc.FullName}的血肉，突破觉醒上限，当前觉醒上限：{curMax}%";
-						Main.NewText(text, Color.Green);
-					}
-				}
-
-				if (modPlayer.magicSwordBlood < modPlayer.swordBloodMax)
-				{
-					modPlayer.magicSwordBlood += (modPlayer.swordBloodMax / 10000 + 1);
-					if (modPlayer.magicSwordBlood > modPlayer.swordBloodMax)
-						modPlayer.magicSwordBlood = modPlayer.swordBloodMax;
-				}
-			}
 
 			if(modPlayer.PlayerClass == 5 && modPlayer.boughtbuffList[0])
             {
@@ -229,19 +127,11 @@ namespace SummonHeart.Extensions
 					if (powerLevel == -1)
 					{
 						addExp = 1;
-
 					}
 					else
 					{
-						addExp = npc.getPower() / 100;
-						if (Main.hardMode)
-						{
-							addExp = npc.getPower() / 200;
-						}
-						if (NPC.downedMoonlord)
-						{
-							addExp = npc.getPower() / 500;
-						}
+                        int downedBossIndex = player.getDownedBossIndex();
+						addExp = 100 + 50 * downedBossIndex;
 					}
 				}
 				else
@@ -592,19 +482,19 @@ namespace SummonHeart.Extensions
 		{
 			string[] bossTips = new string[]
 			{
-				"未吞噬任何Boss：觉醒上限初始1%",
-				"已吞噬史莱姆王：觉醒上限突破至5%",
-				"已吞噬克苏鲁之眼：觉醒上限突破至10%",
-				"已吞噬世吞/克脑：觉醒上限突破至20%",
-				"已吞噬蜂王：觉醒上限突破至30%",
-				"已吞噬骷髅王：觉醒上限突破至40%",
-				"已吞噬血肉之墙：觉醒上限突破至50%",
-				"已吞噬任意新三王：觉醒上限突破至80%",
-				"已吞噬世纪之花：觉醒上限突破至100%",
-				"已吞噬猪鲨公爵：觉醒上限突破至120%",
-				"已吞噬石巨人：觉醒上限突破至150%",
-				"已吞噬邪教徒：觉醒上限突破至200%",
-				"已吞噬月球领主：击杀强者可以一直突破，觉醒无上限"
+				"未吞噬任何Boss：25基础攻击",
+				"已吞噬史莱姆王：26基础攻击",
+				"已吞噬克苏鲁之眼：28基础攻击",
+				"已吞噬世吞/克脑：30基础攻击",
+				"已吞噬蜂王：35基础攻击",
+				"已吞噬骷髅王：42基础攻击",
+				"已吞噬血肉之墙：56基础攻击",
+				"已吞噬任意新三王：70基础攻击",
+				"已吞噬世纪之花：90基础攻击",
+				"已吞噬猪鲨公爵：120基础攻击",
+				"已吞噬石巨人：140基础攻击",
+				"已吞噬邪教徒：160基础攻击",
+				"已吞噬月球领主：200基础攻击"
 			};
 			int downedIndex = 0;
 			//1、2W - king slime5 %
@@ -669,6 +559,95 @@ namespace SummonHeart.Extensions
 				downedIndex = 12;
 			}
 			return bossTips[downedIndex];
+		}
+
+		public static int getDownedBossDmage(this Player player)
+		{
+			int[] bossTips = new int[]
+			{
+				25,
+				26,
+				28,
+				30,
+				35,
+				42,
+				56,
+				70,
+				90,
+				120,
+				140,
+				160,
+				200
+			};
+			int downedIndex = player.getDownedBossIndex();
+			return bossTips[downedIndex];
+		}
+
+		public static int getDownedBossIndex(this Player player)
+		{
+			int downedIndex = 0;
+			//1、2W - king slime5 %
+			if (NPC.downedSlimeKing)
+			{
+				downedIndex = 1;
+			}
+			//2、3W - bigEye10
+			if (NPC.downedBoss1)
+			{
+				downedIndex = 2;
+			}
+			//3、4W - 世吞 / 克脑20
+			if (NPC.downedBoss2)
+			{
+				downedIndex = 3;
+			}
+			//4、6W - 蜂王30
+			if (NPC.downedQueenBee)
+			{
+				downedIndex = 4;
+			}
+			//5、7W - 吴克40
+			if (NPC.downedBoss3)
+			{
+				downedIndex = 5;
+			}
+			//6、8W - 肉山50
+			if (Main.hardMode)
+			{
+				downedIndex = 6;
+			}
+			//7、10W-新三王80
+			if (NPC.downedMechBossAny)
+			{
+				downedIndex = 7;
+			}
+			//8、12W - 小花100
+			if (NPC.downedPlantBoss)
+			{
+				downedIndex = 8;
+			}
+			//9、14W - 小怪120
+			if (NPC.downedFishron)
+			{
+				downedIndex = 9;
+			}
+			//10、16W - 石头150
+			if (NPC.downedGolemBoss)
+			{
+				downedIndex = 10;
+			}
+			//11、18W - 教徒200
+			if (NPC.downedAncientCultist)
+			{
+				downedIndex = 11;
+			}
+
+			//12、20W - 月总无上限*/
+			if (NPC.downedMoonlord)
+			{
+				downedIndex = 12;
+			}
+			return downedIndex;
 		}
 	}
 }

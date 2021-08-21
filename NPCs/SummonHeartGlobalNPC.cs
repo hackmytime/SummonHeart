@@ -200,13 +200,21 @@ namespace SummonHeart.NPCs
 
 		public override void UpdateLifeRegen(NPC npc, ref int damage)
 		{
-            if (SummonHeartWorld.GoddessMode)
+			Player player = Main.player[Main.myPlayer];
+			SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
+			if (SummonHeartWorld.GoddessMode)
             {
 				int heal = 0;
 				//女神模式回血
 				if (npc.boss)
                 {
-					heal = (int)(npc.lifeMax / 200);
+					int bossIndex = player.getDownedBossIndex();
+					int healTime = 600;
+					if (bossIndex > 0)
+                    {
+						healTime -= bossIndex * 40;
+						heal = (int)(npc.lifeMax / healTime);
+                    }
                 }
                 else
                 {
@@ -215,8 +223,6 @@ namespace SummonHeart.NPCs
 				npc.lifeRegen += heal * 2;
 				if (npc.HasBuff(mod.BuffType("SoulSplit")))
 				{
-					Player player = Main.player[Main.myPlayer];
-					SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
 					int lifeDmage = 2 * modPlayer.SummonCrit / 50 * soulSplitCount;
 					if (lifeDmage < 2)
 						lifeDmage = 2;
@@ -225,8 +231,6 @@ namespace SummonHeart.NPCs
 			}
 			else if (npc.HasBuff(mod.BuffType("SoulSplit")))
             {
-				Player player = Main.player[Main.myPlayer];
-				SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
 
 				int lifeDmage = 2 * modPlayer.SummonCrit / 50 * soulSplitCount;
 				if (lifeDmage < 2)
@@ -285,7 +289,7 @@ namespace SummonHeart.NPCs
 			{
 				if (modPlayer.PlayerClass == 2 && modPlayer.chargeAttack)
 				{
-					damage += modPlayer.shortSwordBlood * modPlayer.killResourceMulti;
+					damage *= modPlayer.killResourceMulti;
 				}
 			}
 			damage = (int)Math.Ceiling(damage / modPlayer.enemyDamageReduceMult);
@@ -310,6 +314,12 @@ namespace SummonHeart.NPCs
 						crit = true;
                 }
 			}
+			if (projectile.minion && modPlayer.PlayerClass == 3 && modPlayer.boughtbuffList[0])
+			{
+				int critChance = modPlayer.eyeBloodGas / 2500 + 20;
+				if (Main.rand.Next(101) <= critChance)
+					crit = true;
+			}
 			if (npc.HasBuff(mod.BuffType("EyeBuff")))
             {
 				crit = true;
@@ -326,15 +336,7 @@ namespace SummonHeart.NPCs
 			{
 				damage = (int)(damage * modPlayer.MyCritDmageMult);
 			}
-			//神灭
 			int addRealDmage = 0;
-			if (projectile.modProjectile != null && projectile.modProjectile.Name == "DemonFlySwordMinion")
-			{
-				if (modPlayer.PlayerClass == 3)
-				{
-					addRealDmage += modPlayer.flySwordBlood;
-				}
-			}
 			//投手附加伤害
 			if (modPlayer.PlayerClass == 2 && player.HeldItem.thrown == true && projectile.thrown)
 			{

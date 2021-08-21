@@ -25,77 +25,74 @@ namespace SummonHeart
 			if (NPC.downedSlimeKing)
 			{
 				bodyMax = 20000;
-				swordMax = 500;
+				swordMax = 300;
 			}
 			//2、3W - bigEye10
 			if (NPC.downedBoss1)
 			{
 				bodyMax = 30000;
-				swordMax = 1000;
+				swordMax = 400;
 			}
 			//3、4W - 世吞 / 克脑20
 			if (NPC.downedBoss2)
 			{
 				bodyMax = 40000;
-				swordMax = 2000;
+				swordMax = 500;
 			}
 			//4、6W - 蜂王30
 			if (NPC.downedQueenBee)
 			{
 				bodyMax = 60000;
-				swordMax = 3000;
+				swordMax = 600;
 			}
 			//5、7W - 吴克40
 			if (NPC.downedBoss3)
 			{
 				bodyMax = 70000;
-				swordMax = 4000;
+				swordMax = 700;
 			}
 			//6、8W - 肉山50
 			if (Main.hardMode)
 			{
 				bodyMax = 80000;
-				swordMax = 5000;
+				swordMax = 1000;
 			}
 			//7、10W-新三王80
 			if (NPC.downedMechBossAny)
 			{
 				bodyMax = 100000;
-				swordMax = 8000;
+				swordMax = 1500;
 			}
 			//8、12W - 小花100
 			if (NPC.downedPlantBoss)
 			{
 				bodyMax = 120000;
-				swordMax = 10000;
+				swordMax = 2000;
 			}
 			//9、14W - 小怪120
 			if (NPC.downedFishron)
 			{
 				bodyMax = 140000;
-				swordMax = 12000;
+				swordMax = 2500;
 			}
 			//10、16W - 石头150
 			if (NPC.downedGolemBoss)
 			{
 				bodyMax = 160000;
-				swordMax = 15000;
+				swordMax = 3000;
 			}
 			//11、18W - 教徒200
 			if (NPC.downedAncientCultist)
 			{
 				bodyMax = 180000;
-				swordMax = 20000;
+				swordMax = 3500;
 			}
 			
 			//12、20W - 月总无上限*/
 			if (NPC.downedMoonlord)
 			{
 				bodyMax = 200000;
-            }
-            else
-            {
-				mp.swordBloodMax = swordMax;
+				swordMax = 10000;
 			}
 			mp.bloodGasMax = bodyMax;
 		}

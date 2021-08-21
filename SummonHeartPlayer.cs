@@ -69,11 +69,7 @@ namespace SummonHeart
 
 		public int bloodGasMax = 10000;
 
-		public int swordBlood = 1;
-		public int shortSwordBlood = 1;
-		public int flySwordBlood = 1;
-		public int magicSwordBlood = 1;
-		public int swordBloodMax = 100;
+		public int addExp = 0;
 
 		public bool practiceEye = false;
 		public bool practiceHand = false;
@@ -209,7 +205,7 @@ namespace SummonHeart
 			myDamageReduceMult = 1f;
 			enemyDamageReduceMult = SummonHeartWorld.WorldLevel * 2;
 			//魔神的庇佑
-			if (swordBloodMax > 200)
+			if (player.getDownedBossIndex() > 0)
 				killAnyBoss = true;
 			if(!killAnyBoss)
 				player.AddBuff(mod.BuffType("DemonDefBuff"), 120);
@@ -491,11 +487,8 @@ namespace SummonHeart
 
 		private void EffectKill()
         {
-			int addMax = shortSwordBlood;
-			if (addMax > 10000)
-				addMax = 10000;
-			killResourceMax = 100 + addMax;
-			killResourceMulti = 10;
+			killResourceMax = 100;
+			killResourceMulti = 20;
 			killResourceSkillCountMax = 10;
 			//被动
 			int allBlood = this.getAllBloodGas();
@@ -512,9 +505,7 @@ namespace SummonHeart
 				AttackSpeed += (handBloodGas / 4000 + 30) * 0.01f;
 				player.thrownVelocity += (handBloodGas / 4000 + 30) * 0.01f;
 				killResourceSkillCountMax = (handBloodGas / 5000 + 10);
-				//隐藏路线：叛道者
-				if (shortSwordBlood <= 1)
-					killResourceMax2 *= 4;
+				killResourceMax2 *= 2;
 			}
 			deathResourceMax = killResourceMax2;
 			int heal = 1;
@@ -1052,11 +1043,6 @@ namespace SummonHeart
 			tagComp.Add("bodyBloodGas", bodyBloodGas);
 			tagComp.Add("footBloodGas", footBloodGas);
 			tagComp.Add("bloodGasMax", bloodGasMax);
-			tagComp.Add("swordBlood", swordBlood);
-			tagComp.Add("shortSwordBlood", shortSwordBlood);
-			tagComp.Add("flySwordBlood", flySwordBlood);
-			tagComp.Add("magicSwordBlood", magicSwordBlood);
-			tagComp.Add("swordBloodMax", swordBloodMax);
 			tagComp.Add("killResourceCurrent", killResourceCurrent);
 			tagComp.Add("deathResourceCurrent", deathResourceCurrent);
 			tagComp.Add("practiceEye", practiceEye);
@@ -1083,11 +1069,6 @@ namespace SummonHeart
 			bodyBloodGas = tag.GetInt("bodyBloodGas");
 			footBloodGas = tag.GetInt("footBloodGas");
 			bloodGasMax = tag.GetInt("bloodGasMax");
-			swordBlood = tag.GetInt("swordBlood");
-			shortSwordBlood = tag.GetInt("shortSwordBlood");
-			flySwordBlood = tag.GetInt("flySwordBlood");
-			magicSwordBlood = tag.GetInt("magicSwordBlood");
-			swordBloodMax = tag.GetInt("swordBloodMax");
 			killResourceCurrent = tag.GetInt("killResourceCurrent");
 			deathResourceCurrent = tag.GetInt("deathResourceCurrent");
 			practiceEye = tag.GetBool("practiceEye");
@@ -1588,7 +1569,6 @@ namespace SummonHeart
 			}
 			if (PlayerClass == 2)
             {
-				swordBloodMax += 2;
 				string text = $"{player.name}身为刺客，向死而生，杀意上限+10点";
 				Main.NewText(text, Color.Green);
 			}

@@ -41,9 +41,7 @@ namespace SummonHeart.Projectiles
 			
 			if (projectile.type == 116)
 			{
-				int range = (int)(modPlayer.magicSwordBlood / 16.7 + 500);
-				if (range > 1000)
-					range = 1000;
+				int	range = 1000;
 				float B3 = projectile.Center.X;
 				float C3 = projectile.Center.Y;
 				float D2 = range;

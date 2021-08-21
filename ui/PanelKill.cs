@@ -120,7 +120,7 @@ namespace SummonHeart.ui
                 modlabel_level = new UIText("当前杀意上限：" + mp.killResourceMax2 + " 总气血：" + totalBoodGas + " 死亡次数：" + mp.deathCount + " 战斗力：" + mp.getPower());
                 modlabel_level.TextColor = Color.Red;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("杀意伤害倍率：" + mp.killResourceMulti + " 神通附加伤害：" + mp.shortSwordBlood * mp.killResourceMulti + " 当前减伤倍率" + mp.myDamageReduceMult + "倍");
+                modlabel_level = new UIText("杀意伤害倍率：" + mp.killResourceMulti + " 神通附加伤害：" + mp.player.HeldItem.damage * mp.killResourceMulti + " 当前减伤倍率" + mp.myDamageReduceMult + "倍");
                 modlabel_level.TextColor = Color.Red;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
 
