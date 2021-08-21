@@ -100,6 +100,12 @@ namespace SummonHeart.Items.Weapons.Melee
                 TooltipLine tooltipLine = new TooltipLine(base.mod, "SwordBloodMax", text);
                 tooltipLine.overrideColor = Color.LightGreen;
                 tooltips.Insert(num + 1, tooltipLine);
+
+                Player player = Main.player[Main.myPlayer];
+                text = player.getDownedBoss();
+                tooltipLine = new TooltipLine(base.mod, "SwordBloodMax", text);
+                tooltipLine.overrideColor = Color.LightGreen;
+                tooltips.Insert(tooltips.Count, tooltipLine);
             }
         }
 

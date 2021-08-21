@@ -189,7 +189,7 @@ namespace SummonHeart
 
 			if (SummonHeartWorld.GoddessMode)
 			{
-				MaxExtraAccessories = 14 + SummonHeartWorld.WorldLevel * 2;
+				MaxExtraAccessories = 16;
 			}
 			else
 			{
@@ -204,6 +204,10 @@ namespace SummonHeart
 			//减伤倍率
 			myDamageReduceMult = 1f;
 			enemyDamageReduceMult = SummonHeartWorld.WorldLevel * 2;
+			if (SummonHeartWorld.GoddessMode)
+            {
+				enemyDamageReduceMult *= 2;
+			}
 			//魔神的庇佑
 			if (player.getDownedBossIndex() > 0)
 				killAnyBoss = true;
@@ -583,7 +587,6 @@ namespace SummonHeart
         {
 			//泰坦
 			player.statLifeMax2 += 300;
-			MyMoveSpeedMult -= 0.2f;
 			player.jumpSpeedBoost -= 0.33f;
 
 			player.statDefense += (int)bodyDef * 2;

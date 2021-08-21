@@ -92,11 +92,7 @@ namespace SummonHeart.Projectiles.Magic
         {
             Player player = Main.player[Main.myPlayer];
             SummonHeartPlayer mp = player.SummonHeart();
-            int range = mp.magicSwordBlood / 33 + 100;
-            if(range > 400)
-            {
-                range = 400;
-            }
+            int  range = 400;
             float f = Math.Abs((projectile.timeLeft - 100) / 800f) / 0.5f;
             if(projectile.timeLeft <= 100)
                 f = 0;

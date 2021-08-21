@@ -193,7 +193,7 @@ namespace SummonHeart.Projectiles.Summon
                                     {
                                         ShootCD = 20;
                                         Vector2 vel = VectorHelper.VelocityToPoint(projectile.Center, npc.Center, 1f);
-                                        Projectile.NewProjectileDirect(npc.Center - vel * 60f, vel, ModContent.ProjectileType<DragonLegacyBlue>(), player.SummonHeart().flySwordBlood, 4.0f, player.whoAmI, 0f, 0f).netUpdate = true;
+                                        Projectile.NewProjectileDirect(npc.Center - vel * 60f, vel, ModContent.ProjectileType<DragonLegacyBlue>(), player.HeldItem.damage, 4.0f, player.whoAmI, 0f, 0f).netUpdate = true;
 
                                         /*Vector2 velocity2 = projectile.DirectionTo(npc.Center) * 24f;
                                         int amt = Main.rand.Next(4, 6);

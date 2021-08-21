@@ -204,15 +204,15 @@ namespace SummonHeart.NPCs
 			SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
 			if (SummonHeartWorld.GoddessMode)
             {
-				int heal = 0;
+				/*int heal = 0;
 				//女神模式回血
 				if (npc.boss)
                 {
 					int bossIndex = player.getDownedBossIndex();
-					int healTime = 600;
+					int healTime = 1000;
 					if (bossIndex > 0)
                     {
-						healTime -= bossIndex * 40;
+						healTime -= bossIndex * 50;
 						heal = (int)(npc.lifeMax / healTime);
                     }
                 }
@@ -227,7 +227,7 @@ namespace SummonHeart.NPCs
 					if (lifeDmage < 2)
 						lifeDmage = 2;
 					npc.lifeRegen -= lifeDmage;
-				}
+				}*/
 			}
 			else if (npc.HasBuff(mod.BuffType("SoulSplit")))
             {

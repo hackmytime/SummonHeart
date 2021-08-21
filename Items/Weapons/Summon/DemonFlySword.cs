@@ -75,6 +75,17 @@ namespace SummonHeart.Items.Weapons.Summon
             }
         }
 
+        public override void ModifyTooltips(List<TooltipLine> tooltips)
+        {
+            Player player = Main.player[Main.myPlayer];
+            SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
+            string text = "";
+            text = player.getDownedBoss();
+            TooltipLine tooltipLine = new TooltipLine(base.mod, "SwordBloodMax", text);
+            tooltipLine.overrideColor = Color.LightGreen;
+            tooltips.Insert(tooltips.Count, tooltipLine);
+        }
+
         public override void AddRecipes()
         {
             ModRecipe recipe = new ModRecipe(mod);

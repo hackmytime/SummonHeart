@@ -131,7 +131,7 @@ namespace SummonHeart.Extensions
 					else
 					{
                         int downedBossIndex = player.getDownedBossIndex();
-						addExp = 100 + 50 * downedBossIndex;
+						addExp = 100 + 100 * downedBossIndex;
 					}
 				}
 				else
