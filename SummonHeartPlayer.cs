@@ -588,6 +588,7 @@ namespace SummonHeart
 			//泰坦
 			player.statLifeMax2 += 300;
 			player.jumpSpeedBoost -= 0.33f;
+			player.aggro += 20000;
 
 			player.statDefense += (int)bodyDef * 2;
 			int addDef = deathCount;
@@ -598,13 +599,13 @@ namespace SummonHeart
 			if (boughtbuffList[0])
             {
 				player.meleeCrit += eyeBloodGas / 2222 + 10;
-				MyCritDmageMult += eyeBloodGas / 500 * 0.01f + 1;
+				MyCritDmageMult += eyeBloodGas / 1000 * 0.01f + 0.5f;
 			}
 
 			//魔神之手
 			if (boughtbuffList[1])
 			{
-				AttackSpeed += (handBloodGas / 2222 + 20) * 0.01f;
+				AttackSpeed += (handBloodGas / 3333 + 10) * 0.01f;
 			}
 
 			//魔神之躯

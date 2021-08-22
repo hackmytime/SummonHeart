@@ -88,7 +88,7 @@ namespace SummonHeart.Items.Weapons.Magic
                 Main.projectile[p].magic = true;
                 Main.projectile[p].tileCollide = false;
                 Main.projectile[p].ignoreWater = true;
-                Main.projectile[p].penetrate = 3;
+                Main.projectile[p].penetrate = 6;
             }
             return false;
         }
