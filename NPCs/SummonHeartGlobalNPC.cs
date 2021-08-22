@@ -301,7 +301,7 @@ namespace SummonHeart.NPCs
 			Mod Calamity = ModLoader.GetMod("CalamityMod");
 			Player player = Main.player[projectile.owner];
             SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
-			if (player.HeldItem.modItem is DemonSword && projectile.type == ModContent.ProjectileType<DragonLegacyBlue>())
+			if (player.HeldItem.modItem is DemonSword && projectile.type == ModContent.ProjectileType<DragonLegacyRed>())
 			{
 				if (modPlayer.PlayerClass == 1)
 				{
