@@ -105,19 +105,19 @@ namespace SummonHeart.ui
 
 
                 int totalBoodGas = mp.eyeBloodGas + mp.handBloodGas + mp.bodyBloodGas + mp.footBloodGas;
-                var modlabel_level = new UIText("刺客被动：杀意入体，向死而生，每20点气血增加1点杀意上限，从气血之中凝练杀意，以杀意炼体。");
+                var modlabel_level = new UIText("刺客被动：杀戮法则，每有1个生物死亡+1杀意值上限【上限999999】【可以被贪婪词缀加速】");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("死亡一次+10杀意上限，上限40000");
+                modlabel_level = new UIText("每44444点杀意值上限+1倍刺杀技能伤害，最高22倍。每100点杀意值+1点额外真实伤害，最大值为9999");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("刺客被动：死气护体，不死不休，赋予从消耗的杀意中提取死气的能力。");
+                modlabel_level = new UIText("刺客被动：死气护体，不死不休，每100点杀意值上限转化为1点死气值上限【上限9999】");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("每消耗2点杀意增加1点死气值，每1点死气值可以抵挡1点伤害。");
+                modlabel_level = new UIText("每消耗100点杀意增加1点死气值，每1点死气值可以抵挡1点伤害。");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("当前杀意上限：" + mp.killResourceMax2 + " 总气血：" + totalBoodGas + " 死亡次数：" + mp.deathCount + " 战斗力：" + mp.getPower());
+                modlabel_level = new UIText("当前杀意上限：" + mp.killResourceMax2 + " 总气血：" + totalBoodGas + " 击杀生物数：" + mp.killNpcCount + " 死亡次数：" + mp.deathCount + " 战斗力：" + mp.getPower());
                 modlabel_level.TextColor = Color.Red;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
                 modlabel_level = new UIText("杀意伤害倍率：" + mp.killResourceMulti + " 神通附加伤害：" + mp.player.HeldItem.damage * mp.killResourceMulti + " 当前减伤倍率" + mp.myDamageReduceMult + "倍");

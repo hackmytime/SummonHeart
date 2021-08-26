@@ -260,7 +260,14 @@ namespace SummonHeart.Items
         public override bool Shoot(Item item, Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
         {
             SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
-            
+            if (item.fishingPole > 0)
+            {
+                int lures = mp.fishLureCount;
+                for (int i = 0; i < lures; i++)
+                {
+                    Projectile.NewProjectile(position.X + (float)Main.rand.Next(5), position.Y + (float)Main.rand.Next(5), speedX + (float)Main.rand.Next(5), speedY + (float)Main.rand.Next(5), type, damage, knockBack, player.whoAmI, 0f, 0f);
+                }
+            }
             if (mp.PlayerClass == 6 && item.magic && !item.channel)
             {
                 return false;
@@ -291,10 +298,10 @@ namespace SummonHeart.Items
                     }
                 }
             }
-            if (mp.SummonHeart)
+            if (mp.SummonHeart && item.melee)
             {
                 //if (item.melee || item.ranged || item.magic || item.thrown)
-                if (item.melee && mp.PlayerClass == 1)
+                if (mp.PlayerClass == 1 || mp.PlayerClass == 4)
                 {
                     //第1个额外弹幕-3度角
                     int bloodGas = mp.handBloodGas;
@@ -357,23 +364,51 @@ namespace SummonHeart.Items
                     text = "【" + item.modItem.mod.DisplayName + "】";
                 }
                 tooltips.Insert(num + 1, new TooltipLine(base.mod, "SRC:ModBelongIdentifier", text));
+                if (item.fishingPole > 0)
+                {
+                    text = "钓鱼等级 Lv" + mp.fishLureCount;
+                    tooltips.Insert(num + 2, new TooltipLine(base.mod, "FishLevel", text));
+                    tooltips[num + 2].overrideColor = Color.LightGreen;
+                    text = "额外鱼线 " + mp.fishLureCount;
+                    tooltips.Insert(num + 3, new TooltipLine(base.mod, "FishLureCount", text));
+                    tooltips[num + 3].overrideColor = Color.LightGreen;
+                    text = "钓鱼熟练度 " + mp.fishCount;
+                    tooltips.Insert(num + 4, new TooltipLine(base.mod, "FishCount", text));
+                    tooltips[num + 4].overrideColor = Color.LightGreen;
+                    int curCount = 5 + 5 * mp.fishLureCount * (mp.fishLureCount + 1);
+                    if(mp.fishLureCount < 100)
+                        text = "升级需要熟练度达到 " + curCount;
+                    else
+                        text = "升级需要熟练度达到 等级已满";
+                    tooltips.Insert(num + 5, new TooltipLine(base.mod, "FishCount", text));
+                    tooltips[num + 5].overrideColor = Color.LightGreen;
+                }
             }
             int num2 = tooltips.FindIndex((TooltipLine t) => t.Name.Equals("Damage"));
             if (num2 != -1)
             {
-                /*if (item.summon)
+                if (mp.PlayerClass == 1 && mp.onDoubleDamage)
                 {
-                    if (modPlayer.boughtbuffList[0])
+                    int num4 = tooltips.FindIndex((TooltipLine t) => t.Name.Equals("CritChance"));
+                    if (num4 != -1)
                     {
-                        string text2 = (modPlayer.eyeBloodGas / 1000 + 20) + "%" + (GameCulture.Chinese.IsActive ? "暴击率" : "CritChance");
-                        tooltips.Insert(num2 + 1, new TooltipLine(base.mod, "SRC:MinionCrit", text2));
+                        int damage = (int)(item.damage + mp.damageResourceCurrent * 2);
+                        string text2 = "双倍偿还+" + mp.damageResourceCurrent * 2 + "伤害";
+                        tooltips.Insert(num2 + 1, new TooltipLine(base.mod, "KillMove", text2));
+                        tooltips[num2 + 1].overrideColor = Color.LightGreen;
                     }
-                    else
+                }
+                if (mp.PlayerClass == 2 && item.thrown)
+                {
+                    int num4 = tooltips.FindIndex((TooltipLine t) => t.Name.Equals("CritChance"));
+                    if (num4 != -1)
                     {
-                        string text2 = modPlayer.eyeBloodGas / 1000 + "%" + (GameCulture.Chinese.IsActive ? "暴击率" : "CritChance");
-                        tooltips.Insert(num2 + 1, new TooltipLine(base.mod, "SRC:MinionCrit", text2));
+                        int damage = (int)(item.damage + mp.damageResourceCurrent * 2);
+                        string text2 = "额外真实伤害+" + mp.addRealDamage;
+                        tooltips.Insert(num2 + 1, new TooltipLine(base.mod, "KillMove", text2));
+                        tooltips[num2 + 1].overrideColor = Color.LightGreen;
                     }
-                }*/
+                }
             }
            
             if (mp.PlayerClass == 6 && item.magic && !item.channel)

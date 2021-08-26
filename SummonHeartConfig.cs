@@ -9,7 +9,7 @@ namespace SummonHeart
 
         public static SummonHeartConfig Instance;
 
-        [DefaultValue(true)]
+        [DefaultValue(false)]
         [Label("炼体特效")]
         public bool EffectVisualConfig;
 

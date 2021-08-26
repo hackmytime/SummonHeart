@@ -21,6 +21,14 @@ namespace SummonHeart
             WorldBloodGasMax = 100000;
         }
 
+        public override void PostUpdate()
+        {
+            if (Main.anglerQuestFinished)
+            {
+                Main.AnglerQuestSwap();
+            }
+        }
+
         public override TagCompound Save()
         {
             var tagComp = new TagCompound();

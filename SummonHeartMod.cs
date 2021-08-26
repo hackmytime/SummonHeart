@@ -40,6 +40,7 @@ namespace SummonHeart
 		internal static ModHotKey magicSkillKey;
 		internal static ModHotKey TransKey;
 		internal static ModHotKey BackDieKey;
+		internal static ModHotKey DoubleDamageKey;
 		//internal static ModHotKey ExtraAccessaryKey;
 
 		internal PanelMelee PanelMeleeUI;
@@ -70,6 +71,9 @@ namespace SummonHeart
 		
 		internal AngerBar angerBar;
 		private UserInterface angerBarInterface;
+		
+		internal DamageBar damageBar;
+		private UserInterface damageBarInterface;
 
 		public static SummonHeartMod Instance;
 
@@ -144,6 +148,7 @@ namespace SummonHeart
 			magicSkillKey = RegisterHotKey("控法者充能(可开关)", Keys.B.ToString());
 			TransKey = RegisterHotKey("空间传送", Keys.Y.ToString());
 			BackDieKey = RegisterHotKey("神秘水晶返回死亡点", Keys.Z.ToString());
+			DoubleDamageKey = RegisterHotKey("泰坦双倍偿还技能", Keys.K.ToString());
 			//ExtraAccessaryKey = RegisterHotKey("额外饰品栏带单", Keys.Q.ToString());
 			// this makes sure that the UI doesn't get opened on the server
 			// the server can't see UI, can it? it's just a command prompt
@@ -165,6 +170,10 @@ namespace SummonHeart
 						PanelMeleeUI.Initialize();
 						somethingInterface = new UserInterface();
 						somethingInterface.SetState(PanelMeleeUI);
+						//吸收伤害量
+						damageBar = new DamageBar();
+						damageBarInterface = new UserInterface();
+						damageBarInterface.SetState(damageBar);
 					}
 					else if (modPlayer.PlayerClass == 2)
 					{
@@ -376,70 +385,6 @@ namespace SummonHeart
 			byte msgType = reader.ReadByte();
 			switch (msgType)
 			{
-				/*case 0:
-                    {
-						// 同步噬魂之心
-						byte playernumber = reader.ReadByte();
-						SummonHeartPlayer summonHeartPlayer = Main.player[playernumber].GetModPlayer<SummonHeartPlayer>();
-						summonHeartPlayer.BBP = reader.ReadInt32();
-						summonHeartPlayer.SummonCrit = reader.ReadInt32();
-						summonHeartPlayer.PlayerClass = reader.ReadInt32();
-						//summonHeartPlayer.deathCount = reader.ReadInt32();
-						summonHeartPlayer.bodyDef = reader.ReadSingle();
-						summonHeartPlayer.eyeBloodGas = reader.ReadInt32();
-						summonHeartPlayer.handBloodGas = reader.ReadInt32();
-						summonHeartPlayer.bodyBloodGas = reader.ReadInt32();
-						summonHeartPlayer.footBloodGas = reader.ReadInt32();
-						summonHeartPlayer.bloodGasMax = reader.ReadInt32();
-						summonHeartPlayer.swordBlood = reader.ReadInt32();
-						summonHeartPlayer.shortSwordBlood = reader.ReadInt32();
-						summonHeartPlayer.flySwordBlood = reader.ReadInt32();
-						summonHeartPlayer.magicSwordBlood = reader.ReadInt32();
-						summonHeartPlayer.swordBloodMax = reader.ReadInt32();
-						summonHeartPlayer.practiceEye = reader.ReadBoolean();
-						summonHeartPlayer.practiceHand = reader.ReadBoolean();
-						summonHeartPlayer.practiceBody = reader.ReadBoolean();
-						summonHeartPlayer.practiceFoot = reader.ReadBoolean();
-						summonHeartPlayer.soulSplit = reader.ReadBoolean();
-
-						*//*for (int i = 0; i < getBuffLength(); i++)
-						{
-							summonHeartPlayer.boughtbuffList[i] = reader.ReadBoolean();
-						}*//*
-						if (Main.netMode == NetmodeID.Server)
-						{
-							var packet = GetPacket();
-							packet.Write((byte)playernumber);
-							packet.Write(summonHeartPlayer.BBP);
-							packet.Write(summonHeartPlayer.SummonCrit);
-							packet.Write(summonHeartPlayer.exp);
-							packet.Write(summonHeartPlayer.PlayerClass);
-							//packet.Write(summonHeartPlayer.deathCount);
-							packet.Write(summonHeartPlayer.bodyDef);
-							packet.Write(summonHeartPlayer.eyeBloodGas);
-							packet.Write(summonHeartPlayer.handBloodGas);
-							packet.Write(summonHeartPlayer.bodyBloodGas);
-							packet.Write(summonHeartPlayer.footBloodGas);
-							packet.Write(summonHeartPlayer.bloodGasMax);
-							packet.Write(summonHeartPlayer.swordBlood);
-							packet.Write(summonHeartPlayer.shortSwordBlood);
-							packet.Write(summonHeartPlayer.flySwordBlood);
-							packet.Write(summonHeartPlayer.magicSwordBlood);
-							packet.Write(summonHeartPlayer.swordBloodMax);
-							packet.Write(summonHeartPlayer.practiceEye);
-							packet.Write(summonHeartPlayer.practiceHand);
-							packet.Write(summonHeartPlayer.practiceBody);
-							packet.Write(summonHeartPlayer.practiceFoot);
-							packet.Write(summonHeartPlayer.soulSplit);
-							*//*for (int i = 0; i < getBuffLength(); i++)
-							{
-								packet.Write(summonHeartPlayer.boughtbuffList[i]);
-							}*//*
-							packet.Send(-1, playernumber);
-						}
-					}
-					break;
-*/
 				case 1:
                     {
 						byte npc = reader.ReadByte();
@@ -510,7 +455,20 @@ namespace SummonHeart
 					}
 					PanelMeleeUI.needValidate = true;
 				}
-            }else if (modPlayer.PlayerClass == 2)
+
+				//吸收伤害量
+				if (damageBar == null)
+				{
+					damageBar = new DamageBar();
+					damageBarInterface = new UserInterface();
+					damageBarInterface.SetState(damageBar);
+				}
+				else
+				{
+					damageBarInterface?.Update(gameTime);
+				}
+			}
+			else if (modPlayer.PlayerClass == 2)
 			{
 				if (!Main.gameMenu && PanelKill.visible)
 				{
@@ -691,7 +649,10 @@ namespace SummonHeart
 				{
 					somethingInterface.Draw(Main.spriteBatch, new GameTime());
 				}
-            }else if (modPlayer.PlayerClass == 2)
+				if (damageBar != null)
+					damageBarInterface.Draw(Main.spriteBatch, new GameTime());
+			}
+			else if (modPlayer.PlayerClass == 2)
 			{
 				if (!Main.gameMenu && PanelKill.visible)
 				{

@@ -292,8 +292,16 @@ namespace SummonHeart.NPCs
 					damage *= modPlayer.killResourceMulti;
 				}
 			}
+			if (modPlayer.onDoubleDamage && modPlayer.PlayerClass == 1)
+			{
+				damage += modPlayer.damageResourceCurrent * 2;
+				modPlayer.damageResourceCurrent = 0;
+				modPlayer.onDoubleDamage = false;
+			}
+			int addRealDmage = modPlayer.addRealDamage;
 			damage = (int)Math.Ceiling(damage / modPlayer.enemyDamageReduceMult);
-			this.CauseDirectDamage(npc, damage, crit, 0);
+			addRealDmage = (int)Math.Ceiling(addRealDmage / modPlayer.enemyDamageReduceMult);
+			this.CauseDirectDamage(npc, damage, crit, addRealDmage);
 		}
 
         public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
@@ -336,7 +344,7 @@ namespace SummonHeart.NPCs
 			{
 				damage = (int)(damage * modPlayer.MyCritDmageMult);
 			}
-			int addRealDmage = 0;
+			int addRealDmage = modPlayer.addRealDamage;
 			//投手附加伤害
 			if (modPlayer.PlayerClass == 2 && player.HeldItem.thrown == true && projectile.thrown)
 			{
@@ -354,6 +362,12 @@ namespace SummonHeart.NPCs
 					int realDmage = killCost * modPlayer.killResourceMulti;
 					addRealDmage += realDmage;
 				}
+			}
+			if (modPlayer.onDoubleDamage && modPlayer.PlayerClass == 1 && projectile.owner == player.whoAmI)
+			{
+				damage += modPlayer.damageResourceCurrent * 2;
+				modPlayer.damageResourceCurrent = 0;
+				modPlayer.onDoubleDamage = false;
 			}
 			damage = (int)Math.Ceiling(damage / modPlayer.enemyDamageReduceMult);
 			addRealDmage = (int)Math.Ceiling(addRealDmage / modPlayer.enemyDamageReduceMult);

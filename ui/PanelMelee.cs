@@ -131,7 +131,7 @@ namespace SummonHeart.ui
                 int addDef = mp.deathCount / 5;
                 if (addDef > mp.bodyDef)
                     addDef = (int)mp.bodyDef;
-                modlabel_level = new UIText("被动：战者之心【每次复活都能变得更加强大,最大值为魂心等级x4】死亡次数：" + mp.deathCount + " 生命上限+" + mp.addLife + " 防御力+" + addDef);
+                modlabel_level = new UIText("被动：伤害吸收，双倍偿还。仇恨值增加20000点。死亡次数：" + mp.deathCount + " 生命上限+" + mp.addLife + " 防御力+" + addDef);
                 modlabel_level.TextColor = Color.Red;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
                 string worldLevel = "Lv1魔神之子";

@@ -25,6 +25,8 @@ namespace SummonHeart
 		public bool killAnyBoss = false;
 		public int PlayerClass = 0;
 		public int deathCount = 0;
+		public int killNpcCount = 0;
+		public int fishCount = 0;
 		public bool autoAttack = false;
 		public float AttackSpeed;
 		public float tungstenPrevSizeSave;
@@ -43,6 +45,9 @@ namespace SummonHeart
 		public int deathResourceMax = 0;
 		public int angerResourceCurrent = 0;
 		public int angerResourceMax = 0;
+		public int damageResourceCurrent = 0;
+		public int damageResourceMax = 0;
+		public bool onDoubleDamage = false;
 		public bool onanger = false;
 		public int killResourceMax;
 		public int killResourceMax2;
@@ -118,6 +123,8 @@ namespace SummonHeart
 		public float MyCritDmageMult;
 		public float myDamageReduceMult;
 		public float enemyDamageReduceMult;
+		public int addRealDamage;
+		public int fishLureCount;
 
 
 		public SummonHeartPlayer()
@@ -175,7 +182,9 @@ namespace SummonHeart
 				killHealCD = 0;
 			}
 			killResourceMax2 = killResourceMax;
-			
+			damageResourceMax = 9999;
+			addRealDamage = 0;
+			fishLureCount = this.getFishLevel();
 
 			eyeMax = SummonHeartConfig.Instance.eyeMax;
 			handMax = SummonHeartConfig.Instance.handMax;
@@ -258,6 +267,21 @@ namespace SummonHeart
 		{
 			currentAura = this.GetAuraEffectOnPlayer();
 			IncrementAuraFrameTimers(currentAura);
+
+            //特效
+            if (onDoubleDamage && damageResourceCurrent > 0)
+            {
+                int dustId = MyDustId.BlueMagic;
+				for (int d = 0; d < 2; d++)
+                {
+					Vector2 vector = new Vector2(Main.rand.Next(-12, 12) * -9.88f, Main.rand.Next(-12, 12) * -9.88f);
+					Dust dust2 = Main.dust[Dust.NewDust(player.MountedCenter + vector, 1, 1, 20, 0f, 0f, 255, new Color(0.8f, 0.4f, 1f), 0.8f)];
+					dust2.velocity = -vector / 12f;
+					dust2.velocity -= player.velocity / 8f;
+					dust2.noLight = true;
+					dust2.noGravity = true;
+                }
+			}
 		}
 
 		public override void PostUpdateMiscEffects()
@@ -492,26 +516,22 @@ namespace SummonHeart
 		private void EffectKill()
         {
 			killResourceMax = 100;
-			killResourceMulti = 20;
 			killResourceSkillCountMax = 10;
 			//被动
-			int allBlood = this.getAllBloodGas();
-			int deathAdd = deathCount * 10;
-			if(deathAdd > 40000)
-            {
-				deathAdd = 40000;
-            }
-			killResourceMax += allBlood / 20 + deathAdd;
-
+			killResourceMax += killNpcCount;
+			if (killResourceMax > 999999)
+				killResourceMax = 999999;
+			deathResourceMax = killResourceMax / 100;
+			killResourceMulti = 3 + killResourceMax / 44444;
+			addRealDamage = killResourceMax / 99;
 			//魔神之手
 			if (boughtbuffList[1])
             {
 				AttackSpeed += (handBloodGas / 4000 + 30) * 0.01f;
 				player.thrownVelocity += (handBloodGas / 4000 + 30) * 0.01f;
 				killResourceSkillCountMax = (handBloodGas / 5000 + 10);
-				killResourceMax2 *= 2;
 			}
-			deathResourceMax = killResourceMax2;
+		
 			int heal = 1;
 			if (boughtbuffList[2])
             {
@@ -589,12 +609,12 @@ namespace SummonHeart
 			player.statLifeMax2 += 300;
 			player.jumpSpeedBoost -= 0.33f;
 			player.aggro += 20000;
-
 			player.statDefense += (int)bodyDef * 2;
-			int addDef = deathCount;
-			if (addDef > SummonCrit * 4)
-				addDef = SummonCrit * 4;
-			player.statDefense += addDef;
+			myDamageReduceMult += 1;
+			//吸收伤害上限
+			int allBlood = this.getAllBloodGas();
+			damageResourceMax = 9999 + allBlood;
+
 			//魔神之眼
 			if (boughtbuffList[0])
             {
@@ -614,11 +634,7 @@ namespace SummonHeart
 				myDamageReduceMult += (bodyBloodGas / 200 + 400) * 0.01f;
 				player.noKnockback = true;
 				player.statLifeMax2 += (bodyBloodGas / 200 + 300);
-				//计算被动
-				addLife = deathCount;
-				if (addLife > player.statLifeMax2)
-					addLife = player.statLifeMax2;
-				player.statLifeMax2 += addLife;
+			
 				int heal = (int)(player.statLifeMax2 * (0.01 + bodyBloodGas / 20000 * 0.01f)) / 4;
 				if (player.statLife < player.statLifeMax2 && bodyHealCD == 1)
 				{
@@ -627,15 +643,9 @@ namespace SummonHeart
 					player.statLife += heal;
 					player.HealEffect(heal);
 				}
+				if (bodyBloodGas >= 400000)
+					damageResourceMax += 100000;
             }
-            else
-            {
-				//计算被动
-				addLife = addDef;
-				if (addLife > player.statLifeMax2)
-					addLife = player.statLifeMax2;
-				player.statLifeMax2 += addLife;
-			}
 
 			//魔神之腿
 			if (boughtbuffList[3])
@@ -1041,6 +1051,8 @@ namespace SummonHeart
 			tagComp.Add("exp", exp);
 			tagComp.Add("PlayerClass", PlayerClass);
 			tagComp.Add("deathCount", deathCount);
+			tagComp.Add("killNpcCount", killNpcCount);
+			tagComp.Add("fishCount", fishCount);
 			tagComp.Add("bodyDef", bodyDef);
 			tagComp.Add("eyeBloodGas", eyeBloodGas);
 			tagComp.Add("handBloodGas", handBloodGas);
@@ -1049,6 +1061,7 @@ namespace SummonHeart
 			tagComp.Add("bloodGasMax", bloodGasMax);
 			tagComp.Add("killResourceCurrent", killResourceCurrent);
 			tagComp.Add("deathResourceCurrent", deathResourceCurrent);
+			tagComp.Add("damageResourceCurrent", damageResourceCurrent);
 			tagComp.Add("practiceEye", practiceEye);
 			tagComp.Add("practiceHand", practiceHand);
 			tagComp.Add("practiceBody", practiceBody);
@@ -1067,6 +1080,8 @@ namespace SummonHeart
 			exp = tag.GetInt("exp");
 			PlayerClass = tag.GetInt("PlayerClass");
 			deathCount = tag.GetInt("deathCount");
+			killNpcCount = tag.GetInt("killNpcCount");
+			fishCount = tag.GetInt("fishCount");
 			bodyDef = tag.GetFloat("bodyDef");
 			eyeBloodGas = tag.GetInt("eyeBloodGas");
 			handBloodGas = tag.GetInt("handBloodGas");
@@ -1075,6 +1090,7 @@ namespace SummonHeart
 			bloodGasMax = tag.GetInt("bloodGasMax");
 			killResourceCurrent = tag.GetInt("killResourceCurrent");
 			deathResourceCurrent = tag.GetInt("deathResourceCurrent");
+			damageResourceCurrent = tag.GetInt("damageResourceCurrent");
 			practiceEye = tag.GetBool("practiceEye");
 			practiceHand = tag.GetBool("practiceHand");
 			practiceBody = tag.GetBool("practiceBody");
@@ -1226,6 +1242,21 @@ namespace SummonHeart
 					Main.NewText($"你未装备神秘水晶", Color.Red);
 				}
 			}
+			if (SummonHeartMod.DoubleDamageKey.JustPressed)
+			{
+				if (PlayerClass == 1)
+				{
+					onDoubleDamage = !onDoubleDamage;
+					if (onDoubleDamage)
+					{
+						CombatText.NewText(player.getRect(), new Color(0, 255, 0), "已开启双倍偿还");
+					}
+					else
+					{
+						CombatText.NewText(player.getRect(), Color.Red, "已关闭双倍偿还");
+					}
+				}
+			}
 			/*if (SummonHeartMod.ExtraAccessaryKey.JustPressed)
 			{
 				PanelGodSoul.visible = !PanelGodSoul.visible;
@@ -1299,24 +1330,8 @@ namespace SummonHeart
 		//允许您修改 NPC 对该玩家造成的伤害等
 		public override void ModifyHitByNPC(NPC npc, ref int damage, ref bool crit)
         {
-			/*if (PlayerClass == 1 && boughtbuffList[2])
-			{
-				damage = (int)(damage * (1 - 0.5 - bodyBloodGas / 13333 * 0.01f));
-				if (damage < 1)
-					damage = 1;
-			}
-			if (PlayerClass == 3 && boughtbuffList[2])
-			{
-				damage = (int)(damage * 0.04f);
-				if (damage < 1)
-					damage = 1;
-			}
-			if (PlayerClass == 4 && boughtbuffList[2])
-			{
-				damage = (int)(damage * (1 - bodyBloodGas / 5000 * 0.01f));
-				if (damage < 1)
-					damage = 1;
-			}*/
+			int oldDamage = damage;
+
 			if (PlayerClass == 5 || PlayerClass == 6)
 			{
 				if (boughtbuffList[2])
@@ -1336,29 +1351,24 @@ namespace SummonHeart
 						damage = 1;
                 }
 			}
+			
 			damage = (int)Math.Ceiling(damage / myDamageReduceMult);
+
+			if (PlayerClass == 1)
+			{
+				int addDamage = oldDamage - damage;
+				if(crit)
+					addDamage *= 2;
+				damageResourceCurrent += addDamage;
+				if (damageResourceCurrent > damageResourceMax)
+					damageResourceCurrent = damageResourceMax;
+			}
 		}
 		//允许您修改 NPC 弹幕对该玩家造成的伤害等
 		public override void ModifyHitByProjectile(Projectile proj, ref int damage, ref bool crit)
         {
-			/*if (PlayerClass == 1 && boughtbuffList[2])
-			{
-				damage = (int)(damage * (1 - 0.5 - bodyBloodGas / 13333 * 0.01f));
-				if (damage < 1)
-					damage = 1;
-			}
-			if (PlayerClass == 3 && boughtbuffList[2])
-			{
-				damage = (int)(damage * (1 - 0.2 - bodyBloodGas / 5000 * 0.01f));
-				if (damage < 1)
-					damage = 1;
-			}
-			if (PlayerClass == 4 && boughtbuffList[2])
-			{
-				damage = (int)(damage * (1 - bodyBloodGas / 5000 * 0.01f));
-				if (damage < 1)
-					damage = 1;
-			}*/
+			int oldDamage = damage;
+
 			if (PlayerClass == 5 || PlayerClass == 6)
 			{
                 if (boughtbuffList[2])
@@ -1378,7 +1388,18 @@ namespace SummonHeart
 						damage = 1;
                 }
 			}
+			
 			damage = (int)Math.Ceiling(damage / myDamageReduceMult);
+
+			if (PlayerClass == 1)
+			{
+				int addDamage = oldDamage - damage;
+				if (crit)
+					addDamage *= 2;
+				damageResourceCurrent += addDamage;
+				if (damageResourceCurrent > damageResourceMax)
+					damageResourceCurrent = damageResourceMax;
+			}
 			if (PlayerClass == 3 && boughtbuffList[2])
 			{
 				damage *= 10;
@@ -1566,16 +1587,17 @@ namespace SummonHeart
 			onanger = false;
 			angerResourceCurrent = 0;
 			deathCount++;
-			if (PlayerClass == 1)
+			if (PlayerClass == 1 && damageResourceCurrent > 0)
 			{
-				string text = $"{player.name}拥有战者之心，不畏死亡。已从死亡之中获得力量，生命上限+1，防御力+1";
+				damageResourceCurrent /= 2;
+				string text = $"{player.name}已死亡。丢失1半的伤害吸收量，伤害吸收量-{damageResourceCurrent}";
 				Main.NewText(text, Color.Green);
 			}
-			if (PlayerClass == 2)
+			/*if (PlayerClass == 2)
             {
 				string text = $"{player.name}身为刺客，向死而生，杀意上限+10点";
 				Main.NewText(text, Color.Green);
-			}
+			}*/
             base.Kill(damage, hitDirection, pvp, damageSource);
         }
 
@@ -1603,5 +1625,28 @@ namespace SummonHeart
         {
             ModPlayerEffects.PostUpdateRunSpeeds(player);
         }
-    }
+
+		public override void CatchFish(Item fishingRod, Item bait, int power, int liquidType, int poolSize, int worldLayer, int questFish, ref int caughtType, ref bool junk)
+		{
+			fishCount++;
+			if (Main.rand.Next(100) <= 2)
+            {
+				int itemID = 0;
+				bool itemChosen = false;
+				while (!itemChosen)
+				{
+					itemID = Main.rand.Next(ItemLoader.ItemCount);
+					Item item = new Item();
+					item.SetDefaults(itemID, false);
+					int rarity = item.rare;
+                    int finshLevel = this.getFishLevel();
+					if (rarity <= finshLevel / 20 && rarity > 0)
+					{
+						itemChosen = true;
+					}
+				}
+				caughtType = itemID;
+			}
+		}
+	}
 }

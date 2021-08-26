@@ -71,7 +71,22 @@ namespace SummonHeart.Extensions
             return all;
         }
 
-        public static int HasItemInAcc(this Player player, int type)
+		public static int getFishLevel(this SummonHeartPlayer mp)
+		{
+			int fishLevel = 0;
+            int fishCount = mp.fishCount;
+			int levelCount = 0;
+			for(fishLevel = 0; fishLevel < 100; fishLevel++)
+            {
+				int curCount = 5 + 5 * fishLevel * (fishLevel + 1);
+				levelCount += curCount;
+				if (fishCount < levelCount)
+					break;
+            }
+			return fishLevel;
+		}
+
+		public static int HasItemInAcc(this Player player, int type)
         {
             for (int i = 3; i < 8 + player.extraAccessorySlots; i++)
             {
@@ -110,6 +125,7 @@ namespace SummonHeart.Extensions
 			if (npc.boss)
 				modPlayer.killAnyBoss = true;
 
+			modPlayer.killNpcCount++;
 			if(modPlayer.PlayerClass == 5 && modPlayer.boughtbuffList[0])
             {
 				int healMana = modPlayer.eyeBloodGas / 1000 + 10;
