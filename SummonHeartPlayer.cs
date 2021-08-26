@@ -863,12 +863,16 @@ namespace SummonHeart
 			items.Add(item);
 			
 			item = new Item();
+			item.SetDefaults(ModLoader.GetMod("SummonHeart").ItemType("DemonLure"));
+			item.stack = 1;
+			items.Add(item);
+			item = new Item();
 			item.SetDefaults(ModLoader.GetMod("SummonHeart").ItemType("MysteriousCrystal"));
 			item.stack = 1;
 			items.Add(item);
 			item = new Item();
-			item.SetDefaults(ItemID.QueenSpiderStaff);
-			item.stack = 1;
+			item.SetDefaults(ItemID.ApprenticeBait);
+			item.stack = 10;
 			items.Add(item);
 			item = new Item();
 			item.SetDefaults(ItemID.ManaFlower);
@@ -881,10 +885,6 @@ namespace SummonHeart
 			item = new Item();
 			item.SetDefaults(ItemID.Torch);
 			item.stack = 99;
-			items.Add(item);
-			item = new Item();
-			item.SetDefaults(ItemID.WaterBucket);
-			item.stack = 2;
 			items.Add(item);
 			if (ModLoader.GetMod("Luiafk") != null)
 			{

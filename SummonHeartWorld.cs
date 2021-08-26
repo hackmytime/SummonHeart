@@ -1,8 +1,10 @@
-using System.IO;
+﻿using System.IO;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
+using Terraria.World.Generation;
+using Terraria.GameContent.Generation;
 
 namespace SummonHeart
 {
@@ -81,5 +83,73 @@ namespace SummonHeart
                 WorldBloodGasMax = 800000;
             }
         }
+
+        public override void ModifyWorldGenTasks(List<GenPass> tasks, ref float totalWeight)
+        {
+            int ShiniesIndex = tasks.FindIndex((GenPass genpass) => genpass.Name.Equals("Shinies"));
+            if (ShiniesIndex != -1)
+            {
+                tasks.Insert(ShiniesIndex + 1, new PassLegacy("Demon Mod Ores", new WorldGenLegacyMethod(this.PlentifulOres)));
+            }
+        }
+
+        private void PlentifulOres(GenerationProgress progress)
+        {
+            progress.Message = "正在生成魔神的馈赠";
+            this.IronGeneration(100);
+            this.GoldGeneration(100);
+            this.GemGeneration(10);
+        }
+
+        private void IronGeneration(int amount)
+        {
+            for (int i = 0; i < amount; i++)
+            {
+                for (int j = 0; j < (int)((double)(Main.maxTilesX * Main.maxTilesY) * 6E-05); j++)
+                {
+                    int num = WorldGen.genRand.Next(0, Main.maxTilesX);
+                    int y = WorldGen.genRand.Next((int)WorldGen.rockLayerLow, Main.maxTilesY);
+                    WorldGen.TileRunner(num, y, (double)WorldGen.genRand.Next(3, 8), WorldGen.genRand.Next(3, 8), (WorldGen.ironBar > 0) ? 6 : 167, false, 0f, 0f, false, true);
+                }
+            }
+        }
+
+        private void GoldGeneration(int amount)
+        {
+            for (int i = 0; i < amount; i++)
+            {
+                for (int j = 0; j < (int)((double)(Main.maxTilesX * Main.maxTilesY) * 6E-05); j++)
+                {
+                    int num = WorldGen.genRand.Next(0, Main.maxTilesX);
+                    int y = WorldGen.genRand.Next((int)WorldGen.rockLayerLow, Main.maxTilesY);
+                    WorldGen.TileRunner(num, y, (double)WorldGen.genRand.Next(3, 8), WorldGen.genRand.Next(3, 8), (WorldGen.goldBar > 0) ? 8 : 169, false, 0f, 0f, false, true);
+                }
+            }
+        }
+
+        private void GemGeneration(int amount)
+        {
+            ushort[] gems = new ushort[]
+            {
+                68,
+                64,
+                65,
+                63,
+                66
+            };
+            for (int i = 0; i < amount; i++)
+            {
+                for (int j = 0; j < gems.Length; j++)
+                {
+                    for (int k = 0; k < (int)((double)(Main.maxTilesX * Main.maxTilesY) * 6E-05); k++)
+                    {
+                        int num = WorldGen.genRand.Next(0, Main.maxTilesX);
+                        int y = WorldGen.genRand.Next((int)WorldGen.rockLayerLow, Main.maxTilesY);
+                        WorldGen.TileRunner(num, y, (double)WorldGen.genRand.Next(3, 5), WorldGen.genRand.Next(3, 6), (int)gems[j], false, 0f, 0f, false, true);
+                    }
+                }
+            }
+        }
+
     }
 }
