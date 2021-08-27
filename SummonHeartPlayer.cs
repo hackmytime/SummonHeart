@@ -27,6 +27,7 @@ namespace SummonHeart
 		public int deathCount = 0;
 		public int killNpcCount = 0;
 		public int fishCount = 0;
+		public int nextFishCount = 0;
 		public bool autoAttack = false;
 		public float AttackSpeed;
 		public float tungstenPrevSizeSave;
@@ -867,6 +868,14 @@ namespace SummonHeart
 			item.stack = 1;
 			items.Add(item);
 			item = new Item();
+			item.SetDefaults(ModLoader.GetMod("SummonHeart").ItemType("DemonWorldBall"));
+			item.stack = 1;
+			items.Add(item);
+			item = new Item();
+			item.SetDefaults(ModLoader.GetMod("SummonHeart").ItemType("DemonTime"));
+			item.stack = 1;
+			items.Add(item);
+			item = new Item();
 			item.SetDefaults(ModLoader.GetMod("SummonHeart").ItemType("MysteriousCrystal"));
 			item.stack = 1;
 			items.Add(item);
@@ -1234,8 +1243,15 @@ namespace SummonHeart
 			{
 				if (player.HasItemInAcc(mod.ItemType("MysteriousCrystal")) != -1 && player.statLife > 0)
 				{
-					Vector2 vector = new Vector2(player.lastDeathPostion.X - 16f, player.lastDeathPostion.Y - 24f);
-					player.Teleport(vector, 0, 0);
+					if(player.lastDeathPostion.X == 0 && player.lastDeathPostion.Y == 0)
+                    {
+						CombatText.NewText(player.getRect(), Color.Red, "没有死亡点，无法传送");
+					}
+                    else
+                    {
+						Vector2 vector = new Vector2(player.lastDeathPostion.X - 16f, player.lastDeathPostion.Y - 24f);
+						player.Teleport(vector, 0, 0);
+                    }
                 }
                 else
                 {
@@ -1626,10 +1642,15 @@ namespace SummonHeart
             ModPlayerEffects.PostUpdateRunSpeeds(player);
         }
 
-		public override void CatchFish(Item fishingRod, Item bait, int power, int liquidType, int poolSize, int worldLayer, int questFish, ref int caughtType, ref bool junk)
-		{
+        public override void AnglerQuestReward(float rareMultiplier, List<Item> rewardItems)
+        {
 			fishCount++;
-			if (Main.rand.Next(100) <= 2)
+			base.AnglerQuestReward(rareMultiplier, rewardItems);
+        }
+
+        public override void CatchFish(Item fishingRod, Item bait, int power, int liquidType, int poolSize, int worldLayer, int questFish, ref int caughtType, ref bool junk)
+		{
+			if (Main.rand.Next(100) <= 5)
             {
 				int itemID = 0;
 				bool itemChosen = false;
@@ -1640,7 +1661,8 @@ namespace SummonHeart
 					item.SetDefaults(itemID, false);
 					int rarity = item.rare;
                     int finshLevel = this.getFishLevel();
-					if (rarity <= finshLevel / 20 && rarity > 0)
+					int curRarity = finshLevel / 20;
+					if (rarity == curRarity)
 					{
 						itemChosen = true;
 					}
@@ -1648,5 +1670,34 @@ namespace SummonHeart
 				caughtType = itemID;
 			}
 		}
-	}
+
+        public override void PreUpdateBuffs()
+        {
+			base.PreUpdateBuffs();
+			if (base.player == Main.LocalPlayer)
+			{
+				for (int toRemove = base.player.CountBuffs() - 200; toRemove > 0; toRemove--)
+				{
+					int num3 = -1;
+					for (int i = 0; i < Player.MaxBuffs; i++)
+					{
+						if (!Main.debuff[base.player.buffType[i]] && base.player.buffTime[i] > 0)
+						{
+							num3 = i;
+						}
+					}
+					if (num3 == -1)
+					{
+						return;
+					}
+					base.player.DelBuff(num3);
+				}
+			}
+		}
+
+        public override void PostUpdateBuffs()
+        {
+            base.PostUpdateBuffs();
+        }
+    }
 }

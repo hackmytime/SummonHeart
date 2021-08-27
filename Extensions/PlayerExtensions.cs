@@ -78,11 +78,12 @@ namespace SummonHeart.Extensions
 			int levelCount = 0;
 			for(fishLevel = 0; fishLevel < 100; fishLevel++)
             {
-				int curCount = 5 + 5 * fishLevel * (fishLevel + 1);
+				int curCount = 1 + fishLevel;
 				levelCount += curCount;
 				if (fishCount < levelCount)
 					break;
             }
+			mp.nextFishCount = levelCount;
 			return fishLevel;
 		}
 

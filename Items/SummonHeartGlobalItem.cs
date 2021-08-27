@@ -372,14 +372,14 @@ namespace SummonHeart.Items
                     text = "额外鱼线 " + mp.fishLureCount;
                     tooltips.Insert(num + 3, new TooltipLine(base.mod, "FishLureCount", text));
                     tooltips[num + 3].overrideColor = Color.LightGreen;
-                    text = "钓鱼熟练度 " + mp.fishCount;
+                    text = "完成钓鱼任务数 " + mp.fishCount;
                     tooltips.Insert(num + 4, new TooltipLine(base.mod, "FishCount", text));
                     tooltips[num + 4].overrideColor = Color.LightGreen;
-                    int curCount = 5 + 5 * mp.fishLureCount * (mp.fishLureCount + 1);
+                    int curCount = mp.nextFishCount;
                     if(mp.fishLureCount < 100)
-                        text = "升级需要熟练度达到 " + curCount;
+                        text = "升级需要任务数达到 " + curCount;
                     else
-                        text = "升级需要熟练度达到 等级已满";
+                        text = "升级需要任务数达到 等级已满";
                     tooltips.Insert(num + 5, new TooltipLine(base.mod, "FishCount", text));
                     tooltips[num + 5].overrideColor = Color.LightGreen;
                 }

@@ -122,7 +122,7 @@ namespace SummonHeart
                 {
                     int num = WorldGen.genRand.Next(0, Main.maxTilesX);
                     int y = WorldGen.genRand.Next((int)WorldGen.rockLayerLow, Main.maxTilesY);
-                    WorldGen.TileRunner(num, y, (double)WorldGen.genRand.Next(3, 8), WorldGen.genRand.Next(3, 8), (WorldGen.goldBar > 0) ? 8 : 169, false, 0f, 0f, false, true);
+                    WorldGen.TileRunner(num, y, (double)WorldGen.genRand.Next(3, 8), WorldGen.genRand.Next(3, 8), 169, false, 0f, 0f, false, true);
                 }
             }
         }

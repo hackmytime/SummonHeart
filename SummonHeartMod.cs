@@ -90,6 +90,14 @@ namespace SummonHeart
 			rejPassItemList.Add("UnlimitedManaAccessory5");
 		}
 
+		public override uint ExtraPlayerBuffSlots
+		{
+			get
+			{
+				return 200U;
+			}
+		}
+
 		public static void addSlowMap(Projectile p)
 		{
 			//判断是否包含

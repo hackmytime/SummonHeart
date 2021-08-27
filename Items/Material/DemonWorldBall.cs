@@ -11,14 +11,14 @@ using Terraria.GameContent.Events;
 
 namespace SummonHeart.Items.Material
 {
-    public class DemonLure : ModItem
+    public class DemonWorldBall : ModItem
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("SoulCrystal");
+            DisplayName.SetDefault("DemonWorldBall");
             Tooltip.SetDefault("DemonLure, Consume 500 soul power and transfer it to the random treasure chest\n");
-            DisplayName.AddTranslation(GameCulture.Chinese, "魔神的诱惑");
-            Tooltip.AddTranslation(GameCulture.Chinese, "消耗500灵魂之力，传送到随机宝箱处");
+            DisplayName.AddTranslation(GameCulture.Chinese, "魔神的世界球");
+            Tooltip.AddTranslation(GameCulture.Chinese, "消耗500灵魂之力，改变世界背景");
         }
 
         public override void SetDefaults()
@@ -44,19 +44,7 @@ namespace SummonHeart.Items.Material
             }
             CombatText.NewText(player.getRect(), Color.Red, "-500灵魂之力");
             mp.BBP -= 500;
-            int num = Main.rand.Next(0, Main.chest.Length);
-            while (Main.chest[num] == null || (double)Main.chest[num].y < Main.worldSurface)
-            {
-                num = Main.rand.Next(0, Main.chest.Length);
-            }
-            int num2 = Main.chest[num].x;
-            int num3 = Main.chest[num].y;
-            while (!this.ValidTile(num2, num3))
-            {
-                num3--;
-                num2++;
-            }
-            player.Teleport(new Vector2((float)(num2 * 16), (float)(num3 * 16)), 0, 0);
+            WorldGen.RandomizeBackgrounds();
             return true;
         }
 
