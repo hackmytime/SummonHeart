@@ -42,14 +42,14 @@ namespace SummonHeart.Items.Material
                 CombatText.NewText(player.getRect(), Color.Red, "灵魂之力不足，强行使用生命值减为1");
                 return false;
             }
+            if (mp.buffMaxCount >= 100)
+            {
+                CombatText.NewText(player.getRect(), Color.LightGreen, "灵魂法则已达上限");
+                return false;
+            }
             CombatText.NewText(player.getRect(), Color.Red, "-10000灵魂之力");
             mp.BBP -= 10000;
-            if (Main.netMode != 1)
-             {
-                 Main.time = 54000.0;
-                 CultistRitual.delay = 0;
-                 CultistRitual.recheck = 0;
-             }
+            mp.buffMaxCount++;
             return true;
         }
 

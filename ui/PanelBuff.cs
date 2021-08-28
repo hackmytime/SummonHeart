@@ -96,7 +96,7 @@ namespace SummonHeart.ui
             {
                 var modbuffpanel = new Layout(10, 0, 0, 0, 10, new LayoutVertical());
 
-                var modlabel = new UIText("当前无限法则上限：" + mp.buffMaxCount);
+                var modlabel = new UIText("当前无限法则上限：" + mp.buffMaxCount + " 当前可用无限法则数量：" + (mp.buffMaxCount - mp.infiniBuffDic.Count));
                 modlabel.TextColor = new Color(232, 181, 16);
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
 

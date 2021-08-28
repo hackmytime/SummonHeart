@@ -25,7 +25,7 @@ namespace SummonHeart
 		public bool killAnyBoss = false;
 		public int PlayerClass = 0;
 		public int deathCount = 0;
-		public int buffMaxCount = 9;
+		public int buffMaxCount = 5;
 		public int killNpcCount = 0;
 		public int fishCount = 0;
 		public int nextFishCount = 0;
@@ -193,7 +193,10 @@ namespace SummonHeart
 			manaExp = 1;
 			attackDamage = 0;
 			lifeSteal = 0;
-			buffMaxCount = 9;
+			if(buffMaxCount > 100)
+            {
+				buffMaxCount = 100;
+            }
 
 			eyeMax = SummonHeartConfig.Instance.eyeMax;
 			handMax = SummonHeartConfig.Instance.handMax;
