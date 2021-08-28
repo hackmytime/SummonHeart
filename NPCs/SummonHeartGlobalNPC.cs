@@ -298,6 +298,9 @@ namespace SummonHeart.NPCs
 				modPlayer.damageResourceCurrent = 0;
 				modPlayer.onDoubleDamage = false;
 			}
+			//计算嫉妒词缀
+			int addDamage = (int)(npc.damage * modPlayer.attackDamage);
+			damage += addDamage;
 			int addRealDmage = modPlayer.addRealDamage;
 			damage = (int)Math.Ceiling(damage / modPlayer.enemyDamageReduceMult);
 			addRealDmage = (int)Math.Ceiling(addRealDmage / modPlayer.enemyDamageReduceMult);
@@ -353,7 +356,7 @@ namespace SummonHeart.NPCs
 				{
 					modPlayer.killResourceCurrent -= killCost;
 					//转换死气值
-					float addDeath = killCost / 2;
+					float addDeath = killCost / 100;
 					if (addDeath < 1)
 						addDeath = 1;
 					modPlayer.deathResourceCurrent += (int)addDeath;
@@ -369,6 +372,9 @@ namespace SummonHeart.NPCs
 				modPlayer.damageResourceCurrent = 0;
 				modPlayer.onDoubleDamage = false;
 			}
+			//计算嫉妒词缀
+			int addDamage = (int)(npc.damage * modPlayer.attackDamage);
+			damage += addDamage;
 			damage = (int)Math.Ceiling(damage / modPlayer.enemyDamageReduceMult);
 			addRealDmage = (int)Math.Ceiling(addRealDmage / modPlayer.enemyDamageReduceMult);
 			this.CauseDirectDamage(npc, damage, crit, addRealDmage);

@@ -30,7 +30,7 @@ namespace SummonHeart.Projectiles.Magic
         public override void AI()
         {
             Player player = Main.player[Main.myPlayer];
-            SummonHeartPlayer mp = player.SummonHeart();
+            SummonHeartPlayer mp = player.SH();
 			float B3 = projectile.Center.X;
 			float C3 = projectile.Center.Y;
 			float D2 = 500f;

@@ -91,7 +91,7 @@ namespace SummonHeart.Projectiles.Magic
         public override void AI()
         {
             Player player = Main.player[Main.myPlayer];
-            SummonHeartPlayer mp = player.SummonHeart();
+            SummonHeartPlayer mp = player.SH();
             int  range = 400;
             float f = Math.Abs((projectile.timeLeft - 100) / 800f) / 0.5f;
             if(projectile.timeLeft <= 100)

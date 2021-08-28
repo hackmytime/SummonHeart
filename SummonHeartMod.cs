@@ -25,7 +25,7 @@ namespace SummonHeart
 
 		internal static List<BuffValue> modBuffValues = new List<BuffValue>();
 
-		static List<Projectile> slowProList = new List<Projectile>();
+		public static HashSet<int> posionBuffSet = new HashSet<int>();
 		public static List<String> rejPassItemList = new List<String>();
 
 		static Dictionary<Projectile, Vector2> oldProMap = new Dictionary<Projectile, Vector2>();
@@ -41,7 +41,7 @@ namespace SummonHeart
 		internal static ModHotKey TransKey;
 		internal static ModHotKey BackDieKey;
 		internal static ModHotKey DoubleDamageKey;
-		//internal static ModHotKey ExtraAccessaryKey;
+		internal static ModHotKey BuffKey;
 
 		internal PanelMelee PanelMeleeUI;
 		internal PanelKill PanelKillUI;
@@ -74,6 +74,9 @@ namespace SummonHeart
 		
 		internal DamageBar damageBar;
 		private UserInterface damageBarInterface;
+		
+		internal PanelBuff panelBuff;
+		private UserInterface panelBuffInterface;
 
 		public static SummonHeartMod Instance;
 
@@ -90,61 +93,26 @@ namespace SummonHeart
 			rejPassItemList.Add("UnlimitedManaAccessory5");
 		}
 
-		public override uint ExtraPlayerBuffSlots
+		/*public override uint ExtraPlayerBuffSlots
 		{
 			get
 			{
 				return 200U;
 			}
-		}
+		}*/
 
-		public static void addSlowMap(Projectile p)
-		{
-			//判断是否包含
-			if (!slowProList.Contains(p))
-            {
-				slowProList.Add(p);
-                Vector2 velocity = new Vector2();
-				velocity = p.velocity;
-				oldProMap[p] = velocity;
-			}
-		}
-
-		public static void deleteSlowMap(Projectile p)
-		{
-			//判断是否包含
-			if (slowProList.Contains(p))
+		private void initposionBuffSet()
+        {
+			for (int i = 0; i < ItemLoader.ItemCount; i++)
 			{
-				p.velocity = oldProMap[p];
-				slowProList.Remove(p);
-				oldProMap.Remove(p);
-			}
-		}
-
-		private void updateMap()
-		{
-			Player player = Main.player[Main.myPlayer];
-			SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
-			//遍历value
-			List<Projectile> delList = new List<Projectile>();
-			foreach (Projectile p in slowProList)
-			{
-				//判断p是否存活
-				if (!p.active)
+				var mitem = ItemLoader.GetItem(i);
+				if (mitem != null)
 				{
-					delList.Add(p);
+					var item = mitem.item;
+					bool flag = item.buffType != 0 && !item.summon;
+					if (flag)
+						posionBuffSet.Add(mitem.item.buffType);
 				}
-				else
-				{
-					Vector2 vector2 = oldProMap[p];
-					p.velocity = vector2 *= (1 - 0.33f);
-				}
-			}
-
-			//删除死亡的弹幕
-			foreach (Projectile p in delList)
-			{
-				slowProList.Remove(p);
 			}
 		}
 
@@ -157,7 +125,7 @@ namespace SummonHeart
 			TransKey = RegisterHotKey("空间传送", Keys.Y.ToString());
 			BackDieKey = RegisterHotKey("神秘水晶返回死亡点", Keys.Z.ToString());
 			DoubleDamageKey = RegisterHotKey("泰坦双倍偿还技能", Keys.K.ToString());
-			//ExtraAccessaryKey = RegisterHotKey("额外饰品栏带单", Keys.Q.ToString());
+			BuffKey = RegisterHotKey("无限法则菜单", Keys.M.ToString());
 			// this makes sure that the UI doesn't get opened on the server
 			// the server can't see UI, can it? it's just a command prompt
 			if (!Main.dedServ)
@@ -239,6 +207,11 @@ namespace SummonHeart
 					magicCharge = new MagicCharge();
 					_magicChargeUserInterface = new UserInterface();
 					_magicChargeUserInterface.SetState(this.magicCharge);
+
+					panelBuff = new PanelBuff();
+					panelBuffInterface = new UserInterface();
+					panelBuffInterface.SetState(panelBuff);
+					
 				}
 				catch (Exception ex)
 				{
@@ -251,6 +224,11 @@ namespace SummonHeart
 			}
 		}
 
+        public override void PostSetupContent()
+        {
+			initposionBuffSet();
+		}
+
         public override void Unload()
         {
 			AutoAttackKey = null;
@@ -260,19 +238,6 @@ namespace SummonHeart
 			TransKey = null;
 			BackDieKey = null;
 			//ExtraAccessaryKey = null;
-		}
-
-		public override void PostSetupContent()
-		{
-			DustIDSlashFX = GetDust("SlashDust").Type;
-			for (int i = 0; i < ItemLoader.ItemCount; i++)
-			{
-				var mitem = ItemLoader.GetItem(i);
-				if(mitem != null && mitem.item.magic && !mitem.item.channel)
-                {
-                    string name = mitem.item.Name;
-                }
-			}
 		}
 
 		public static int getBuffLength()
@@ -296,7 +261,6 @@ namespace SummonHeart
 
         public override void PostDrawInterface(SpriteBatch spriteBatch)
         {
-			updateMap();
 			foreach (NPC npc2 in Main.npc)
 			{
 				if (npc2.active && npc2.type != 0)
@@ -624,6 +588,21 @@ namespace SummonHeart
 					_magicChargeUserInterface.SetState(this.magicCharge);
 				}
 			}
+			
+			if (!Main.gameMenu && panelBuff != null && PanelBuff.visible)
+			{
+				panelBuffInterface?.Update(gameTime);
+			}
+			else
+			{
+				if (panelBuff == null)
+				{
+					panelBuff = new PanelBuff();
+					panelBuffInterface = new UserInterface();
+					panelBuffInterface.SetState(panelBuff);
+				}
+				panelBuff.needValidate = true;
+			}
 		}
 
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
@@ -708,6 +687,10 @@ namespace SummonHeart
 			if (!Main.gameMenu && magicCharge != null)
 			{
 				_magicChargeUserInterface.Draw(Main.spriteBatch, new GameTime());
+			}
+			if (!Main.gameMenu && PanelBuff.visible)
+			{
+				panelBuffInterface.Draw(Main.spriteBatch, new GameTime());
 			}
 			return true;
 		}

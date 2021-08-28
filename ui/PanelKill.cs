@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using SummonHeart.body;
 using SummonHeart.costvalues;
 using SummonHeart.Extensions;
+using SummonHeart.Items.Material;
 using SummonHeart.ui.layout;
 using System.Collections.Generic;
 using Terraria;
@@ -287,6 +288,10 @@ namespace SummonHeart.ui
                                         if (currentBuffIndex == 3)
                                         {
                                             mp.player.QuickSpawnItem(ItemID.JimsWings, 1);
+                                        }
+                                        if (currentBuffIndex == 4)
+                                        {
+                                            mp.player.QuickSpawnItem(ModContent.ItemType<DemonBuff>(), 1);
                                         }
                                         mp.bodyDef += buff.def;
                                         needValidate = true;

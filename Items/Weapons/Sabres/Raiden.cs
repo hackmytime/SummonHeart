@@ -258,14 +258,10 @@ namespace SummonHeart.Items.Weapons.Sabres
             if (mp.showRadius)
             {
                 //计算杀意消耗
-                int killCostCount = (int)mp.killResourceSkillCount * 2;
-                killCostCount *= killCostCount;
-                int minCost = (int)(mp.killResourceMax2 * 0.03);
-                killCostCount += minCost;
+                int killCostCount = (int)(mp.killResourceMax2 * 0.04);
                 if (killCostCount < 20)
-                {
                     killCostCount = 20;
-                }
+                
                 killCostCount /= 10;
                 if (mp.killResourceCurrent >= killCostCount)
                 {
@@ -280,7 +276,7 @@ namespace SummonHeart.Items.Weapons.Sabres
                         if (Main.time % 10 == 0)
                             mp.killResourceCurrent -= killCostCount;
                             //转换死气值
-                            float addDeath = killCostCount / 4;
+                            float addDeath = killCostCount / 100;
                             if (addDeath < 1)
                                 addDeath = 1;
                             mp.deathResourceCurrent += (int)addDeath;

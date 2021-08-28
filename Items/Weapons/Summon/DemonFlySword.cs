@@ -51,7 +51,7 @@ namespace SummonHeart.Items.Weapons.Summon
             item.noMelee = true;
             item.knockBack = 0f;
             item.rare = -12;
-            item.value = Item.sellPrice(999, 0, 0, 0);
+            item.value = Item.sellPrice(9999, 0, 0, 0);
             item.summon = true;
             item.autoReuse = true;
         }
@@ -59,6 +59,16 @@ namespace SummonHeart.Items.Weapons.Summon
         public override void GetWeaponCrit(Player player, ref int crit)
         {
             crit = 0;
+        }
+
+        public override bool AllowPrefix(int pre)
+        {
+            return false;
+        }
+
+        public override bool? PrefixChance(int pre, UnifiedRandom rand)
+        {
+            return new bool?(false);
         }
 
         public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)

@@ -20,8 +20,8 @@ namespace SummonHeart.body
             modBuffValues.Add(buff3);
             BuffValue buff4 = new BuffValue(ItemID.LifeCrystal, 5, "修炼魔神之腿");
             modBuffValues.Add(buff4);
-            BuffValue buff5 = new BuffValue(ItemID.LifeCrystal, 5, "灵魂撕裂：灵魂法则，所有攻击附加最多噬魂之心等级层数的灵魂撕裂效果。");
-            buff5.cost = new CostValue[] {new MoneyCostValue(100000) };
+            BuffValue buff5 = new BuffValue(ItemID.LifeCrystal, 5, "无限法则：点亮获得物品【魔神的无限法则】，可以献祭灵魂提高无限法则上限");
+            buff5.cost = new CostValue[] {new MoneyCostValue(10000) };
             modBuffValues.Add(buff5);
             return modBuffValues;
         }

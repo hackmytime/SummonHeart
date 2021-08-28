@@ -8,7 +8,7 @@ namespace SummonHeart
 	{
         public static void PostUpdateRunSpeeds(Player player)
         {
-            SummonHeartPlayer mplayer = player.SummonHeart();
+            SummonHeartPlayer mplayer = player.SH();
             if (mplayer.MyAccelerationMult > 2f) mplayer.MyAccelerationMult = 2f;
             if (mplayer.MyMoveSpeedMult > 1.5f) mplayer.MyMoveSpeedMult = 1.5f;
             player.runAcceleration *= mplayer.MyAccelerationMult;
@@ -18,7 +18,7 @@ namespace SummonHeart
 
 		public static void UpdateMax(Player player)
 		{
-			SummonHeartPlayer mp = player.SummonHeart();
+			SummonHeartPlayer mp = player.SH();
 			int bodyMax = 10000;
 			int swordMax = 200;
 			//1、2W - king slime5 %
@@ -99,7 +99,7 @@ namespace SummonHeart
 
 		public static void UpdateColors(Player player)
         {
-            SummonHeartPlayer mplayer = player.SummonHeart();
+            SummonHeartPlayer mplayer = player.SH();
             if (!mplayer.colorsInitialized)
             {
                 InitializeColors(null, player, mplayer);

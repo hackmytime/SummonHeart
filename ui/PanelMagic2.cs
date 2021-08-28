@@ -283,6 +283,10 @@ namespace SummonHeart.ui
                                         {
                                             mp.player.QuickSpawnItem(ItemID.JimsWings, 1);
                                         }
+                                        if (currentBuffIndex == 4)
+                                        {
+                                            mp.player.QuickSpawnItem(ModContent.ItemType<DemonBuff>(), 1);
+                                        }
                                         mp.bodyDef += buff.def;
                                         needValidate = true;
                                         if (Main.netMode == NetmodeID.MultiplayerClient)

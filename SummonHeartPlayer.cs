@@ -25,6 +25,7 @@ namespace SummonHeart
 		public bool killAnyBoss = false;
 		public int PlayerClass = 0;
 		public int deathCount = 0;
+		public int buffMaxCount = 9;
 		public int killNpcCount = 0;
 		public int fishCount = 0;
 		public int nextFishCount = 0;
@@ -126,6 +127,9 @@ namespace SummonHeart
 		public float enemyDamageReduceMult;
 		public int addRealDamage;
 		public int fishLureCount;
+		public float manaExp;
+		public float attackDamage;
+		public int lifeSteal;
 
 
 		public SummonHeartPlayer()
@@ -186,6 +190,10 @@ namespace SummonHeart
 			damageResourceMax = 9999;
 			addRealDamage = 0;
 			fishLureCount = this.getFishLevel();
+			manaExp = 1;
+			attackDamage = 0;
+			lifeSteal = 0;
+			buffMaxCount = 9;
 
 			eyeMax = SummonHeartConfig.Instance.eyeMax;
 			handMax = SummonHeartConfig.Instance.handMax;
@@ -236,8 +244,49 @@ namespace SummonHeart
 			{
 				ModPlayerEffects.UpdateColors(player);
 			}
-		}
 
+			if(player.active && !player.dead)
+            {
+				if(infiniBuffDic.Keys.Count < buffMaxCount)
+                {
+					for (int i = 0; i < player.CountBuffs(); i++)
+					{
+						int type = player.buffType[i];
+						if (!infiniBuffDic.Keys.Contains(type))
+						{
+							ModBuff modBuff = BuffLoader.GetBuff(type);
+							if (Main.debuff[type] == false)
+							{
+								if (modBuff == null)
+								{
+									infiniBuffDic.Add(type, true);
+								}
+								else if (SummonHeartMod.posionBuffSet.Contains(type))
+								{
+									infiniBuffDic.Add(type, true);
+								}
+							}
+						}
+					}
+				}
+
+				foreach(var type in infiniBuffDic.Keys)
+				{
+					int buffId = type;
+                    if (infiniBuffDic[type])
+                    {
+						player.AddBuff(buffId, int.MaxValue, true);
+						Main.buffNoTimeDisplay[type] = true;
+						Main.persistentBuff[type] = true;
+                    }
+                    else
+                    {
+						if (player.HasBuff(buffId))
+							player.ClearBuff(buffId);
+					}
+				}
+			}
+		}
 		/*private void AccBuryTheLight()
 		{
 			NPC target = Helper.GetNearestNPC(base.player.position, (NPC npc) => !npc.friendly && npc.active && !npc.dontTakeDamage, 600f);
@@ -263,7 +312,7 @@ namespace SummonHeart
 			}
 			this.buryTheLightCooldown--;
 		}*/
-	
+
 		public override void PostUpdate()
 		{
 			currentAura = this.GetAuraEffectOnPlayer();
@@ -340,9 +389,6 @@ namespace SummonHeart
 		{
 			int allBlood = this.getAllBloodGas();
 			player.statManaMax2 += allBlood / 40;
-
-			if (magicBook)
-				player.statManaMax2 *= 2;
 
 			player.manaRegen = 0;
 			player.manaRegenCount = 0;
@@ -445,6 +491,8 @@ namespace SummonHeart
 			}
 			if (player.statMana < player.statManaMax2 && bodyHealCD == 1)
 			{
+				if (magicBook)
+					heal *= 2;
 				player.HealMana(heal);
 			}
 
@@ -520,8 +568,13 @@ namespace SummonHeart
 			killResourceSkillCountMax = 10;
 			//被动
 			killResourceMax += killNpcCount;
-			if (killResourceMax > 999999)
-				killResourceMax = 999999;
+			//计算上限
+			int allBlood = this.getAllBloodGas();
+			int curMax = 99999 + allBlood;
+			if (allBlood >= 800000)
+				curMax += 100000;
+			if (killResourceMax > curMax)
+				killResourceMax = curMax;
 			deathResourceMax = killResourceMax / 100;
 			killResourceMulti = 3 + killResourceMax / 44444;
 			addRealDamage = killResourceMax / 99;
@@ -614,7 +667,7 @@ namespace SummonHeart
 			myDamageReduceMult += 1;
 			//吸收伤害上限
 			int allBlood = this.getAllBloodGas();
-			damageResourceMax = 9999 + allBlood;
+			damageResourceMax = 99999 + allBlood;
 
 			//魔神之眼
 			if (boughtbuffList[0])
@@ -1062,6 +1115,7 @@ namespace SummonHeart
 			tagComp.Add("deathCount", deathCount);
 			tagComp.Add("killNpcCount", killNpcCount);
 			tagComp.Add("fishCount", fishCount);
+			tagComp.Add("buffMaxCount", buffMaxCount);
 			tagComp.Add("bodyDef", bodyDef);
 			tagComp.Add("eyeBloodGas", eyeBloodGas);
 			tagComp.Add("handBloodGas", handBloodGas);
@@ -1078,6 +1132,14 @@ namespace SummonHeart
 			tagComp.Add("soulSplit", soulSplit);
 			tagComp.Add("boughtbuffList", boughtbuffList);
 			tagComp["ExtraAccessories"] = this.ExtraAccessories.Select(new Func<Item, TagCompound>(ItemIO.Save)).ToList<TagCompound>();
+			int i = 0;
+			tagComp.Add("buff_count", this.infiniBuffDic.Count);
+			foreach (KeyValuePair<int, bool> kv in this.infiniBuffDic)
+			{
+				tagComp.Set("buff_type_" + i, kv.Key);
+				tagComp.Set("buff_time_" + i, kv.Value);
+				i++;
+			}
 			return tagComp;
 		}
 		
@@ -1091,6 +1153,7 @@ namespace SummonHeart
 			deathCount = tag.GetInt("deathCount");
 			killNpcCount = tag.GetInt("killNpcCount");
 			fishCount = tag.GetInt("fishCount");
+			buffMaxCount = tag.GetInt("buffMaxCount");
 			bodyDef = tag.GetFloat("bodyDef");
 			eyeBloodGas = tag.GetInt("eyeBloodGas");
 			handBloodGas = tag.GetInt("handBloodGas");
@@ -1111,7 +1174,14 @@ namespace SummonHeart
 			{
 				boughtbuffList.Add(false);
 			}
-			tag.GetList<TagCompound>("ExtraAccessories").Select(new Func<TagCompound, Item>(ItemIO.Load)).ToList<Item>().CopyTo(this.ExtraAccessories);
+            tag.GetList<TagCompound>("ExtraAccessories").Select(new Func<TagCompound, Item>(ItemIO.Load)).ToList<Item>().CopyTo(this.ExtraAccessories);
+
+			this.infiniBuffDic = new Dictionary<int, bool>();
+			int buffCount = tag.GetInt("buff_count");
+			for (int i = 0; i < buffCount; i++)
+			{
+				this.infiniBuffDic[tag.GetInt("buff_type_" + i)] = tag.GetBool("buff_time_" + i);
+			}
 		}
 
 		public override void ProcessTriggers(TriggersSet triggersSet)
@@ -1138,6 +1208,7 @@ namespace SummonHeart
 				PanelMagic.visible = false;
 				PanelMagic2.visible = false;
 				PanelGodSoul.visible = false;
+				PanelBuff.visible = false;
 			}
 
 			if (SummonHeartMod.ShowUI.JustPressed)
@@ -1273,63 +1344,65 @@ namespace SummonHeart
 					}
 				}
 			}
-			/*if (SummonHeartMod.ExtraAccessaryKey.JustPressed)
+			if (SummonHeartMod.BuffKey.JustPressed)
 			{
-				PanelGodSoul.visible = !PanelGodSoul.visible;
-			}*/
+				PanelBuff.visible = !PanelBuff.visible;
+			}
 		}
 
         public override void OnHitNPC(Item item, NPC target, int damage, float knockback, bool crit)
         {
 			if (target.type == NPCID.TargetDummy || target.friendly)
 				return;
-			
-			SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
+
+            SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
+
+			int heal = lifeSteal;
 			if (PlayerClass == 4 && boughtbuffList[2])
 			{
-				int heal = (int)(damage * (bodyBloodGas / 100000 * 0.01f + 0.01));
-
-				if (heal > player.statLifeMax2 / 4)
-				{
-					heal = player.statLifeMax2 / 4;
-				}
-				if (heal > HealCount)
-                {
-					heal = HealCount;
-                }
-				if (heal > 0 && HealCount > 0)
-                {
-					HealCount -= heal;
-					player.statLife += heal;
-					player.HealEffect(heal);
-                }
+				heal += (int)(damage * (bodyBloodGas / 100000 * 0.01f + 0.01));
+			}
+			if (heal > player.statLifeMax2 / 4)
+			{
+				heal = player.statLifeMax2 / 4;
+			}
+			if (heal > HealCount)
+			{
+				heal = HealCount;
+			}
+			if (heal > 0 && HealCount > 0)
+			{
+				HealCount -= heal;
+				player.statLife += heal;
+				player.HealEffect(heal);
 			}
 		}
 
         public override void OnHitNPCWithProj(Projectile proj, NPC target, int damage, float knockback, bool crit)
         {
-			if (target.type == NPCID.TargetDummy || target.friendly)
-				return;
+            if (target.type == NPCID.TargetDummy || target.friendly)
+                return;
+
 			SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
-			
+
+			int heal = lifeSteal;
 			if (PlayerClass == 4 && boughtbuffList[2])
 			{
-				int heal = (int)(damage * (bodyBloodGas / 100000 * 0.01f + 0.01));
-
-				if (heal > player.statLifeMax2 / 4)
-				{
-					heal = player.statLifeMax2 / 4;
-				}
-				if (heal > HealCount)
-				{
-					heal = HealCount;
-				}
-				if (heal > 0 && HealCount > 0)
-				{
-					HealCount -= heal;
-					player.statLife += heal;
-					player.HealEffect(heal);
-				}
+				heal += (int)(damage * (bodyBloodGas / 100000 * 0.01f + 0.01));
+			}
+			if (heal > player.statLifeMax2 / 4)
+			{
+				heal = player.statLifeMax2 / 4;
+			}
+			if (heal > HealCount)
+			{
+				heal = HealCount;
+			}
+			if (heal > 0 && HealCount > 0)
+			{
+				HealCount -= heal;
+				player.statLife += heal;
+				player.HealEffect(heal);
 			}
 		}
 
@@ -1671,33 +1744,6 @@ namespace SummonHeart
 			}
 		}
 
-        public override void PreUpdateBuffs()
-        {
-			base.PreUpdateBuffs();
-			if (base.player == Main.LocalPlayer)
-			{
-				for (int toRemove = base.player.CountBuffs() - 200; toRemove > 0; toRemove--)
-				{
-					int num3 = -1;
-					for (int i = 0; i < Player.MaxBuffs; i++)
-					{
-						if (!Main.debuff[base.player.buffType[i]] && base.player.buffTime[i] > 0)
-						{
-							num3 = i;
-						}
-					}
-					if (num3 == -1)
-					{
-						return;
-					}
-					base.player.DelBuff(num3);
-				}
-			}
-		}
-
-        public override void PostUpdateBuffs()
-        {
-            base.PostUpdateBuffs();
-        }
-    }
+		public IDictionary<int, bool> infiniBuffDic = new Dictionary<int, bool>();
+	}
 }

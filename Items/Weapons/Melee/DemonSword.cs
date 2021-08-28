@@ -48,7 +48,7 @@ namespace SummonHeart.Items.Weapons.Melee
             item.useTime = 15;
             item.useAnimation = 22;
             item.rare = -12;
-            item.value = Item.sellPrice(999, 0, 0, 0);
+            item.value = Item.sellPrice(9999, 0, 0, 0);
         }
 
         public override bool Shoot(Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
@@ -79,7 +79,17 @@ namespace SummonHeart.Items.Weapons.Melee
             position -= vel * 120f;
             return true;
         }
-       
+
+        public override bool AllowPrefix(int pre)
+        {
+            return false;
+        }
+
+        public override bool? PrefixChance(int pre, UnifiedRandom rand)
+        {
+            return new bool?(false);
+        }
+
         public override void AddRecipes()
         {
             ModRecipe recipe = new ModRecipe(mod);

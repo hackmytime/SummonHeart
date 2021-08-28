@@ -126,7 +126,9 @@ namespace SummonHeart.Extensions
 			if (npc.boss)
 				modPlayer.killAnyBoss = true;
 
-			modPlayer.killNpcCount++;
+			int addKillCount = (int)modPlayer.manaExp;
+			modPlayer.killNpcCount += addKillCount;
+			
 			if(modPlayer.PlayerClass == 5 && modPlayer.boughtbuffList[0])
             {
 				int healMana = modPlayer.eyeBloodGas / 1000 + 10;
@@ -176,6 +178,8 @@ namespace SummonHeart.Extensions
 				{
 					addExp *= hardMulti;
 				}
+				//处理贪婪词缀增加
+				addExp = (int)(addExp * modPlayer.manaExp);
 				modPlayer.BBP += addExp;
 				if (modPlayer.BBP > 5000000)
 					modPlayer.BBP = 5000000;
@@ -360,7 +364,7 @@ namespace SummonHeart.Extensions
 			}
 		}
 
-		public static SummonHeartPlayer SummonHeart(this Player player) => player.GetModPlayer<SummonHeartPlayer>();
+		public static SummonHeartPlayer SH(this Player player) => player.GetModPlayer<SummonHeartPlayer>();
 		public static SummonHeartGlobalNPC SummonHeart(this NPC npc) => npc.GetGlobalNPC<SummonHeartGlobalNPC>();
 
 

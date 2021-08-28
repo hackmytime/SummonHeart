@@ -284,8 +284,11 @@ namespace SummonHeart.ui
                                         }
                                         if (currentBuffIndex == 3)
                                         {
-                                            Item.NewItem(mp.player.Center, ItemID.JimsWings);
                                             mp.player.QuickSpawnItem(ItemID.JimsWings, 1);
+                                        }
+                                        if (currentBuffIndex == 4)
+                                        {
+                                            mp.player.QuickSpawnItem(ModContent.ItemType<DemonBuff>(), 1);
                                         }
                                         mp.bodyDef += buff.def;
                                         needValidate = true;
