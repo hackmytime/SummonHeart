@@ -18,7 +18,8 @@ namespace SummonHeart.Items.Material
             DisplayName.SetDefault("DemonWorldBall");
             Tooltip.SetDefault("DemonLure, Consume 500 soul power and transfer it to the random treasure chest\n");
             DisplayName.AddTranslation(GameCulture.Chinese, "魔神的世界球");
-            Tooltip.AddTranslation(GameCulture.Chinese, "消耗500灵魂之力，改变世界背景");
+            Tooltip.AddTranslation(GameCulture.Chinese, "左键使用消耗500灵魂之力，改变世界背景" +
+                "\n右键使用消耗5000灵魂之力，今夜落星掉落速度提高100倍");
         }
 
         public override void SetDefaults()
@@ -36,21 +37,45 @@ namespace SummonHeart.Items.Material
         public override bool UseItem(Player player)
         {
             SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
-            if(mp.BBP < 500)
+            if (player.altFunctionUse == 2)
             {
-                player.statLife = 1;
-                CombatText.NewText(player.getRect(), Color.Red, "灵魂之力不足，强行使用生命值减为1");
-                return false;
+                if (mp.BBP < 5000)
+                {
+                    player.statLife = 1;
+                    CombatText.NewText(player.getRect(), Color.Red, "灵魂之力不足，强行使用生命值减为1");
+                }
+                else if (Main.dayTime)
+                {
+                    CombatText.NewText(player.getRect(), Color.LawnGreen, "白天无法使用");
+                }
+                else
+                {
+                    CombatText.NewText(player.getRect(), Color.LightPink, "-5000灵魂之力，来欣赏流星雨吧");
+                    mp.BBP -= 5000;
+                    SummonHeartWorld.StarMulti = 100;
+                    SummonHeartWorld.StarMultiTime = 60*60*12;
+                }
             }
-            CombatText.NewText(player.getRect(), Color.Red, "-500灵魂之力");
-            mp.BBP -= 500;
-            WorldGen.RandomizeBackgrounds();
+            else
+            {
+                if (mp.BBP < 500)
+                {
+                    player.statLife = 1;
+                    CombatText.NewText(player.getRect(), Color.Red, "灵魂之力不足，强行使用生命值减为1");
+                }
+                else
+                {
+                    CombatText.NewText(player.getRect(), Color.Red, "-500灵魂之力");
+                    mp.BBP -= 500;
+                    WorldGen.RandomizeBackgrounds();
+                }
+            }
             return true;
         }
 
-        private bool ValidTile(int X, int Y)
+        public override bool AltFunctionUse(Player player)
         {
-            return (!Main.tile[X, Y].active() || !Main.tileSolid[(int)Main.tile[X, Y].type]) && (!Main.tile[X, Y - 1].active() || !Main.tileSolid[(int)Main.tile[X, Y - 1].type]);
+            return true;
         }
 
         public override bool PreDrawTooltipLine(DrawableTooltipLine line, ref int yOffset)

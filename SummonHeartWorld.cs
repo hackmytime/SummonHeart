@@ -5,6 +5,8 @@ using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.World.Generation;
 using Terraria.GameContent.Generation;
+using Microsoft.Xna.Framework;
+using System;
 
 namespace SummonHeart
 {
@@ -14,12 +16,17 @@ namespace SummonHeart
 
         public static int WorldLevel;
 
+        public static int StarMulti;
+
+        public static int StarMultiTime;
+
         public static int WorldBloodGasMax = 0;
 
         public override void Initialize()
         {
             GoddessMode = false;
             WorldLevel = 0;
+            StarMulti = 0;
             WorldBloodGasMax = 100000;
         }
 
@@ -28,6 +35,32 @@ namespace SummonHeart
             if (Main.anglerQuestFinished)
             {
                 Main.AnglerQuestSwap();
+            }
+            StarMultiTime--;
+            if(StarMultiTime <= 0)
+            {
+                StarMultiTime = 0;
+                StarMulti = 0;
+            }
+            if (!Main.dayTime && StarMulti > 1 && StarMultiTime > 0)
+            {
+                float num143 = (float)(Main.maxTilesX / 4200);
+                if ((float)Main.rand.Next(8000 / (StarMulti - 1)) < 10f * num143)
+                {
+                    float num149 = (float)12;
+                    int num144 = Main.rand.Next(Main.maxTilesX - 50) + 100;
+                    num144 *= 16;
+                    int num145 = Main.rand.Next((int)((double)Main.maxTilesY * 0.05));
+                    num145 *= 16;
+                    Vector2 vector = new Vector2((float)num144, (float)num145);
+                    float num146 = (float)Main.rand.Next(-100, 101);
+                    float num147 = (float)(Main.rand.Next(200) + 100);
+                    float num148 = (float)Math.Sqrt((double)(num146 * num146 + num147 * num147));
+                    num148 = num149 / num148;
+                    num146 *= num148;
+                    num147 *= num148;
+                    Projectile.NewProjectile(vector.X, vector.Y, num146, num147, 12, 1000, 10f, Main.myPlayer, 0f, 0f);
+                }
             }
         }
 

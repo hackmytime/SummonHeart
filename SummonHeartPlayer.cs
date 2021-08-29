@@ -93,6 +93,7 @@ namespace SummonHeart
 		private int healCD = 0;
 		private int bodyHealCD = 0;
 		private int killHealCD = 0;
+		private int damageCD = 0;
 
 		public List<bool> boughtbuffList;
 
@@ -186,6 +187,9 @@ namespace SummonHeart
 			{
 				killHealCD = 0;
 			}
+			damageCD--;
+			if (damageCD < 0)
+				damageCD = 0;
 			killResourceMax2 = killResourceMax;
 			damageResourceMax = 9999;
 			addRealDamage = 0;
@@ -290,33 +294,19 @@ namespace SummonHeart
 				}
 			}
 		}
-		/*private void AccBuryTheLight()
-		{
-			NPC target = Helper.GetNearestNPC(base.player.position, (NPC npc) => !npc.friendly && npc.active && !npc.dontTakeDamage, 600f);
-			if (target == null)
-			{
-				this.buryTheLightStarted = false;
-				this.buryTheLightCooldown = 10;
-				return;
-			}
-			if (this.buryTheLightCooldown <= 0)
-			{
-				this.buryTheLightCooldown = 10;
-				if (!this.buryTheLightStarted)
-				{
-					this.buryTheLightStarted = true;
-					Main.PlaySound(50, (int)base.player.position.X, (int)base.player.position.Y, base.mod.GetSoundSlot((SoundType)50, "Sounds/Items/buryTheLight"), 0.4f, Utils.NextFloat(Main.rand, 0f, 0.15f));
-				}
-				float mult = 1f + (base.player.allDamage - 1f + (base.player.rangedDamage - 1f) + (base.player.meleeDamage - 1f) + (base.player.magicDamage - 1f));
-				int damage = (int)(12f * mult) + Math.Min(60, (int)((float)target.defense * 0.5f));
-				Vector2 vel = VectorHelper.VelocityToPoint(base.player.Center, target.Center, 1f);
-				Projectile.NewProjectileDirect(target.Center - vel * 60f, vel, ModContent.ProjectileType<DragonLegacyBlue>(), (int)((float)damage * 1.25f), 6.6f, base.player.whoAmI, 0f, 0f).netUpdate = true;
-				return;
-			}
-			this.buryTheLightCooldown--;
-		}*/
 
-		public override void PostUpdate()
+        public override void DrawEffects(PlayerDrawInfo drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
+        {
+            base.DrawEffects(drawInfo, ref r, ref g, ref b, ref a, ref fullBright);
+			int team = 1;
+			if (player.team != team)
+			{
+				player.team = team;
+				NetMessage.SendData(45, -1, -1, null, Main.myPlayer, 0f, 0f, 0f, 0, 0, 0);
+			}
+		}
+
+        public override void PostUpdate()
 		{
 			currentAura = this.GetAuraEffectOnPlayer();
 			IncrementAuraFrameTimers(currentAura);
@@ -722,7 +712,7 @@ namespace SummonHeart
 		private void EffectMelee2()
 		{
 			//狂战
-			angerResourceMax = 100 + deathCount;
+			angerResourceMax = 100 + deathCount * 4;
 			if (angerResourceMax > 500)
 				angerResourceMax = 500;
 			player.statDefense += (int)bodyDef;
@@ -1446,8 +1436,9 @@ namespace SummonHeart
 			
 			damage = (int)Math.Ceiling(damage / myDamageReduceMult);
 
-			if (PlayerClass == 1)
+			if (PlayerClass == 1 && damageCD == 0)
 			{
+				damageCD = 10;
 				int addDamage = oldDamage - damage;
 				if(crit)
 					addDamage *= 2;
@@ -1483,8 +1474,9 @@ namespace SummonHeart
 			
 			damage = (int)Math.Ceiling(damage / myDamageReduceMult);
 
-			if (PlayerClass == 1)
+			if (PlayerClass == 1 && damageCD == 0)
 			{
+				damageCD = 10;
 				int addDamage = oldDamage - damage;
 				if (crit)
 					addDamage *= 2;

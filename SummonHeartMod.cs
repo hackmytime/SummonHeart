@@ -695,5 +695,75 @@ namespace SummonHeart
 			return true;
 		}
 
-    }
+		internal static bool ClearEvents()
+		{
+			bool eventOccurring = false;
+			bool canClearEvent = true;
+			if (Main.invasionType != 0)
+			{
+				eventOccurring = true;
+				if (canClearEvent)
+				{
+					Main.invasionType = 0;
+				}
+			}
+
+			if (Main.pumpkinMoon)
+			{
+				eventOccurring = true;
+				if (canClearEvent)
+				{
+					Main.pumpkinMoon = false;
+				}
+			}
+
+			if (Main.snowMoon)
+			{
+				eventOccurring = true;
+				if (canClearEvent)
+				{
+					Main.snowMoon = false;
+				}
+			}
+
+			if (Main.eclipse)
+			{
+				eventOccurring = true;
+				if (canClearEvent)
+				{
+					Main.eclipse = false;
+				}
+			}
+
+			if (Main.bloodMoon)
+			{
+				eventOccurring = true;
+				if (canClearEvent)
+				{
+					Main.bloodMoon = false;
+				}
+			}
+
+			if (Main.raining)
+			{
+				eventOccurring = true;
+				if (canClearEvent)
+				{
+					Main.raining = false;
+				}
+			}
+
+			if (Main.slimeRain)
+			{
+				eventOccurring = true;
+				if (canClearEvent)
+				{
+					Main.StopSlimeRain();
+					Main.slimeWarningDelay = 1;
+					Main.slimeWarningTime = 1;
+				}
+			}
+			return eventOccurring && canClearEvent;
+		}
+	}
 }

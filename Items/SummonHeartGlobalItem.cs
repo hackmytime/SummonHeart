@@ -29,7 +29,7 @@ namespace SummonHeart.Items
                 {
                     return false;
                 }
-                float v1 = item.shootSpeed * 2;
+                float v1 = item.shootSpeed * 1.5f;
                 if (mp.magicChargeCount > 0)
                 {
                     //计算伤害

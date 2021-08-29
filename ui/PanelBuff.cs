@@ -101,7 +101,7 @@ namespace SummonHeart.ui
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
 
                 var modbuffgridpanel = new Layout(0, 0, 0, 0, 10, buffGrid);
-                modbuffpanel.children.Add(modbuffgridpanel);
+               
                 //populate modbuffgridpanel
 
                 foreach (var type in mp.infiniBuffDic.Keys)
@@ -155,11 +155,9 @@ namespace SummonHeart.ui
 
                     modbuffgridpanel.children.Add(buffpanel);
                 }
-
+                modbuffpanel.children.Add(modbuffgridpanel);
                 panelwrapper.children.Add(modbuffpanel);
             }
-
-            
 
             panelwrapper.Recalculate();
 

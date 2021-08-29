@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using SummonHeart.Extensions;
 using SummonHeart.Items.Accessories;
 using Terraria.GameContent.Events;
+using System.Collections.Generic;
 
 namespace SummonHeart.Items.Material
 {
@@ -18,7 +19,8 @@ namespace SummonHeart.Items.Material
             DisplayName.SetDefault("DemonTime");
             Tooltip.SetDefault("DemonLure, Consume 500 soul power and transfer it to the random treasure chest\n");
             DisplayName.AddTranslation(GameCulture.Chinese, "魔神的无限法则");
-            Tooltip.AddTranslation(GameCulture.Chinese, "消耗1W灵魂之力，提高无限法则上限1");
+            Tooltip.AddTranslation(GameCulture.Chinese, "左键使用消耗当前灵魂法则上限x2000点灵魂之力，提高无限法则上限1" +
+                "\n右键使用删除当前所有未启用的buff，每删除1个buff需要消耗2000点灵魂之力");
         }
 
         public override void SetDefaults()
@@ -36,26 +38,60 @@ namespace SummonHeart.Items.Material
         public override bool UseItem(Player player)
         {
             SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
-            if(mp.BBP < 10000)
+            if (player.altFunctionUse == 2)
             {
-                player.statLife = 1;
-                CombatText.NewText(player.getRect(), Color.Red, "灵魂之力不足，强行使用生命值减为1");
-                return false;
+                //右键删除buff
+                List<int> delList = new List<int>();
+                foreach(var key in mp.infiniBuffDic.Keys)
+                {
+                    if (!mp.infiniBuffDic[key])
+                        delList.Add(key);
+                }
+                int costSoul = 2000 * delList.Count;
+                if (costSoul == 0)
+                {
+                    CombatText.NewText(player.getRect(), Color.Red, "没有要删除的buff");
+                }
+                else if (mp.BBP < costSoul)
+                {
+                    CombatText.NewText(player.getRect(), Color.Red, "灵魂之力不足");
+                }
+                else
+                {
+                    CombatText.NewText(player.getRect(), Color.LightGreen, $"-{costSoul}灵魂之力删除了{delList.Count}个buff");
+                    mp.BBP -= costSoul;
+                    foreach(var key in delList)
+                    {
+                        mp.infiniBuffDic.Remove(key);
+                        player.ClearBuff(key);
+                    }
+                }
             }
-            if (mp.buffMaxCount >= 100)
+            else
             {
-                CombatText.NewText(player.getRect(), Color.LightGreen, "灵魂法则已达上限");
-                return false;
+                int costSoul = 2000 * mp.buffMaxCount;
+                if (mp.buffMaxCount >= 100)
+                {
+                    CombatText.NewText(player.getRect(), Color.LightGreen, "灵魂法则已达上限100");
+                }
+                else if (mp.BBP < costSoul)
+                {
+                    player.statLife = 1;
+                    CombatText.NewText(player.getRect(), Color.Red, $"灵魂之力不足{costSoul}点，强行使用生命值减为1");
+                }
+                else
+                {
+                    CombatText.NewText(player.getRect(), Color.Red, $"-{costSoul}灵魂之力");
+                    mp.BBP -= costSoul;
+                    mp.buffMaxCount++;
+                }
             }
-            CombatText.NewText(player.getRect(), Color.Red, "-10000灵魂之力");
-            mp.BBP -= 10000;
-            mp.buffMaxCount++;
             return true;
         }
 
-        private bool ValidTile(int X, int Y)
+        public override bool AltFunctionUse(Player player)
         {
-            return (!Main.tile[X, Y].active() || !Main.tileSolid[(int)Main.tile[X, Y].type]) && (!Main.tile[X, Y - 1].active() || !Main.tileSolid[(int)Main.tile[X, Y - 1].type]);
+            return true;
         }
 
         public override bool PreDrawTooltipLine(DrawableTooltipLine line, ref int yOffset)

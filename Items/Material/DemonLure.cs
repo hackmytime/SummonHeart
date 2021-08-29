@@ -40,23 +40,25 @@ namespace SummonHeart.Items.Material
             {
                 player.statLife = 1;
                 CombatText.NewText(player.getRect(), Color.Red, "灵魂之力不足，强行使用生命值减为1");
-                return false;
             }
-            CombatText.NewText(player.getRect(), Color.Red, "-500灵魂之力");
-            mp.BBP -= 500;
-            int num = Main.rand.Next(0, Main.chest.Length);
-            while (Main.chest[num] == null || (double)Main.chest[num].y < Main.worldSurface)
+            else
             {
-                num = Main.rand.Next(0, Main.chest.Length);
+                CombatText.NewText(player.getRect(), Color.Red, "-500灵魂之力");
+                mp.BBP -= 500;
+                int num = Main.rand.Next(0, Main.chest.Length);
+                while (Main.chest[num] == null || (double)Main.chest[num].y < Main.worldSurface)
+                {
+                    num = Main.rand.Next(0, Main.chest.Length);
+                }
+                int num2 = Main.chest[num].x;
+                int num3 = Main.chest[num].y;
+                while (!this.ValidTile(num2, num3))
+                {
+                    num3--;
+                    num2++;
+                }
+                player.Teleport(new Vector2((float)(num2 * 16), (float)(num3 * 16)), 0, 0);
             }
-            int num2 = Main.chest[num].x;
-            int num3 = Main.chest[num].y;
-            while (!this.ValidTile(num2, num3))
-            {
-                num3--;
-                num2++;
-            }
-            player.Teleport(new Vector2((float)(num2 * 16), (float)(num3 * 16)), 0, 0);
             return true;
         }
 

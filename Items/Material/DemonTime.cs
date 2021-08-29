@@ -18,7 +18,8 @@ namespace SummonHeart.Items.Material
             DisplayName.SetDefault("DemonTime");
             Tooltip.SetDefault("DemonLure, Consume 500 soul power and transfer it to the random treasure chest\n");
             DisplayName.AddTranslation(GameCulture.Chinese, "魔神的时间法则");
-            Tooltip.AddTranslation(GameCulture.Chinese, "消耗500灵魂之力，切换昼夜");
+            Tooltip.AddTranslation(GameCulture.Chinese, "左键使用消耗500灵魂之力，切换昼夜" +
+                "\n右键使用消耗500灵魂之力，跳过事件");
         }
 
         public override void SetDefaults()
@@ -36,26 +37,51 @@ namespace SummonHeart.Items.Material
         public override bool UseItem(Player player)
         {
             SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
-            if(mp.BBP < 500)
+            if (player.altFunctionUse == 2)
             {
-                player.statLife = 1;
-                CombatText.NewText(player.getRect(), Color.Red, "灵魂之力不足，强行使用生命值减为1");
-                return false;
+                if (mp.BBP < 500)
+                {
+                    player.statLife = 1;
+                    CombatText.NewText(player.getRect(), Color.Red, "灵魂之力不足，强行使用生命值减为1");
+                }
+                else
+                {
+                    if (SummonHeartMod.ClearEvents())
+                    {
+                        CombatText.NewText(player.getRect(), Color.Red, "-500灵魂之力");
+                        mp.BBP -= 500;
+                    }
+                    else
+                    {
+                        CombatText.NewText(player.getRect(), Color.LightGreen, "当前没有事件需要跳过");
+                    }
+                }
             }
-            CombatText.NewText(player.getRect(), Color.Red, "-500灵魂之力");
-            mp.BBP -= 500;
-            if (Main.netMode != 1)
-             {
-                 Main.time = 54000.0;
-                 CultistRitual.delay = 0;
-                 CultistRitual.recheck = 0;
-             }
+            else
+            {
+                if (mp.BBP < 500)
+                {
+                    player.statLife = 1;
+                    CombatText.NewText(player.getRect(), Color.Red, "灵魂之力不足，强行使用生命值减为1");
+                }
+                else
+                {
+                    CombatText.NewText(player.getRect(), Color.Red, "-500灵魂之力");
+                    mp.BBP -= 500;
+                    if (Main.netMode != 1)
+                    {
+                        Main.time = 54000.0;
+                        CultistRitual.delay = 0;
+                        CultistRitual.recheck = 0;
+                    }
+                }
+            }
             return true;
         }
 
-        private bool ValidTile(int X, int Y)
+        public override bool AltFunctionUse(Player player)
         {
-            return (!Main.tile[X, Y].active() || !Main.tileSolid[(int)Main.tile[X, Y].type]) && (!Main.tile[X, Y - 1].active() || !Main.tileSolid[(int)Main.tile[X, Y - 1].type]);
+            return true;
         }
 
         public override bool PreDrawTooltipLine(DrawableTooltipLine line, ref int yOffset)

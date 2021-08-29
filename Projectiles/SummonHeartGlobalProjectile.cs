@@ -9,7 +9,8 @@ namespace SummonHeart.Projectiles
 {
     public class SummonHeartGlobalProjectile : GlobalProjectile
     {
-        public override void SetDefaults(Projectile projectile)
+		
+		public override void SetDefaults(Projectile projectile)
         {
             if(projectile.aiStyle == 99)
             {
@@ -20,7 +21,21 @@ namespace SummonHeart.Projectiles
 
         public override bool PreAI(Projectile projectile)
         {
-            if (projectile.minion)
+			if (SummonHeartWorld.GoddessMode)
+            {
+				int extraUpdate = 0;
+				extraUpdate = SHUtils.TransFloatToInt(0.33f);
+				if (extraUpdate > 0)
+				{
+					extraUpdate--;
+					if (projectile.active)
+					{
+						projectile.AI();
+					}
+				}
+			}
+				
+			if (projectile.minion)
             {
                 //int dust = Dust.NewDust(projectile.Center, projectile.width, projectile.height, DustID.GoldCoin);
                 int dust = Dust.NewDust(projectile.Center, projectile.width, projectile.height, MyDustId.BlueMagic);

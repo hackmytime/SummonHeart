@@ -2,6 +2,7 @@
 using SummonHeart.Extensions;
 using SummonHeart.Items.Weapons.Melee;
 using SummonHeart.Projectiles.Melee;
+using SummonHeart.Utilities;
 using System;
 using Terraria;
 using Terraria.Graphics.Shaders;
@@ -21,6 +22,7 @@ namespace SummonHeart.NPCs
 		}
 
 		public int soulSplitCount = 0;
+		public int extraUpdate = 0;
 
 		public override void SetDefaults(NPC npc)
 		{
@@ -32,37 +34,43 @@ namespace SummonHeart.NPCs
 			if(SummonHeartWorld.WorldLevel <= 1)
             {
 				npc.lifeMax *= 2;
-				npc.value *= 5;
+				npc.value *= 1;
 				npc.damage *= 4;
             }
 			else if(SummonHeartWorld.WorldLevel == 2)
 			{
 				npc.lifeMax = (int)(npc.lifeMax * 3f);
-				npc.value *= 10;
+				npc.value *= 2;
 				npc.damage *= 8;
 			}
 			else if (SummonHeartWorld.WorldLevel == 3)
 			{
 				npc.lifeMax *= 4;
-				npc.value *= 15;
+				npc.value *= 3;
 				npc.damage *= 12;
 			}
 			else if (SummonHeartWorld.WorldLevel == 4)
 			{
 				npc.lifeMax = (int)(npc.lifeMax * 5f);
-				npc.value *= 20;
+				npc.value *= 4;
 				npc.damage *= 16;
 			}
 			else if (SummonHeartWorld.WorldLevel == 5)
 			{
 				npc.lifeMax *= 6;
-				npc.value *= 30;
+				npc.value *= 5;
 				npc.damage *= 30;
 			}
             
 		}
 
-		public void SyncPlayerNpcVar(Player player, NPC npc)
+        public override void ResetEffects(NPC npc)
+        {
+			if(SummonHeartWorld.GoddessMode)
+				extraUpdate = SHUtils.TransFloatToInt(0.33f);
+        }
+
+        public void SyncPlayerNpcVar(Player player, NPC npc)
 		{
 			SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
 			ModPacket packet = mod.GetPacket();
@@ -72,7 +80,25 @@ namespace SummonHeart.NPCs
 			packet.Send();
 		}
 
-		public override void NPCLoot(NPC npc)
+        public override void PostAI(NPC npc)
+        {
+			if (extraUpdate > 0)
+			{
+				extraUpdate--;
+				if (npc.active)
+				{
+					npc.AI();
+					float num = 0.5f;
+					Vector2 vector = npc.position + npc.velocity * num;
+					if (!Collision.SolidCollision(vector, npc.width, npc.height))
+					{
+						npc.position = vector;
+					}
+				}
+			}
+		}
+
+        public override void NPCLoot(NPC npc)
 		{
 			if (Main.netMode == NetmodeID.Server)
 			{
