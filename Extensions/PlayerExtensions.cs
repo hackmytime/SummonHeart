@@ -299,11 +299,8 @@ namespace SummonHeart.Extensions
 					if (modPlayer.practiceBody)
 					{
 						int bodyMaxBloodGas = modPlayer.bodyMax;
-						if (modPlayer.PlayerClass == 1)
-							bodyMaxBloodGas = modPlayer.bodyMax * 2;
 						int bodyMax = bloodGasMax;
-						if (modPlayer.PlayerClass == 1)
-							bodyMax = bloodGasMax * 2;
+					
 						if (modPlayer.bodyBloodGas < bodyMaxBloodGas && modPlayer.bodyBloodGas < bodyMax)
 						{
 							if (modPlayer.CheckSoul(addExp))
@@ -669,6 +666,147 @@ namespace SummonHeart.Extensions
 				downedIndex = 12;
 			}
 			return downedIndex;
+		}
+
+		public static void UpdateCoins(this Player p)
+		{
+			if (p.whoAmI == Main.myPlayer)
+			{
+				long num = 0L;
+				long num2 = 0L;
+				long num3 = 0L;
+				long num4 = 0L;
+				int num5 = 0;
+				int num6 = 0;
+				bool flag = false;
+				bool flag2 = false;
+				bool flag3 = false;
+				int num7 = 0;
+				int num8 = CalculateSlots(p, ref num, ref num2, ref num3, ref num4, ref num5);
+				if (num8 == -1)
+				{
+					return;
+				}
+				for (int i = 0; i < 40; i++)
+				{
+					Item item = p.bank.item[i];
+					if (item.IsAir || (item.type >= 71 && item.type <= 74))
+					{
+						num6++;
+						if (num6 >= num5)
+						{
+							break;
+						}
+					}
+				}
+				if (num6 >= num5)
+				{
+					for (int j = 50; j < 54; j++)
+					{
+						Item item = p.inventory[j];
+						if (item.type >= 71 && item.type <= 74)
+						{
+							p.inventory[j].TurnToAir();
+						}
+					}
+					for (int k = 0; k < 40; k++)
+					{
+						Item item = p.bank.item[k];
+						if (item.type >= 71 && item.type <= 74)
+						{
+							p.bank.item[k].TurnToAir();
+						}
+					}
+					for (int l = 39; l >= 0; l--)
+					{
+						if (p.bank.item[l].IsAir)
+						{
+							if (num7 + 1 < num8)
+							{
+								p.bank.item[l] = new Item();
+								p.bank.item[l].SetDefaults(74, false);
+								p.bank.item[l].stack = 999;
+								num4 -= 999L;
+								num7++;
+							}
+							else if (num7 + 1 == num8)
+							{
+								p.bank.item[l] = new Item();
+								p.bank.item[l].SetDefaults(74, false);
+								p.bank.item[l].stack = (int)num4;
+								num7++;
+							}
+							else if (!flag3 && num3 > 0L)
+							{
+								p.bank.item[l] = new Item();
+								p.bank.item[l].SetDefaults(73, false);
+								p.bank.item[l].stack = (int)num3;
+								flag3 = true;
+							}
+							else if (!flag2 && num2 > 0L)
+							{
+								p.bank.item[l] = new Item();
+								p.bank.item[l].SetDefaults(72, false);
+								p.bank.item[l].stack = (int)num2;
+								flag2 = true;
+							}
+							else if (!flag && num > 0L)
+							{
+								p.bank.item[l] = new Item();
+								p.bank.item[l].SetDefaults(71, false);
+								p.bank.item[l].stack = (int)num;
+								break;
+							}
+						}
+					}
+					if (Main.playerInventory)
+					{
+						Recipe.FindRecipes();
+					}
+				}
+			}
+		}
+
+		private static int CalculateSlots(Player player, ref long copper, ref long silver, ref long gold, ref long platinum, ref int slots)
+		{
+			int num = 0;
+			for (int i = 50; i < 54; i++)
+			{
+				Item item = player.inventory[i];
+				if (item.type >= 71 && item.type <= 74)
+				{
+					copper += (long)((double)item.stack * Math.Pow(100.0, (double)(item.type - 71)));
+				}
+			}
+			if (copper > 0L)
+			{
+				for (int j = 0; j < 40; j++)
+				{
+					Item item = player.bank.item[j];
+					if (item.type >= 71 && item.type <= 74)
+					{
+						copper += (long)((double)item.stack * Math.Pow(100.0, (double)(item.type - 71)));
+					}
+				}
+				ValueCalc(ref copper, ref silver, ref gold, ref platinum);
+				if (platinum > 0L)
+				{
+					num = ((platinum % 999L == 0L) ? ((int)(platinum / 999L)) : ((int)(platinum / 999L + 1L)));
+				}
+				slots = ((gold > 0L) ? 1 : 0) + ((silver > 0L) ? 1 : 0) + ((copper > 0L) ? 1 : 0) + num;
+				return num;
+			}
+			return -1;
+		}
+
+		private static void ValueCalc(ref long copper, ref long silver, ref long gold, ref long platinum)
+		{
+			platinum = copper / 1000000L;
+			copper -= platinum * 1000000L;
+			gold = copper / 10000L;
+			copper -= gold * 10000L;
+			silver = copper / 100L;
+			copper -= silver * 100L;
 		}
 	}
 }

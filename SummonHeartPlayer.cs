@@ -25,7 +25,7 @@ namespace SummonHeart
 		public bool killAnyBoss = false;
 		public int PlayerClass = 0;
 		public int deathCount = 0;
-		public int buffMaxCount = 5;
+		public int buffMaxCount = 1;
 		public int killNpcCount = 0;
 		public int fishCount = 0;
 		public int nextFishCount = 0;
@@ -247,6 +247,11 @@ namespace SummonHeart
 				player.respawnTimer = 120;
 			}
 
+			if (player.HasItemInAcc(mod.ItemType("MysteriousCrystal")) != -1)
+			{
+				player.UpdateCoins();
+			}
+
 			if (Main.netMode != 2)
 			{
 				ModPlayerEffects.UpdateColors(player);
@@ -259,7 +264,7 @@ namespace SummonHeart
 					for (int i = 0; i < player.CountBuffs(); i++)
 					{
 						int type = player.buffType[i];
-						if (!infiniBuffDic.Keys.Contains(type))
+						if (!infiniBuffDic.Keys.Contains(type) && !SummonHeartMod.whiteBuffSet.Contains(type))
 						{
 							ModBuff modBuff = BuffLoader.GetBuff(type);
 							if (Main.debuff[type] == false)
@@ -661,7 +666,8 @@ namespace SummonHeart
 			//吸收伤害上限
 			int allBlood = this.getAllBloodGas();
 			damageResourceMax = 99999 + allBlood;
-
+			if (allBlood >= 800000)
+				damageResourceMax += 100000;
 			//魔神之眼
 			if (boughtbuffList[0])
             {
@@ -690,8 +696,6 @@ namespace SummonHeart
 					player.statLife += heal;
 					player.HealEffect(heal);
 				}
-				if (bodyBloodGas >= 400000)
-					damageResourceMax += 100000;
             }
 
 			//魔神之腿
@@ -1322,6 +1326,17 @@ namespace SummonHeart
 					Main.NewText($"你未装备神秘水晶", Color.Red);
 				}
 			}
+			if (SummonHeartMod.BackHomeKey.JustPressed)
+			{
+				if (player.HasItemInAcc(mod.ItemType("MysteriousCrystal")) != -1 && player.statLife > 0)
+				{
+					player.Spawn();
+                }
+                else
+                {
+					Main.NewText($"你未装备神秘水晶", Color.Red);
+				}
+			}
 			if (SummonHeartMod.DoubleDamageKey.JustPressed)
 			{
 				if (PlayerClass == 1)
@@ -1438,7 +1453,7 @@ namespace SummonHeart
 
 			if (PlayerClass == 1 && damageCD == 0)
 			{
-				damageCD = 10;
+				damageCD = 60;
 				int addDamage = oldDamage - damage;
 				if(crit)
 					addDamage *= 2;
@@ -1486,7 +1501,7 @@ namespace SummonHeart
 			}
 			if (PlayerClass == 3 && boughtbuffList[2])
 			{
-				damage *= 10;
+				damage *= 30;
 			}
 		}
 

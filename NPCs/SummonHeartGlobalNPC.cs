@@ -180,7 +180,7 @@ namespace SummonHeart.NPCs
 				num = originalDamage * modPlayer.SummonCrit / 5000 + modPlayer.SummonCrit / 5;
 
 			if (modPlayer.PlayerClass == 3 && modPlayer.boughtbuffList[1])
-				num += 10 + modPlayer.handBloodGas / 2000;
+				num = (int)(num * (2 + modPlayer.handBloodGas / 250 * 0.01f));
 
 			num += addRealDmage;
 
@@ -299,14 +299,14 @@ namespace SummonHeart.NPCs
 			{
 				crit = true;
 			}
-			if (modPlayer.soulSplit)
+			/*if (modPlayer.soulSplit)
 			{
 				if (!npc.HasBuff(mod.BuffType("SoulSplit")))
 				{
 					soulSplitCount = 1;
 				}
 				npc.AddBuff(mod.BuffType("SoulSplit"), 200);
-			}
+			}*/
 			if (crit)
 			{
 				damage = (int)(damage * modPlayer.MyCritDmageMult);
@@ -318,16 +318,16 @@ namespace SummonHeart.NPCs
 					damage *= modPlayer.killResourceMulti;
 				}
 			}
+			int addRealDmage = modPlayer.addRealDamage;
 			if (modPlayer.onDoubleDamage && modPlayer.PlayerClass == 1)
 			{
-				damage += modPlayer.damageResourceCurrent * 2;
+				addRealDmage += modPlayer.damageResourceCurrent * 2;
 				modPlayer.damageResourceCurrent = 0;
 				modPlayer.onDoubleDamage = false;
 			}
 			//计算嫉妒词缀
 			int addDamage = (int)(npc.damage * modPlayer.attackDamage);
 			damage += addDamage;
-			int addRealDmage = modPlayer.addRealDamage;
 			damage = (int)Math.Ceiling(damage / modPlayer.enemyDamageReduceMult);
 			addRealDmage = (int)Math.Ceiling(addRealDmage / modPlayer.enemyDamageReduceMult);
 			this.CauseDirectDamage(npc, damage, crit, addRealDmage);
@@ -361,14 +361,14 @@ namespace SummonHeart.NPCs
             {
 				crit = true;
             }
-			if (modPlayer.soulSplit)
+			/*if (modPlayer.soulSplit)
 			{
 				if (!npc.HasBuff(mod.BuffType("SoulSplit")))
 				{
 					soulSplitCount = 1;
 				}
 				npc.AddBuff(mod.BuffType("SoulSplit"), 200);
-			}
+			}*/
 			if (crit)
 			{
 				damage = (int)(damage * modPlayer.MyCritDmageMult);
@@ -394,7 +394,7 @@ namespace SummonHeart.NPCs
 			}
 			if (modPlayer.onDoubleDamage && modPlayer.PlayerClass == 1 && projectile.owner == player.whoAmI)
 			{
-				damage += modPlayer.damageResourceCurrent * 2;
+				addRealDmage += modPlayer.damageResourceCurrent * 2;
 				modPlayer.damageResourceCurrent = 0;
 				modPlayer.onDoubleDamage = false;
 			}

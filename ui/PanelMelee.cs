@@ -144,7 +144,7 @@ namespace SummonHeart.ui
                     worldLevel = "Lv4逆天而行";
                 if (SummonHeartWorld.WorldLevel == 5)
                     worldLevel = "Lv5？？？？";
-                var modlabel_max = new UIText("世界难度："+worldLevel+" 世界炼体气血上限：" + SummonHeartWorld.WorldBloodGasMax + "(由世界难度所决定)可特化部位：魔神之躯");
+                var modlabel_max = new UIText("世界难度："+worldLevel+" 世界炼体气血上限：" + SummonHeartWorld.WorldBloodGasMax + "(由世界难度所决定)");
                 modlabel_max.TextColor = Color.Red;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_max));
 

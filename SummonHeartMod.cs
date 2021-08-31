@@ -26,6 +26,7 @@ namespace SummonHeart
 		internal static List<BuffValue> modBuffValues = new List<BuffValue>();
 
 		public static HashSet<int> posionBuffSet = new HashSet<int>();
+		public static HashSet<int> whiteBuffSet = new HashSet<int>();
 		public static List<String> rejPassItemList = new List<String>();
 
 		static Dictionary<Projectile, Vector2> oldProMap = new Dictionary<Projectile, Vector2>();
@@ -40,6 +41,7 @@ namespace SummonHeart
 		internal static ModHotKey magicSkillKey;
 		internal static ModHotKey TransKey;
 		internal static ModHotKey BackDieKey;
+		internal static ModHotKey BackHomeKey;
 		internal static ModHotKey DoubleDamageKey;
 		internal static ModHotKey BuffKey;
 
@@ -91,6 +93,25 @@ namespace SummonHeart
 			rejPassItemList.Add("UnlimitedManaAccessory3");
 			rejPassItemList.Add("UnlimitedManaAccessory4");
 			rejPassItemList.Add("UnlimitedManaAccessory5");
+			whiteBuffSet.Add(BuffID.ShadowDodge);
+			whiteBuffSet.Add(BuffID.ParryDamageBuff);
+			whiteBuffSet.Add(BuffID.MinecartLeft);
+			whiteBuffSet.Add(BuffID.MinecartRight);
+			whiteBuffSet.Add(BuffID.MinecartLeftWood);
+			whiteBuffSet.Add(BuffID.MinecartRightWood);
+			whiteBuffSet.Add(BuffID.MinecartLeftMech);
+			whiteBuffSet.Add(BuffID.MinecartRightMech);
+			whiteBuffSet.Add(BuffID.BasiliskMount);
+			whiteBuffSet.Add(BuffID.BeeMount);
+			whiteBuffSet.Add(BuffID.BunnyMount);
+			whiteBuffSet.Add(BuffID.CuteFishronMount);
+			whiteBuffSet.Add(BuffID.DrillMount);
+			whiteBuffSet.Add(BuffID.PigronMount);
+			whiteBuffSet.Add(BuffID.ScutlixMount);
+			whiteBuffSet.Add(BuffID.SlimeMount);
+			whiteBuffSet.Add(BuffID.TurtleMount);
+			whiteBuffSet.Add(BuffID.UFOMount);
+			whiteBuffSet.Add(BuffID.UnicornMount);
 		}
 
 		/*public override uint ExtraPlayerBuffSlots
@@ -124,6 +145,7 @@ namespace SummonHeart
 			magicSkillKey = RegisterHotKey("控法者充能(可开关)", Keys.B.ToString());
 			TransKey = RegisterHotKey("空间传送", Keys.Y.ToString());
 			BackDieKey = RegisterHotKey("神秘水晶返回死亡点", Keys.Z.ToString());
+			BackHomeKey = RegisterHotKey("神秘水晶快速回城", Keys.B.ToString());
 			DoubleDamageKey = RegisterHotKey("泰坦双倍偿还技能", Keys.K.ToString());
 			BuffKey = RegisterHotKey("无限法则菜单", Keys.M.ToString());
 			// this makes sure that the UI doesn't get opened on the server
@@ -237,7 +259,7 @@ namespace SummonHeart
 			magicSkillKey = null;
 			TransKey = null;
 			BackDieKey = null;
-			//ExtraAccessaryKey = null;
+			BackHomeKey = null;
 		}
 
 		public static int getBuffLength()

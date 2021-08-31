@@ -14,7 +14,10 @@ namespace SummonHeart.Items.Accessories
             Tooltip.SetDefault("Resurrection time reduced to 5 seconds");
             DisplayName.AddTranslation(GameCulture.Chinese, "神秘水晶");
             Tooltip.AddTranslation(GameCulture.Chinese, "复活时间减为2秒(Boss存活时无效)" +
-                "\n使用返回死亡点，可设置快捷键使用，默认Z" +
+                "\n装备可自动拾取金币到储蓄罐" +
+                "\n装备可快速回城，需设置快捷键使用，默认B" +
+                "\n装备可返回死亡点，可设置快捷键使用，默认Z" +
+                "\n左键使用消耗500灵魂之力召唤旅商" +
                 "\n给挑战者的礼物");
         }
 
@@ -35,9 +38,18 @@ namespace SummonHeart.Items.Accessories
 
         public override bool UseItem(Player player)
         {
-            Vector2 vector = new Vector2(player.lastDeathPostion.X - 16f, player.lastDeathPostion.Y - 24f);
-            player.Teleport(vector, 0, 0);
-            return base.ConsumeItem(player);
+            SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
+            if (mp.BBP < 500)
+            {
+                CombatText.NewText(player.getRect(), Color.Red, "灵魂之力不足，无法召唤");
+            }
+            else
+            {
+                CombatText.NewText(player.getRect(), Color.Red, "-500灵魂之力");
+                mp.BBP -= 500;
+                NPC.SpawnOnPlayer(player.whoAmI, NPCID.TravellingMerchant);
+            }
+            return true;
         }
 
         /*public override void UpdateAccessory(Player player, bool hideVisual)

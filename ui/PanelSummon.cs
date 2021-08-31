@@ -177,7 +177,7 @@ namespace SummonHeart.ui
                 modlabel_level = new UIText("神魂之手"+ praticeText + " 气血值：" + mp.handBloodGas);
                 modlabel_level.TextColor = Color.Orange;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("灵手附身：灵手分裂附身召唤物，召唤物真实伤害+" + (mp.handBloodGas / 2000 + 10) + "点(初始10，每2000气血+1)");
+                modlabel_level = new UIText("灵手附身：灵手分裂附身召唤物，噬魂之心附加真伤效果+" + (mp.handBloodGas / 25000 + 2) + "倍(初始2，每25000气血+1)");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
                 modlabel_level = new UIText("万灵狂暴：以灵魂之力强化召唤物，召唤武器基础攻击+" + (mp.handBloodGas / 500 + 100) + "%(初始100%，每500气血+1%) ");
@@ -196,7 +196,7 @@ namespace SummonHeart.ui
                 modlabel_level = new UIText("化身初斩，魂躯初凝：修炼需斩第一身外化身，血量永久减半。魂躯介于虚实之间，几乎物理免疫，减伤倍率+99。");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("化身初斩，魂躯初凝：灵躯会额外受到10倍弹幕伤害");
+                modlabel_level = new UIText("化身初斩，魂躯初凝：灵躯会额外受到30倍弹幕伤害");
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
                 modlabel_level = new UIText("近乎灵体，形若鬼魅：移动速度+66%，免疫摔落伤害");
