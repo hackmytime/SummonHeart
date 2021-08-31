@@ -29,11 +29,12 @@ namespace SummonHeart.Items.Accessories
             item.value = 4 * 100000;
             item.accessory = true;
             item.useStyle = 4;
+            item.UseSound = SoundID.Item4;
         }
 
         public override bool CanUseItem(Player player)
         {
-            return player.showLastDeath;
+            return true;
         }
 
         public override bool UseItem(Player player)

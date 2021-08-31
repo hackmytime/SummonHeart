@@ -177,10 +177,13 @@ namespace SummonHeart.NPCs
 				originalDamage *= 2;
 
 			if (modPlayer.SummonHeart)
-				num = originalDamage * modPlayer.SummonCrit / 5000 + modPlayer.SummonCrit / 5;
+            {
+				num = originalDamage * modPlayer.SummonCrit / 5000;
+				if (modPlayer.PlayerClass == 3 && modPlayer.boughtbuffList[1])
+					num = (int)(num * (2 + modPlayer.handBloodGas / 250 * 0.01f));
 
-			if (modPlayer.PlayerClass == 3 && modPlayer.boughtbuffList[1])
-				num = (int)(num * (2 + modPlayer.handBloodGas / 250 * 0.01f));
+				num += modPlayer.SummonCrit / 5;
+			}
 
 			num += addRealDmage;
 

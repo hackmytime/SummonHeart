@@ -6,6 +6,7 @@ using SummonHeart.NPCs;
 using SummonHeart.Utilities;
 using Terraria;
 using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace SummonHeart.Extensions
 {
@@ -70,6 +71,8 @@ namespace SummonHeart.Extensions
             all = modPlayer.eyeBloodGas + modPlayer.handBloodGas + modPlayer.bodyBloodGas + modPlayer.footBloodGas;
             return all;
         }
+
+		
 
 		public static int getFishLevel(this SummonHeartPlayer mp)
 		{

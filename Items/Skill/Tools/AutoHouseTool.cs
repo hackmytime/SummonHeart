@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using SummonHeart.Extensions;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -40,6 +41,7 @@ namespace SummonHeart.Items.Skill.Tools
         public override bool UseItem(Player player)
         {
             Vector2 mousePosition = Main.MouseWorld;
+            SummonHeartPlayer mp = player.SH();
 
             int tileX = (int)(mousePosition.X / 16f);
             int tileY = (int)(mousePosition.Y / 16f);
@@ -50,7 +52,12 @@ namespace SummonHeart.Items.Skill.Tools
                 int newTileX = tileX + i * 4 * direction;
                 if (direction == -1)
                     newTileX -= 4;
-                Builder.BuildHouse(newTileX, tileY, 0, true);
+                if (Builder.BuildHouse(newTileX, tileY, 0, true))
+                {
+                    mp.houseTileX = newTileX;
+                    mp.houseTileY = tileY;
+                    mp.houesType = 0;
+                }
             }
             return true;
         }

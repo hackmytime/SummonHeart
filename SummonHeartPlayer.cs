@@ -120,6 +120,11 @@ namespace SummonHeart
 		public int rightTimer;
 		public bool dashingRight;
 
+		//建筑
+		public int houseTileX = -1;
+		public int houseTileY;
+		public int houesType;
+
 		//属性
 		public float MyAccelerationMult;
 		public float MyMoveSpeedMult;
@@ -984,122 +989,31 @@ namespace SummonHeart
 			}
 		}
 
-       /* public override void clientClone(ModPlayer clientClone)
-		{
-			SummonHeartPlayer clone = clientClone as SummonHeartPlayer;
-			clone.BBP = BBP;
-			clone.SummonCrit = SummonCrit;
-			clone.PlayerClass = PlayerClass;
-			//clone.deathCount = deathCount;
-			clone.bodyDef = bodyDef;
-			clone.eyeBloodGas = eyeBloodGas;
-			clone.handBloodGas = handBloodGas;
-			clone.bodyBloodGas = bodyBloodGas;
-			clone.footBloodGas = footBloodGas;
-			clone.bloodGasMax = bloodGasMax;
-			clone.swordBlood = swordBlood;
-			clone.shortSwordBlood = shortSwordBlood;
-			clone.flySwordBlood = flySwordBlood;
-			clone.magicSwordBlood = magicSwordBlood;
-			clone.swordBloodMax = swordBloodMax;
-			clone.practiceEye = practiceEye;
-			clone.practiceHand = practiceHand;
-			clone.practiceBody = practiceBody;
-			clone.practiceFoot = practiceFoot;
-			clone.soulSplit = soulSplit;
-			//clone.boughtbuffList = boughtbuffList;
-		}
-
-		public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
-		{
-			ModPacket packet = mod.GetPacket();
-			packet.Write((byte)0);
-			packet.Write((byte)player.whoAmI);
-			packet.Write(BBP);
-			packet.Write(SummonCrit);
-			packet.Write(PlayerClass);
-			//packet.Write(deathCount);
-			packet.Write(bodyDef);
-			packet.Write(eyeBloodGas);
-			packet.Write(handBloodGas);
-			packet.Write(bodyBloodGas);
-			packet.Write(footBloodGas);
-			packet.Write(bloodGasMax);
-			packet.Write(swordBlood);
-			packet.Write(shortSwordBlood);
-			packet.Write(flySwordBlood);
-			packet.Write(magicSwordBlood);
-			packet.Write(swordBloodMax);
-			packet.Write(practiceEye);
-			packet.Write(practiceHand);
-			packet.Write(practiceBody);
-			packet.Write(practiceFoot);
-			packet.Write(soulSplit);
-			*//*for (int i = 0; i < boughtbuffList.Count; i++)
-			{
-				packet.Write(boughtbuffList[i]);
-			}*//*
-			packet.Send(toWho, fromWho);
-		}
-
 		public override void SendClientChanges(ModPlayer clientPlayer)
 		{
-			SummonHeartPlayer clone = clientPlayer as SummonHeartPlayer;
-			bool send = false;
-
-			if (clone.BBP != BBP || clone.SummonCrit != SummonCrit
-					|| clone.bodyDef != bodyDef || clone.PlayerClass != PlayerClass || clone.deathCount != deathCount
-					|| clone.eyeBloodGas != eyeBloodGas || clone.handBloodGas != handBloodGas
-					|| clone.bodyBloodGas != bodyBloodGas || clone.footBloodGas != footBloodGas
-					|| clone.bloodGasMax != bloodGasMax || clone.swordBlood != swordBlood
-					|| clone.shortSwordBlood != shortSwordBlood || clone.magicSwordBlood != magicSwordBlood
-					|| clone.flySwordBlood != flySwordBlood || clone.swordBloodMax != swordBloodMax
-					|| clone.practiceEye != practiceEye || clone.practiceHand != practiceHand
-					|| clone.practiceBody != practiceBody || clone.practiceFoot != practiceFoot
-					|| clone.soulSplit != soulSplit)
+			if (this.houseTileX != -1)
 			{
-				send = true;
+				ModPacket packet = base.mod.GetPacket(256);
+				packet.Write(0);
+				packet.Write((byte)Main.LocalPlayer.whoAmI);
+				packet.Write(this.houseTileX);
+				packet.Write(this.houseTileY);
+				packet.Write(this.houesType);
+				packet.Send(-1, -1);
+				this.houseTileX = -1;
 			}
-			*//*for (int i = 0; i < boughtbuffList.Count; i++)
-			{ 
-				if (clone.boughtbuffList[i] != boughtbuffList[i])
-				{
-					send = true;
-				}
-			}*//*
+		}
 
-			if (send)
-			{
-				var packet = mod.GetPacket();
-				packet.Write((byte)0);
-				packet.Write((byte)player.whoAmI);
-				packet.Write(BBP);
-				packet.Write(SummonCrit);
-				packet.Write(PlayerClass);
-				//packet.Write(deathCount);
-				packet.Write(bodyDef);
-				packet.Write(eyeBloodGas);
-				packet.Write(handBloodGas);
-				packet.Write(bodyBloodGas);
-				packet.Write(footBloodGas);
-				packet.Write(bloodGasMax);
-				packet.Write(swordBlood);
-				packet.Write(shortSwordBlood);
-				packet.Write(flySwordBlood);
-				packet.Write(magicSwordBlood);
-				packet.Write(swordBloodMax);
-				packet.Write(practiceEye);
-				packet.Write(practiceHand);
-				packet.Write(practiceBody);
-				packet.Write(practiceFoot);
-				packet.Write(soulSplit);
-				*//*for (int i = 0; i < boughtbuffList.Count; i++)
-				{
-					packet.Write(boughtbuffList[i]);
-				}*//*
-				packet.Send();
-			}
-		}*/
+		public void SyncBuilderHouse()
+		{
+			ModPacket packet = mod.GetPacket(256);
+			packet.Write(0);
+			packet.Write((byte)Main.LocalPlayer.whoAmI);
+			packet.Write(this.houseTileX);
+			packet.Write(this.houseTileY);
+			packet.Write(this.houesType);
+			packet.Send(-1, -1);
+		}
 
 		public override TagCompound Save()
 		{
@@ -1331,7 +1245,12 @@ namespace SummonHeart
 				if (player.HasItemInAcc(mod.ItemType("MysteriousCrystal")) != -1 && player.statLife > 0)
 				{
 					player.Spawn();
-                }
+					Main.PlaySound(SoundID.Item6, player.position);
+					for (int k = 0; k < 70; k++)
+					{
+						Main.dust[Dust.NewDust(player.position, base.player.width, base.player.height, 15, 0f, 0f, 150, Color.Cyan, 1.2f)].velocity *= 0.5f;
+					}
+				}
                 else
                 {
 					Main.NewText($"你未装备神秘水晶", Color.Red);

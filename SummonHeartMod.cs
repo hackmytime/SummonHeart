@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using SummonHeart.body;
 using SummonHeart.Extensions;
 using SummonHeart.Items;
+using SummonHeart.Items.Skill.Tools;
 using SummonHeart.ui;
 using SummonHeart.ui.Bar;
 using System;
@@ -379,6 +380,26 @@ namespace SummonHeart
 			byte msgType = reader.ReadByte();
 			switch (msgType)
 			{
+				case 0:
+					{
+						int playernumber = (int)reader.ReadByte();
+						int tileX = reader.ReadInt32();
+						int tileY = reader.ReadInt32();
+						int houseType = reader.ReadInt32();
+						Builder.BuildHouse(tileX, tileY, houseType, false);
+						if (Main.netMode == 2)
+						{
+							ModPacket packet = base.GetPacket(256);
+							packet.Write(0);
+							packet.Write((byte)playernumber);
+							packet.Write(tileX);
+							packet.Write(tileY);
+							packet.Write(houseType);
+							packet.Send(-1, playernumber);
+						}
+					}
+					break;
+
 				case 1:
                     {
 						byte npc = reader.ReadByte();
