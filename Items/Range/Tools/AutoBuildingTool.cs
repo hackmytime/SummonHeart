@@ -5,7 +5,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
-namespace SummonHeart.Items.Skill.Tools
+namespace SummonHeart.Items.Range.Tools
 {
     public class AutoBuildingTool : ModItem
     {

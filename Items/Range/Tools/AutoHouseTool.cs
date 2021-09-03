@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using SummonHeart.Extensions;
+using SummonHeart.Items.Skill.Tools;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -7,7 +8,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
-namespace SummonHeart.Items.Skill.Tools
+namespace SummonHeart.Items.Range.Tools
 {
     public class AutoHouseTool : ModItem
     {
@@ -46,7 +47,7 @@ namespace SummonHeart.Items.Skill.Tools
             int tileX = (int)(mousePosition.X / 16f);
             int tileY = (int)(mousePosition.Y / 16f);
 
-            for(int i = 0; i < 10; i++)
+            for (int i = 0; i < 10; i++)
             {
                 int direction = player.direction;
                 int newTileX = tileX + i * 4 * direction;
