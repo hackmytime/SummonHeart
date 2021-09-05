@@ -178,7 +178,7 @@ namespace SummonHeart.Items.Skill.Tools
                     Item item = new Item();
                     item.SetDefaults(v.itemid);
 
-                    Main.NewText("需要" + v.count + "个" + item.HoverName + "用来建造房屋");
+                    Main.NewText("至少需要" + v.count + "个" + item.HoverName);
 
                     return false;
                 }

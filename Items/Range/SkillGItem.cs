@@ -12,6 +12,8 @@ namespace SummonHeart.Items.Range
     {
         public SkillType skillType;
         public int skillLevel;
+        public int curPower;
+        public int powerMax;
 
         public override bool InstancePerEntity
         {
@@ -38,19 +40,24 @@ namespace SummonHeart.Items.Range
 
             if (mp.PlayerClass == 7 && skillType > 0 && skillLevel > 0)
             {
+                item.autoReuse = true;
                 if (num != -1)
                 {
                     string str = "";
                     string desp = "";
+                    string power = "";
                     if (skillType == SkillType.MultiBow)
                     {
                         str = "组合弓弩Lv" + skillLevel;
-                        desp = "组合弓弩数 " + (skillLevel + 4) + "把";
+                        desp = "组合弓弩数 " + (skillLevel + 1) + "把";
+                        power = "能量 " + curPower+ "/" + powerMax;
                     }
-                    tooltips[num+1].text = str;
-                    tooltips[num+1].overrideColor = Color.LightSkyBlue;
-                    tooltips[num + 2].text = desp;
+                    tooltips.Insert(num + 1, new TooltipLine(mod, "SkillStr", str));
+                    tooltips[num + 1].overrideColor = Color.LightSkyBlue;
+                    tooltips.Insert(num + 2, new TooltipLine(mod, "SkillDesp", desp));
                     tooltips[num + 2].overrideColor = Color.LightSkyBlue;
+                    tooltips.Insert(num + 3, new TooltipLine(mod, "SkillPower", power));
+                    tooltips[num + 3].overrideColor = Color.LightGreen;
                 }
             }
         }
@@ -61,7 +68,7 @@ namespace SummonHeart.Items.Range
             if (item.ranged && mp.PlayerClass == 7 && skillType == SkillType.MultiBow && item.useAmmo == AmmoID.Arrow)
             {
                 {
-                    /*int maxPro = skillLevel + 5;
+                    int maxPro = skillLevel + 1;
                     for (int i = 1; i <= maxPro; i++)
                     {
                         int param = i / 2;
@@ -69,23 +76,16 @@ namespace SummonHeart.Items.Range
                         {
                             param *= -1;
                         }
-
                         Vector2 velocity = new Vector2(speedX, speedY).RotatedBy(MathHelper.Pi / 2);
                         velocity.Normalize();
                         velocity *= 10 * param;
-                        Projectile.NewProjectile(position.X + velocity.X, position.Y + velocity.Y, speedX * 1.5f, speedY * 1.5f, type, damage, knockBack, player.whoAmI);
-                    }*/
-                    int maxPro = skillLevel + 4;
-                    player.statMana -= mp.costMana;
-                    for (int i = 1; i <= maxPro; i++)
+                        Projectile.NewProjectile(position.X + velocity.X, position.Y + velocity.Y, speedX * 1.25f, speedY * 1.25f, type, damage, knockBack, player.whoAmI);
+                    }
+                    curPower -= 5;
+                    if(curPower <= 0)
                     {
-                        int param = i / 2;
-                        if (i % 2 == 0)
-                        {
-                            param *= -1;
-                        }
-                        Vector2 velocity = new Vector2(speedX, speedY).RotatedBy(MathHelper.Pi / 180 * 2 * param);
-                        Projectile.NewProjectile(position.X, position.Y, velocity.X * 1.5f, velocity.Y * 1.5f, type, damage, knockBack, player.whoAmI);
+                        CombatText.NewText(player.getRect(), Color.Red, "能量耗尽，武器已损坏");
+                        item.TurnToAir();
                     }
                     return false;
                 }
@@ -103,6 +103,8 @@ namespace SummonHeart.Items.Range
             TagCompound tagCompound = new TagCompound();
             tagCompound.Add("skillType", (int)skillType);
             tagCompound.Add("skillLevel", skillLevel);
+            tagCompound.Add("curPower", curPower);
+            tagCompound.Add("powerMax", powerMax);
             return tagCompound;
         }
 
@@ -110,16 +112,22 @@ namespace SummonHeart.Items.Range
         {
             SkillType skillType = (SkillType)data.GetInt("skillType");
             int skillLevel = data.GetInt("skillLevel");
+            int curPower = data.GetInt("curPower");
+            int powerMax = data.GetInt("powerMax");
             if (skillType > SkillType.None && skillType < SkillType.Count)
             {
                 this.skillType = skillType;
                 this.skillLevel = skillLevel;
+                this.curPower = curPower;
+                this.powerMax = powerMax;
 
             }
             else
             {
                 this.skillType = SkillType.None;
                 this.skillLevel = 0;
+                this.curPower = 0;
+                this.powerMax = 0;
             }
         }
 
@@ -127,21 +135,29 @@ namespace SummonHeart.Items.Range
         {
             writer.Write((byte)skillType);
             writer.Write(skillLevel);
+            writer.Write(curPower);
+            writer.Write(powerMax);
         }
 
         public override void NetReceive(Item item, BinaryReader reader)
         {
             SkillType skillType = (SkillType)reader.ReadByte();
             int skillLevel = reader.ReadByte();
+            int curPower = reader.ReadByte();
+            int powerMax = reader.ReadByte();
             if (skillType > SkillType.None && skillType < SkillType.Count)
             {
                 this.skillType = skillType;
                 this.skillLevel = skillLevel;
+                this.curPower = curPower;
+                this.powerMax = powerMax;
             }
             else
             {
                 this.skillType = SkillType.None;
                 this.skillLevel = 0;
+                this.curPower = 0;
+                this.powerMax = 0;
             }
         }
     }

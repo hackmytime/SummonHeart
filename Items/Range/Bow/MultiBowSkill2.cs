@@ -9,14 +9,14 @@ using SummonHeart.Items.Range.Power;
 
 namespace SummonHeart.Items.Range.Bow
 {
-    public class MultiBowSkill : ModItem
+    public class MultiBowSkill2 : ModItem
     {
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("SoulCrystal");
             Tooltip.SetDefault("DemonLure, Consume 500 soul power and transfer it to the random treasure chest\n");
-            DisplayName.AddTranslation(GameCulture.Chinese, "核心科技·弓弩组合科技Lv1");
-            Tooltip.AddTranslation(GameCulture.Chinese, "前2号物品栏放置2把同类型的弓，左键使用消耗1个能量核心Lv1组合2把弓");
+            DisplayName.AddTranslation(GameCulture.Chinese, "核心科技·弓弩组合科技Lv2");
+            Tooltip.AddTranslation(GameCulture.Chinese, "前3号物品栏放置3把同类型的弓，左键使用消耗1个能量核心Lv2组合3把弓");
         }
 
         public override void SetDefaults()
@@ -52,14 +52,14 @@ namespace SummonHeart.Items.Range.Bow
             {
                 //处理升级
                 item.TurnToAir();
-                mp.player.QuickSpawnItem(ModContent.ItemType<MultiBowSkill2>(), 1);
+                mp.player.QuickSpawnItem(ModContent.ItemType<MultiBowSkill3>(), 1);
                 CombatText.NewText(player.getRect(), Color.LightGreen, "核心科技升级成功");
             }
             else
             {
                 Item baseItem = player.inventory[0];
                 bool hasWeapon = true;
-                int weaponCount = 1;
+                int weaponCount = 2;
                 for (int i = 1; i <= weaponCount; i++)
                 {
                     Item item = player.inventory[i];
@@ -68,7 +68,7 @@ namespace SummonHeart.Items.Range.Bow
                 }
                 ItemCost[] costArr = new ItemCost[] {
                 new ItemCost(
-                    ModContent.ItemType<Power1>(), 1)
+                    ModContent.ItemType<Power2>(), 1)
                 };
                 if (mp.PlayerClass != 7)
                 {
@@ -76,7 +76,7 @@ namespace SummonHeart.Items.Range.Bow
                 }
                 else if (!hasWeapon)
                 {
-                    CombatText.NewText(player.getRect(), Color.Red, "1、2号物品栏武器类型不同，无法合成");
+                    CombatText.NewText(player.getRect(), Color.Red, "1、2、3号物品栏武器类型不同，无法合成");
                 }
                 else
                 {
@@ -93,14 +93,14 @@ namespace SummonHeart.Items.Range.Bow
                             }
                             item.GetGlobalItem<SkillBase>().skillUseCount++;
                             baseItem.GetGlobalItem<SkillGItem>().skillType = SkillType.MultiBow;
-                            baseItem.GetGlobalItem<SkillGItem>().skillLevel = 1;
-                            baseItem.GetGlobalItem<SkillGItem>().curPower = 10000;
-                            baseItem.GetGlobalItem<SkillGItem>().powerMax = 10000;
+                            baseItem.GetGlobalItem<SkillGItem>().skillLevel = 2;
+                            baseItem.GetGlobalItem<SkillGItem>().curPower = 30000;
+                            baseItem.GetGlobalItem<SkillGItem>().powerMax = 30000;
                         }
                     }
                     else
                     {
-                        CombatText.NewText(player.getRect(), Color.Red, "1、2号物品栏武器类型不是弓弩，无法合成");
+                        CombatText.NewText(player.getRect(), Color.Red, "1、2、3号物品栏武器类型不是弓弩，无法合成");
                     }
                 }
             }
@@ -108,13 +108,5 @@ namespace SummonHeart.Items.Range.Bow
             return true;
         }
 
-       public override void AddRecipes()
-        {
-            ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(mod.GetItem("GuideNote"), 1);
-            recipe.AddIngredient(mod.GetItem("RangeScroll"), 1);
-            recipe.SetResult(this);
-            recipe.AddRecipe();
-        }
     }
 }

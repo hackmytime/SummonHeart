@@ -913,10 +913,6 @@ namespace SummonHeart
 			item.SetDefaults(ItemID.LifeCrystal);
 			item.stack = 1;
 			items.Add(item);
-			item = new Item();
-			item.SetDefaults(ModLoader.GetMod("SummonHeart").ItemType("LlPet"));
-			item.stack = 1;
-			items.Add(item);
 			
 			item = new Item();
 			item.SetDefaults(ModLoader.GetMod("SummonHeart").ItemType("DemonLure"));

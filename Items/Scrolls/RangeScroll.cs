@@ -32,7 +32,6 @@ namespace SummonHeart.Items.Scrolls
             item.useStyle = 4;
             item.UseSound = SoundID.Item4;
             item.noUseGraphic = true;
-            item.consumable = true;
         }
 
         public override bool UseItem(Player player)
