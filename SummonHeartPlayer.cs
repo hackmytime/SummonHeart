@@ -262,7 +262,7 @@ namespace SummonHeart
 				ModPlayerEffects.UpdateColors(player);
 			}
 
-			if(player.active && !player.dead)
+			if(player.active && !player.dead && Main.time % 60 == 0)
             {
 				if(infiniBuffDic.Keys.Count < buffMaxCount)
                 {
@@ -375,6 +375,11 @@ namespace SummonHeart
 				//法师·控法者
 				EffectMagic2();
 			}
+			else if (PlayerClass == 7)
+			{
+				//射手
+				EffectRange();
+			}
 			//无限飞行
 			if (footBloodGas >= 200000)
 			{
@@ -382,6 +387,35 @@ namespace SummonHeart
 			}
 			
 		}
+
+        private void EffectRange()
+        {
+			if (ModLoader.GetMod("Luiafk") != null 
+				|| ModLoader.GetMod("AlchemistNPC") != null
+				|| ModLoader.GetMod("AlchemistNPCLite") != null
+				|| ModLoader.GetMod("UsefulNPCs") != null
+				|| ModLoader.GetMod("HelpfulNPCs") != null
+			)
+			{
+				if (player.active && !player.dead && Main.time % 60 == 0)
+				{
+					player.AddBuff(BuffID.Frozen, 60, true);
+					player.AddBuff(BuffID.Darkness, 60, true);
+					player.AddBuff(BuffID.Blackout, 60, true);
+					player.AddBuff(BuffID.Cursed, 60, true);
+					player.AddBuff(BuffID.Cursed, 60, true);
+					player.AddBuff(BuffID.OgreSpit, 60, true);
+					player.AddBuff(BuffID.Webbed, 60, true);
+					player.AddBuff(BuffID.Obstructed, 60, true);
+					player.AddBuff(199, 60, true);
+				}
+				if ((int)Main.time % 60 < 1)
+				{
+					Main.NewText("射手职业禁止安装Luiafk、ANPC、ANPCLite、UsefulNPCs、HelpfulNPCs这几个获取无限资源的模组", Color.Red, false);
+					Main.NewText("你违反了规定，受到了魔神的诅咒，请尽快卸载以上模组", Color.Red, false);
+				}
+			}
+        }
 
         public override void GetHealMana(Item item, bool quickHeal, ref int healValue)
         {
@@ -990,7 +1024,7 @@ namespace SummonHeart
 			if (this.houseTileX != -1)
 			{
 				ModPacket packet = base.mod.GetPacket(256);
-				packet.Write(0);
+				packet.Write((byte)0);
 				packet.Write((byte)Main.LocalPlayer.whoAmI);
 				packet.Write(this.houseTileX);
 				packet.Write(this.houseTileY);
@@ -998,17 +1032,6 @@ namespace SummonHeart
 				packet.Send(-1, -1);
 				this.houseTileX = -1;
 			}
-		}
-
-		public void SyncBuilderHouse()
-		{
-			ModPacket packet = mod.GetPacket(256);
-			packet.Write(0);
-			packet.Write((byte)Main.LocalPlayer.whoAmI);
-			packet.Write(this.houseTileX);
-			packet.Write(this.houseTileY);
-			packet.Write(this.houesType);
-			packet.Send(-1, -1);
 		}
 
 		public override TagCompound Save()

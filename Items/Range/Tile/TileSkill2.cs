@@ -17,7 +17,7 @@ namespace SummonHeart.Items.Range.Tile
             Tooltip.SetDefault("TileSkill2");
             DisplayName.AddTranslation(GameCulture.Chinese, "材料科技Lv2");
             Tooltip.AddTranslation(GameCulture.Chinese, "可以利用炼金术提纯压缩玻璃的科技" +
-                "\n左键使用炼金术压缩99个玻璃");
+                "\n左键使用炼金术提存压缩10个玻璃");
         }
 
         public override void SetDefaults()
@@ -46,7 +46,7 @@ namespace SummonHeart.Items.Range.Tile
         {
             SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
             ItemCost[] costArr1 = new ItemCost[] {
-                new ItemCost(ItemID.Glass, 99)
+                new ItemCost(ItemID.Glass, 10)
             };
            
             if (player.altFunctionUse == 2)
@@ -74,7 +74,7 @@ namespace SummonHeart.Items.Range.Tile
         public override void AddRecipes()
         {
             ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(ItemID.Glass, 100);
+            recipe.AddIngredient(ItemID.Glass, 50);
             recipe.SetResult(this);
             recipe.AddRecipe();
         }

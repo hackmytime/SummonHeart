@@ -3,6 +3,7 @@ using SummonHeart.Extensions;
 using SummonHeart.Items.Skill.Tools;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
@@ -38,6 +39,11 @@ namespace SummonHeart.Items.Range.Tools
             item.useStyle = 1;
         }
 
+        public override void HoldItem(Player player)
+        {
+            
+            base.HoldItem(player);
+        }
 
         public override bool UseItem(Player player)
         {
@@ -46,18 +52,36 @@ namespace SummonHeart.Items.Range.Tools
 
             int tileX = (int)(mousePosition.X / 16f);
             int tileY = (int)(mousePosition.Y / 16f);
-
-            for (int i = 0; i < 10; i++)
+            if (Main.netMode == NetmodeID.MultiplayerClient)
             {
-                int direction = player.direction;
-                int newTileX = tileX + i * 4 * direction;
-                if (direction == -1)
-                    newTileX -= 4;
-                if (Builder.BuildHouse(newTileX, tileY, 0, true))
+                if (player.whoAmI != Main.LocalPlayer.whoAmI)
                 {
-                    mp.houseTileX = newTileX;
-                    mp.houseTileY = tileY;
-                    mp.houesType = 0;
+                    return true;
+                }
+                Vector2 mouseWorld = Main.MouseWorld;
+                tileX = (int)(mouseWorld.X / 16f);
+                tileY = (int)(mouseWorld.Y / 16f);
+                if (Builder.BuildHouse(tileX, tileY, 0, true))
+                {
+                    Main.LocalPlayer.GetModPlayer<SummonHeartPlayer>().houseTileX = tileX;
+                    Main.LocalPlayer.GetModPlayer<SummonHeartPlayer>().houseTileY = tileY;
+                    Main.LocalPlayer.GetModPlayer<SummonHeartPlayer>().houesType = 0;
+                }
+            }
+            else
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    int direction = player.direction;
+                    int newTileX = tileX + i * 4 * direction;
+                    if (direction == -1)
+                        newTileX -= 4;
+                    if (Builder.BuildHouse(newTileX, tileY, 0, true))
+                    {
+                        mp.houseTileX = newTileX;
+                        mp.houseTileY = tileY;
+                        mp.houesType = 0;
+                    }
                 }
             }
             return true;

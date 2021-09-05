@@ -19,7 +19,9 @@ namespace SummonHeart.Items.Scrolls
                 "\n有道是：" +
                 "\n以凡人之身比肩神明者" +
                 "\n唯科技之道是也" +
-                "\n提示：科技之道很肝，非肝帝者慎重选择。");
+                "\n提示：科技之道很肝，非肝帝者慎重选择。" +
+                "\n射手职业禁止安装Luiafk、ANPC、ANPCLite、UsefulNPCs、HelpfulNPCs这几个可获取无限资源的模组"
+                );
         }
 
         public override void SetDefaults()

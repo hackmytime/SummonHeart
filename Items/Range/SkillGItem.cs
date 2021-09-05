@@ -38,7 +38,7 @@ namespace SummonHeart.Items.Range
 
             int num = tooltips.FindIndex((TooltipLine t) => t.Name.Equals("ItemName"));
 
-            if (mp.PlayerClass == 7 && skillType > 0 && skillLevel > 0)
+            if (skillType > 0 && skillLevel > 0)
             {
                 item.autoReuse = true;
                 if (num != -1)
@@ -65,7 +65,7 @@ namespace SummonHeart.Items.Range
         public override bool Shoot(Item item, Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
         {
             SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
-            if (item.ranged && mp.PlayerClass == 7 && skillType == SkillType.MultiBow && item.useAmmo == AmmoID.Arrow)
+            if (item.ranged && skillType == SkillType.MultiBow && item.useAmmo == AmmoID.Arrow)
             {
                 {
                     int maxPro = skillLevel + 1;
