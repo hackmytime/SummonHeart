@@ -36,7 +36,7 @@ namespace SummonHeart.Items.Range
             Player player = Main.LocalPlayer;
             SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
 
-            int num = tooltips.FindIndex((TooltipLine t) => t.Name.Equals("ItemName"));
+            int num = tooltips.Count - 1;
 
             if (skillType > 0 && skillLevel > 0)
             {

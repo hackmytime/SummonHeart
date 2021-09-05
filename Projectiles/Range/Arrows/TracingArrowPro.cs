@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using SummonHeart.Extensions;
 using System;
 using Terraria;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -15,7 +16,7 @@ namespace SummonHeart.Projectiles.Range.Arrows
         {
             projectile.width = 14;
             projectile.height = 14;
-            projectile.timeLeft = 180;
+            projectile.timeLeft = 300;
             projectile.arrow = true;
             projectile.friendly = true;
             projectile.tileCollide = false;
@@ -58,6 +59,7 @@ namespace SummonHeart.Projectiles.Range.Arrows
             float lifetime = (base.projectile.timeLeft < 30) ? ((float)base.projectile.timeLeft / 30f) : 1f;
             Main.spriteBatch.End();
             Main.spriteBatch.Begin((SpriteSortMode)1, BlendState.Additive, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, Main.GameViewMatrix.ZoomMatrix);
+            GameShaders.Misc["SummonHeart:SoftTrail"].Apply(null);
             this.vertexStrip.PrepareStripWithProceduralPadding(base.projectile.oldPos, base.projectile.oldRot, (float p) => Color.Lerp(Color.Lime.MultiplyAlpha(lifetime * ((p <= 0.2f) ? (p / 0.2f) : 1f)), Color.IndianRed.MultiplyAlpha(0f), p), (float p) => 4f * ((this.projectile.timeLeft > 50) ? this.projectile.scale : (this.projectile.scale * (float)this.projectile.timeLeft * 0.02f)) * (1f - p), -Main.screenPosition + base.projectile.Size / 2f, true, true);
             this.vertexStrip.DrawTrail();
             Main.pixelShader.CurrentTechnique.Passes[0].Apply();
