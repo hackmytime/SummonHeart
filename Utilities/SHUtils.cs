@@ -2,6 +2,7 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 
 namespace SummonHeart.Utilities
 {
@@ -56,6 +57,17 @@ namespace SummonHeart.Utilities
             player.AddBuff(type, time + 2);
         }
         public static Vector2 RandomRotate => MathHelper.ToRadians(Main.rand.Next(360)).ToRotationVector2();
+        public static List<Projectile> getOwnedProjectile(this Player player, int type)
+        {
+            List<Projectile> resulList = new List<Projectile>();
+            for (int i = 0; i < Main.projectile.Length; i++)
+            {
+                Projectile projectile = Main.projectile[i];
+                if (projectile.active && projectile.type == type && projectile.owner == player.whoAmI)
+                    resulList.Add(Main.projectile[i]);
+            }
+            return resulList;
+        }
         public static int ownedProjectileCounts(this Player player, int type)
         {
             int amt = 0;

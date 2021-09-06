@@ -31,8 +31,7 @@ namespace SummonHeart.Projectiles.Range.Arrows
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Tracing Arrow");
-            DisplayName.AddTranslation(GameCulture.Russian, "Преследующая стрела");
+            DisplayName.SetDefault("TracingArrowPro");
             ProjectileID.Sets.TrailCacheLength[projectile.type] = 24;
             ProjectileID.Sets.TrailingMode[projectile.type] = 2;
         }

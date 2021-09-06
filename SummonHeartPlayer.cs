@@ -415,7 +415,27 @@ namespace SummonHeart
 					Main.NewText("你违反了规定，受到了魔神的诅咒，请尽快卸载以上模组", Color.Red, false);
 				}
 			}
-        }
+
+			// 眼
+			if (player.HeldItem != null)
+			{
+				if (player.ownedProjectileCounts(mod.ProjectileType("MultiBowPro")) < 1)
+				{
+					for(int i = 1; i <= 5; i++)
+                    {
+                        int p = Projectile.NewProjectile(player.position, Vector2.Zero, mod.ProjectileType("MultiBowPro"), 0, 0f, player.whoAmI);
+						Main.projectile[p].ai[1] = i;
+                    }
+				}
+            }
+            else
+            {
+				if (player.ownedProjectileCounts(mod.ProjectileType("MultiBowPro")) > 0)
+				{
+					player.ownedProjectileKill(mod.ProjectileType("MultiBowPro"));
+				}
+			}
+		}
 
         public override void GetHealMana(Item item, bool quickHeal, ref int healValue)
         {

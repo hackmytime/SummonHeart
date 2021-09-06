@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using SummonHeart.body;
 using SummonHeart.Extensions;
 using SummonHeart.Items;
+using SummonHeart.Items.Range;
 using SummonHeart.Items.Skill.Tools;
 using SummonHeart.ui;
 using SummonHeart.ui.Bar;

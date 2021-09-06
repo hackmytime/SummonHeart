@@ -4,6 +4,7 @@ using Terraria.ModLoader;
 using Terraria.Localization;
 using Microsoft.Xna.Framework;
 using SummonHeart.Items.Skill.Tools;
+using SummonHeart.Items.Material;
 
 namespace SummonHeart.Items.Range.Power
 {
@@ -58,9 +59,10 @@ namespace SummonHeart.Items.Range.Power
             if (player.altFunctionUse == 2)
             {
                 //处理升级
-                item.TurnToAir();
                 mp.player.QuickSpawnItem(ModContent.ItemType<PowerSkill3>(), 1);
+                mp.player.QuickSpawnItem(ModContent.ItemType<DemonBuff>(), 1);
                 CombatText.NewText(player.getRect(), Color.LightGreen, "核心科技升级成功");
+                item.TurnToAir();
             }
             else
             {
@@ -76,7 +78,7 @@ namespace SummonHeart.Items.Range.Power
                 }
                 else if (Builder.CanPayCost(costArr2, player))
                 {
-                    Builder.PayCost(costArr1, player);
+                    Builder.PayCost(costArr2, player);
                     mp.player.QuickSpawnItem(ModContent.ItemType<Power2>(), 1);
                     item.GetGlobalItem<SkillBase>().skillUseCount++;
                 }

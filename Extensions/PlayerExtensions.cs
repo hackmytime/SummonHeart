@@ -123,6 +123,29 @@ namespace SummonHeart.Extensions
 			return -1;
 		}
 
+		public static void CostItem(this Player player, int type, int count)
+		{
+			foreach (var v in player.inventory)
+			{
+				if (v != null)
+				{
+					if (v.type == type)
+					{
+						if (v.stack <= count)
+						{
+							count -= v.stack;
+							v.TurnToAir();
+						}
+						else
+						{
+							v.stack -= count;
+							break;
+						}
+					}
+				}
+			}
+		}
+
 		public static void doKillNpcExp(this Player player, NPC npc)
         {
 			SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
