@@ -417,7 +417,7 @@ namespace SummonHeart
 			}
 
 			// 眼
-			if (player.HeldItem != null)
+			/*if (player.HeldItem != null)
 			{
 				if (player.ownedProjectileCounts(mod.ProjectileType("MultiBowPro")) < 1)
 				{
@@ -434,7 +434,7 @@ namespace SummonHeart
 				{
 					player.ownedProjectileKill(mod.ProjectileType("MultiBowPro"));
 				}
-			}
+			}*/
 		}
 
         public override void GetHealMana(Item item, bool quickHeal, ref int healValue)

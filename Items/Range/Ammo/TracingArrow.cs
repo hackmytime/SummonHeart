@@ -39,6 +39,11 @@ namespace SummonHeart.Items.Range.Ammo
             recipe.AddIngredient(mod.GetItem("VUnit"), 1);
             recipe.SetResult(this, 200);
             recipe.AddRecipe();
+            recipe = new ModRecipe(mod);
+            recipe.AddIngredient(ItemID.WoodenArrow, 9999);
+            recipe.AddIngredient(mod.GetItem("Loot6"), 1);
+            recipe.SetResult(this, 9999);
+            recipe.AddRecipe();
         }
     }
 }

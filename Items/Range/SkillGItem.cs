@@ -55,7 +55,7 @@ namespace SummonHeart.Items.Range
                     {
                         str = "组合弓弩Lv" + skillLevel;
                         desp = "组合弓弩数 " + (skillLevel + 1) + "把";
-                        costAmmo = "消耗弓箭数 " + (skillLevel + 1) + "枝";
+                        costAmmo = "消耗弓箭数 " + (skillLevel + 1) + "支";
                         power = "能量 " + curPower+ "/" + powerMax;
                         costPower = "消耗能量数 " + (5*(skillLevel+1));
                     }
@@ -78,9 +78,11 @@ namespace SummonHeart.Items.Range
             SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
             if (item.ranged && skillType == SkillType.MultiBow && item.useAmmo == AmmoID.Arrow)
             {
+                speedX *= 1.25f;
+                speedY *= 1.25f;
                 {
                     int maxPro = skillLevel + 1;
-                    /*for (int i = 1; i <= maxPro; i++)
+                    for (int i = 2; i <= maxPro; i++)
                     {
                         int param = i / 2;
                         if (i % 2 == 0)
@@ -90,10 +92,10 @@ namespace SummonHeart.Items.Range
                         Vector2 velocity = new Vector2(speedX, speedY).RotatedBy(MathHelper.Pi / 2);
                         velocity.Normalize();
                         velocity *= 10 * param;
-                        Projectile.NewProjectile(position.X + velocity.X, position.Y + velocity.Y, speedX * 1.25f, speedY * 1.25f, type, damage, knockBack, player.whoAmI);
+                        Projectile.NewProjectile(position.X + velocity.X, position.Y + velocity.Y, speedX, speedY, type, damage, knockBack, player.whoAmI);
                         //Projectile.NewProjectile(player.position, Vector2.Zero, mod.ProjectileType("MultiBowPro"), 0, 0f, player.whoAmI);
-                    }*/
-                    List<Projectile> lists = player.getOwnedProjectile(mod.ProjectileType("MultiBowPro"));
+                    }
+                   /* List<Projectile> lists = player.getOwnedProjectile(mod.ProjectileType("MultiBowPro"));
                     foreach(var p in lists)
                     {
                         Texture2D Weapon = Main.itemTexture[item.type];
@@ -104,7 +106,7 @@ namespace SummonHeart.Items.Range
                         baseV *= basespeed;
                         baseV *= 1.25f;
                         Projectile.NewProjectile(basePos, baseV, type, damage, knockBack, player.whoAmI);
-                    }
+                    }*/
                     //计算能量消耗
                     curPower -= 5 * maxPro;
                     player.CostItem(item.useAmmo, skillLevel);

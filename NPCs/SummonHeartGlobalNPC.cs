@@ -100,6 +100,35 @@ namespace SummonHeart.NPCs
 
         public override void NPCLoot(NPC npc)
 		{
+			//处理物品掉落
+			if (true)
+			{
+				if (npc.boss)
+				{
+					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, SummonHeartMod.Instance.ItemType("Loot1"), Main.rand.Next(10, 100));
+					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, SummonHeartMod.Instance.ItemType("Loot2"), Main.rand.Next(1, 5));
+					if (Main.rand.Next(100) == 0)
+					{
+						Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, SummonHeartMod.Instance.ItemType("Loot3"), Main.rand.Next(1, 2));
+					}
+					if (Main.rand.Next(100) == 0)
+					{
+						Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, SummonHeartMod.Instance.ItemType("Loot4"), Main.rand.Next(1, 2));
+					}
+					if (Main.rand.Next(10000) == 0)
+					{
+						Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, SummonHeartMod.Instance.ItemType("Loot5"), Main.rand.Next(1, 2));
+					}
+					if (Main.rand.Next(10000) == 0)
+					{
+						Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, SummonHeartMod.Instance.ItemType("Loot6"), 1);
+					}
+				}
+				else
+				{
+					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, SummonHeartMod.Instance.ItemType("Loot1"), Main.rand.Next(1, 5));
+				}
+			}
 			if (Main.netMode == NetmodeID.Server)
 			{
 				for (int k = 0; k < 255; k++)

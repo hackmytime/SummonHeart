@@ -20,9 +20,9 @@ namespace SummonHeart.Items.Range.Loot
         {
             item.width = 32;
             item.height = 32;
-            item.rare = -12;
-            item.value = Item.sellPrice(9999, 0, 0, 0);
-            item.maxStack = 99;
+            item.rare = 5;
+            item.value = Item.sellPrice(0, 1, 0, 0);
+            item.maxStack = 9999;
         }
     }
 }
