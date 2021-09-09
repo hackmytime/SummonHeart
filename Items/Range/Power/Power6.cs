@@ -13,28 +13,28 @@ namespace SummonHeart.Items.Range.Power
             DisplayName.SetDefault("Power6");
             Tooltip.SetDefault("Power6\n");
             DisplayName.AddTranslation(GameCulture.Chinese, "能量核心Lv6");
-            Tooltip.AddTranslation(GameCulture.Chinese, "能量上限50W，左键可以消耗能量核心对手持6级科技武器进行充能" +
+            Tooltip.AddTranslation(GameCulture.Chinese, "能量上限50W，左键可以消耗能量核心对1号物品栏里的6级科技武器进行充能" +
                 "\n能量科技的巅峰之作");
         }
 
         public override bool UseItem(Player player)
         {
             SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
-            Item baseItem = player.HeldItem;
-            if(baseItem != null)
+            Item baseItem = player.inventory[0];
+            if (baseItem.netID != 0)
             {
                 SkillGItem skillGItem = baseItem.GetGlobalItem<SkillGItem>();
                 if (mp.PlayerClass != 7)
                 {
-                    CombatText.NewText(player.getRect(), Color.Red, "你是射手吗？学了炼金术吗？还想用科技？想啥呢？");
+                    CombatText.NewText(player.getRect(), Color.Gray, "你是射手吗？学了炼金术吗？还想用科技？想啥呢？");
                 }
                 else if (skillGItem.skillLevel != 6)
                 {
-                    CombatText.NewText(player.getRect(), Color.Red, $"当前武器非6级科技造物，无法充能");
+                    CombatText.NewText(player.getRect(), Color.Gray, $"当前武器非6级科技造物，无法充能");
                 }
                 else if (skillGItem.curPower > 10000)
                 {
-                    CombatText.NewText(player.getRect(), Color.Red, $"当前武器还有1W以上能量，浪费可耻");
+                    CombatText.NewText(player.getRect(), Color.Gray, $"当前武器还有1W以上能量，浪费可耻");
                 }
                 else
                 {

@@ -147,7 +147,7 @@ namespace SummonHeart.Items.Range
                         CombatText.NewText(player.getRect(), Color.Red, "能量耗尽，武器已损坏");
                         item.TurnToAir();
                     }
-                    else
+                    if (curPower <= 0)
                     {
                         curPower = 0;
                     }
@@ -189,7 +189,7 @@ namespace SummonHeart.Items.Range
                         CombatText.NewText(player.getRect(), Color.Red, "能量耗尽，武器已损坏");
                         item.TurnToAir();
                     }
-                    else
+                    if(curPower <= 0)
                     {
                         curPower = 0;
                     }
