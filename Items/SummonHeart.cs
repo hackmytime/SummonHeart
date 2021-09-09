@@ -61,7 +61,7 @@ namespace SummonHeart.Items
 			string text2 = Language.GetTextValue("Mods.SummonHeart.Pip-Boy3000text2") + (modPlayer.SummonCrit / 5);
 			string text3 = Language.GetTextValue("Mods.SummonHeart.Pip-Boy3000text3") + (modPlayer.SummonCrit / 100 + 1);
 			string text4 = Language.GetTextValue("Mods.SummonHeart.Pip-Boy3000text4") + modPlayer.SummonCrit / 50 + "%";
-			string text5 = Language.GetTextValue("Mods.SummonHeart.Pip-Boy3000text5") + (modPlayer.SummonCrit / 5);
+			string text5 = Language.GetTextValue("Mods.SummonHeart.Pip-Boy3000text5") + (modPlayer.SummonCrit / 50 + SummonHeartWorld.WorldLevel);
 			string text6 = Language.GetTextValue("Mods.SummonHeart.Pip-Boy3000text6") + modPlayer.exp;
 			string text7 = Language.GetTextValue("Mods.SummonHeart.Pip-Boy3000text7") + modPlayer.SummonCrit;
 			TooltipLine line = new TooltipLine(mod, "text1", text1);
@@ -102,7 +102,7 @@ namespace SummonHeart.Items
         {
 			SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
 			modPlayer.SummonHeart = true;
-			player.maxMinions += 3;
+			player.maxMinions += modPlayer.SummonCrit / 100 + 1;
 			player.statLifeMax2 += modPlayer.SummonCrit / 5;
 			//modPlayer.AttackSpeed += modPlayer.SummonCrit / 10 * 0.01f;
 			//player.armorPenetration += modPlayer.SummonCrit / 5;

@@ -34,6 +34,15 @@ namespace SummonHeart.Items.Range
             }
         }
 
+        public override float UseTimeMultiplier(Item item, Player player)
+        {
+            if (item.ranged && skillType == SkillType.MultiGun && item.useAmmo == AmmoID.Bullet)
+            {
+                return 0.5f;
+            }
+            return base.UseTimeMultiplier(item, player);
+        }
+
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
             Player player = Main.LocalPlayer;
@@ -41,9 +50,8 @@ namespace SummonHeart.Items.Range
 
             int num = tooltips.Count - 1;
 
-            if (skillType > 0 && skillLevel > 0)
+            if (skillType == SkillType.MultiBow && skillLevel > 0)
             {
-                item.autoReuse = true;
                 if (num != -1)
                 {
                     string str = "";
@@ -56,8 +64,37 @@ namespace SummonHeart.Items.Range
                         str = "组合弓弩Lv" + skillLevel;
                         desp = "组合弓弩数 " + (skillLevel + 1) + "把";
                         costAmmo = "消耗弓箭数 " + (skillLevel + 1) + "支";
-                        power = "能量 " + curPower+ "/" + powerMax;
-                        costPower = "消耗能量数 " + (5*(skillLevel+1));
+                        power = "能量 " + curPower + "/" + powerMax;
+                        costPower = "消耗能量数 " + (5 * (skillLevel + 1));
+                    }
+                    tooltips.Insert(num + 1, new TooltipLine(mod, "SkillStr", str));
+                    tooltips[num + 1].overrideColor = Color.LightSkyBlue;
+                    tooltips.Insert(num + 2, new TooltipLine(mod, "SkillDesp", desp));
+                    tooltips[num + 2].overrideColor = Color.LightSkyBlue;
+                    tooltips.Insert(num + 3, new TooltipLine(mod, "CostAmmo", costAmmo));
+                    tooltips[num + 3].overrideColor = Color.LightSkyBlue;
+                    tooltips.Insert(num + 4, new TooltipLine(mod, "SkillPower", power));
+                    tooltips[num + 4].overrideColor = Color.LightGreen;
+                    tooltips.Insert(num + 5, new TooltipLine(mod, "CostPower", costPower));
+                    tooltips[num + 5].overrideColor = Color.LightGreen;
+                }
+            }
+            else if (skillType == SkillType.MultiGun && skillLevel > 0)
+            {
+                if (num != -1)
+                {
+                    string str = "";
+                    string desp = "";
+                    string costAmmo = "";
+                    string power = "";
+                    string costPower = "";
+                    if (skillType == SkillType.MultiGun)
+                    {
+                        str = "组合散弹枪Lv" + skillLevel;
+                        desp = "额外射弹量 " + (skillLevel * 2 + 6) + "发";
+                        costAmmo = "耗弹量 " + (skillLevel * 2 + 6) + "发";
+                        power = "当前能量 " + curPower + "/" + powerMax;
+                        costPower = "消耗能量 " + (5 * (skillLevel + 1));
                     }
                     tooltips.Insert(num + 1, new TooltipLine(mod, "SkillStr", str));
                     tooltips[num + 1].overrideColor = Color.LightSkyBlue;
@@ -76,6 +113,12 @@ namespace SummonHeart.Items.Range
         public override bool Shoot(Item item, Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
         {
             SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
+            if (curPower <= 0 && skillLevel == 6)
+            {
+                curPower = 0;
+                CombatText.NewText(player.getRect(), Color.Red, "能量耗尽，请更换能量核心");
+                return false;
+            }
             if (item.ranged && skillType == SkillType.MultiBow && item.useAmmo == AmmoID.Arrow)
             {
                 speedX *= 1.25f;
@@ -95,25 +138,60 @@ namespace SummonHeart.Items.Range
                         Projectile.NewProjectile(position.X + velocity.X, position.Y + velocity.Y, speedX, speedY, type, damage, knockBack, player.whoAmI);
                         //Projectile.NewProjectile(player.position, Vector2.Zero, mod.ProjectileType("MultiBowPro"), 0, 0f, player.whoAmI);
                     }
-                   /* List<Projectile> lists = player.getOwnedProjectile(mod.ProjectileType("MultiBowPro"));
-                    foreach(var p in lists)
-                    {
-                        Texture2D Weapon = Main.itemTexture[item.type];
-                        Vector2 basePos = new Vector2(p.position.X, p.position.Y + Weapon.Height);
-                        Vector2 baseV = Vector2.Normalize(Main.MouseWorld - basePos);
-                        Vector2 speed = new Vector2(speedX, speedY);
-                        float basespeed = speed.Length();
-                        baseV *= basespeed;
-                        baseV *= 1.25f;
-                        Projectile.NewProjectile(basePos, baseV, type, damage, knockBack, player.whoAmI);
-                    }*/
+                  
                     //计算能量消耗
-                    curPower -= 5 * maxPro;
+                    curPower -= 5 * (skillLevel + 1);
                     player.CostItem(item.useAmmo, skillLevel);
-                    if(curPower <= 0)
+                    if(curPower <= 0 && skillLevel < 6)
                     {
                         CombatText.NewText(player.getRect(), Color.Red, "能量耗尽，武器已损坏");
                         item.TurnToAir();
+                    }
+                    else
+                    {
+                        curPower = 0;
+                    }
+                    //return false;
+                }
+            }
+            else if (item.ranged && skillType == SkillType.MultiGun && item.useAmmo == AmmoID.Bullet)
+            {
+                speedX *= 1.25f;
+                speedY *= 1.25f;
+                {
+                    /*int maxPro = skillLevel + 1;
+                    for (int i = 2; i <= maxPro; i++)
+                    {
+                        int param = i / 2;
+                        if (i % 2 == 0)
+                        {
+                            param *= -1;
+                        }
+                        Vector2 velocity = new Vector2(speedX, speedY).RotatedBy(MathHelper.Pi / 2);
+                        velocity.Normalize();
+                        velocity *= 10 * param;
+                        Projectile.NewProjectile(position.X + velocity.X, position.Y + velocity.Y, speedX, speedY, type, damage, knockBack, player.whoAmI);
+                        //Projectile.NewProjectile(player.position, Vector2.Zero, mod.ProjectileType("MultiBowPro"), 0, 0f, player.whoAmI);
+                    }
+*/
+                    int numberProjectiles = skillLevel * 2 + 6;
+                    for (int i = 0; i < numberProjectiles; i++)
+                    {
+                        Vector2 perturbedSpeed = Utils.RotatedByRandom(new Vector2(speedX, speedY), (double)MathHelper.ToRadians(10f));
+                        Projectile.NewProjectile(position.X, position.Y, perturbedSpeed.X, perturbedSpeed.Y, type, damage, knockBack, player.whoAmI, 0f, 0f);
+                    }
+
+                    //计算能量消耗
+                    curPower -= 5 * (skillLevel + 1);
+                    player.CostItem(item.useAmmo, skillLevel);
+                    if (curPower <= 0 && skillLevel < 6)
+                    {
+                        CombatText.NewText(player.getRect(), Color.Red, "能量耗尽，武器已损坏");
+                        item.TurnToAir();
+                    }
+                    else
+                    {
+                        curPower = 0;
                     }
                     //return false;
                 }
@@ -144,7 +222,16 @@ namespace SummonHeart.Items.Range
                 int costCount = player.HeldItem.GetGlobalItem<SkillGItem>().skillLevel;
                 if (costCount > 0)
                 {
-                    player.CostItem(item.type, costCount + 1);
+                    SkillType type = player.HeldItem.GetGlobalItem<SkillGItem>().skillType;
+                    if(type == SkillType.MultiBow)
+                    {
+                        costCount += 1;
+                    }
+                    else if(type == SkillType.MultiGun)
+                    {
+                        costCount = 6 + costCount * 2; 
+                    }
+                    player.CostItem(item.type, costCount);
                     return false;
                 }
             }

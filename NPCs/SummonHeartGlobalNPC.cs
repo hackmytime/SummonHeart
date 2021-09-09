@@ -211,7 +211,7 @@ namespace SummonHeart.NPCs
 				if (modPlayer.PlayerClass == 3 && modPlayer.boughtbuffList[1])
 					num = (int)(num * (2 + modPlayer.handBloodGas / 250 * 0.01f));
 
-				num += modPlayer.SummonCrit / 5;
+				num += modPlayer.SummonCrit / 50 + SummonHeartWorld.WorldLevel;
 			}
 
 			num += addRealDmage;

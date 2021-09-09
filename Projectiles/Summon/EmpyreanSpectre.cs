@@ -6,11 +6,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using static Terraria.ModLoader.ModContent;
 using static System.Math;
-using SummonHeart.Utilities;
 using SummonHeart.Projectiles.Melee;
 using SummonHeart.Extensions;
 using System;
-using SummonHeart.Items.Weapons.Sabres;
 using SummonHeart.Items.Weapons.Melee;
 
 namespace SummonHeart.Projectiles.Summon

@@ -25,7 +25,7 @@ namespace SummonHeart
         public override void Initialize()
         {
             GoddessMode = false;
-            WorldLevel = 0;
+            WorldLevel = 1;
             StarMulti = 0;
             WorldBloodGasMax = 100000;
         }
@@ -69,6 +69,8 @@ namespace SummonHeart
             var tagComp = new TagCompound();
             tagComp.Add("GoddessMode", GoddessMode);
             tagComp.Add("WorldLevel", WorldLevel);
+            tagComp.Add("StarMulti", StarMulti);
+            tagComp.Add("StarMultiTime", StarMultiTime);
             tagComp.Add("WorldBloodGasMax", WorldBloodGasMax);
             return tagComp;
         }
@@ -80,6 +82,8 @@ namespace SummonHeart
             writer.Write(flags);
 
             writer.Write(WorldLevel);
+            writer.Write(StarMulti);
+            writer.Write(StarMultiTime);
             writer.Write(WorldBloodGasMax);
         }
 
@@ -88,6 +92,8 @@ namespace SummonHeart
             BitsByte flags = reader.ReadByte();
             GoddessMode = flags[0];
             WorldLevel = reader.ReadInt32();
+            StarMulti = reader.ReadInt32();
+            StarMultiTime = reader.ReadInt32();
             WorldBloodGasMax = reader.ReadInt32();
         }
 
@@ -95,6 +101,8 @@ namespace SummonHeart
         {
             GoddessMode = tag.GetBool("GoddessMode");
             WorldLevel = tag.GetInt("WorldLevel");
+            StarMulti = tag.GetInt("StarMulti");
+            StarMultiTime = tag.GetInt("StarMultiTime");
             if(WorldLevel <= 1)
             {
                 WorldBloodGasMax = 400000;

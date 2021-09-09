@@ -51,81 +51,84 @@ namespace SummonHeart.Prefix
 
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
-            if (!item.social && item.prefix > 0)
+            if(Main.cpItem.netID != 0 && Main.cpItem.GetGlobalItem<PrefixItem>() != null)
             {
-                int bonus = manaExp - Main.cpItem.GetGlobalItem<PrefixItem>().manaExp;
-                if (bonus > 0)
+                if (!item.social && item.prefix > 0)
                 {
-                    tooltips.Add(new TooltipLine(mod, "manaExpPrefix", "+" + bonus + "%经验加成")
+                    int bonus = manaExp - Main.cpItem.GetGlobalItem<PrefixItem>().manaExp;
+                    if (bonus > 0)
                     {
-                        isModifier = true
-                    });
+                        tooltips.Add(new TooltipLine(mod, "manaExpPrefix", "+" + bonus + "%经验加成")
+                        {
+                            isModifier = true
+                        });
+                    }
                 }
-            }
-            if (!item.social && item.prefix > 0)
-            {
-                int bonus2 = attackDamage - Main.cpItem.GetGlobalItem<PrefixItem>().attackDamage;
-                if (bonus2 > 0)
+                if (!item.social && item.prefix > 0)
                 {
-                    tooltips.Add(new TooltipLine(mod, "attackDamagePrefix", "攻击造成敌方攻击力" + bonus2 + "%的额外伤害")
+                    int bonus2 = attackDamage - Main.cpItem.GetGlobalItem<PrefixItem>().attackDamage;
+                    if (bonus2 > 0)
                     {
-                        isModifier = true
-                    });
+                        tooltips.Add(new TooltipLine(mod, "attackDamagePrefix", "攻击造成敌方攻击力" + bonus2 + "%的额外伤害")
+                        {
+                            isModifier = true
+                        });
+                    }
                 }
-            }
-            if (!item.social && item.prefix > 0)
-            {
-                int bonus3 = hp - Main.cpItem.GetGlobalItem<PrefixItem>().hp;
-                if (bonus3 > 0)
+                if (!item.social && item.prefix > 0)
                 {
-                    tooltips.Add(new TooltipLine(mod, "HpPrefix", "+" + bonus3 + "%生命上限")
+                    int bonus3 = hp - Main.cpItem.GetGlobalItem<PrefixItem>().hp;
+                    if (bonus3 > 0)
                     {
-                        isModifier = true
-                    });
+                        tooltips.Add(new TooltipLine(mod, "HpPrefix", "+" + bonus3 + "%生命上限")
+                        {
+                            isModifier = true
+                        });
+                    }
                 }
-            }
-            if (!item.social && item.prefix > 0)
-            {
-                int bonus4 = regen - Main.cpItem.GetGlobalItem<PrefixItem>().regen;
-                if (bonus4 > 0)
+                if (!item.social && item.prefix > 0)
                 {
-                    tooltips.Add(new TooltipLine(mod, "RegenPrefix", "+" + bonus4 + "生命回复")
+                    int bonus4 = regen - Main.cpItem.GetGlobalItem<PrefixItem>().regen;
+                    if (bonus4 > 0)
                     {
-                        isModifier = true
-                    });
+                        tooltips.Add(new TooltipLine(mod, "RegenPrefix", "+" + bonus4 + "生命回复")
+                        {
+                            isModifier = true
+                        });
+                    }
                 }
-            } 
-            if (!item.social && item.prefix > 0)
-            {
-                int bonus5 = allDamage - Main.cpItem.GetGlobalItem<PrefixItem>().allDamage;
-                if (bonus5 > 0)
+                if (!item.social && item.prefix > 0)
                 {
-                    tooltips.Add(new TooltipLine(mod, "allDamagePrefix", "+" + bonus5 + "%伤害")
+                    int bonus5 = allDamage - Main.cpItem.GetGlobalItem<PrefixItem>().allDamage;
+                    if (bonus5 > 0)
                     {
-                        isModifier = true
-                    });
+                        tooltips.Add(new TooltipLine(mod, "allDamagePrefix", "+" + bonus5 + "%伤害")
+                        {
+                            isModifier = true
+                        });
+                    }
                 }
-            }
-            if (!item.social && item.prefix > 0)
-            {
-                int bonus4 = myDamageReduceMult - Main.cpItem.GetGlobalItem<PrefixItem>().myDamageReduceMult;
-                if (bonus4 > 0)
+                if (!item.social && item.prefix > 0)
                 {
-                    tooltips.Add(new TooltipLine(mod, "allDamagePrefix", "+" + bonus4 * 0.1f + "减伤倍率")
+                    int bonus4 = myDamageReduceMult - Main.cpItem.GetGlobalItem<PrefixItem>().myDamageReduceMult;
+                    if (bonus4 > 0)
                     {
-                        isModifier = true
-                    });
+                        tooltips.Add(new TooltipLine(mod, "allDamagePrefix", "+" + bonus4 * 0.1f + "减伤倍率")
+                        {
+                            isModifier = true
+                        });
+                    }
                 }
-            }
-            if (!item.social && item.prefix > 0)
-            {
-                int bonus4 = lifeSteal - Main.cpItem.GetGlobalItem<PrefixItem>().lifeSteal;
-                if (bonus4 > 0)
+                if (!item.social && item.prefix > 0)
                 {
-                    tooltips.Add(new TooltipLine(mod, "allDamagePrefix", "+" + bonus4 + "生命偷取")
+                    int bonus4 = lifeSteal - Main.cpItem.GetGlobalItem<PrefixItem>().lifeSteal;
+                    if (bonus4 > 0)
                     {
-                        isModifier = true
-                    });
+                        tooltips.Add(new TooltipLine(mod, "allDamagePrefix", "+" + bonus4 + "生命偷取")
+                        {
+                            isModifier = true
+                        });
+                    }
                 }
             }
         }

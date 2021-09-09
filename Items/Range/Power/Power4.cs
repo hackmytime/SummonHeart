@@ -12,7 +12,7 @@ namespace SummonHeart.Items.Range.Power
             DisplayName.SetDefault("Power4");
             Tooltip.SetDefault("Power4\n");
             DisplayName.AddTranslation(GameCulture.Chinese, "能量核心Lv4");
-            Tooltip.AddTranslation(GameCulture.Chinese, "能量上限10W，可以消耗能量核心进行充能" +
+            Tooltip.AddTranslation(GameCulture.Chinese, "能量上限10W，用完报废" +
                 "\n基准能量核心，可充能的制式装备");
         }
 

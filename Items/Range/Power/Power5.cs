@@ -12,7 +12,7 @@ namespace SummonHeart.Items.Range.Power
             DisplayName.SetDefault("Power5");
             Tooltip.SetDefault("Power5\n");
             DisplayName.AddTranslation(GameCulture.Chinese, "能量核心Lv5");
-            Tooltip.AddTranslation(GameCulture.Chinese, "能量上限20W，可以消耗能量核心进行充能" +
+            Tooltip.AddTranslation(GameCulture.Chinese, "能量上限20W，用完报废" +
                 "\n强力能量核心，核心动力源");
         }
 
