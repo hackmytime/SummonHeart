@@ -51,7 +51,7 @@ namespace SummonHeart.Prefix
 
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
-            if(Main.cpItem.netID != 0 && Main.cpItem.GetGlobalItem<PrefixItem>() != null)
+            if(item.accessory)
             {
                 if (!item.social && item.prefix > 0)
                 {

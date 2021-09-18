@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using SummonHeart.Effects.Animations.Aura;
 using SummonHeart.Extensions;
+using SummonHeart.Items.Range;
 using SummonHeart.Items.Weapons.Magic;
 using SummonHeart.Models;
 using SummonHeart.Projectiles.Summon;
@@ -63,6 +64,8 @@ namespace SummonHeart
 		public float magicChargeMax = 100;
 		public float magicChargeCount = 0;
 		public float magicChargeCountMax = 10;
+
+		public Item powerArmor;
 
 		public int eyeBloodGas = 0;
 		public int handBloodGas = 0;
@@ -229,6 +232,7 @@ namespace SummonHeart
 			}
 			//inMagicCharging = false;
 			magicBook = false;
+			powerArmor = null;
 			//刷新上限
 			ModPlayerEffects.UpdateMax(player);
 			//减伤倍率
@@ -385,7 +389,43 @@ namespace SummonHeart
 			{
 				player.wingTime = 200 * 60;
 			}
-			
+
+			EffectPowerArmor();
+		}
+
+        private void EffectPowerArmor()
+        {
+			//能量护甲
+			Item item = player.GetItemInAcc(mod.ItemType("PowerArmor1"));
+			if (item != null)
+			{
+				powerArmor = item;
+			}
+			item = player.GetItemInAcc(mod.ItemType("PowerArmor2"));
+			if (item != null)
+			{
+				powerArmor = item;
+			}
+			item = player.GetItemInAcc(mod.ItemType("PowerArmor3"));
+			if (item != null)
+			{
+				powerArmor = item;
+			}
+			item = player.GetItemInAcc(mod.ItemType("PowerArmor4"));
+			if (item != null)
+			{
+				powerArmor = item;
+			}
+			item = player.GetItemInAcc(mod.ItemType("PowerArmor5"));
+			if (item != null)
+			{
+				powerArmor = item;
+			}
+			item = player.GetItemInAcc(mod.ItemType("PowerArmor6"));
+			if (item != null)
+			{
+				powerArmor = item;
+			}
 		}
 
         private void EffectRange()
@@ -1386,6 +1426,28 @@ namespace SummonHeart
 		public override void ModifyHitByNPC(NPC npc, ref int damage, ref bool crit)
         {
 			int oldDamage = damage;
+			if(powerArmor != null)
+            {
+				int costPowerArmor = 0;
+				PowerArmorBase powerArmorBase = powerArmor.GetGlobalItem<PowerArmorBase>();
+				if (powerArmorBase.powerArmorCount >= damage)
+					costPowerArmor = damage;
+				else
+					costPowerArmor = powerArmorBase.powerArmorCount;
+
+				if (costPowerArmor > 0)
+				{
+					damage -= costPowerArmor;
+					CombatText.NewText(player.getRect(), Color.DarkGray, "-" + costPowerArmor + "护盾值");
+					powerArmorBase.powerArmorCount -= costPowerArmor;
+					if (powerArmorBase.powerArmorCount <= 0)
+					{
+						powerArmor.TurnToAir();
+						powerArmor = null;
+						CombatText.NewText(player.getRect(), Color.LightBlue, "-" + costPowerArmor + "能量护甲已损坏");
+					}
+				}
+			}
 
 			if (PlayerClass == 5 || PlayerClass == 6)
 			{
@@ -1424,6 +1486,29 @@ namespace SummonHeart
 		public override void ModifyHitByProjectile(Projectile proj, ref int damage, ref bool crit)
         {
 			int oldDamage = damage;
+
+			if (powerArmor != null)
+			{
+				int costPowerArmor = 0;
+				PowerArmorBase powerArmorBase = powerArmor.GetGlobalItem<PowerArmorBase>();
+				if (powerArmorBase.powerArmorCount >= damage)
+					costPowerArmor = damage;
+				else
+					costPowerArmor = powerArmorBase.powerArmorCount;
+
+				if (costPowerArmor > 0)
+				{
+					damage -= costPowerArmor;
+					CombatText.NewText(player.getRect(), Color.DarkGray, "-" + costPowerArmor + "护盾值");
+					powerArmorBase.powerArmorCount -= costPowerArmor;
+					if (powerArmorBase.powerArmorCount <= 0)
+                    {
+						powerArmor.TurnToAir();
+						powerArmor = null;
+						CombatText.NewText(player.getRect(), Color.LightBlue, "-" + costPowerArmor + "能量护甲已损坏");
+					}
+				}
+			}
 
 			if (PlayerClass == 5 || PlayerClass == 6)
 			{

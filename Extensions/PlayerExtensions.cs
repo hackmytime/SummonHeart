@@ -110,6 +110,26 @@ namespace SummonHeart.Extensions
 			return -1;
         }
 
+		public static Item GetItemInAcc(this Player player, int type)
+		{
+			for (int i = 3; i < 8 + player.extraAccessorySlots; i++)
+			{
+				if (player.armor[i].type == type)
+				{
+					return player.armor[i];
+				}
+			}
+			SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
+			for (int i = 0; i < SummonHeartPlayer.MaxExtraAccessories; i++)
+			{
+				if (mp.ExtraAccessories[i].type == type)
+				{
+					return mp.ExtraAccessories[i];
+				}
+			}
+			return null;
+		}
+
 		public static int HasItemInInventory(this Player player, int type)
 		{
 			SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();

@@ -68,7 +68,7 @@ namespace SummonHeart.Items.Range.Gun
                 }
                 ItemCost[] costArr = new ItemCost[] {
                 new ItemCost(
-                    ModContent.ItemType<Power1>(), 1)
+                    ModContent.ItemType<Power5>(), 1)
                 };
                 if (mp.PlayerClass != 7)
                 {

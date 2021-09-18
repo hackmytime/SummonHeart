@@ -66,6 +66,9 @@ namespace SummonHeart
 
 		internal MagicCharge magicCharge;
 		private UserInterface _magicChargeUserInterface;
+		
+		internal PowerArmor powerArmor;
+		private UserInterface _powerArmorInterface;
 
 		internal KillBar ExampleResourceBar;
 		private UserInterface KillResourceBarUserInterface;
@@ -231,6 +234,10 @@ namespace SummonHeart
 					magicCharge = new MagicCharge();
 					_magicChargeUserInterface = new UserInterface();
 					_magicChargeUserInterface.SetState(this.magicCharge);
+					
+					powerArmor = new PowerArmor();
+					_powerArmorInterface = new UserInterface();
+					_powerArmorInterface.SetState(this.powerArmor);
 
 					panelBuff = new PanelBuff();
 					panelBuffInterface = new UserInterface();
@@ -633,6 +640,20 @@ namespace SummonHeart
 				}
 			}
 			
+			if (!Main.gameMenu && powerArmor != null)
+			{
+				_powerArmorInterface?.Update(gameTime);
+			}
+			else
+			{
+				if (powerArmor == null)
+				{
+					powerArmor = new PowerArmor();
+					_powerArmorInterface = new UserInterface();
+					_powerArmorInterface.SetState(this.powerArmor);
+				}
+			}
+			
 			if (!Main.gameMenu && panelBuff != null && PanelBuff.visible)
 			{
 				panelBuffInterface?.Update(gameTime);
@@ -731,6 +752,10 @@ namespace SummonHeart
 			if (!Main.gameMenu && magicCharge != null)
 			{
 				_magicChargeUserInterface.Draw(Main.spriteBatch, new GameTime());
+			}
+			if (!Main.gameMenu && powerArmor != null)
+			{
+				_powerArmorInterface.Draw(Main.spriteBatch, new GameTime());
 			}
 			if (!Main.gameMenu && PanelBuff.visible)
 			{

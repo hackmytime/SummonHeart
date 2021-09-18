@@ -4,6 +4,7 @@ using Terraria.ModLoader;
 using Terraria.Localization;
 using Microsoft.Xna.Framework;
 using SummonHeart.Items.Skill.Tools;
+using SummonHeart.Items.Range.Armor;
 
 namespace SummonHeart.Items.Range.Power
 {
@@ -53,7 +54,7 @@ namespace SummonHeart.Items.Range.Power
             if (player.altFunctionUse == 2)
             {
                 //处理升级
-                mp.player.QuickSpawnItem(ModContent.ItemType<PowerSkill6>(), 1);
+                mp.player.QuickSpawnItem(ModContent.ItemType<PowerArmorSkill6>(), 1);
                 CombatText.NewText(player.getRect(), Color.LightGreen, "核心科技升级成功");
                 item.TurnToAir();
             }

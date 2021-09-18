@@ -9,7 +9,21 @@ namespace SummonHeart.Projectiles
 {
     public class SummonHeartGlobalProjectile : GlobalProjectile
     {
-		
+		public int apShotFromLauncherID = -1;
+		public override bool InstancePerEntity
+		{
+			get
+			{
+				return true;
+			}
+		}
+
+		public override bool Autoload(ref string name)
+		{
+			return true;
+		}
+
+
 		public override void SetDefaults(Projectile projectile)
         {
             if(projectile.aiStyle == 99)
