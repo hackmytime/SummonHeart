@@ -70,6 +70,9 @@ namespace SummonHeart
 		internal PowerArmor powerArmor;
 		private UserInterface _powerArmorInterface;
 
+		internal BowCharge bowCharge;
+		private UserInterface bowChargeInterface;
+
 		internal KillBar ExampleResourceBar;
 		private UserInterface KillResourceBarUserInterface;
 
@@ -238,6 +241,10 @@ namespace SummonHeart
 					powerArmor = new PowerArmor();
 					_powerArmorInterface = new UserInterface();
 					_powerArmorInterface.SetState(this.powerArmor);
+
+					bowCharge = new BowCharge();
+					bowChargeInterface = new UserInterface();
+					bowChargeInterface.SetState(this.bowCharge);
 
 					panelBuff = new PanelBuff();
 					panelBuffInterface = new UserInterface();
@@ -663,6 +670,20 @@ namespace SummonHeart
 				}
 			}
 			
+			if (!Main.gameMenu && bowCharge != null)
+			{
+				bowChargeInterface?.Update(gameTime);
+			}
+			else
+			{
+				if (bowCharge == null)
+				{
+					bowCharge = new BowCharge();
+					bowChargeInterface = new UserInterface();
+					bowChargeInterface.SetState(this.bowCharge);
+				}
+			}
+			
 			if (!Main.gameMenu && panelBuff != null && PanelBuff.visible)
 			{
 				panelBuffInterface?.Update(gameTime);
@@ -765,6 +786,10 @@ namespace SummonHeart
 			if (!Main.gameMenu && powerArmor != null)
 			{
 				_powerArmorInterface.Draw(Main.spriteBatch, new GameTime());
+			}
+			if (!Main.gameMenu && bowCharge != null)
+			{
+				bowChargeInterface.Draw(Main.spriteBatch, new GameTime());
 			}
 			if (!Main.gameMenu && PanelBuff.visible)
 			{

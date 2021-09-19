@@ -65,6 +65,11 @@ namespace SummonHeart
 		public float magicChargeCount = 0;
 		public float magicChargeCountMax = 10;
 
+		public bool bowChargeActive;
+		public float bowCharge;
+		public float bowChargeMax;
+		public float bowChargeAttack;
+
 		public Item powerArmor;
 
 		public int eyeBloodGas = 0;
@@ -233,6 +238,7 @@ namespace SummonHeart
 			//inMagicCharging = false;
 			magicBook = false;
 			powerArmor = null;
+			bowChargeActive = false;
 			//刷新上限
 			ModPlayerEffects.UpdateMax(player);
 			//减伤倍率
