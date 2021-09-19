@@ -69,6 +69,7 @@ namespace SummonHeart
 		public float bowCharge;
 		public float bowChargeMax;
 		public float bowChargeAttack;
+		public int tornadoDamage;
 
 		public Item powerArmor;
 

@@ -18,6 +18,7 @@ namespace SummonHeart.Items.Range
         public int curPower;
         public int powerMax;
         private bool ammoConsumed;
+        private bool arrowConsumed;
 
         public override bool InstancePerEntity
         {
@@ -126,11 +127,11 @@ namespace SummonHeart.Items.Range
                         if (mp.bowCharge >= mp.bowChargeMax)
                             mp.bowCharge = mp.bowChargeMax;
                     }
-                    if (mp.bowCharge % (skillLevel * 60) == 0)
+                    if (mp.bowCharge % (skillLevel * 60) == 1)
                     {
                         Main.PlaySound(50, (int)player.Center.X, (int)player.Center.Y, base.mod.GetSoundSlot(SoundType.Custom, "Sounds/Custom/bowstring"), 0.5f, 0f);
                     }
-                    if (mp.bowCharge == bowChargeMax-1)
+                    if (mp.bowCharge >= bowChargeMax-skillLevel && mp.bowCharge != mp.bowChargeMax)
                     {
                         for (int d = 0; d < 88; d++)
                         {
@@ -174,7 +175,7 @@ namespace SummonHeart.Items.Range
                         if (item.useAmmo > 0)
                         {
                             bool flag10 = false;
-                            this.ammoConsumed = false;
+                            arrowConsumed = true;
                             player.PickAmmo(item, ref num75, ref num76, ref flag10, ref num77, ref num78, false);
                         }
                         Vector2 vector2 = player.RotatedRelativePoint(player.MountedCenter, true);
@@ -543,17 +544,22 @@ namespace SummonHeart.Items.Range
         {
             if (skillType == SkillType.PowerBow && skillLevel > 0)
             {
-                if (this.ammoConsumed)
+                if (!arrowConsumed)
                 {
                     return false;
                 }
-                this.ammoConsumed = true;
+                arrowConsumed = false;
             }
             if (item.ammo > 0)
             {
                 int costCount = player.HeldItem.GetGlobalItem<SkillGItem>().skillLevel;
                 if (costCount > 0)
                 {
+                    ammoConsumed = !ammoConsumed;
+                    if (!ammoConsumed)
+                    {
+                        return false;
+                    }
                     SkillType type = player.HeldItem.GetGlobalItem<SkillGItem>().skillType;
                     if(type == SkillType.MultiBow)
                     {
@@ -563,7 +569,7 @@ namespace SummonHeart.Items.Range
                     {
                         costCount = 6 + costCount * 2; 
                     }
-                    costCount /= 2;
+                    //costCount /= 2;
                     if (type == SkillType.PowerGun || type == SkillType.PowerBow)
                     {
                         costCount = 1;
