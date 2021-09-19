@@ -14,8 +14,8 @@ namespace SummonHeart.Items.Range.Armor
             DisplayName.SetDefault("PowerArmor2");
             Tooltip.SetDefault("PowerArmor2");
             DisplayName.AddTranslation(GameCulture.Chinese, "科技造物·能量护甲Lv2");
-            Tooltip.AddTranslation(GameCulture.Chinese, "减伤倍率3，能量护盾上限30W" +
-                "\n减伤90W后护甲报废");
+            Tooltip.AddTranslation(GameCulture.Chinese, "能量护盾上限30W" +
+                "\n减伤30W后护甲报废");
         }
 
         public override void SetDefaults()
@@ -29,7 +29,13 @@ namespace SummonHeart.Items.Range.Armor
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            //player.GetModPlayer<SummonHeartPlayer>().powerArmor = true;
+            PowerArmorBase powerArmorBase = item.GetGlobalItem<PowerArmorBase>();
+            if (powerArmorBase.powerArmorMax == 0)
+            {
+                //初始化
+                powerArmorBase.powerArmorMax = 300000;
+                powerArmorBase.powerArmorCount = 300000;
+            }
         }
     }
 }

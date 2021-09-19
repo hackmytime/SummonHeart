@@ -27,27 +27,27 @@ namespace SummonHeart.Items.Range.AmmoSkill
 
         public override void AddRecipes()
         {
-            ModRecipe recipe = new ModRecipe(mod);recipe.AddIngredient(ItemID.CopperBar, 20);recipe.SetResult(this, 1);recipe.AddRecipe();
-            recipe = new ModRecipe(mod);recipe.AddIngredient(ItemID.TinBar, 20);recipe.SetResult(this, 1);recipe.AddRecipe();
-            recipe = new ModRecipe(mod);recipe.AddIngredient(ItemID.IronBar, 20);recipe.SetResult(this, 2);recipe.AddRecipe();
-            recipe = new ModRecipe(mod);recipe.AddIngredient(ItemID.LeadBar, 20);recipe.SetResult(this, 2);recipe.AddRecipe();
-            recipe = new ModRecipe(mod);recipe.AddIngredient(ItemID.SilverBar, 20);recipe.SetResult(this, 3);recipe.AddRecipe();
-            recipe = new ModRecipe(mod);recipe.AddIngredient(ItemID.TungstenBar, 20);recipe.SetResult(this, 3);recipe.AddRecipe();
-            recipe = new ModRecipe(mod);recipe.AddIngredient(ItemID.GoldBar, 20);recipe.SetResult(this, 4);recipe.AddRecipe();
-            recipe = new ModRecipe(mod);recipe.AddIngredient(ItemID.PlatinumBar, 20);recipe.SetResult(this, 4);recipe.AddRecipe();
-            recipe = new ModRecipe(mod);recipe.AddIngredient(ItemID.MeteoriteBar, 20);recipe.SetResult(this, 4);recipe.AddRecipe();
-            recipe = new ModRecipe(mod);recipe.AddIngredient(ItemID.DemoniteBar, 20);recipe.SetResult(this, 5);recipe.AddRecipe();
-            recipe = new ModRecipe(mod);recipe.AddIngredient(ItemID.CrimtaneBar, 20);recipe.SetResult(this, 5);recipe.AddRecipe();
-            recipe = new ModRecipe(mod);recipe.AddIngredient(ItemID.HellstoneBar, 20);recipe.SetResult(this, 5);recipe.AddRecipe();
-            recipe = new ModRecipe(mod);recipe.AddIngredient(ItemID.CobaltBar, 20);recipe.SetResult(this, 6);recipe.AddRecipe();
-            recipe = new ModRecipe(mod);recipe.AddIngredient(ItemID.PalladiumBar, 20);recipe.SetResult(this, 6);recipe.AddRecipe();
-            recipe = new ModRecipe(mod);recipe.AddIngredient(ItemID.MythrilBar, 20);recipe.SetResult(this, 6);recipe.AddRecipe();
-            recipe = new ModRecipe(mod);recipe.AddIngredient(ItemID.OrichalcumBar, 20);recipe.SetResult(this, 6);recipe.AddRecipe();
-            recipe = new ModRecipe(mod);recipe.AddIngredient(ItemID.AdamantiteBar, 20);recipe.SetResult(this, 6);recipe.AddRecipe();
-            recipe = new ModRecipe(mod);recipe.AddIngredient(ItemID.TitaniumBar, 20);recipe.SetResult(this, 6);recipe.AddRecipe();
-            recipe = new ModRecipe(mod);recipe.AddIngredient(ItemID.HallowedBar, 20);recipe.SetResult(this, 7);recipe.AddRecipe();
-            recipe = new ModRecipe(mod);recipe.AddIngredient(ItemID.ChlorophyteBar, 20);recipe.SetResult(this, 8);recipe.AddRecipe();
-            recipe = new ModRecipe(mod);recipe.AddIngredient(ItemID.LunarBar, 20);recipe.SetResult(this, 9);recipe.AddRecipe();
+            ModRecipe recipe = new ModRecipe(mod);recipe.AddIngredient(ItemID.CopperBar, 50);recipe.SetResult(this, 1);recipe.AddRecipe();
+            recipe = new ModRecipe(mod);recipe.AddIngredient(ItemID.TinBar, 50);recipe.SetResult(this, 1);recipe.AddRecipe();
+            recipe = new ModRecipe(mod);recipe.AddIngredient(ItemID.IronBar, 50);recipe.SetResult(this, 2);recipe.AddRecipe();
+            recipe = new ModRecipe(mod);recipe.AddIngredient(ItemID.LeadBar, 50);recipe.SetResult(this, 2);recipe.AddRecipe();
+            recipe = new ModRecipe(mod);recipe.AddIngredient(ItemID.SilverBar, 50);recipe.SetResult(this, 3);recipe.AddRecipe();
+            recipe = new ModRecipe(mod);recipe.AddIngredient(ItemID.TungstenBar, 50);recipe.SetResult(this, 3);recipe.AddRecipe();
+            recipe = new ModRecipe(mod);recipe.AddIngredient(ItemID.GoldBar, 50);recipe.SetResult(this, 4);recipe.AddRecipe();
+            recipe = new ModRecipe(mod);recipe.AddIngredient(ItemID.PlatinumBar, 50);recipe.SetResult(this, 4);recipe.AddRecipe();
+            recipe = new ModRecipe(mod);recipe.AddIngredient(ItemID.MeteoriteBar, 50);recipe.SetResult(this, 4);recipe.AddRecipe();
+            recipe = new ModRecipe(mod);recipe.AddIngredient(ItemID.DemoniteBar, 50);recipe.SetResult(this, 5);recipe.AddRecipe();
+            recipe = new ModRecipe(mod);recipe.AddIngredient(ItemID.CrimtaneBar, 50);recipe.SetResult(this, 5);recipe.AddRecipe();
+            recipe = new ModRecipe(mod);recipe.AddIngredient(ItemID.HellstoneBar, 50);recipe.SetResult(this, 5);recipe.AddRecipe();
+            recipe = new ModRecipe(mod);recipe.AddIngredient(ItemID.CobaltBar, 50);recipe.SetResult(this, 6);recipe.AddRecipe();
+            recipe = new ModRecipe(mod);recipe.AddIngredient(ItemID.PalladiumBar, 50);recipe.SetResult(this, 6);recipe.AddRecipe();
+            recipe = new ModRecipe(mod);recipe.AddIngredient(ItemID.MythrilBar, 50);recipe.SetResult(this, 6);recipe.AddRecipe();
+            recipe = new ModRecipe(mod);recipe.AddIngredient(ItemID.OrichalcumBar, 50);recipe.SetResult(this, 6);recipe.AddRecipe();
+            recipe = new ModRecipe(mod);recipe.AddIngredient(ItemID.AdamantiteBar, 50);recipe.SetResult(this, 6);recipe.AddRecipe();
+            recipe = new ModRecipe(mod);recipe.AddIngredient(ItemID.TitaniumBar, 50);recipe.SetResult(this, 6);recipe.AddRecipe();
+            recipe = new ModRecipe(mod);recipe.AddIngredient(ItemID.HallowedBar, 50);recipe.SetResult(this, 7);recipe.AddRecipe();
+            recipe = new ModRecipe(mod);recipe.AddIngredient(ItemID.ChlorophyteBar, 50);recipe.SetResult(this, 8);recipe.AddRecipe();
+            recipe = new ModRecipe(mod);recipe.AddIngredient(ItemID.LunarBar, 50);recipe.SetResult(this, 9);recipe.AddRecipe();
         }
     }
 }

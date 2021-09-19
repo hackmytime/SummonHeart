@@ -16,7 +16,7 @@ namespace SummonHeart.Items.Range.Gun
             Tooltip.SetDefault("MultiGunSkill5");
             DisplayName.AddTranslation(GameCulture.Chinese, "核心科技·散弹枪组合改造Lv5");
             Tooltip.AddTranslation(GameCulture.Chinese, "组合改造8把，额外射弹量16，枪械攻速降低200%" +
-                "\n前8号物品栏放满同类型的枪【机枪无效】，左键使用消耗能量核心Lv5进行组合改造");
+                "\n前8号物品栏放满同类型的枪，左键使用消耗能量核心Lv5进行组合改造");
         }
 
         public override void SetDefaults()

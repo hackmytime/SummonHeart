@@ -26,7 +26,7 @@ namespace SummonHeart.Items.Range.Ammo.Bullet
             item.value = Item.sellPrice(0, 1, 0, 0);
             item.rare = -12;
             item.shoot = ModContent.ProjectileType<TracingBulletPro>();
-            item.shootSpeed = 10f;
+            item.shootSpeed = 5f;
             item.ammo = AmmoID.Bullet;
         }
 

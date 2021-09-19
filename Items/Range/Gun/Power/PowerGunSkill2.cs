@@ -6,17 +6,18 @@ using Microsoft.Xna.Framework;
 using SummonHeart.Items.Skill.Tools;
 using SummonHeart.Items.Range.Power;
 
-namespace SummonHeart.Items.Range.Gun
+namespace SummonHeart.Items.Range.Gun.Power
 {
-    public class MultiGunSkill2 : ModItem
+    public class PowerGunSkill2 : ModItem
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("MultiGunSkill2");
-            Tooltip.SetDefault("MultiGunSkill2");
-            DisplayName.AddTranslation(GameCulture.Chinese, "核心科技·散弹枪组合改造Lv2");
-            Tooltip.AddTranslation(GameCulture.Chinese, "组合改造5把，额外射弹量10，枪械攻速降低200%" +
-                "\n前5号物品栏放满同类型的枪，左键使用消耗能量核心Lv2进行组合改造");
+            DisplayName.SetDefault("PowerGunSkill2");
+            Tooltip.SetDefault("PowerGunSkill2");
+            DisplayName.AddTranslation(GameCulture.Chinese, "核心科技·枪械强化Lv2");
+            Tooltip.AddTranslation(GameCulture.Chinese, "炼化压缩融合5把，伤害提升25倍，能量消耗提升5倍" +
+                "\n暴击几率+100%，子弹射速+200%，枪械攻速降低300%" +
+                "\n前5号物品栏放满同类型的枪，左键使用消耗能量核心Lv1进行炼化压缩融合");
         }
 
         public override void SetDefaults()
@@ -52,7 +53,7 @@ namespace SummonHeart.Items.Range.Gun
             {
                 //处理升级
                 item.TurnToAir();
-                mp.player.QuickSpawnItem(ModContent.ItemType<MultiGunSkill3>(), 1);
+                mp.player.QuickSpawnItem(ModContent.ItemType<PowerGunSkill3>(), 1);
                 CombatText.NewText(player.getRect(), Color.LightGreen, "核心科技升级成功");
             }
             else
@@ -92,7 +93,7 @@ namespace SummonHeart.Items.Range.Gun
                                 item.TurnToAir();
                             }
                             item.GetGlobalItem<SkillBase>().skillUseCount++;
-                            baseItem.GetGlobalItem<SkillGItem>().skillType = SkillType.MultiGun;
+                            baseItem.GetGlobalItem<SkillGItem>().skillType = SkillType.PowerGun;
                             baseItem.GetGlobalItem<SkillGItem>().skillLevel = 2;
                             baseItem.GetGlobalItem<SkillGItem>().curPower = 30000;
                             baseItem.GetGlobalItem<SkillGItem>().powerMax = 30000;

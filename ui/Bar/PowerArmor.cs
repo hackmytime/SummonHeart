@@ -19,10 +19,10 @@ namespace SummonHeart.ui.Bar
             /*area.Left.Set(-area.Width.Pixels - 1050f, 1f);
             area.Top.Set(580f, 0f);*/
 
-            area.Left.Set(Main.screenWidth / 2 - 182 / 2, 0);
-            area.Top.Set(Main.screenHeight / 2 - 100, 0);
-            /*area.Left.Set(-area.Width.Pixels - 600, 1f); // Place the resource bar to the left of the hearts.
-            area.Top.Set(30, 0f); // Placing it just a bit below the top of the screen.*/
+            /*area.Left.Set(Main.screenWidth / 2 - 182 / 2, 0);
+            area.Top.Set(Main.screenHeight / 2 - 100, 0);*/
+            area.Left.Set(-area.Width.Pixels - 600, 1f); // Place the resource bar to the left of the hearts.
+            area.Top.Set(30, 0f); // Placing it just a bit below the top of the screen.
 
             area.Width.Set(182f, 0f);
             area.Height.Set(60f, 0f);

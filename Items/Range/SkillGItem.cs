@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using SummonHeart.Extensions;
 using SummonHeart.Utilities;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
@@ -40,7 +41,89 @@ namespace SummonHeart.Items.Range
             {
                 return 0.5f;
             }
+            else if(item.ranged && skillType == SkillType.PowerGun && item.useAmmo == AmmoID.Bullet)
+            {
+                return 0.33f;
+            }
             return base.UseTimeMultiplier(item, player);
+        }
+
+        public override void ModifyWeaponDamage(Item item, Player player, ref float add, ref float mult, ref float flat)
+        {
+            float baseAdd = add;
+            float heartAdd = 1f;
+            if (skillType == SkillType.PowerGun && skillLevel > 0)
+            {
+                heartAdd += (skillLevel + 3) * 5f;
+            }
+            add = heartAdd * baseAdd;
+            base.ModifyWeaponDamage(item, player, ref add, ref mult, ref flat);
+        }
+
+        public override void GetWeaponCrit(Item item, Player player, ref int crit)
+        {
+            if (skillType == SkillType.PowerGun && skillLevel > 0)
+            {
+                crit += 100;
+            }
+            base.GetWeaponCrit(item, player, ref crit);
+        }
+
+        public override bool CanUseItem(Item item, Player player)
+        {
+            if (skillLevel > 0)
+            {
+                int num75 = item.shoot;
+                float num76 = item.shootSpeed;
+                int weaponDamage = player.GetWeaponDamage(item);
+                int num77 = weaponDamage;
+                float num78 = item.knockBack;
+                if (item.useAmmo > 0)
+                {
+                    bool flag10 = false;
+                    player.PickAmmo(item, ref num75, ref num76, ref flag10, ref num77, ref num78, false);
+                }
+                Vector2 vector2 = player.RotatedRelativePoint(player.MountedCenter, true);
+                if (item.type == 3094 || item.type == 3378 || item.type == 3543)
+                {
+                    vector2.Y = player.position.Y + (float)(player.height / 3);
+                }
+                if (item.type == 3007)
+                {
+                    vector2.X -= (float)(4 * player.direction);
+                    vector2.Y -= 1f * player.gravDir;
+                }
+                float num82 = (float)Main.mouseX + Main.screenPosition.X - vector2.X;
+                float num83 = (float)Main.mouseY + Main.screenPosition.Y - vector2.Y;
+                if (player.gravDir == -1f)
+                {
+                    num83 = Main.screenPosition.Y + (float)Main.screenHeight - (float)Main.mouseY - vector2.Y;
+                }
+                float num84 = (float)Math.Sqrt((double)(num82 * num82 + num83 * num83));
+                float num85 = num84;
+                if ((float.IsNaN(num82) && float.IsNaN(num83)) || (num82 == 0f && num83 == 0f))
+                {
+                    num82 = (float)player.direction;
+                    num83 = 0f;
+                    num84 = num76;
+                }
+                else
+                {
+                    num84 = num76 / num84;
+                }
+                if (item.type == 1929 || item.type == 2270)
+                {
+                    num82 += (float)Main.rand.Next(-50, 51) * 0.03f / num84;
+                    num83 += (float)Main.rand.Next(-50, 51) * 0.03f / num84;
+                }
+                num82 *= num84;
+                num83 *= num84;
+            
+                //Projectile.NewProjectile(vector2.X, vector2.Y, speedX, speedY2, num75, num77, num78, player.whoAmI, 0f, 0f);
+                this.Shoot2(item, player, ref vector2, ref num82, ref num83, ref num75, ref num77, ref num78);
+                //return false;
+            }
+            return base.CanUseItem(item, player);
         }
 
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
@@ -108,9 +191,43 @@ namespace SummonHeart.Items.Range
                     tooltips[num + 5].overrideColor = Color.LightGreen;
                 }
             }
+            else if (skillType == SkillType.PowerGun && skillLevel > 0)
+            {
+                if (num != -1)
+                {
+                    string str = "";
+                    string desp = "";
+                    string costAmmo = "";
+                    string power = "";
+                    string costPower = "";
+                    if (skillType == SkillType.PowerGun)
+                    {
+                        str = "枪械强化Lv" + skillLevel;
+                        desp = "伤害增加 " + (skillLevel + 3) * 5 + "倍";
+                        costAmmo = "能量消耗 " + (skillLevel + 3) + "倍";
+                        power = "当前能量 " + curPower + "/" + powerMax;
+                        costPower = "消耗能量 " + (5 * (skillLevel + 1)) * (skillLevel + 3);
+                    }
+                    tooltips.Insert(num + 1, new TooltipLine(mod, "SkillStr", str));
+                    tooltips[num + 1].overrideColor = Color.LightSkyBlue;
+                    tooltips.Insert(num + 2, new TooltipLine(mod, "SkillDesp", desp));
+                    tooltips[num + 2].overrideColor = Color.LightSkyBlue;
+                    tooltips.Insert(num + 3, new TooltipLine(mod, "CostAmmo", costAmmo));
+                    tooltips[num + 3].overrideColor = Color.LightSkyBlue;
+                    tooltips.Insert(num + 4, new TooltipLine(mod, "SkillPower", power));
+                    tooltips[num + 4].overrideColor = Color.LightGreen;
+                    tooltips.Insert(num + 5, new TooltipLine(mod, "CostPower", costPower));
+                    tooltips[num + 5].overrideColor = Color.LightGreen;
+                }
+            }
         }
 
         public override bool Shoot(Item item, Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
+        {
+            return base.Shoot(item, player, ref position, ref speedX, ref speedY, ref type, ref damage, ref knockBack);
+        }
+
+        public bool Shoot2(Item item, Player player, ref Vector2 position, ref float speedX, ref float speedY, ref int type, ref int damage, ref float knockBack)
         {
             SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
             if (curPower <= 0 && skillLevel == 6)
@@ -156,8 +273,8 @@ namespace SummonHeart.Items.Range
             }
             else if (item.ranged && skillType == SkillType.MultiGun && item.useAmmo == AmmoID.Bullet)
             {
-                speedX *= 1.25f;
-                speedY *= 1.25f;
+                /*speedX *= 1.25f;
+                speedY *= 1.25f;*/
                 {
                     /*int maxPro = skillLevel + 1;
                     for (int i = 2; i <= maxPro; i++)
@@ -196,10 +313,27 @@ namespace SummonHeart.Items.Range
                     //return false;
                 }
             }
+            else if (item.ranged && skillType == SkillType.PowerGun && item.useAmmo == AmmoID.Bullet)
+            {
+                /*speedX *= 2f;
+                speedY *= 2f;*/
+                //计算能量消耗
+                curPower -= 5 * (skillLevel + 1) * (skillLevel + 3);
+                player.CostItem(item.useAmmo, skillLevel);
+                if (curPower <= 0 && skillLevel < 6)
+                {
+                    CombatText.NewText(player.getRect(), Color.Red, "能量耗尽，武器已损坏");
+                    item.TurnToAir();
+                }
+                if (curPower <= 0)
+                {
+                    curPower = 0;
+                }
+            }
             return base.Shoot(item, player, ref position, ref speedX, ref speedY, ref type, ref damage, ref knockBack);
         }
 
-        public override bool PreDrawInWorld(Item item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
+        /*public override bool PreDrawInWorld(Item item, SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
         {
             if(skillType > 0)
             {
@@ -213,7 +347,7 @@ namespace SummonHeart.Items.Range
                 spriteBatch.Draw(Weapon, Main.LocalPlayer.position + origin, null, lightColor, rotation, weaorigin, 1f, 0, 0f);
             }
             return base.PreDrawInWorld(item, spriteBatch, lightColor, alphaColor, ref rotation, ref scale, whoAmI);
-        }
+        }*/
 
         public override bool ConsumeAmmo(Item item, Player player)
         {
@@ -230,6 +364,11 @@ namespace SummonHeart.Items.Range
                     else if(type == SkillType.MultiGun)
                     {
                         costCount = 6 + costCount * 2; 
+                    }
+                    costCount /= 2;
+                    if (type == SkillType.PowerGun)
+                    {
+                        costCount = 1;
                     }
                     player.CostItem(item.type, costCount);
                     return false;

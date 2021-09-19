@@ -6,17 +6,18 @@ using Microsoft.Xna.Framework;
 using SummonHeart.Items.Skill.Tools;
 using SummonHeart.Items.Range.Power;
 
-namespace SummonHeart.Items.Range.Gun
+namespace SummonHeart.Items.Range.Gun.Power
 {
-    public class MultiGunSkill2 : ModItem
+    public class PowerGunSkill : ModItem
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("MultiGunSkill2");
-            Tooltip.SetDefault("MultiGunSkill2");
-            DisplayName.AddTranslation(GameCulture.Chinese, "核心科技·散弹枪组合改造Lv2");
-            Tooltip.AddTranslation(GameCulture.Chinese, "组合改造5把，额外射弹量10，枪械攻速降低200%" +
-                "\n前5号物品栏放满同类型的枪，左键使用消耗能量核心Lv2进行组合改造");
+            DisplayName.SetDefault("PowerGunSkill");
+            Tooltip.SetDefault("PowerGunSkill");
+            DisplayName.AddTranslation(GameCulture.Chinese, "核心科技·枪械强化Lv1");
+            Tooltip.AddTranslation(GameCulture.Chinese, "炼化压缩融合4把，伤害提升20倍，能量消耗提升4倍" +
+                "\n暴击几率+100%，子弹射速+200%，枪械攻速降低300%" +
+                "\n前4号物品栏放满同类型的枪，左键使用消耗能量核心Lv1进行炼化压缩融合");
         }
 
         public override void SetDefaults()
@@ -52,14 +53,14 @@ namespace SummonHeart.Items.Range.Gun
             {
                 //处理升级
                 item.TurnToAir();
-                mp.player.QuickSpawnItem(ModContent.ItemType<MultiGunSkill3>(), 1);
+                mp.player.QuickSpawnItem(ModContent.ItemType<PowerGunSkill2>(), 1);
                 CombatText.NewText(player.getRect(), Color.LightGreen, "核心科技升级成功");
             }
             else
             {
                 Item baseItem = player.inventory[0];
                 bool hasWeapon = true;
-                int weaponCount = 5;
+                int weaponCount = 4;
                 for (int i = 1; i <= weaponCount; i++)
                 {
                     Item item = player.inventory[i - 1];
@@ -68,7 +69,7 @@ namespace SummonHeart.Items.Range.Gun
                 }
                 ItemCost[] costArr = new ItemCost[] {
                 new ItemCost(
-                    ModContent.ItemType<Power2>(), 1)
+                    ModContent.ItemType<Power1>(), 1)
                 };
                 if (mp.PlayerClass != 7)
                 {
@@ -92,10 +93,10 @@ namespace SummonHeart.Items.Range.Gun
                                 item.TurnToAir();
                             }
                             item.GetGlobalItem<SkillBase>().skillUseCount++;
-                            baseItem.GetGlobalItem<SkillGItem>().skillType = SkillType.MultiGun;
-                            baseItem.GetGlobalItem<SkillGItem>().skillLevel = 2;
-                            baseItem.GetGlobalItem<SkillGItem>().curPower = 30000;
-                            baseItem.GetGlobalItem<SkillGItem>().powerMax = 30000;
+                            baseItem.GetGlobalItem<SkillGItem>().skillType = SkillType.PowerGun;
+                            baseItem.GetGlobalItem<SkillGItem>().skillLevel = 1;
+                            baseItem.GetGlobalItem<SkillGItem>().curPower = 10000;
+                            baseItem.GetGlobalItem<SkillGItem>().powerMax = 10000;
                         }
                     }
                     else
@@ -108,5 +109,13 @@ namespace SummonHeart.Items.Range.Gun
             return true;
         }
 
+        public override void AddRecipes()
+        {
+            ModRecipe recipe = new ModRecipe(mod);
+            recipe.AddIngredient(mod.GetItem("GuideNote"), 1);
+            recipe.AddIngredient(mod.GetItem("RangeScroll"), 1);
+            recipe.SetResult(this);
+            recipe.AddRecipe();
+        }
     }
 }

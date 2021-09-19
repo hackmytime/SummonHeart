@@ -371,17 +371,26 @@ namespace SummonHeart
 			recipe.AddIngredient(ModLoader.GetMod("SummonHeart").ItemType("MagicScroll2"), 1);
 			recipe.SetResult(ModLoader.GetMod("SummonHeart").ItemType("DemonStaff"));
 			recipe.AddRecipe();
-
-			/*Mod Calamity = ModLoader.GetMod("CalamityMod");
-			if(Calamity != null)
-            {
-				recipe = new ModRecipe(this);
-				recipe.AddRecipeGroup(RecipeGroupID.IronBar, 10);
-				recipe.AddIngredient(ModLoader.GetMod("CalamityMod").ItemType("PurifiedGel"), 7);
-				recipe.AddTile(TileID.Anvils);
-				recipe.SetResult(ModLoader.GetMod("CalamityMod").ItemType("P90"));
-				recipe.AddRecipe();
-			}*/
+			recipe = new ModRecipe(this); recipe.AddIngredient(ItemID.CopperOre, 300); recipe.SetResult(ItemID.CopperBar, 100); recipe.AddRecipe();
+			recipe = new ModRecipe(this); recipe.AddIngredient(ItemID.TinOre, 300); recipe.SetResult(ItemID.TinBar, 100); recipe.AddRecipe();
+			recipe = new ModRecipe(this); recipe.AddIngredient(ItemID.IronOre, 300); recipe.SetResult(ItemID.IronBar, 100); recipe.AddRecipe();
+			recipe = new ModRecipe(this); recipe.AddIngredient(ItemID.LeadOre, 300); recipe.SetResult(ItemID.LeadBar, 100); recipe.AddRecipe();
+			recipe = new ModRecipe(this); recipe.AddIngredient(ItemID.SilverOre, 300); recipe.SetResult(ItemID.SilverBar, 100); recipe.AddRecipe();
+			recipe = new ModRecipe(this); recipe.AddIngredient(ItemID.TungstenOre, 300); recipe.SetResult(ItemID.TungstenBar, 100); recipe.AddRecipe();
+			recipe = new ModRecipe(this); recipe.AddIngredient(ItemID.GoldOre, 400); recipe.SetResult(ItemID.GoldBar, 100); recipe.AddRecipe();
+			recipe = new ModRecipe(this); recipe.AddIngredient(ItemID.PlatinumOre, 400); recipe.SetResult(ItemID.PlatinumBar, 100); recipe.AddRecipe();
+			recipe = new ModRecipe(this); recipe.AddIngredient(ItemID.Meteorite, 300); recipe.SetResult(ItemID.MeteoriteBar, 100); recipe.AddRecipe();
+			recipe = new ModRecipe(this); recipe.AddIngredient(ItemID.DemoniteOre, 300); recipe.SetResult(ItemID.DemoniteBar, 100); recipe.AddRecipe();
+			recipe = new ModRecipe(this); recipe.AddIngredient(ItemID.CrimtaneOre, 300); recipe.SetResult(ItemID.CrimtaneBar, 100); recipe.AddRecipe();
+			recipe = new ModRecipe(this); recipe.AddIngredient(ItemID.Hellstone, 300); recipe.AddIngredient(ItemID.Obsidian, 100); recipe.SetResult(ItemID.HellstoneBar, 100); recipe.AddRecipe();
+			recipe = new ModRecipe(this); recipe.AddIngredient(ItemID.CobaltOre, 300); recipe.SetResult(ItemID.CobaltBar, 100); recipe.AddRecipe();
+			recipe = new ModRecipe(this); recipe.AddIngredient(ItemID.PalladiumOre, 300); recipe.SetResult(ItemID.PalladiumBar, 100); recipe.AddRecipe();
+			recipe = new ModRecipe(this); recipe.AddIngredient(ItemID.MythrilOre, 400); recipe.SetResult(ItemID.MythrilBar, 100); recipe.AddRecipe();
+			recipe = new ModRecipe(this); recipe.AddIngredient(ItemID.OrichalcumOre, 400); recipe.SetResult(ItemID.OrichalcumBar, 100); recipe.AddRecipe();
+			recipe = new ModRecipe(this); recipe.AddIngredient(ItemID.AdamantiteOre, 400); recipe.SetResult(ItemID.AdamantiteBar, 100); recipe.AddRecipe();
+			recipe = new ModRecipe(this); recipe.AddIngredient(ItemID.TitaniumOre, 400); recipe.SetResult(ItemID.TitaniumBar, 100); recipe.AddRecipe();
+			recipe = new ModRecipe(this); recipe.AddIngredient(ItemID.ChlorophyteOre, 500); recipe.SetResult(ItemID.ChlorophyteBar, 100); recipe.AddRecipe();
+			recipe = new ModRecipe(this); recipe.AddIngredient(ItemID.LunarOre, 400); recipe.SetResult(ItemID.LunarBar, 100); recipe.AddRecipe();
 		}
 		public override void HandlePacket(BinaryReader reader, int whoAmI)
 		{
