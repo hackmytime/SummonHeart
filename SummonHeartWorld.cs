@@ -7,6 +7,8 @@ using Terraria.World.Generation;
 using Terraria.GameContent.Generation;
 using Microsoft.Xna.Framework;
 using System;
+using Terraria.ID;
+using SummonHeart.Utilities;
 
 namespace SummonHeart
 {

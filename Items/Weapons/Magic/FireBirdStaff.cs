@@ -31,8 +31,8 @@ namespace SummonHeart.Items.Weapons.Magic
             item.noMelee = true;
             Item.staff[item.type] = true;
             item.UseSound = SoundID.Item20;
-            item.useAnimation = 7;
-            item.useTime = 7;
+            item.useAnimation = 10;
+            item.useTime = 10;
             item.useStyle = ItemUseStyleID.HoldingOut;
             //item.shoot = ModContent.ProjectileType<MagicSword>();
             item.shoot = 706;

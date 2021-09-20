@@ -103,7 +103,7 @@ namespace SummonHeart.NPCs
 			//处理物品掉落
 			if (true)
 			{
-				if (npc.boss)
+				/*if (npc.boss)
 				{
 					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, SummonHeartMod.Instance.ItemType("Loot1"), Main.rand.Next(10, 100));
 					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, SummonHeartMod.Instance.ItemType("Loot2"), Main.rand.Next(1, 5));
@@ -127,7 +127,7 @@ namespace SummonHeart.NPCs
 				else
 				{
 					Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, SummonHeartMod.Instance.ItemType("Loot1"), Main.rand.Next(1, 5));
-				}
+				}*/
 			}
 			if (Main.netMode == NetmodeID.Server)
 			{

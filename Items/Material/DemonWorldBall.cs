@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using SummonHeart.Extensions;
 using SummonHeart.Items.Accessories;
 using Terraria.GameContent.Events;
+using SummonHeart.Utilities;
 
 namespace SummonHeart.Items.Material
 {
@@ -54,6 +55,10 @@ namespace SummonHeart.Items.Material
                     mp.BBP -= 5000;
                     SummonHeartWorld.StarMulti = 100;
                     SummonHeartWorld.StarMultiTime = 60*60*12;
+                    if (Main.netMode == NetmodeID.MultiplayerClient)
+                    {
+                        MsgUtils.SyncFallenStar();
+                    }
                 }
             }
             else

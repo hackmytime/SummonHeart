@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using SummonHeart.Extensions;
 using SummonHeart.Items.Accessories;
 using Terraria.GameContent.Events;
+using SummonHeart.Utilities;
 
 namespace SummonHeart.Items.Material
 {
@@ -73,6 +74,10 @@ namespace SummonHeart.Items.Material
                         Main.time = 54000.0;
                         CultistRitual.delay = 0;
                         CultistRitual.recheck = 0;
+                    }
+                    if (Main.netMode == NetmodeID.MultiplayerClient)
+                    {
+                        MsgUtils.SyncTime();
                     }
                 }
             }

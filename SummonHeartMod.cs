@@ -8,11 +8,13 @@ using SummonHeart.Items.Range;
 using SummonHeart.Items.Skill.Tools;
 using SummonHeart.ui;
 using SummonHeart.ui.Bar;
+using SummonHeart.Utilities;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent.Events;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.Localization;
@@ -463,6 +465,24 @@ namespace SummonHeart
 							int npc = reader.ReadByte();
 							Main.player[playernumber].doKillNpcExp(Main.npc[npc]);
 						}
+					}
+					break;
+				case 5:
+					{
+						Main.AnglerQuestSwap();
+					}
+					break;
+				case 6:
+					{
+						Main.time = 54000.0;
+						CultistRitual.delay = 0;
+						CultistRitual.recheck = 0;
+					}
+					break;
+				case 7:
+					{
+						SummonHeartWorld.StarMulti = 100;
+						SummonHeartWorld.StarMultiTime = 60 * 60 * 12;
 					}
 					break;
 

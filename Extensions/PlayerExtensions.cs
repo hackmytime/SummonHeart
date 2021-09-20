@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SummonHeart.Items.Range.Loot;
 using SummonHeart.Models;
 using SummonHeart.NPCs;
 using SummonHeart.Utilities;
@@ -81,7 +82,7 @@ namespace SummonHeart.Extensions
 			int levelCount = 0;
 			for(fishLevel = 0; fishLevel < 100; fishLevel++)
             {
-				int curCount = 1 + fishLevel;
+				int curCount = 1 + fishLevel / 2;
 				levelCount += curCount;
 				if (fishCount < levelCount)
 					break;
@@ -185,6 +186,35 @@ namespace SummonHeart.Extensions
 			SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
 			if (npc.boss)
 				modPlayer.killAnyBoss = true;
+
+			if (modPlayer.PlayerClass == 7)
+            {
+				if (npc.boss)
+				{
+					player.QuickSpawnItem(ModContent.ItemType<Loot1>(), Main.rand.Next(10, 100));
+					player.QuickSpawnItem(ModContent.ItemType<Loot2>(), Main.rand.Next(1, 5));
+					if (Main.rand.Next(100) == 0)
+					{
+						player.QuickSpawnItem(ModContent.ItemType<Loot3>(), Main.rand.Next(1, 2));
+					}
+					if (Main.rand.Next(100) == 0)
+					{
+						player.QuickSpawnItem(ModContent.ItemType<Loot4>(), Main.rand.Next(1, 2));
+					}
+					if (Main.rand.Next(10000) == 0)
+					{
+						player.QuickSpawnItem(ModContent.ItemType<Loot5>(), Main.rand.Next(1, 2));
+					}
+					if (Main.rand.Next(10000) == 0)
+					{
+						player.QuickSpawnItem(ModContent.ItemType<Loot6>(), 1);
+					}
+				}
+				else
+				{
+					player.QuickSpawnItem(ModContent.ItemType<Loot1>(), Main.rand.Next(1, 5));
+				}
+			}
 
 			int addKillCount = (int)modPlayer.manaExp;
 			modPlayer.killNpcCount += addKillCount;
