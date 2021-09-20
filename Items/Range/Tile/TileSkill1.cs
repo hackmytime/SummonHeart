@@ -26,21 +26,10 @@ namespace SummonHeart.Items.Range.Tile
             item.height = 32;
             item.rare = -12;
             item.value = Item.sellPrice(9999, 0, 0, 0);
-            item.useAnimation = 20;
-            item.useTime = 20;
+            item.useAnimation = 10;
+            item.useTime = 10;
             item.useStyle = 4;
             item.UseSound = SoundID.Item4;
-        }
-
-
-        public override bool AltFunctionUse(Player player)
-        {
-            SkillBase skillBase = item.GetGlobalItem<SkillBase>();
-            if (skillBase.skillUseCount >= skillBase.levelUpCount)
-            {
-                return true;
-            }
-            return base.AltFunctionUse(player);
         }
 
         public override bool UseItem(Player player)
@@ -54,10 +43,6 @@ namespace SummonHeart.Items.Range.Tile
             };
             if (player.altFunctionUse == 2)
             {
-                //处理升级
-                item.TurnToAir();
-                mp.player.QuickSpawnItem(ModContent.ItemType<PowerSkill2>(), 1);
-                CombatText.NewText(player.getRect(), Color.LightGreen, "核心科技升级成功");
             }
             else
             {

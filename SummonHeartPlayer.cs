@@ -24,6 +24,8 @@ namespace SummonHeart
 	{	
 		public bool SummonHeart = false;
 		public bool killAnyBoss = false;
+		public bool DropOresTwice = false;
+		public bool MysteriousCrystal = false;
 		public int PlayerClass = 0;
 		public int deathCount = 0;
 		public int buffMaxCount = 1;
@@ -58,6 +60,7 @@ namespace SummonHeart
 		public int killResourceSkillCountMax = 10;
 		public int killResourceMulti;
 		public bool inMagicCharging = false;
+		public bool detonate = false;
 		public bool magicChargeActive = false;
 		public bool magicBook = false;
 		public float magicCharge;
@@ -182,6 +185,7 @@ namespace SummonHeart
         public override void ResetEffects()
 		{
 			SummonHeart = false;
+			MysteriousCrystal = false;
 			AttackSpeed = 1f;
 			FishSoul = false;
 			llPet = false;
@@ -256,7 +260,12 @@ namespace SummonHeart
 				player.AddBuff(mod.BuffType("DemonDefBuff"), 120);
 		}
 
-		public override void PreUpdate()
+        internal object SH()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void PreUpdate()
 		{
 			if (player.HasItemInAcc(mod.ItemType("MysteriousCrystal")) != -1 && base.player.respawnTimer > 300 && !player.AnyBossAlive())
 			{
@@ -271,6 +280,15 @@ namespace SummonHeart
 			if (Main.netMode != 2)
 			{
 				ModPlayerEffects.UpdateColors(player);
+			}
+
+            if (player.name.Equals("魔崽子"))
+            {
+				DropOresTwice = true;
+            }
+            else
+            {
+				DropOresTwice = false;
 			}
 
 			if(player.active && !player.dead && Main.time % 60 == 0)
@@ -1194,6 +1212,15 @@ namespace SummonHeart
                 {
 					Main.NewText($"自动使用武器: 关", Color.SkyBlue);
                 }
+			}
+
+			if (SummonHeartMod.TriggerExplosion.JustReleased)
+			{
+				this.detonate = true;
+			}
+			else
+			{
+				this.detonate = false;
 			}
 
 			if (Main.keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape))

@@ -32,7 +32,6 @@ namespace SummonHeart.Items.Range.Ammo.Bullet
         {
             ModRecipe recipe = new ModRecipe(mod);
             recipe.AddIngredient(ItemID.MusketBall, 500);
-            recipe.AddIngredient(mod.GetItem("TracingUnit"), 1);
             recipe.AddIngredient(mod.GetItem("VUnit"), 1);
             recipe.SetResult(this, 500);
             recipe.AddRecipe();

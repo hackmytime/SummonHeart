@@ -143,6 +143,20 @@ namespace SummonHeart.Extensions
 			return -1;
 		}
 
+		public static int getMaxPickPowerInInventory(this Player player)
+		{
+			int pickPower = -1;
+			SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
+			for (int i = 0; i < player.inventory.Length; i++)
+			{
+				if (player.inventory[i].pick > pickPower)
+				{
+					pickPower = player.inventory[i].pick;
+				}
+			}
+			return pickPower;
+		}
+
 		public static void CostItem(this Player player, int type, int count)
 		{
 			foreach (var v in player.inventory)

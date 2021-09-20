@@ -122,6 +122,20 @@ namespace SummonHeart.Items
             return true;
         }
 
+        public override void GrabRange(Item item, Player player, ref int grabRange)
+        {
+            SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
+            if (mp.MysteriousCrystal)
+            {
+                grabRange += 35 * 16;
+                if (item.beingGrabbed)
+                {
+                    Vector2 vector = player.Center - item.Center;
+                    item.velocity = (item.velocity * 4f + vector * (20f / vector.Length())) * 0.2f;
+                }
+            }
+        }
+
         public override void HoldItem(Item item, Player player)
         {
             SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();

@@ -12,7 +12,7 @@ namespace SummonHeart.Items.Range.Ammo
         {
             DisplayName.SetDefault("4级科技造物·风暴狙击箭" +
                 "\n基础攻击20，命中时爆炸根据冷热原理生成巨型龙卷风，龙卷风吸收范围内一切npc物块和玩家" +
-                "\n每秒钟造成10次暴风伤害，持续时间1分种，最大600次伤害" +
+                "\n每秒钟造成10次暴风伤害，持续时间10秒，最大100次伤害" +
                 "\n科技造物，造价高昂，品质保证");
         }
 
@@ -35,16 +35,16 @@ namespace SummonHeart.Items.Range.Ammo
         public override void AddRecipes()
         {
             ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(mod.GetItem("MetalUnit"), 6);
-            recipe.AddIngredient(mod.GetItem("VUnit"), 6);
+            recipe.AddIngredient(mod.GetItem("HotUnit"), 6);
+            recipe.AddIngredient(mod.GetItem("IceUnit"), 6);
             recipe.AddIngredient(mod.GetItem("Power4"), 1);
             recipe.AddIngredient(mod.GetItem("TracingUnit"), 1);
             recipe.SetResult(this, 6);
             recipe.AddRecipe();
             recipe = new ModRecipe(mod);
-            recipe.AddIngredient(mod.GetItem("MetalUnit"), 6);
-            recipe.AddIngredient(mod.GetItem("Loot4"), 1);
-            recipe.AddIngredient(mod.GetItem("Power4"), 1);
+            recipe.AddIngredient(mod.GetItem("HotUnit"), 6);
+            recipe.AddIngredient(mod.GetItem("IceUnit"), 6);
+            recipe.AddIngredient(mod.GetItem("Loot5"), 1);
             recipe.SetResult(this, 6);
             recipe.AddRecipe();
         }

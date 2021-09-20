@@ -41,8 +41,7 @@ namespace SummonHeart.Items.Range.Ammo.Bullet
             recipe.AddRecipe();
             recipe = new ModRecipe(mod);
             recipe.AddIngredient(mod.GetItem("MetalUnit"), 6);
-            recipe.AddIngredient(mod.GetItem("Loot4"), 1);
-            recipe.AddIngredient(mod.GetItem("Power4"), 1);
+            recipe.AddIngredient(mod.GetItem("Loot5"), 1);
             recipe.SetResult(this, 6);
             recipe.AddRecipe();
         }

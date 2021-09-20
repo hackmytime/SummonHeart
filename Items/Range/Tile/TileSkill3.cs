@@ -5,19 +5,20 @@ using Terraria.Localization;
 using Microsoft.Xna.Framework;
 using SummonHeart.Items.Skill.Tools;
 using SummonHeart.Items.Range.Power;
+using SummonHeart.Items.Range.AmmoSkill;
 
 namespace SummonHeart.Items.Range.Tile
 {
-    public class TileSkill2 : ModItem
+    public class TileSkill3 : ModItem
     {
 
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("TileSkill2");
-            Tooltip.SetDefault("TileSkill2");
-            DisplayName.AddTranslation(GameCulture.Chinese, "材料科技Lv2");
-            Tooltip.AddTranslation(GameCulture.Chinese, "可以利用炼金术提纯压缩玻璃的科技" +
-                "\n左键使用炼金术提存压缩10个玻璃");
+            DisplayName.SetDefault("TileSkill3");
+            Tooltip.SetDefault("TileSkill3");
+            DisplayName.AddTranslation(GameCulture.Chinese, "材料科技Lv3");
+            Tooltip.AddTranslation(GameCulture.Chinese, "可以利用炼金术提纯压缩岩浆的科技" +
+                "\n左键使用炼金术提存压缩30桶岩浆");
         }
 
         public override void SetDefaults()
@@ -32,12 +33,11 @@ namespace SummonHeart.Items.Range.Tile
             item.UseSound = SoundID.Item4;
         }
 
-
         public override bool UseItem(Player player)
         {
             SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
             ItemCost[] costArr1 = new ItemCost[] {
-                new ItemCost(ItemID.Glass, 10)
+                new ItemCost(ItemID.LavaBucket, 30)
             };
            
             if (player.altFunctionUse == 2)
@@ -52,7 +52,8 @@ namespace SummonHeart.Items.Range.Tile
                 else if (Builder.CanPayCost(costArr1, player))
                 {
                     Builder.PayCost(costArr1, player);
-                    mp.player.QuickSpawnItem(ModContent.ItemType<WaterGlass>(), 1);
+                    mp.player.QuickSpawnItem(ModContent.ItemType<HotUnit>(), 1);
+                    mp.player.QuickSpawnItem(ItemID.EmptyBucket, 30);
                 }
             }
             return true;
@@ -61,7 +62,7 @@ namespace SummonHeart.Items.Range.Tile
         public override void AddRecipes()
         {
             ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(ItemID.Glass, 50);
+            recipe.AddIngredient(ItemID.LavaBucket, 30);
             recipe.SetResult(this);
             recipe.AddRecipe();
         }

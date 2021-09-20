@@ -46,6 +46,7 @@ namespace SummonHeart
 		internal static ModHotKey BackHomeKey;
 		internal static ModHotKey DoubleDamageKey;
 		internal static ModHotKey BuffKey;
+		internal static ModHotKey TriggerExplosion;
 
 		internal PanelMelee PanelMeleeUI;
 		internal PanelKill PanelKillUI;
@@ -156,6 +157,7 @@ namespace SummonHeart
 			BackHomeKey = RegisterHotKey("神秘水晶快速回城", Keys.B.ToString());
 			DoubleDamageKey = RegisterHotKey("泰坦双倍偿还技能", Keys.K.ToString());
 			BuffKey = RegisterHotKey("无限法则菜单", Keys.M.ToString());
+			TriggerExplosion = RegisterHotKey("引爆工程炸弹", "Mouse2");
 			// this makes sure that the UI doesn't get opened on the server
 			// the server can't see UI, can it? it's just a command prompt
 			if (!Main.dedServ)
