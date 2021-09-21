@@ -60,7 +60,6 @@ namespace SummonHeart.Items.Range.Power
                 //处理升级
                 mp.player.QuickSpawnItem(ModContent.ItemType<PowerSkill2>(), 1);
                 CombatText.NewText(player.getRect(), Color.LightGreen, "核心科技升级成功");
-                item.TurnToAir();
             }
             else
             {

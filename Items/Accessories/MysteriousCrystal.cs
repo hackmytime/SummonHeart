@@ -16,7 +16,9 @@ namespace SummonHeart.Items.Accessories
             Tooltip.AddTranslation(GameCulture.Chinese, "复活时间减为2秒(Boss存活时无效)" +
                 "\n装备可自动拾取金币到储蓄罐" +
                 "\n装备可自动拾取35码范围内的物品" +
+                "\n装备多人模式可自动获得虫洞药水效果" +
                 "\n装备可快速回城，需设置快捷键使用，默认B" +
+                "\n装备可返回回城点，需设置快捷键使用，默认C" +
                 "\n装备可返回死亡点，可设置快捷键使用，默认Z" +
                 "\n左键使用消耗500灵魂之力召唤旅商" +
                 "\n给挑战者的礼物");

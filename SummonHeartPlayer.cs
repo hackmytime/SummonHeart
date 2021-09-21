@@ -131,6 +131,7 @@ namespace SummonHeart
 		public bool dashingLeft;
 		public int rightTimer;
 		public bool dashingRight;
+		public Vector2 RecallBackPos = Vector2.Zero;
 
 		//建筑
 		public int houseTileX = -1;
@@ -182,7 +183,12 @@ namespace SummonHeart
 			}
 		}
 
-        public override void ResetEffects()
+		public override void PostUpdateEquips()
+		{
+			ModPlayerEffects.UpdatePoints(player);
+		}
+
+		public override void ResetEffects()
 		{
 			SummonHeart = false;
 			MysteriousCrystal = false;
@@ -267,6 +273,15 @@ namespace SummonHeart
 
         public override void PreUpdate()
 		{
+			if (player.AnyBossAlive())
+			{
+				player.respawnTimer = 60*60*5;
+            }
+            else
+            {
+				player.respawnTimer = 60 * 15;
+			}
+			
 			if (player.HasItemInAcc(mod.ItemType("MysteriousCrystal")) != -1 && base.player.respawnTimer > 300 && !player.AnyBossAlive())
 			{
 				player.respawnTimer = 120;
@@ -1357,6 +1372,7 @@ namespace SummonHeart
 			{
 				if (player.HasItemInAcc(mod.ItemType("MysteriousCrystal")) != -1 && player.statLife > 0)
 				{
+					this.RecallBackPos = base.player.position;
 					player.Spawn();
 					Main.PlaySound(SoundID.Item6, player.position);
 					for (int k = 0; k < 70; k++)
@@ -1366,6 +1382,26 @@ namespace SummonHeart
 				}
                 else
                 {
+					Main.NewText($"你未装备神秘水晶", Color.Red);
+				}
+			}
+			if (SummonHeartMod.BackHomeBackKey.JustPressed)
+			{
+				if (player.HasItemInAcc(mod.ItemType("MysteriousCrystal")) != -1 && player.statLife > 0)
+				{
+					if (RecallBackPos == Vector2.Zero)
+					{
+						CombatText.NewText(player.getRect(), Color.Red, "没有回城点，无法返回");
+					}
+					else
+					{
+						player.noFallDmg = true;
+						player.Teleport(this.RecallBackPos, 0, 0);
+						this.RecallBackPos = Vector2.Zero;
+					}
+				}
+				else
+				{
 					Main.NewText($"你未装备神秘水晶", Color.Red);
 				}
 			}
@@ -1507,7 +1543,7 @@ namespace SummonHeart
 
 			if (PlayerClass == 1 && damageCD == 0)
 			{
-				damageCD = 60;
+				damageCD = 6;
 				int addDamage = oldDamage - damage;
 				if(crit)
 					addDamage *= 2;

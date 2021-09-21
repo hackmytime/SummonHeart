@@ -14,7 +14,8 @@ namespace SummonHeart.Items.Weapons.Magic
             DisplayName.AddTranslation(GameCulture.Chinese, "火鸟法杖");
             Tooltip.SetDefault("FireBirdStaff");
             Tooltip.AddTranslation(GameCulture.Chinese, "" +
-                "发射追踪魔法火鸟");
+                "发射追踪魔法火鸟" +
+                "\n曾经的传奇");
         }
 
         public override void SetDefaults()
@@ -31,8 +32,8 @@ namespace SummonHeart.Items.Weapons.Magic
             item.noMelee = true;
             Item.staff[item.type] = true;
             item.UseSound = SoundID.Item20;
-            item.useAnimation = 10;
-            item.useTime = 10;
+            item.useAnimation = 12;
+            item.useTime = 12;
             item.useStyle = ItemUseStyleID.HoldingOut;
             //item.shoot = ModContent.ProjectileType<MagicSword>();
             item.shoot = 706;
@@ -49,6 +50,7 @@ namespace SummonHeart.Items.Weapons.Magic
             ModRecipe recipe = new ModRecipe(mod);
             recipe.AddIngredient(ItemID.HellstoneBar, 815);
             recipe.AddIngredient(ItemID.Feather, 815);
+            recipe.AddIngredient(ItemID.IceFeather, 8);
             recipe.SetResult(this);
             recipe.AddRecipe();
         }

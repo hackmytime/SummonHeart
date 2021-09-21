@@ -139,8 +139,8 @@ namespace SummonHeart
         private void PlentifulOres(GenerationProgress progress)
         {
             progress.Message = "正在生成魔神的馈赠";
-            this.IronGeneration(100);
-            this.GoldGeneration(100);
+            this.IronGeneration(30);
+            this.GoldGeneration(30);
             this.GemGeneration(10);
         }
 

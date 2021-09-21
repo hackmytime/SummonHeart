@@ -17,7 +17,7 @@ namespace SummonHeart.Items.Range.Tile
             Tooltip.SetDefault("TileSkill1");
             DisplayName.AddTranslation(GameCulture.Chinese, "材料科技Lv1");
             Tooltip.AddTranslation(GameCulture.Chinese, "可以利用炼金术提纯压缩材料的科技" +
-                "\n左键使用炼金术压缩99个土块或者99个石块");
+                "\n左键使用炼金术压缩20个土块或者20个石块");
         }
 
         public override void SetDefaults()
@@ -36,10 +36,10 @@ namespace SummonHeart.Items.Range.Tile
         {
             SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
             ItemCost[] costArr1 = new ItemCost[] {
-                new ItemCost(ItemID.DirtBlock, 99)
+                new ItemCost(ItemID.DirtBlock, 20)
             };
             ItemCost[] costArr2 = new ItemCost[] {
-                new ItemCost(ItemID.StoneBlock, 99)
+                new ItemCost(ItemID.StoneBlock, 20)
             };
             if (player.altFunctionUse == 2)
             {

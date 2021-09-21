@@ -42,8 +42,7 @@ namespace SummonHeart.Items.Range.Tools.Bomb
         {
             ModRecipe modRecipe = new ModRecipe(mod);
             modRecipe.AddIngredient(ItemID.Dynamite, 30);
-            modRecipe.AddIngredient(ItemID.Gel, 30);
-            modRecipe.AddIngredient(ModContent.ItemType<HotUnit>(), 1);
+            modRecipe.AddIngredient(ItemID.Gel, 1);
             modRecipe.SetResult(this, 1);
             modRecipe.AddRecipe();
         }

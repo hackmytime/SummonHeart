@@ -42,10 +42,12 @@ namespace SummonHeart.Items.Range.Ammo
             recipe.SetResult(this, 6);
             recipe.AddRecipe();
             recipe = new ModRecipe(mod);
-            recipe.AddIngredient(mod.GetItem("HotUnit"), 6);
-            recipe.AddIngredient(mod.GetItem("IceUnit"), 6);
             recipe.AddIngredient(mod.GetItem("Loot5"), 1);
-            recipe.SetResult(this, 6);
+            recipe.SetResult(this, 10);
+            recipe.AddRecipe();
+            recipe = new ModRecipe(mod);
+            recipe.AddIngredient(mod.GetItem("Loot4"), 1);
+            recipe.SetResult(this, 1);
             recipe.AddRecipe();
         }
     }

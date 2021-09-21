@@ -39,11 +39,11 @@ namespace SummonHeart.Items.Range.Ammo
             recipe.AddIngredient(mod.GetItem("VUnit"), 1);
             recipe.SetResult(this, 200);
             recipe.AddRecipe();
-            recipe = new ModRecipe(mod);
-            recipe.AddIngredient(ItemID.WoodenArrow, 9999);
-            recipe.AddIngredient(mod.GetItem("Loot6"), 1);
-            recipe.SetResult(this, 9999);
-            recipe.AddRecipe();
+            recipe = new ModRecipe(mod); recipe.AddIngredient(ItemID.WoodenArrow, 9999); recipe.AddIngredient(mod.GetItem("Loot5"), 1); recipe.SetResult(this, 9999); recipe.AddRecipe();
+            recipe = new ModRecipe(mod); recipe.AddIngredient(ItemID.WoodenArrow, 999); recipe.AddIngredient(mod.GetItem("Loot4"), 1); recipe.SetResult(this, 999); recipe.AddRecipe();
+            recipe = new ModRecipe(mod); recipe.AddIngredient(ItemID.WoodenArrow, 99); recipe.AddIngredient(mod.GetItem("Loot3"), 1); recipe.SetResult(this, 99); recipe.AddRecipe();
+            recipe = new ModRecipe(mod); recipe.AddIngredient(ItemID.WoodenArrow, 9); recipe.AddIngredient(mod.GetItem("Loot2"), 1); recipe.SetResult(this, 9); recipe.AddRecipe();
+            recipe = new ModRecipe(mod); recipe.AddIngredient(ItemID.WoodenArrow, 1); recipe.AddIngredient(mod.GetItem("Loot1"), 1); recipe.SetResult(this, 1); recipe.AddRecipe();
         }
     }
 }

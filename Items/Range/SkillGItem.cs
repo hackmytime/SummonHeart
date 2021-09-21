@@ -42,10 +42,6 @@ namespace SummonHeart.Items.Range
             {
                 return 0.5f;
             }
-            else if(item.ranged && skillType == SkillType.PowerGun && item.useAmmo == AmmoID.Bullet)
-            {
-                return 0.33f;
-            }
             return base.UseTimeMultiplier(item, player);
         }
 
@@ -333,7 +329,7 @@ namespace SummonHeart.Items.Range
                     {
                         str = "组合散弹枪Lv" + skillLevel;
                         desp = "额外射弹量 " + (skillLevel * 2 + 6) + "发";
-                        costAmmo = "耗弹量 " + (skillLevel * 2 + 6) + "发";
+                        costAmmo = "耗弹量 2发";
                         power = "当前能量 " + curPower + "/" + powerMax;
                         costPower = "消耗能量 " + (5 * (skillLevel + 1));
                     }
@@ -362,9 +358,9 @@ namespace SummonHeart.Items.Range
                     {
                         str = "枪械强化Lv" + skillLevel;
                         desp = "伤害增加 " + (skillLevel + 3) * 5 + "倍";
-                        costAmmo = "能量消耗 " + (skillLevel + 3) + "倍";
+                        costAmmo = "暴击几率 +100%";
                         power = "当前能量 " + curPower + "/" + powerMax;
-                        costPower = "消耗能量 " + (5 * (skillLevel + 1)) * (skillLevel + 3);
+                        costPower = "消耗能量 " + (5 * (skillLevel + 1));
                     }
                     tooltips.Insert(num + 1, new TooltipLine(mod, "SkillStr", str));
                     tooltips[num + 1].overrideColor = Color.LightSkyBlue;
@@ -509,7 +505,7 @@ namespace SummonHeart.Items.Range
                 /*speedX *= 2f;
                 speedY *= 2f;*/
                 //计算能量消耗
-                curPower -= 5 * (skillLevel + 1) * (skillLevel + 3);
+                curPower -= 5 * (skillLevel + 1);
                 player.CostItem(item.useAmmo, skillLevel);
                 if (curPower <= 0 && skillLevel < 6)
                 {
@@ -567,7 +563,7 @@ namespace SummonHeart.Items.Range
                     }
                     else if(type == SkillType.MultiGun)
                     {
-                        costCount = 6 + costCount * 2; 
+                        costCount += 1; 
                     }
                     //costCount /= 2;
                     if (type == SkillType.PowerGun || type == SkillType.PowerBow)

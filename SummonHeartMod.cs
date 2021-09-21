@@ -46,6 +46,7 @@ namespace SummonHeart
 		internal static ModHotKey TransKey;
 		internal static ModHotKey BackDieKey;
 		internal static ModHotKey BackHomeKey;
+		internal static ModHotKey BackHomeBackKey;
 		internal static ModHotKey DoubleDamageKey;
 		internal static ModHotKey BuffKey;
 		internal static ModHotKey TriggerExplosion;
@@ -157,6 +158,7 @@ namespace SummonHeart
 			TransKey = RegisterHotKey("空间传送", Keys.Y.ToString());
 			BackDieKey = RegisterHotKey("神秘水晶返回死亡点", Keys.Z.ToString());
 			BackHomeKey = RegisterHotKey("神秘水晶快速回城", Keys.B.ToString());
+			BackHomeBackKey = RegisterHotKey("神秘水晶返回快速回城点", Keys.C.ToString());
 			DoubleDamageKey = RegisterHotKey("泰坦双倍偿还技能", Keys.K.ToString());
 			BuffKey = RegisterHotKey("无限法则菜单", Keys.M.ToString());
 			TriggerExplosion = RegisterHotKey("引爆工程炸弹", "Mouse2");
@@ -280,6 +282,7 @@ namespace SummonHeart
 			TransKey = null;
 			BackDieKey = null;
 			BackHomeKey = null;
+			BackHomeBackKey = null;
 		}
 
 		public static int getBuffLength()
@@ -366,6 +369,10 @@ namespace SummonHeart
 			recipe.AddTile(TileID.WorkBenches);
 			recipe.SetResult(893);
 			recipe.AddRecipe();
+			recipe = new ModRecipe(this);recipe.AddIngredient(ItemID.SandBlock, 200);recipe.AddTile(TileID.Furnaces);recipe.SetResult(ItemID.Glass, 100);recipe.AddRecipe();
+			recipe = new ModRecipe(this);recipe.AddIngredient(ItemID.Sandstone, 200);recipe.AddTile(TileID.Furnaces);recipe.SetResult(ItemID.Glass, 100);recipe.AddRecipe();
+			recipe = new ModRecipe(this);recipe.AddIngredient(ItemID.HardenedSand, 200);recipe.AddTile(TileID.Furnaces);recipe.SetResult(ItemID.Glass, 100);recipe.AddRecipe();
+			recipe = new ModRecipe(this);recipe.AddIngredient(ItemID.MudBlock, 100);recipe.AddTile(TileID.Furnaces);recipe.SetResult(ItemID.DirtBlock, 100);recipe.AddRecipe();
 			recipe = new ModRecipe(this);
 			recipe.AddIngredient(ItemID.StoneBlock, 10);
 			recipe.needWater = true;

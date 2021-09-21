@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using SummonHeart.Extensions;
 using Terraria;
+using Terraria.GameInput;
 
 namespace SummonHeart
 {
@@ -109,6 +110,38 @@ namespace SummonHeart
                 mplayer.oscColor = mplayer.oscGradient.Sample(Helper.OscSaw(0f, 1f, 2f * mplayer.oscGradient.length, (float)player.whoAmI));
             }
         }
+		public static void UpdatePoints(Player player)
+        {
+            SummonHeartPlayer mp = player.SH();
+			if (mp.MysteriousCrystal && Main.mapFullscreen && Main.netMode == 1 && Main.myPlayer == player.whoAmI && player.team > 0 && Main.mouseLeft && Main.mouseLeftRelease)
+			{
+				for (int k = 0; k < 255; k++)
+				{
+					if (Main.player[k].active && !Main.player[k].dead && k != Main.myPlayer && player.team == Main.player[k].team)
+					{
+						float mapFullscreenScale = Main.mapFullscreenScale;
+						float num3 = (Main.player[k].position.X + (float)(Main.player[k].width / 2)) / 16f * mapFullscreenScale;
+						float num4 = (Main.player[k].position.Y + Main.player[k].gfxOffY + (float)(Main.player[k].height / 2)) / 16f * mapFullscreenScale;
+						num3 += -(Main.mapFullscreenPos.X * mapFullscreenScale) + (float)(Main.screenWidth / 2) - 6f;
+						float num5 = num4 + (-(Main.mapFullscreenPos.Y * mapFullscreenScale) + (float)(Main.screenHeight / 2) - 4f - mapFullscreenScale / 5f * 2f);
+						float num6 = num3 + 4f - 14f * Main.UIScale;
+						float num7 = num5 + 2f - 14f * Main.UIScale;
+						float num8 = num6 + 28f * Main.UIScale;
+						float num9 = num7 + 28f * Main.UIScale;
+						int mouseX = PlayerInput.MouseX;
+						int mouseY = PlayerInput.MouseY;
+						if ((float)mouseX >= num6 && (float)mouseX <= num8 && (float)mouseY >= num7 && (float)mouseY <= num9)
+						{
+							Main.PlaySound(12, -1, -1, 1, 1f, 0f);
+							Main.mouseLeftRelease = false;
+							Main.mapFullscreen = false;
+							player.UnityTeleport(Main.player[k].position);
+							break;
+						}
+					}
+				}
+			}
+		}
 
 		private static void InitializeColors(string overrideName, Player player, SummonHeartPlayer mplayer)
 		{

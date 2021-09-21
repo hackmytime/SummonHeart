@@ -41,10 +41,10 @@ namespace SummonHeart.Items.Range.Tools.Bomb
         public override void AddRecipes()
         {
             ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(ItemID.Dynamite, 100);
+            recipe.AddIngredient(ItemID.Dynamite, 500);
             recipe.AddIngredient(ItemID.Gel, 100);
             recipe.AddIngredient(ModContent.ItemType<HotUnit>(), 5);
-            recipe.SetResult(this, 10);
+            recipe.SetResult(this, 100);
             recipe.AddRecipe();
         }
     }

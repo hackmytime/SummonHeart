@@ -39,7 +39,7 @@ namespace SummonHeart.Items.Range.Ammo.Bullet
             recipe.AddRecipe();
             recipe = new ModRecipe(mod);
             recipe.AddIngredient(ItemID.MusketBall, 9999);
-            recipe.AddIngredient(mod.GetItem("Loot5"), 1);
+            recipe.AddIngredient(mod.GetItem("Loot4"), 1);
             recipe.SetResult(this, 9999);
             recipe.AddRecipe();
         }

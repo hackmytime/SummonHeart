@@ -11,7 +11,7 @@ namespace SummonHeart.Items.Range.Ammo.Bullet
         {
             DisplayName.SetDefault("3级科技造物·追踪穿透弹" +
                 "\n自动索敌，弹无虚发" +
-                "\n穿透+3" +
+                "\n穿透+8" +
                 "\n科技造物，造价高昂，品质保证");
         }
 
@@ -39,11 +39,11 @@ namespace SummonHeart.Items.Range.Ammo.Bullet
             recipe.AddIngredient(mod.GetItem("VUnit"), 1);
             recipe.SetResult(this, 500);
             recipe.AddRecipe();
-            recipe = new ModRecipe(mod);
-            recipe.AddIngredient(ItemID.MusketBall, 9999);
-            recipe.AddIngredient(mod.GetItem("Loot6"), 1);
-            recipe.SetResult(this, 9999);
-            recipe.AddRecipe();
+            recipe = new ModRecipe(mod);recipe.AddIngredient(ItemID.MusketBall, 9999);recipe.AddIngredient(mod.GetItem("Loot5"), 1);recipe.SetResult(this, 9999);recipe.AddRecipe();
+            recipe = new ModRecipe(mod);recipe.AddIngredient(ItemID.MusketBall, 999);recipe.AddIngredient(mod.GetItem("Loot4"), 1);recipe.SetResult(this, 999);recipe.AddRecipe();
+            recipe = new ModRecipe(mod);recipe.AddIngredient(ItemID.MusketBall, 99);recipe.AddIngredient(mod.GetItem("Loot3"), 1);recipe.SetResult(this, 99);recipe.AddRecipe();
+            recipe = new ModRecipe(mod);recipe.AddIngredient(ItemID.MusketBall, 9);recipe.AddIngredient(mod.GetItem("Loot2"), 1);recipe.SetResult(this, 9);recipe.AddRecipe();
+            recipe = new ModRecipe(mod);recipe.AddIngredient(ItemID.MusketBall, 1);recipe.AddIngredient(mod.GetItem("Loot1"), 1);recipe.SetResult(this, 1);recipe.AddRecipe();
         }
     }
 }

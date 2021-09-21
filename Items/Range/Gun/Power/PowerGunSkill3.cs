@@ -15,9 +15,8 @@ namespace SummonHeart.Items.Range.Gun.Power
             DisplayName.SetDefault("PowerGunSkill3");
             Tooltip.SetDefault("PowerGunSkill3");
             DisplayName.AddTranslation(GameCulture.Chinese, "核心科技·枪械强化Lv3");
-            Tooltip.AddTranslation(GameCulture.Chinese, "炼化压缩融合6把，伤害提升30倍，能量消耗提升6倍" +
-                "\n暴击几率+100%，子弹射速+200%，枪械攻速降低300%" +
-                "\n前6号物品栏放满同类型的枪，左键使用消耗能量核心Lv1进行炼化压缩融合");
+            Tooltip.AddTranslation(GameCulture.Chinese, "炼化压缩融合6把，伤害提升30倍，暴击几率+100%，" +
+               "\n前6号物品栏放满同类型的枪，左键使用消耗能量核心Lv3进行炼化压缩融合");
         }
 
         public override void SetDefaults()

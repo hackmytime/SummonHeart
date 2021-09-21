@@ -54,9 +54,8 @@ namespace SummonHeart.Items.Range.Power
             if (player.altFunctionUse == 2)
             {
                 //处理升级
-                mp.player.QuickSpawnItem(ModContent.ItemType<PowerArmorSkill4>(), 1);
+                mp.player.QuickSpawnItem(ModContent.ItemType<PowerSkill4>(), 1);
                 CombatText.NewText(player.getRect(), Color.LightGreen, "核心科技升级成功");
-                item.TurnToAir();
             }
             else
             {

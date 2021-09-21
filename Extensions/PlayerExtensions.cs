@@ -187,7 +187,7 @@ namespace SummonHeart.Extensions
 			if (npc.boss)
 				modPlayer.killAnyBoss = true;
 
-			if (modPlayer.PlayerClass == 7)
+			if (modPlayer.PlayerClass > 0)
             {
 				if (npc.boss)
 				{

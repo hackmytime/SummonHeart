@@ -17,7 +17,7 @@ namespace SummonHeart.Projectiles.Range.Bullet
             projectile.aiStyle = 1;
             projectile.friendly = true;
             projectile.ranged = true;
-            projectile.penetrate = 3;
+            projectile.penetrate = 8;
             projectile.light = 1f;
             projectile.timeLeft = 600;
             projectile.usesLocalNPCImmunity = true;
