@@ -18,7 +18,7 @@ namespace SummonHeart.Items.Range.Tile
             Tooltip.SetDefault("TileSkill3");
             DisplayName.AddTranslation(GameCulture.Chinese, "材料科技Lv3");
             Tooltip.AddTranslation(GameCulture.Chinese, "可以利用炼金术提纯压缩岩浆的科技" +
-                "\n左键使用炼金术提存压缩30桶岩浆");
+                "\n左键使用炼金术提存压缩20桶岩浆");
         }
 
         public override void SetDefaults()

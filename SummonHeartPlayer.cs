@@ -133,11 +133,6 @@ namespace SummonHeart
 		public bool dashingRight;
 		public Vector2 RecallBackPos = Vector2.Zero;
 
-		//建筑
-		public int houseTileX = -1;
-		public int houseTileY;
-		public int houesType;
-
 		//属性
 		public float MyAccelerationMult;
 		public float MyMoveSpeedMult;
@@ -277,12 +272,8 @@ namespace SummonHeart
 			{
 				player.respawnTimer = 60*60*5;
             }
-            else
-            {
-				player.respawnTimer = 60 * 15;
-			}
 			
-			if (player.HasItemInAcc(mod.ItemType("MysteriousCrystal")) != -1 && base.player.respawnTimer > 300 && !player.AnyBossAlive())
+			if (player.HasItemInAcc(mod.ItemType("MysteriousCrystal")) != -1 && base.player.respawnTimer > 120 && !player.AnyBossAlive())
 			{
 				player.respawnTimer = 120;
 			}
@@ -1116,21 +1107,6 @@ namespace SummonHeart
 				item.SetDefaults(ModLoader.GetMod("MagicStorageExtra").ItemType("StorageUnit"));
 				item.stack = 16;
 				items.Add(item);
-			}
-		}
-
-		public override void SendClientChanges(ModPlayer clientPlayer)
-		{
-			if (this.houseTileX != -1)
-			{
-				ModPacket packet = base.mod.GetPacket(256);
-				packet.Write((byte)0);
-				packet.Write((byte)Main.LocalPlayer.whoAmI);
-				packet.Write(this.houseTileX);
-				packet.Write(this.houseTileY);
-				packet.Write(this.houesType);
-				packet.Send(-1, -1);
-				this.houseTileX = -1;
 			}
 		}
 

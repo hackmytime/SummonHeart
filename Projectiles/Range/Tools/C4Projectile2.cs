@@ -10,7 +10,7 @@ using static SummonHeart.Utilities.GlobalMethods;
 
 namespace SummonHeart.Projectiles.Range.Tools
 {
-    public class C4Projectile : ExplosiveProjectile
+    public class C4Projectile2 : ExplosiveProjectile
     {
         //Variables
         protected override string explodeSoundsLoc => "Sounds/Custom/Explosives/C4_";
@@ -70,20 +70,8 @@ namespace SummonHeart.Projectiles.Range.Tools
 
         public override bool OnTileCollide(Vector2 old)
         {
-            // if (!freeze)
-            if (projState == C4State.Airborne)
-            {
-                // freeze = true;
-                projState = C4State.Frozen;
-                positionToFreeze = new Vector2(projectile.position.X, projectile.position.Y);
-                projectile.position.X = positionToFreeze.X;
-                projectile.position.Y = positionToFreeze.Y;
-                projectile.velocity.X = 0;
-                projectile.velocity.Y = 0;
-                //projectile.rotation = 0;
-            }
-
-            return false;
+            projectile.Kill();
+            return true;
         }
 
         public override void PostAI()

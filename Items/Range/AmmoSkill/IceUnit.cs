@@ -28,11 +28,11 @@ namespace SummonHeart.Items.Range.AmmoSkill
         public override void AddRecipes()
         {
             ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(ItemID.IceBlock, 99);
+            recipe.AddIngredient(ItemID.IceBlock, 20);
             recipe.SetResult(this);
             recipe.AddRecipe();
             recipe = new ModRecipe(mod);
-            recipe.AddIngredient(ItemID.SnowBlock, 99);
+            recipe.AddIngredient(ItemID.SnowBlock, 20);
             recipe.SetResult(this);
             recipe.AddRecipe();
         }

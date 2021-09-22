@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using SummonHeart.Utilities;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
@@ -51,7 +52,15 @@ namespace SummonHeart.Items.Accessories
             {
                 CombatText.NewText(player.getRect(), Color.Red, "-500灵魂之力");
                 mp.BBP -= 500;
-                NPC.SpawnOnPlayer(player.whoAmI, NPCID.TravellingMerchant);
+                if (Main.netMode != 1)
+                {
+                    NPC.SpawnOnPlayer(player.whoAmI, NPCID.TravellingMerchant);
+                }
+                else
+                {
+                    MsgUtils.SpanNpcPacket(player.whoAmI, NPCID.TravellingMerchant);
+                    
+                }
             }
             return true;
         }

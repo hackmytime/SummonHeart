@@ -17,6 +17,7 @@ namespace SummonHeart.Items.Range.Loot
             Tooltip.SetDefault("Loot6");
             DisplayName.AddTranslation(GameCulture.Chinese, "王级材料·6级生物材料");
             Tooltip.AddTranslation(GameCulture.Chinese, "用炼金术炼化敌人身躯形成的固态精华" +
+                "\n吞噬+100000灵魂之力" +
                 "\n用炼金术提纯压缩到极致的完美生物之精华，王级血肉精华");
         }
 
@@ -27,6 +28,29 @@ namespace SummonHeart.Items.Range.Loot
             item.rare = -12;
             item.value = Item.sellPrice(9999, 0, 0, 0);
             item.maxStack = 1;
+            item.useTime = 20;
+            item.useStyle = 2;
+            item.UseSound = SoundID.Item4;
+            item.consumable = true;
+        }
+
+        public override bool UseItem(Player player)
+        {
+            SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
+            if (mp.BBP >= 5000000)
+            {
+                player.statLife = 1;
+                CombatText.NewText(player.getRect(), Color.Red, "灵魂之力已满，无法吸收");
+            }
+            else
+            {
+                int addBBP = 100000;
+                CombatText.NewText(player.getRect(), Color.LightGreen, $"+{addBBP}灵魂之力");
+                mp.BBP += addBBP;
+                if (mp.BBP > 5000000)
+                    mp.BBP = 5000000;
+            }
+            return true;
         }
 
         public override void AddRecipes()

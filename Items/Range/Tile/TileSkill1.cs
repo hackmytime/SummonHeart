@@ -70,6 +70,10 @@ namespace SummonHeart.Items.Range.Tile
             recipe.AddIngredient(ItemID.DirtBlock, 100);
             recipe.SetResult(this);
             recipe.AddRecipe();
+            recipe = new ModRecipe(mod);
+            recipe.AddIngredient(ItemID.StoneBlock, 100);
+            recipe.SetResult(this);
+            recipe.AddRecipe();
         }
     }
 }

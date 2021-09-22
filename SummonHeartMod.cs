@@ -5,6 +5,7 @@ using SummonHeart.body;
 using SummonHeart.Extensions;
 using SummonHeart.Items;
 using SummonHeart.Items.Range;
+using SummonHeart.Items.Range.Tools;
 using SummonHeart.Items.Skill.Tools;
 using SummonHeart.ui;
 using SummonHeart.ui.Bar;
@@ -417,7 +418,7 @@ namespace SummonHeart
 			{
 				case 0:
 					{
-						int playernumber = (int)reader.ReadByte();
+						/*int playernumber = (int)reader.ReadByte();
 						int tileX = reader.ReadInt32();
 						int tileY = reader.ReadInt32();
 						int houseType = reader.ReadInt32();
@@ -431,7 +432,7 @@ namespace SummonHeart
 							packet.Write(tileY);
 							packet.Write(houseType);
 							packet.Send(-1, playernumber);
-						}
+						}*/
 					}
 					break;
 
@@ -492,10 +493,19 @@ namespace SummonHeart
 						SummonHeartWorld.StarMultiTime = 60 * 60 * 12;
 					}
 					break;
-
+				case 8:
+					AutoHouseTool.HandleBuilding2(reader.ReadInt32(), reader.ReadInt32(), whoAmI);
+					break;
+				case 9:
+					{
+						NPC.SpawnOnPlayer(reader.ReadInt32(), reader.ReadInt16());
+						NetMessage.SendData(61, -1, -1, null, reader.ReadInt16(), NPCID.TravellingMerchant, 0f, 0f, 0, 0, 0);
+					}
+					break;
 				default:
 					Logger.WarnFormat("MyMod: Unknown Message type: {0}", msgType);
 					break;
+					
 			}
 		}
 

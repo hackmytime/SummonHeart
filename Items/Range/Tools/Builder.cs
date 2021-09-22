@@ -82,14 +82,14 @@ namespace SummonHeart.Items.Skill.Tools
                     new HouseBlock(TileID.Platforms, new ItemCost[] {new ItemCost(ItemID.Wood, 1)}),
                     new HouseBlock(TileID.WorkBenches, new ItemCost[] {new ItemCost(ItemID.Wood, 10)}),
                     new HouseBlock(TileID.Chairs, new ItemCost[] {new ItemCost(ItemID.Wood, 4)}),
-                    new HouseBlock(TileID.Torches, new ItemCost[] { new ItemCost(ItemID.Gel, 1), new ItemCost(ItemID.Wood, 1) }),
+                    new HouseBlock(TileID.Torches, new ItemCost[] { new ItemCost(ItemID.Torch, 1), new ItemCost(ItemID.Wood, 1) }),
                 },
                 new HouseBlock[] {
                     new HouseBlock(TileID.Stone, new ItemCost[] {new ItemCost(ItemID.StoneBlock, 1) }),
                     new HouseBlock(TileID.Platforms, new ItemCost[] {new ItemCost(ItemID.Wood, 1)}),
                     new HouseBlock(TileID.WorkBenches, new ItemCost[] {new ItemCost(ItemID.Wood, 10)}),
                     new HouseBlock(TileID.Chairs, new ItemCost[] {new ItemCost(ItemID.Wood, 4)}),
-                    new HouseBlock(TileID.Torches, new ItemCost[] { new ItemCost(ItemID.Gel, 1), new ItemCost(ItemID.Wood, 1) }),
+                    new HouseBlock(TileID.Torches, new ItemCost[] { new ItemCost(ItemID.Torch, 1), new ItemCost(ItemID.Wood, 1) }),
                 },
             };
 

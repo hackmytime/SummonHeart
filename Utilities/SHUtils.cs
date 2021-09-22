@@ -3,6 +3,8 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
+using System;
+using SummonHeart.Items.Range;
 
 namespace SummonHeart.Utilities
 {
@@ -78,6 +80,85 @@ namespace SummonHeart.Utilities
             }
             return amt;
         }
+
+        public static bool Sponge(Player player, int type)
+        {
+            if (Main.tile[Player.tileTargetX, Player.tileTargetY].liquidType() == type)
+            {
+                int num234 = (int)Main.tile[Player.tileTargetX, Player.tileTargetY].liquidType();
+                int num235 = 0;
+                int num2;
+                for (int num236 = Player.tileTargetX - 1; num236 <= Player.tileTargetX + 1; num236 = num2 + 1)
+                {
+                    for (int num237 = Player.tileTargetY - 1; num237 <= Player.tileTargetY + 1; num237 = num2 + 1)
+                    {
+                        if ((int)Main.tile[num236, num237].liquidType() == num234)
+                        {
+                            num235 += (int)Main.tile[num236, num237].liquid;
+                        }
+                        num2 = num237;
+                    }
+                    num2 = num236;
+                }
+                if (Main.tile[Player.tileTargetX, Player.tileTargetY].liquid > 0 && num235 > 100)
+                {
+                    int liquidType = (int)Main.tile[Player.tileTargetX, Player.tileTargetY].liquidType();
+                   
+                    Main.PlaySound(19, (int)player.position.X, (int)player.position.Y, 1, 1f, 0f);
+                    int num238 = (int)Main.tile[Player.tileTargetX, Player.tileTargetY].liquid;
+                    Main.tile[Player.tileTargetX, Player.tileTargetY].liquid = 0;
+                    Main.tile[Player.tileTargetX, Player.tileTargetY].lava(false);
+                    Main.tile[Player.tileTargetX, Player.tileTargetY].honey(false);
+                    WorldGen.SquareTileFrame(Player.tileTargetX, Player.tileTargetY, false);
+                    if (Main.netMode == 1)
+                    {
+                        NetMessage.sendWater(Player.tileTargetX, Player.tileTargetY);
+                    }
+                    else
+                    {
+                        Liquid.AddWater(Player.tileTargetX, Player.tileTargetY);
+                    }
+                    for (int num239 = Player.tileTargetX - 1; num239 <= Player.tileTargetX + 1; num239 = num2 + 1)
+                    {
+                        for (int num240 = Player.tileTargetY - 1; num240 <= Player.tileTargetY + 1; num240 = num2 + 1)
+                        {
+                            if (num238 < 256 && (int)Main.tile[num239, num240].liquidType() == num234)
+                            {
+                                int num241 = (int)Main.tile[num239, num240].liquid;
+                                if (num241 + num238 > 255)
+                                {
+                                    num241 = 255 - num238;
+                                }
+                                num238 += num241;
+                                Tile tile4 = Main.tile[num239, num240];
+                                Tile tile5 = tile4;
+                                tile5.liquid -= (byte)num241;
+                                Main.tile[num239, num240].liquidType(liquidType);
+                                if (Main.tile[num239, num240].liquid == 0)
+                                {
+                                    Main.tile[num239, num240].lava(false);
+                                    Main.tile[num239, num240].honey(false);
+                                }
+                                WorldGen.SquareTileFrame(num239, num240, false);
+                                if (Main.netMode == 1)
+                                {
+                                    NetMessage.sendWater(num239, num240);
+                                }
+                                else
+                                {
+                                    Liquid.AddWater(num239, num240);
+                                }
+                            }
+                            num2 = num240;
+                        }
+                        num2 = num239;
+                    }
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public static void ownedProjectileKill(this Player player, int type)
         {
             for (int i = 0; i < Main.projectile.Length; i++)
@@ -112,6 +193,27 @@ namespace SummonHeart.Utilities
             int chance = (int)((num - low) * 100);
             if (Main.rand.Next(100) < chance) low++;
             return low;
+        }
+
+        internal static bool PlaceLiquid(Player player, int type)
+        {
+            if (Main.tile[Player.tileTargetX, Player.tileTargetY].active())
+            {
+                return false;
+            }
+            if (Math.Abs(player.position.X / 16f - Player.tileTargetX) > Player.tileRangeX + 20 * 16 || Math.Abs(player.position.Y / 16f - Player.tileTargetY) > Player.tileRangeY + 20 * 16)
+            {
+                return false;
+            }
+            Main.PlaySound(19, (int)player.position.X, (int)player.position.Y, 1, 1f, 0f);
+            Main.tile[Player.tileTargetX, Player.tileTargetY].liquidType(type);
+            Main.tile[Player.tileTargetX, Player.tileTargetY].liquid = byte.MaxValue;
+            WorldGen.SquareTileFrame(Player.tileTargetX, Player.tileTargetY, true);
+            if (Main.netMode == 1)
+            {
+                NetMessage.sendWater(Player.tileTargetX, Player.tileTargetY);
+            }
+            return true;
         }
     }
 }
