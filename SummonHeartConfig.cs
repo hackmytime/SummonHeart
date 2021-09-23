@@ -12,6 +12,10 @@ namespace SummonHeart
         [DefaultValue(false)]
         [Label("炼体特效")]
         public bool EffectVisualConfig;
+        
+        [DefaultValue(false)]
+        [Label("钓鱼是否钓额外物品")]
+        public bool FishOtherItem;
 
         [Label("魔神之手攻击范围倍率")]
         [Range(0, 1f)]

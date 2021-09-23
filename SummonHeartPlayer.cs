@@ -1828,25 +1828,28 @@ namespace SummonHeart
 
 		public override void CatchFish(Item fishingRod, Item bait, int power, int liquidType, int poolSize, int worldLayer, int questFish, ref int caughtType, ref bool junk)
 		{
-			if (Main.rand.Next(100) <= 5)
+            if (SummonHeartConfig.Instance.FishOtherItem)
             {
-				int itemID = 0;
-				bool itemChosen = false;
-				while (!itemChosen)
+				if (Main.rand.Next(100) <= 5)
 				{
-					itemID = Main.rand.Next(ItemLoader.ItemCount);
-					Item item = new Item();
-					item.SetDefaults(itemID, false);
-					int rarity = item.rare;
-                    int finshLevel = this.getFishLevel();
-					int curRarity = finshLevel / 20;
-					if (rarity == curRarity)
+					int itemID = 0;
+					bool itemChosen = false;
+					while (!itemChosen)
 					{
-						itemChosen = true;
+						itemID = Main.rand.Next(ItemLoader.ItemCount);
+						Item item = new Item();
+						item.SetDefaults(itemID, false);
+						int rarity = item.rare;
+						int finshLevel = this.getFishLevel();
+						int curRarity = finshLevel / 20;
+						if (rarity == curRarity)
+						{
+							itemChosen = true;
+						}
 					}
+					caughtType = itemID;
 				}
-				caughtType = itemID;
-			}
+            }
 		}
 
 		public IDictionary<int, bool> infiniBuffDic = new Dictionary<int, bool>();

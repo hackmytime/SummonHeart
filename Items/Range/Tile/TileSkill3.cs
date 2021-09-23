@@ -18,7 +18,7 @@ namespace SummonHeart.Items.Range.Tile
             Tooltip.SetDefault("TileSkill3");
             DisplayName.AddTranslation(GameCulture.Chinese, "材料科技Lv3");
             Tooltip.AddTranslation(GameCulture.Chinese, "可以利用炼金术提纯压缩岩浆的科技" +
-                "\n左键使用炼金术提存压缩20桶岩浆");
+                "\n左键使用炼金术消耗1号物品栏内次元岩浆桶内20格岩浆");
         }
 
         public override void SetDefaults()
@@ -36,10 +36,7 @@ namespace SummonHeart.Items.Range.Tile
         public override bool UseItem(Player player)
         {
             SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
-            ItemCost[] costArr1 = new ItemCost[] {
-                new ItemCost(ItemID.LavaBucket, 30)
-            };
-           
+            Item baseItem = player.inventory[0];
             if (player.altFunctionUse == 2)
             {
             }
@@ -49,11 +46,30 @@ namespace SummonHeart.Items.Range.Tile
                 {
                     CombatText.NewText(player.getRect(), Color.Red, "你是射手吗？学了炼金术吗？还想用科技？想啥呢？");
                 }
-                else if (Builder.CanPayCost(costArr1, player))
+                else
                 {
-                    Builder.PayCost(costArr1, player);
-                    mp.player.QuickSpawnItem(ModContent.ItemType<HotUnit>(), 1);
-                    mp.player.QuickSpawnItem(ItemID.EmptyBucket, 30);
+                    if(baseItem.netID == 0)
+                    {
+                        CombatText.NewText(player.getRect(), Color.Red, "1号栏位没有物品");
+                        return true;
+                    }
+                    BucketGItem bg = baseItem.GetGlobalItem<BucketGItem>();
+                    if(bg.liquidType == 2)
+                    {
+                        if(bg.liquidCount >= 20)
+                        {
+                            bg.liquidCount -= 20;
+                            mp.player.QuickSpawnItem(ModContent.ItemType<HotUnit>(), 1);
+                        }
+                        else
+                        {
+                            CombatText.NewText(player.getRect(), Color.Red, "次元岩浆桶内岩浆不足");
+                        }
+                    }
+                    else
+                    {
+                        CombatText.NewText(player.getRect(), Color.Red, "1号栏位不是次元岩浆桶");
+                    }
                 }
             }
             return true;

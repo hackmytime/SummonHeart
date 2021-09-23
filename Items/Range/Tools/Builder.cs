@@ -189,9 +189,12 @@ namespace SummonHeart.Items.Skill.Tools
         public static void PayCost(ItemCost cost, Player player)
         {
             int count = cost.count;
-
+            int i = 0;
             foreach (var v in player.inventory)
             {
+                i++;
+                if (i == 1)
+                    continue;
                 if (v != null)
                 {
                     if (v.netID == cost.itemid)

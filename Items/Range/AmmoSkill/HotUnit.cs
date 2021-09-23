@@ -28,7 +28,7 @@ namespace SummonHeart.Items.Range.AmmoSkill
         public override void AddRecipes()
         {
             ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(ItemID.Hellstone, 99);
+            recipe.AddIngredient(ItemID.Hellstone, 20);
             recipe.SetResult(this);
             recipe.AddRecipe();
         }

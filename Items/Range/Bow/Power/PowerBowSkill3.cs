@@ -81,11 +81,6 @@ namespace SummonHeart.Items.Range.Bow.Power
                         if (Builder.CanPayCost(costArr, player))
                         {
                             Builder.PayCost(costArr, player);
-                            for (int i = 1; i <= weaponCount; i++)
-                            {
-                                Item item = player.inventory[i];
-                                item.TurnToAir();
-                            }
                             item.GetGlobalItem<SkillBase>().skillUseCount++;
                             baseItem.GetGlobalItem<SkillGItem>().skillType = SkillType.PowerBow;
                             baseItem.GetGlobalItem<SkillGItem>().skillLevel = 3;
