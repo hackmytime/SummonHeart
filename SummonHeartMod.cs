@@ -502,6 +502,16 @@ namespace SummonHeart
 						NetMessage.SendData(61, -1, -1, null, reader.ReadInt16(), NPCID.TravellingMerchant, 0f, 0f, 0, 0, 0);
 					}
 					break;
+				case 10:
+					{
+						if (Main.netMode == NetmodeID.MultiplayerClient)
+                        {
+							byte playernumber = reader.ReadByte();
+							SummonHeartPlayer modPlayer = Main.player[playernumber].GetModPlayer<SummonHeartPlayer>();
+							modPlayer.detonate = true;
+                        }
+					}
+					break;
 				default:
 					Logger.WarnFormat("MyMod: Unknown Message type: {0}", msgType);
 					break;

@@ -16,7 +16,7 @@ namespace SummonHeart.Items.Range.Bow
             DisplayName.SetDefault("MultiBowSkill");
             Tooltip.SetDefault("MultiBowSkill");
             DisplayName.AddTranslation(GameCulture.Chinese, "核心科技·弓弩组合科技Lv1");
-            Tooltip.AddTranslation(GameCulture.Chinese, "前2号物品栏放置2把同类型的弓，左键使用消耗1个能量核心Lv1组合2把弓");
+            Tooltip.AddTranslation(GameCulture.Chinese, "以1号物品栏武器为基准，左键使用消耗1个能量核心Lv1组合2把弓");
         }
 
         public override void SetDefaults()
@@ -60,15 +60,9 @@ namespace SummonHeart.Items.Range.Bow
                 Item baseItem = player.inventory[0];
                 bool hasWeapon = true;
                 int weaponCount = 1;
-                for (int i = 1; i <= weaponCount; i++)
-                {
-                    Item item = player.inventory[i];
-                    if (item.type != baseItem.type)
-                        hasWeapon = false;
-                }
                 ItemCost[] costArr = new ItemCost[] {
-                new ItemCost(
-                    ModContent.ItemType<Power1>(), 1)
+                    new ItemCost(ModContent.ItemType<Power1>(), 1),
+                    new ItemCost(baseItem.type, weaponCount)
                 };
                 if (mp.PlayerClass != 7)
                 {

@@ -1208,6 +1208,8 @@ namespace SummonHeart
 			if (SummonHeartMod.TriggerExplosion.JustReleased)
 			{
 				this.detonate = true;
+				if (Main.netMode == NetmodeID.SinglePlayer)
+					MsgUtils.BombPacket(player.whoAmI);
 			}
 			else
 			{

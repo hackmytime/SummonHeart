@@ -16,7 +16,7 @@ namespace SummonHeart.Items.Range.Gun.Power
             Tooltip.SetDefault("PowerGunSkill2");
             DisplayName.AddTranslation(GameCulture.Chinese, "核心科技·枪械强化Lv2");
             Tooltip.AddTranslation(GameCulture.Chinese, "炼化压缩融合5把，伤害提升25倍，暴击几率+100%，" +
-                "\n前5号物品栏放满同类型的枪，左键使用消耗能量核心Lv2进行炼化压缩融合");
+               "\n以1号物品栏内的武器为基准，左键使用消耗能量核心Lv1进行炼化压缩融合");
         }
 
         public override void SetDefaults()
@@ -59,16 +59,10 @@ namespace SummonHeart.Items.Range.Gun.Power
             {
                 Item baseItem = player.inventory[0];
                 bool hasWeapon = true;
-                int weaponCount = 5;
-                for (int i = 1; i <= weaponCount; i++)
-                {
-                    Item item = player.inventory[i - 1];
-                    if (item.type != baseItem.type)
-                        hasWeapon = false;
-                }
+                int weaponCount = 4;
                 ItemCost[] costArr = new ItemCost[] {
-                new ItemCost(
-                    ModContent.ItemType<Power2>(), 1)
+                    new ItemCost(ModContent.ItemType<Power2>(), 1),
+                    new ItemCost(baseItem.type, weaponCount)
                 };
                 if (mp.PlayerClass != 7)
                 {

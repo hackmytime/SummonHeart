@@ -45,5 +45,13 @@ namespace SummonHeart.Utilities
             packet.Write(travellingMerchant);
             packet.Send();
         }
+
+        internal static void BombPacket(int whoAmI)
+        {
+            ModPacket packet = SummonHeartMod.Instance.GetPacket();
+            packet.Write((byte)10);
+            packet.Write((byte)whoAmI);
+            packet.Send(-1, -1);
+        }
     }
 }

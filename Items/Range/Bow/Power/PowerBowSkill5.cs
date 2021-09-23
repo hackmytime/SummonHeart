@@ -17,7 +17,7 @@ namespace SummonHeart.Items.Range.Bow.Power
             DisplayName.AddTranslation(GameCulture.Chinese, "核心科技·弓弩强化Lv5");
             Tooltip.AddTranslation(GameCulture.Chinese, "炼化压缩融合8把，蓄力上限900，蓄力速度，1帧5层" +
                 "\n每1层蓄力伤害提升0.2倍，暴击几率+1%，每1层蓄力消耗5点能量" +
-                "\n前8号物品栏放满同类型的弓弩，左键使用消耗能量核心Lv5进行炼化压缩融合");
+                 "\n以1号物品栏的弓弩为基准，左键使用消耗能量核心Lv1进行炼化压缩融合");
         }
 
         public override void SetDefaults()
@@ -60,16 +60,10 @@ namespace SummonHeart.Items.Range.Bow.Power
             {
                 Item baseItem = player.inventory[0];
                 bool hasWeapon = true;
-                int weaponCount = 8;
-                for (int i = 1; i <= weaponCount; i++)
-                {
-                    Item item = player.inventory[i - 1];
-                    if (item.type != baseItem.type)
-                        hasWeapon = false;
-                }
+                int weaponCount = 7;
                 ItemCost[] costArr = new ItemCost[] {
-                new ItemCost(
-                    ModContent.ItemType<Power5>(), 1)
+                    new ItemCost(ModContent.ItemType<Power5>(), 1),
+                    new ItemCost(baseItem.type, weaponCount)
                 };
                 if (mp.PlayerClass != 7)
                 {

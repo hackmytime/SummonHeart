@@ -270,6 +270,9 @@ namespace SummonHeart.Extensions
 				}
 				//处理贪婪词缀增加
 				addExp = (int)(addExp * modPlayer.manaExp);
+				//处理魔崽子特殊奖励
+				if (modPlayer.DropOresTwice && modPlayer.PlayerClass == 7)
+					addExp *= 2;
 				modPlayer.BBP += addExp;
 				if (modPlayer.BBP > 5000000)
 					modPlayer.BBP = 5000000;

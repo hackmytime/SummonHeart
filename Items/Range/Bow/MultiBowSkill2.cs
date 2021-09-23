@@ -16,7 +16,7 @@ namespace SummonHeart.Items.Range.Bow
             DisplayName.SetDefault("SoulCrystal");
             Tooltip.SetDefault("DemonLure, Consume 500 soul power and transfer it to the random treasure chest\n");
             DisplayName.AddTranslation(GameCulture.Chinese, "核心科技·弓弩组合科技Lv2");
-            Tooltip.AddTranslation(GameCulture.Chinese, "前3号物品栏放置3把同类型的弓，左键使用消耗1个能量核心Lv2组合3把弓");
+            Tooltip.AddTranslation(GameCulture.Chinese, "以1号物品栏武器为基准，左键使用消耗1个能量核心Lv2组合3把弓");
         }
 
         public override void SetDefaults()
@@ -60,15 +60,9 @@ namespace SummonHeart.Items.Range.Bow
                 Item baseItem = player.inventory[0];
                 bool hasWeapon = true;
                 int weaponCount = 2;
-                for (int i = 1; i <= weaponCount; i++)
-                {
-                    Item item = player.inventory[i];
-                    if (item.type != baseItem.type)
-                        hasWeapon = false;
-                }
                 ItemCost[] costArr = new ItemCost[] {
-                new ItemCost(
-                    ModContent.ItemType<Power2>(), 1)
+                    new ItemCost(ModContent.ItemType<Power2>(), 1),
+                    new ItemCost(baseItem.type, weaponCount)
                 };
                 if (mp.PlayerClass != 7)
                 {
