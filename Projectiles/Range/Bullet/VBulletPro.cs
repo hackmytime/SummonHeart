@@ -20,6 +20,10 @@ namespace SummonHeart.Projectiles.Range.Bullet
             projectile.penetrate = 8;
             projectile.light = 1f;
             projectile.timeLeft = 600;
+            projectile.tileCollide = false;
+            projectile.ignoreWater = true;
+            projectile.usesLocalNPCImmunity = true;
+            projectile.localNPCHitCooldown = 0;
             projectile.extraUpdates = 1;
         }
 

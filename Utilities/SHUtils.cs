@@ -81,16 +81,16 @@ namespace SummonHeart.Utilities
             return amt;
         }
 
-        public static bool Sponge(Player player, int type)
+        public static bool Sponge(Player player, int tileTargetX, int tileTargetY, int type)
         {
-            if (Main.tile[Player.tileTargetX, Player.tileTargetY].liquidType() == type)
+            if (Main.tile[tileTargetX, tileTargetY].liquidType() == type)
             {
-                int num234 = (int)Main.tile[Player.tileTargetX, Player.tileTargetY].liquidType();
+                int num234 = (int)Main.tile[tileTargetX, tileTargetY].liquidType();
                 int num235 = 0;
                 int num2;
-                for (int num236 = Player.tileTargetX - 1; num236 <= Player.tileTargetX + 1; num236 = num2 + 1)
+                for (int num236 = tileTargetX - 1; num236 <= tileTargetX + 1; num236 = num2 + 1)
                 {
-                    for (int num237 = Player.tileTargetY - 1; num237 <= Player.tileTargetY + 1; num237 = num2 + 1)
+                    for (int num237 = tileTargetY - 1; num237 <= tileTargetY + 1; num237 = num2 + 1)
                     {
                         if ((int)Main.tile[num236, num237].liquidType() == num234)
                         {
@@ -100,27 +100,27 @@ namespace SummonHeart.Utilities
                     }
                     num2 = num236;
                 }
-                if (Main.tile[Player.tileTargetX, Player.tileTargetY].liquid > 0 && num235 > 100)
+                if (Main.tile[tileTargetX, tileTargetY].liquid > 0 && num235 > 100)
                 {
-                    int liquidType = (int)Main.tile[Player.tileTargetX, Player.tileTargetY].liquidType();
+                    int liquidType = (int)Main.tile[tileTargetX, tileTargetY].liquidType();
                    
                     Main.PlaySound(19, (int)player.position.X, (int)player.position.Y, 1, 1f, 0f);
-                    int num238 = (int)Main.tile[Player.tileTargetX, Player.tileTargetY].liquid;
-                    Main.tile[Player.tileTargetX, Player.tileTargetY].liquid = 0;
-                    Main.tile[Player.tileTargetX, Player.tileTargetY].lava(false);
-                    Main.tile[Player.tileTargetX, Player.tileTargetY].honey(false);
-                    WorldGen.SquareTileFrame(Player.tileTargetX, Player.tileTargetY, false);
+                    int num238 = (int)Main.tile[tileTargetX, tileTargetY].liquid;
+                    Main.tile[tileTargetX, tileTargetY].liquid = 0;
+                    Main.tile[tileTargetX, tileTargetY].lava(false);
+                    Main.tile[tileTargetX, tileTargetY].honey(false);
+                    WorldGen.SquareTileFrame(tileTargetX, tileTargetY, false);
                     if (Main.netMode == 1)
                     {
-                        NetMessage.sendWater(Player.tileTargetX, Player.tileTargetY);
+                        NetMessage.sendWater(tileTargetX, tileTargetY);
                     }
                     else
                     {
-                        Liquid.AddWater(Player.tileTargetX, Player.tileTargetY);
+                        Liquid.AddWater(tileTargetX, tileTargetY);
                     }
-                    for (int num239 = Player.tileTargetX - 1; num239 <= Player.tileTargetX + 1; num239 = num2 + 1)
+                    for (int num239 = tileTargetX - 1; num239 <= tileTargetX + 1; num239 = num2 + 1)
                     {
-                        for (int num240 = Player.tileTargetY - 1; num240 <= Player.tileTargetY + 1; num240 = num2 + 1)
+                        for (int num240 = tileTargetY - 1; num240 <= tileTargetY + 1; num240 = num2 + 1)
                         {
                             if (num238 < 256 && (int)Main.tile[num239, num240].liquidType() == num234)
                             {

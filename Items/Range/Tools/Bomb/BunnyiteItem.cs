@@ -37,7 +37,7 @@ namespace SummonHeart.Items.Range.Tools.Bomb
         public override void AddRecipes()
         {
             ModRecipe modRecipe = new ModRecipe(mod);
-            modRecipe.AddIngredient(ModContent.ItemType<C4Item>(), 1);
+            modRecipe.AddIngredient(ItemID.Dynamite, 30);
             modRecipe.AddIngredient(ItemID.Bunny, 10);
             modRecipe.SetResult(this);
             modRecipe.AddRecipe();

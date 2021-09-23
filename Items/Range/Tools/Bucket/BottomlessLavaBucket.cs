@@ -11,7 +11,8 @@ namespace SummonHeart.Items.Range.Tools.Bucket
             Tooltip.SetDefault("+2 range\nContains an endless amount of lava");
             DisplayName.AddTranslation(GameCulture.Chinese, "科技造物·次元岩浆桶");
             Tooltip.AddTranslation(GameCulture.Chinese, "左键装岩浆，右键放岩浆" +
-                "\n范围+20" +
+                "\n范围+25" +
+                "\n1次可装25格液体" +
                 "\n容量9999格");
         }
 

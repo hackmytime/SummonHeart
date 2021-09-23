@@ -59,10 +59,19 @@ namespace SummonHeart.Items.Range
                     {
                         return false;
                     }
-                    if(SHUtils.Sponge(player, liquidType - 1))
+                    //1次吸9格
+                    int tileTargetX = Player.tileTargetX;
+                    int tileTargetY = Player.tileTargetY;
+                    for (int i = -2; i <= 2; i++)
                     {
-                        liquidCount++;
-                        CombatText.NewText(player.getRect(), Color.LightGreen, $"+1储存量");
+                        for (int j = -2; j <= 2; j++)
+                        {
+                            if (SHUtils.Sponge(player, tileTargetX + i, tileTargetY + j, liquidType - 1))
+                            {
+                                liquidCount++;
+                                CombatText.NewText(player.getRect(), Color.LightGreen, $"+1储存量");
+                            }
+                        }
                     }
                 }
                 return true;

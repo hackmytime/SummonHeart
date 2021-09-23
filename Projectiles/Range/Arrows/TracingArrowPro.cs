@@ -25,7 +25,7 @@ namespace SummonHeart.Projectiles.Range.Arrows
             projectile.penetrate = 8;
             projectile.aiStyle = 1;
             projectile.usesLocalNPCImmunity = true;
-            projectile.localNPCHitCooldown = 1;
+            projectile.localNPCHitCooldown = 0;
             aiType = 14;
         }
 

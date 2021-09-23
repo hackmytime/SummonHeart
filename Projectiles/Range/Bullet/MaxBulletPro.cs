@@ -23,7 +23,7 @@ namespace SummonHeart.Projectiles.Range.Bullet
             projectile.tileCollide = false;
             projectile.ignoreWater = true;
             projectile.usesLocalNPCImmunity = true;
-            projectile.localNPCHitCooldown = 1;
+            projectile.localNPCHitCooldown = 0;
             projectile.extraUpdates = 1;
         }
 
