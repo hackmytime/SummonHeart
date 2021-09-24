@@ -16,7 +16,7 @@ namespace SummonHeart.Items.Range.Bow.Power
             Tooltip.SetDefault("PowerBowSkill4");
             DisplayName.AddTranslation(GameCulture.Chinese, "核心科技·弓弩强化Lv4");
             Tooltip.AddTranslation(GameCulture.Chinese, "炼化压缩融合7把，蓄力上限800，蓄力速度，1帧4层" +
-                "\n每1层蓄力伤害提升0.2倍，暴击几率+1%，每1层蓄力消耗4点能量" +
+                "\n每1层蓄力伤害提升0.2倍+10伤害，暴击几率+1%，每1层蓄力消耗4点能量" +
                  "\n以1号物品栏的弓弩为基准，左键使用消耗能量核心Lv1进行炼化压缩融合");
         }
 

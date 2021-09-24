@@ -56,6 +56,7 @@ namespace SummonHeart.Items.Range
             {
                 SummonHeartPlayer mp = Main.LocalPlayer.GetModPlayer<SummonHeartPlayer>();
                 heartAdd += mp.bowCharge * 0.2f;
+                flat += mp.bowCharge * 10;
             }
             add = heartAdd * baseAdd;
             base.ModifyWeaponDamage(item, player, ref add, ref mult, ref flat);
@@ -102,7 +103,7 @@ namespace SummonHeart.Items.Range
                 float bowChargeMax = mp.bowChargeMax;
                 int weaponDamage = player.GetWeaponDamage(item);
                 mp.bowChargeAttack = weaponDamage;
-                if (player.channel)
+                if (player.channel && mp.bowCharge < SummonHeartConfig.Instance.bowChargeMax)
                 {
                     item.useTime = 0;
                     item.useAnimation = 0;

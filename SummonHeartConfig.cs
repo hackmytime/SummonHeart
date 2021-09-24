@@ -23,6 +23,13 @@ namespace SummonHeart
         [Slider]
         public float handMultiplier;
 
+        [Label("强化弓自定义攻击蓄力层数")]
+        [Increment(1)]
+        [Range(100, 1000)]
+        [DefaultValue(100)]
+        [Slider]
+        public int bowChargeMax;
+
         [Label("自定义额外饰品栏X坐标偏移量")]
         [Increment(1)]
         [Range(-1000, 1000)]
