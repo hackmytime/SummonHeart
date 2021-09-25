@@ -34,7 +34,6 @@ namespace SummonHeart
 
         public override void PostUpdate()
         {
-            
             if (Main.anglerQuestFinished)
             {
                 Main.AnglerQuestSwap();

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using SummonHeart.Effects.Animations.Aura;
 using SummonHeart.Extensions;
+using SummonHeart.Items.Material;
 using SummonHeart.Items.Range;
 using SummonHeart.Items.Weapons.Magic;
 using SummonHeart.Models;
