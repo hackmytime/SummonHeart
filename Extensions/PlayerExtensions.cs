@@ -478,6 +478,7 @@ namespace SummonHeart.Extensions
 			return false;
 		}
 
+		
 		public static bool CheckItemsFromOtherMods(this Player player)
 		{
 			foreach (Item item in player.inventory)

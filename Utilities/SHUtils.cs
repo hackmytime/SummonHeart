@@ -52,7 +52,32 @@ namespace SummonHeart.Utilities
                 return false;
             }
         }
-       
+
+        public static bool AnyPlayerAlive()
+		{
+			for (int k = 0; k < 255; k++)
+			{
+				Player player = Main.player[k];
+				if (!player.dead && player.active && player.statLife > 0)
+				{
+					return true;
+				}
+			}
+			return false;
+		} 
+        public static void KillAnyBoss()
+		{
+            for (int i = 0; i < Main.npc.Length; i++)
+            {
+                NPC npc = Main.npc[i];
+                if (npc.active && npc.boss)
+                {
+                    npc.active = false;
+                    npc.netUpdate = true;
+                }
+            }
+        }
+
         public static void DoAVisualBuff(this Player player, int type, int time = 0)
         {
             player.ClearBuff(type);

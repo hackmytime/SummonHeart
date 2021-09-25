@@ -278,6 +278,8 @@ namespace SummonHeart
 				player.respawnTimer = 120;
 			}
 
+			
+
 			if (player.HasItemInAcc(mod.ItemType("MysteriousCrystal")) != -1)
 			{
 				player.UpdateCoins();

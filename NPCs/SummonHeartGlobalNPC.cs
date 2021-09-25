@@ -7,6 +7,7 @@ using System;
 using Terraria;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace SummonHeart.NPCs
@@ -23,6 +24,7 @@ namespace SummonHeart.NPCs
 
 		public int soulSplitCount = 0;
 		public int extraUpdate = 0;
+		public bool isBack = false;
 
 		public override void SetDefaults(NPC npc)
 		{
@@ -68,6 +70,26 @@ namespace SummonHeart.NPCs
         {
 			if(SummonHeartWorld.GoddessMode)
 				extraUpdate = SHUtils.TransFloatToInt(0.33f);
+        }
+
+        public override bool CheckActive(NPC npc)
+        {
+			if (npc.boss && !SHUtils.AnyPlayerAlive() && !isBack)
+			{
+				Vector2 vector = Vector2.Zero;
+				npc.Teleport(vector, 0, 0);
+				isBack = true;
+				string text = "检测到已经清除全部魔神之子，允许所有作战单位传送回归。";
+				if (Main.netMode == NetmodeID.SinglePlayer)
+				{
+					Main.NewText(text, new Color(175, 75, 255));
+				}
+				if (Main.netMode == NetmodeID.Server)
+				{
+					NetMessage.BroadcastChatMessage(NetworkText.FromLiteral(text), new Color(175, 75, 255));
+				}
+			}
+			return base.CheckActive(npc);
         }
 
         public void SyncPlayerNpcVar(Player player, NPC npc)
