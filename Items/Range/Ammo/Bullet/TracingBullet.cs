@@ -33,14 +33,9 @@ namespace SummonHeart.Items.Range.Ammo.Bullet
         public override void AddRecipes()
         {
             ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(ItemID.MusketBall, 500);
+            recipe.AddIngredient(mod.GetItem("MetalUnit"), 1);
             recipe.AddIngredient(mod.GetItem("TracingUnit"), 1);
             recipe.SetResult(this, 500);
-            recipe.AddRecipe();
-            recipe = new ModRecipe(mod);
-            recipe.AddIngredient(ItemID.MusketBall, 9999);
-            recipe.AddIngredient(mod.GetItem("Loot4"), 1);
-            recipe.SetResult(this, 9999);
             recipe.AddRecipe();
         }
     }

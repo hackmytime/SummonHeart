@@ -14,7 +14,7 @@ namespace SummonHeart.Items.Range.Bow
         {
             DisplayName.SetDefault("MultiBowSkill4");
             Tooltip.SetDefault("MultiBowSkill4");
-            DisplayName.AddTranslation(GameCulture.Chinese, "核心科技·弓弩组合科技Lv4");
+            DisplayName.AddTranslation(GameCulture.Chinese, "核心科技·弓弩阵列科技Lv4");
             Tooltip.AddTranslation(GameCulture.Chinese, "以1号物品栏武器为基准，左键使用消耗1个能量核心Lv4组合5把弓");
         }
 
@@ -61,7 +61,7 @@ namespace SummonHeart.Items.Range.Bow
                 int weaponCount = 3;
                 ItemCost[] costArr = new ItemCost[] {
                     new ItemCost(ModContent.ItemType<Power4>(), 1),
-                    new ItemCost(baseItem.type, weaponCount)
+                    new ItemCost(baseItem.type, weaponCount + 1)
                 };
                 if (mp.PlayerClass != 7)
                 {

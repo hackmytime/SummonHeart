@@ -62,7 +62,7 @@ namespace SummonHeart.Items.Range.Gun.Power
                 int weaponCount = 3;
                 ItemCost[] costArr = new ItemCost[] {
                     new ItemCost(ModContent.ItemType<Power1>(), 1),
-                    new ItemCost(baseItem.type, weaponCount)
+                    new ItemCost(baseItem.type, weaponCount + 1)
                 };
                 if (mp.PlayerClass != 7)
                 {

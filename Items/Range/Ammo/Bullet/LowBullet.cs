@@ -20,7 +20,7 @@ namespace SummonHeart.Items.Range.Ammo.Bullet
             item.ranged = true;
             item.width = 12;
             item.height = 16;
-            item.maxStack = 6;
+            item.maxStack = 999;
             item.consumable = true;
             item.knockBack = 1.5f;
             item.value = Item.sellPrice(1, 0, 0, 0);

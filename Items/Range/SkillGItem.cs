@@ -40,6 +40,10 @@ namespace SummonHeart.Items.Range
         {
             if (item.ranged && skillType == SkillType.MultiGun && item.useAmmo == AmmoID.Bullet)
             {
+                return 0.33f;
+            }
+            if (item.ranged && skillType == SkillType.MultiBow && item.useAmmo == AmmoID.Arrow)
+            {
                 return 0.5f;
             }
             return base.UseTimeMultiplier(item, player);
@@ -299,9 +303,9 @@ namespace SummonHeart.Items.Range
                     string costPower = "";
                     if (skillType == SkillType.MultiBow)
                     {
-                        str = "组合弓弩Lv" + skillLevel;
-                        desp = "组合弓弩数 " + (skillLevel + 1) + "把";
-                        costAmmo = "消耗弓箭数 " + (skillLevel + 1) + "支";
+                        str = "弓弩阵列Lv" + skillLevel;
+                        desp = "额外箭矢数 " + (skillLevel) + "把";
+                        costAmmo = "攻击波数 " + (skillLevel) + "波";
                         power = "能量 " + curPower + "/" + powerMax;
                         costPower = "消耗能量数 " + (5 * (skillLevel + 1));
                     }
@@ -328,9 +332,9 @@ namespace SummonHeart.Items.Range
                     string costPower = "";
                     if (skillType == SkillType.MultiGun)
                     {
-                        str = "组合散弹枪Lv" + skillLevel;
-                        desp = "额外射弹量 " + (skillLevel * 2 + 6) + "发";
-                        costAmmo = "耗弹量 2发";
+                        str = "枪械阵列Lv" + skillLevel;
+                        desp = "额外射弹量 " + (skillLevel + 2) + "发";
+                        costAmmo = "攻击波数 " + skillLevel + "波";
                         power = "当前能量 " + curPower + "/" + powerMax;
                         costPower = "消耗能量 " + (5 * (skillLevel + 1));
                     }
@@ -430,19 +434,29 @@ namespace SummonHeart.Items.Range
                 speedY *= 1.25f;
                 {
                     int maxPro = skillLevel + 1;
-                    for (int i = 2; i <= maxPro; i++)
+                    int shootCount = skillLevel;
+                    for (int j = 0; j < shootCount; j++)
                     {
-                        int param = i / 2;
-                        if (i % 2 == 0)
+                        Vector2 baseV = new Vector2(speedX, speedY);
+                        Vector2 newPos = position;
+                        newPos.X += baseV.X * 30 * 0.1f * j;
+                        newPos.Y += baseV.Y * 30 * 0.1f * j;
+                        //Projectile.NewProjectile(newPos.X, newPos.Y, velocity.X, velocity.Y, type, damage, knockBack, player.whoAmI);
+                        for (int i = 1; i <= maxPro; i++)
                         {
-                            param *= -1;
+                            int param = i / 2;
+                            if (i % 2 == 0)
+                            {
+                                param *= -1;
+                            }
+                            Vector2 velocity = new Vector2(speedX, speedY).RotatedBy(MathHelper.Pi / 2);
+                            velocity.Normalize();
+                            velocity *= 10 * param;
+                            Projectile.NewProjectile(newPos.X + velocity.X, newPos.Y + velocity.Y, speedX, speedY, type, damage, knockBack, player.whoAmI);
+                            //Projectile.NewProjectile(player.position, Vector2.Zero, mod.ProjectileType("MultiBowPro"), 0, 0f, player.whoAmI);
                         }
-                        Vector2 velocity = new Vector2(speedX, speedY).RotatedBy(MathHelper.Pi / 2);
-                        velocity.Normalize();
-                        velocity *= 10 * param;
-                        Projectile.NewProjectile(position.X + velocity.X, position.Y + velocity.Y, speedX, speedY, type, damage, knockBack, player.whoAmI);
-                        //Projectile.NewProjectile(player.position, Vector2.Zero, mod.ProjectileType("MultiBowPro"), 0, 0f, player.whoAmI);
                     }
+                    
                   
                     //计算能量消耗
                     curPower -= 5 * (skillLevel + 1);
@@ -456,49 +470,38 @@ namespace SummonHeart.Items.Range
                     {
                         curPower = 0;
                     }
-                    //return false;
+                    return false;
                 }
             }
             else if (item.ranged && skillType == SkillType.MultiGun && item.useAmmo == AmmoID.Bullet)
             {
-                /*speedX *= 1.25f;
-                speedY *= 1.25f;*/
+                int numberProjectiles = skillLevel + 2;
+                int shootCount = skillLevel;
+                for (int i = 0; i < numberProjectiles; i++)
                 {
-                    /*int maxPro = skillLevel + 1;
-                    for (int i = 2; i <= maxPro; i++)
+                    Vector2 perturbedSpeed = Utils.RotatedByRandom(new Vector2(speedX, speedY), (double)MathHelper.ToRadians(10f));
+                    for (int j = 0; j < shootCount; j++)
                     {
-                        int param = i / 2;
-                        if (i % 2 == 0)
-                        {
-                            param *= -1;
-                        }
-                        Vector2 velocity = new Vector2(speedX, speedY).RotatedBy(MathHelper.Pi / 2);
-                        velocity.Normalize();
-                        velocity *= 10 * param;
-                        Projectile.NewProjectile(position.X + velocity.X, position.Y + velocity.Y, speedX, speedY, type, damage, knockBack, player.whoAmI);
-                        //Projectile.NewProjectile(player.position, Vector2.Zero, mod.ProjectileType("MultiBowPro"), 0, 0f, player.whoAmI);
+                        Vector2 velocity = perturbedSpeed;
+                        Vector2 newPos = position;
+                        newPos.X += velocity.X * 60 * 0.1f * j;
+                        newPos.Y += velocity.Y * 60 * 0.1f * j;
+                        Projectile.NewProjectile(newPos.X, newPos.Y, velocity.X, velocity.Y, type, damage, knockBack, player.whoAmI);
                     }
-*/
-                    int numberProjectiles = skillLevel * 2 + 6;
-                    for (int i = 0; i < numberProjectiles; i++)
-                    {
-                        Vector2 perturbedSpeed = Utils.RotatedByRandom(new Vector2(speedX, speedY), (double)MathHelper.ToRadians(10f));
-                        Projectile.NewProjectile(position.X, position.Y, perturbedSpeed.X, perturbedSpeed.Y, type, damage, knockBack, player.whoAmI, 0f, 0f);
-                    }
+                    //Projectile.NewProjectile(position.X, position.Y, perturbedSpeed.X, perturbedSpeed.Y, type, damage, knockBack, player.whoAmI, 0f, 0f);
+                }
 
-                    //计算能量消耗
-                    curPower -= 5 * (skillLevel + 1);
-                    player.CostItem(item.useAmmo, skillLevel);
-                    if (curPower <= 0 && skillLevel < 6)
-                    {
-                        CombatText.NewText(player.getRect(), Color.Red, "能量耗尽，武器已损坏");
-                        item.TurnToAir();
-                    }
-                    if(curPower <= 0)
-                    {
-                        curPower = 0;
-                    }
-                    //return false;
+                //计算能量消耗
+                curPower -= 5 * (skillLevel + 1);
+                player.CostItem(item.useAmmo, skillLevel);
+                if (curPower <= 0 && skillLevel < 6)
+                {
+                    CombatText.NewText(player.getRect(), Color.Red, "能量耗尽，武器已损坏");
+                    item.TurnToAir();
+                }
+                if(curPower <= 0)
+                {
+                    curPower = 0;
                 }
             }
             else if (item.ranged && skillType == SkillType.PowerGun && item.useAmmo == AmmoID.Bullet)
@@ -560,11 +563,11 @@ namespace SummonHeart.Items.Range
                     SkillType type = player.HeldItem.GetGlobalItem<SkillGItem>().skillType;
                     if(type == SkillType.MultiBow)
                     {
-                        costCount += 1;
+                        costCount = 1;
                     }
                     else if(type == SkillType.MultiGun)
                     {
-                        costCount += 1; 
+                        costCount = 1; 
                     }
                     //costCount /= 2;
                     if (type == SkillType.PowerGun || type == SkillType.PowerBow)

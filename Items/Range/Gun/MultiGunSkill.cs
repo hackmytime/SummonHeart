@@ -14,8 +14,8 @@ namespace SummonHeart.Items.Range.Gun
         {
             DisplayName.SetDefault("MultiGunSkill");
             Tooltip.SetDefault("MultiGunSkill");
-            DisplayName.AddTranslation(GameCulture.Chinese, "核心科技·散弹枪组合改造Lv1");
-            Tooltip.AddTranslation(GameCulture.Chinese, "组合改造4把，额外射弹量8，枪械攻速降低200%" +
+            DisplayName.AddTranslation(GameCulture.Chinese, "核心科技·枪械阵列Lv1");
+            Tooltip.AddTranslation(GameCulture.Chinese, "组合改造4把，额外射弹量3，枪械攻速降低300%" +
                 "\n以1号物品栏内的武器为基准，左键使用消耗能量核心Lv1进行组合改造");
         }
 
@@ -62,7 +62,7 @@ namespace SummonHeart.Items.Range.Gun
                 int weaponCount = 3;
                 ItemCost[] costArr = new ItemCost[] {
                     new ItemCost(ModContent.ItemType<Power1>(), 1),
-                    new ItemCost(baseItem.type, weaponCount)
+                    new ItemCost(baseItem.type, weaponCount + 1)
                 };
                 if (mp.PlayerClass != 7)
                 {

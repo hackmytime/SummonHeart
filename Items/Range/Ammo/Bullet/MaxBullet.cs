@@ -20,7 +20,7 @@ namespace SummonHeart.Items.Range.Ammo.Bullet
             item.ranged = true;
             item.width = 12;
             item.height = 16;
-            item.maxStack = 6;
+            item.maxStack = 999;
             item.consumable = true;
             item.knockBack = 1.5f;
             item.value = Item.sellPrice(10, 0, 0, 0);
@@ -38,14 +38,6 @@ namespace SummonHeart.Items.Range.Ammo.Bullet
             recipe.AddIngredient(mod.GetItem("Power4"), 1);
             recipe.AddIngredient(mod.GetItem("TracingUnit"), 1);
             recipe.SetResult(this, 6);
-            recipe.AddRecipe();
-            recipe = new ModRecipe(mod);
-            recipe.AddIngredient(mod.GetItem("Loot5"), 1);
-            recipe.SetResult(this, 10);
-            recipe.AddRecipe();
-            recipe = new ModRecipe(mod);
-            recipe.AddIngredient(mod.GetItem("Loot4"), 1);
-            recipe.SetResult(this, 1);
             recipe.AddRecipe();
         }
     }

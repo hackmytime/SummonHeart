@@ -1019,8 +1019,11 @@ namespace SummonHeart
 			SummonCrit = level;
 			if (!Main.hardMode && SummonCrit > 299)
 				SummonCrit = 299;
-			if (Main.hardMode && SummonCrit > 499)
+			if (!NPC.downedMoonlord && Main.hardMode && SummonCrit > 499)
 				SummonCrit = 500;
+			if (NPC.downedMoonlord && SummonCrit >= 5000)
+				SummonCrit = 5000;
+
 		}
 
 		public override void SetupStartInventory(IList<Item> items, bool mediumcoreDeath)

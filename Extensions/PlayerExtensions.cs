@@ -274,8 +274,8 @@ namespace SummonHeart.Extensions
 				if (modPlayer.DropOresTwice && modPlayer.PlayerClass == 7)
 					addExp *= 2;
 				modPlayer.BBP += addExp;
-				if (modPlayer.BBP > 5000000)
-					modPlayer.BBP = 5000000;
+				if (modPlayer.BBP > 5000000 * 200)
+					modPlayer.BBP = 5000000 * 200;
 
 				if (npc.boss)
 				{

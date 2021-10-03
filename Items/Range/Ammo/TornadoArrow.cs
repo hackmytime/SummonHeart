@@ -41,14 +41,6 @@ namespace SummonHeart.Items.Range.Ammo
             recipe.AddIngredient(mod.GetItem("TracingUnit"), 1);
             recipe.SetResult(this, 6);
             recipe.AddRecipe();
-            recipe = new ModRecipe(mod);
-            recipe.AddIngredient(mod.GetItem("Loot5"), 1);
-            recipe.SetResult(this, 10);
-            recipe.AddRecipe();
-            recipe = new ModRecipe(mod);
-            recipe.AddIngredient(mod.GetItem("Loot4"), 1);
-            recipe.SetResult(this, 1);
-            recipe.AddRecipe();
         }
     }
 }

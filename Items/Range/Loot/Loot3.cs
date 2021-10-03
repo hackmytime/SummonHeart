@@ -33,7 +33,7 @@ namespace SummonHeart.Items.Range.Loot
         public override bool UseItem(Player player)
         {
             SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
-            if (mp.BBP >= 5000000)
+            if (mp.BBP >= 5000000 * 200)
             {
                 player.statLife = 1;
                 CombatText.NewText(player.getRect(), Color.Red, "灵魂之力已满，无法吸收");
@@ -43,8 +43,8 @@ namespace SummonHeart.Items.Range.Loot
                 int addBBP = 100;
                 CombatText.NewText(player.getRect(), Color.LightGreen, $"+{addBBP}灵魂之力");
                 mp.BBP += addBBP;
-                if (mp.BBP > 5000000)
-                    mp.BBP = 5000000;
+                if (mp.BBP > 5000000 * 200)
+                    mp.BBP = 5000000 * 200;
             }
             return true;
         }

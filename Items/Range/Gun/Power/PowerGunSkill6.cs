@@ -61,7 +61,7 @@ namespace SummonHeart.Items.Range.Gun.Power
                 int weaponCount = 8;
                 ItemCost[] costArr = new ItemCost[] {
                     new ItemCost(ModContent.ItemType<Power6>(), 1),
-                    new ItemCost(baseItem.type, weaponCount)
+                    new ItemCost(baseItem.type, weaponCount + 1)
                 };
                 if (mp.PlayerClass != 7)
                 {
@@ -80,7 +80,7 @@ namespace SummonHeart.Items.Range.Gun.Power
                         {
                             Builder.PayCost(costArr, player);
                             item.GetGlobalItem<SkillBase>().skillUseCount++;
-                            baseItem.GetGlobalItem<SkillGItem>().skillType = SkillType.MultiGun;
+                            baseItem.GetGlobalItem<SkillGItem>().skillType = SkillType.PowerGun;
                             baseItem.GetGlobalItem<SkillGItem>().skillLevel = 6;
                             baseItem.GetGlobalItem<SkillGItem>().curPower = 500000;
                             baseItem.GetGlobalItem<SkillGItem>().powerMax = 500000;

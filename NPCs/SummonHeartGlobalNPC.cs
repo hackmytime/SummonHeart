@@ -185,8 +185,10 @@ namespace SummonHeart.NPCs
 			modPlayer.SummonCrit = level;
 			if (!Main.hardMode && modPlayer.SummonCrit > 299)
 				modPlayer.SummonCrit = 299;
-			if (Main.hardMode && modPlayer.SummonCrit > 499)
+			if (!NPC.downedMoonlord && Main.hardMode && modPlayer.SummonCrit > 499)
 				modPlayer.SummonCrit = 500;
+			if (NPC.downedMoonlord && modPlayer.SummonCrit >= 5000)
+				modPlayer.SummonCrit = 5000;
 		}
 
         public override void EditSpawnRate(Player player, ref int spawnRate, ref int maxSpawns)
