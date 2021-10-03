@@ -63,13 +63,18 @@ namespace SummonHeart.NPCs
 				npc.value *= 5;
 				npc.damage *= 30;
 			}
-            
+            if (SummonHeartWorld.GoddessMode)
+            {
+				npc.lifeMax *= 2;
+				npc.value *= 2;
+				npc.defense *= 2;
+			}
 		}
 
         public override void ResetEffects(NPC npc)
         {
 			if(SummonHeartWorld.GoddessMode)
-				extraUpdate = SHUtils.TransFloatToInt(0.33f);
+				extraUpdate = SHUtils.TransFloatToInt(0.66f);
         }
 
         public override bool CheckActive(NPC npc)

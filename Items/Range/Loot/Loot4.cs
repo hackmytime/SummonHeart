@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace SummonHeart.Items.Range.Loot
 {
-    public class Loot4 : ModItem
+    public class Loot4 : LootItem
     {
         public override void SetStaticDefaults()
         {

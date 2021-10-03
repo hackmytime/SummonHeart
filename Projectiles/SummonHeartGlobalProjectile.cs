@@ -38,7 +38,7 @@ namespace SummonHeart.Projectiles
 			if (SummonHeartWorld.GoddessMode)
             {
 				int extraUpdate = 0;
-				extraUpdate = SHUtils.TransFloatToInt(0.33f);
+				extraUpdate = SHUtils.TransFloatToInt(0.66f);
 				if (extraUpdate > 0)
 				{
 					extraUpdate--;

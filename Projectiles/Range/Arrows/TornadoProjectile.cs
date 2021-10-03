@@ -164,7 +164,7 @@ namespace SummonHeart.Projectiles.Range.Arrows
                     Main.npc[i].rotation = 0f;
                 }
             }
-            for (int v = 0; v < Main.item.Length; v++)
+            /*for (int v = 0; v < Main.item.Length; v++)
             {
                 if (projectile.position.X / 16f <= (Main.item[v].position.X + 700f) / 16f && projectile.position.X / 16f >= (Main.item[v].position.X - 700f) / 16f)
                 {
@@ -185,7 +185,7 @@ namespace SummonHeart.Projectiles.Range.Arrows
                         Main.item[v].velocity.Y = Main.item[v].velocity.Y - 0.5f;
                     }
                 }
-            }
+            }*/
         }
 
         public override void Kill(int timeLeft)

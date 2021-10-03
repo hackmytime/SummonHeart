@@ -9,7 +9,7 @@ using SummonHeart.Extensions;
 
 namespace SummonHeart.Items.Range.Loot
 {
-    public class Loot6 : ModItem
+    public class Loot6 : LootItem
     {
         public override void SetStaticDefaults()
         {

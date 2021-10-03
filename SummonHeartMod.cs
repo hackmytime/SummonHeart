@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using SummonHeart.body;
 using SummonHeart.Extensions;
+using SummonHeart.Extensions.TurretSystem;
 using SummonHeart.Items;
 using SummonHeart.Items.Range.Tools;
 using SummonHeart.ui;
@@ -23,7 +24,9 @@ namespace SummonHeart
 {
     public class SummonHeartMod : Mod
 	{
-	/*	public static SummonHeartMod instance;*/
+		/*	public static SummonHeartMod instance;*/
+
+		private ModUIHandler UIhandler = new ModUIHandler();
 
 		internal static List<BuffValue> modBuffValues = new List<BuffValue>();
 
@@ -146,7 +149,7 @@ namespace SummonHeart
 				}
 			}
 		}
-
+		
 		public override void Load()
         {
 			AutoAttackKey = RegisterHotKey("自动使用武器（再次点击停止使用）", "G");
@@ -162,6 +165,11 @@ namespace SummonHeart
 			TriggerExplosion = RegisterHotKey("引爆工程炸弹", "Mouse2");
 			// this makes sure that the UI doesn't get opened on the server
 			// the server can't see UI, can it? it's just a command prompt
+			if (Main.netMode != 2)
+			{
+				GFX.GFX.LoadGfx();
+				this.UIhandler.Load();
+			}
 			if (!Main.dedServ)
 			{
 				try
@@ -273,6 +281,8 @@ namespace SummonHeart
 
         public override void Unload()
         {
+			this.UIhandler.Unload();
+			this.UIhandler = null;
 			AutoAttackKey = null;
 			ShowUI = null;
 			KillSkillKey = null;
@@ -522,7 +532,7 @@ namespace SummonHeart
 			// it will only draw if the player is not on the main menu
 			Player player = Main.player[Main.myPlayer];
 			SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
-			
+			this.UIhandler.UpdateUI(gameTime);
 			if (modPlayer.PlayerClass == 1)
             {
 				if (!Main.gameMenu && PanelMelee.visible)
@@ -748,6 +758,8 @@ namespace SummonHeart
 
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
         {
+			TurretPlayer.ModifyInterfaceLayers(layers);
+			this.UIhandler.ModifyInterfaceLayers(layers);
 			int mouseTextIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Mouse Text"));
 			if (mouseTextIndex != -1)
 			{

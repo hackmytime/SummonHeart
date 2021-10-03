@@ -18,11 +18,12 @@ namespace SummonHeart.Items
                 "The son of the demon God is seduced by the power given by the goddess");
             DisplayName.AddTranslation(GameCulture.Chinese, "女神之像");
             Tooltip.AddTranslation(GameCulture.Chinese, "使用以切换女神模式，获得女神的祝福，此模式无法取消"
-            + "\n女神的祝福：额外饰品栏增加至16，弹幕飞行速度加快33%" +
+            + "\n女神的祝福：额外饰品栏增加至16，敌人掉落双倍物品和灵魂，弹幕飞行速度加快66%" +
             "\n负面效果：" +
-            "\n1、所有泰拉瑞亚世界原生生物也会获得女神的祝福buff，敌人减伤倍率翻倍" +
-            "\n2、女神模式下原生生物ai速度、移动速度、攻击速度、弹幕飞行速度加快33%" +
-            "\n3、后续剧情女神获得史诗级增强");
+            "\n1、所有泰拉瑞亚世界原生生物也会获得女神的祝福buff，敌人全体属性提高2倍" +
+            "\n2、女神模式下原生生物ai速度、移动速度、攻击速度、弹幕飞行速度加快66%" +
+            "\n3、多人模式下BOSS战时死亡将无法复活，除非所有玩家全部死亡" +
+            "\n4、后续剧情女神获得史诗级增强");
         }
 
         public override void SetDefaults()

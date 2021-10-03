@@ -269,7 +269,7 @@ namespace SummonHeart
 
         public override void PreUpdate()
 		{
-			if (player.AnyBossAlive())
+			if (player.AnyBossAlive() && SummonHeartWorld.GoddessMode)
 			{
 				player.respawnTimer = 60*60*5;
             }
@@ -278,8 +278,6 @@ namespace SummonHeart
 			{
 				player.respawnTimer = 120;
 			}
-
-			
 
 			if (player.HasItemInAcc(mod.ItemType("MysteriousCrystal")) != -1)
 			{
@@ -330,7 +328,7 @@ namespace SummonHeart
 					int buffId = type;
                     if (infiniBuffDic[type])
                     {
-						player.AddBuff(buffId, int.MaxValue, true);
+						player.AddBuff(buffId, 10, true);
 						Main.buffNoTimeDisplay[type] = true;
 						Main.persistentBuff[type] = true;
                     }
@@ -1214,7 +1212,7 @@ namespace SummonHeart
 			if (SummonHeartMod.TriggerExplosion.JustReleased)
 			{
 				this.detonate = true;
-				if (Main.netMode == NetmodeID.SinglePlayer)
+				if (Main.netMode != NetmodeID.SinglePlayer)
 					MsgUtils.BombPacket(player.whoAmI);
 			}
 			else

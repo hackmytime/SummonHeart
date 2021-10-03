@@ -3,12 +3,17 @@ using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Localization;
+using Terraria.ModLoader;
 
 namespace SummonHeart.Extensions
 {
     // Token: 0x0200002E RID: 46
     public static class Helper
     {
+        public static bool Is<T>(this Item item) where T : ModItem
+        {
+            return item != null && !item.IsAir && item.modItem is T;
+        }
         // Token: 0x06000131 RID: 305 RVA: 0x0000F9F0 File Offset: 0x0000DBF0
         public static void Navigate(this Projectile p, Vector2 to, float speed, float smooth)
         {
