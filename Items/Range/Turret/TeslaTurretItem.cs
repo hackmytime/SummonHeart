@@ -9,8 +9,8 @@ namespace SummonHeart.Items.Range.Turret
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("4级科技造物·闪电炮塔");
-            Tooltip.SetDefault("1W福特");
+            DisplayName.SetDefault("原初炮塔");
+            Tooltip.SetDefault("0号原型机，无法获取");
         }
 
         public override void SetDefaults()
@@ -22,17 +22,6 @@ namespace SummonHeart.Items.Range.Turret
         protected override int PickTile()
         {
             return ModContent.TileType<TeslaTurretTile>();
-        }
-
-        public override void AddRecipes()
-        {
-            ModRecipe modRecipe = new ModRecipe(mod);
-            modRecipe.AddIngredient(1552, 4);
-            modRecipe.AddIngredient(3261, 4);
-            modRecipe.AddIngredient(ModContent.ItemType<Power1>(), 1);
-            modRecipe.AddTile(134);
-            modRecipe.SetResult(this, 1);
-            modRecipe.AddRecipe();
         }
     }
 }

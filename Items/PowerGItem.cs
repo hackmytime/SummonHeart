@@ -28,6 +28,7 @@ namespace SummonHeart.Items.Range
                 return true;
             }
         }
+
         public override void ModifyWeaponDamage(Item item, Player player, ref float add, ref float mult, ref float flat)
         {
             float baseAdd = add;
@@ -36,10 +37,19 @@ namespace SummonHeart.Items.Range
             {
                 SummonHeartPlayer mp = Main.LocalPlayer.GetModPlayer<SummonHeartPlayer>();
                 heartAdd += itemRare * powerLevel * 0.01f;
-                flat += (itemRare + 4) * itemRare * itemRare * powerLevel;
+                flat += itemRare * itemRare * powerLevel;
             }
             add = heartAdd * baseAdd;
             base.ModifyWeaponDamage(item, player, ref add, ref mult, ref flat);
+        }
+
+        public override void GetWeaponCrit(Item item, Player player, ref int crit)
+        {
+            if (powerLevel > 0)
+            {
+                crit += itemRare * powerLevel;
+            }
+            base.GetWeaponCrit(item, player, ref crit);
         }
 
         public override void SetDefaults(Item item)
@@ -85,27 +95,27 @@ namespace SummonHeart.Items.Range
 
             if (powerLevel > 0)
             {
-                //setItemRare(item);
-                item.autoReuse = true;
+                int nameNun = tooltips.FindIndex((TooltipLine t) => t.Name.Equals("ItemName"));
+                string text;
+                text = tooltips[nameNun].text;
+                text += "+" + powerLevel;
+                tooltips[nameNun].text = text;
                 if (num >= 0)
                 {
                     string str = "";
                     string desp = "";
                     string upDesp = "";
                     {
-                        str = "强化+ " + powerLevel;
-                        desp = "基础攻击+ " + itemRare * powerLevel + "%";
-                        upDesp = "面板攻击+ " + (itemRare + 4)* itemRare * itemRare * powerLevel + "点";
+                        str = "基础攻击+" + itemRare * powerLevel + "%";
+                        desp = "暴击率+" + itemRare * powerLevel + "%";
+                        upDesp = "面板攻击+" + itemRare * itemRare * powerLevel + "点";
                     }
-                    tooltips.Insert(num + 1, new TooltipLine(mod, "SkillStr", str));
+                    tooltips.Insert(num + 1, new TooltipLine(mod, "PowerStr", str));
                     tooltips[num + 1].overrideColor = Color.LightSkyBlue;
-                    tooltips.Insert(num + 2, new TooltipLine(mod, "SkillDesp", desp));
+                    tooltips.Insert(num + 2, new TooltipLine(mod, "PowerDesp1", desp));
                     tooltips[num + 2].overrideColor = Color.LightGreen;
-                    if(powerLevel >= itemRare)
-                    {
-                        tooltips.Insert(num + 3, new TooltipLine(mod, "SkillDesp", upDesp));
-                        tooltips[num + 3].overrideColor = Color.LightGreen;
-                    }
+                    tooltips.Insert(num + 3, new TooltipLine(mod, "PowerDesp2", upDesp));
+                    tooltips[num + 3].overrideColor = Color.LightGreen;
                 }
             }
         }

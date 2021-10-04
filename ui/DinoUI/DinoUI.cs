@@ -42,9 +42,13 @@ namespace SummonHeart.ui.DinoUI
                 e.OnMouseHover += this.OutputHover;
             }).Append(panel);
             outputSlot.backgroundTexture = GFX.GFX.NOTHING;
-            infoButton = new UIBuilder<UITextHoverImageButton>(infoButton).Init(new UITextHoverImageButton(GFX.GFX.INFO_BUTTON, 
-                "-在左侧物品栏放置要强化的武器; 右侧显示强化成功率." +
-                "\n-在右侧物品栏放置对应等级的生物材料; " +
+            infoButton = new UIBuilder<UITextHoverImageButton>(infoButton).Init(new UITextHoverImageButton(GFX.GFX.INFO_BUTTON,
+                "在左侧物品栏放置要强化的武器，在右侧物品栏放置对应等级的生物材料" +
+                "\n点击按钮进行强化，在按钮右侧显示强化成功率。" +
+                "\n强化无上限，但有失败率，强化成功率最低为5%" +
+                "\n强化失败后有20%的几率强化等级-1" +
+                "\n有1%的几率武器碎裂" +
+                "\n武器的强化级别与对应需要的强化材料如下：" +
                 "\n1级科技武器和稀有度0-2武器强化级别为1" +
                 "\n2级科技武器和稀有度3-4武器强化级别为2" +
                 "\n3级科技武器和稀有度5-6武器强化级别为3" +
@@ -52,8 +56,8 @@ namespace SummonHeart.ui.DinoUI
                 "\n5级科技武器和稀有度9-10武器强化级别为5" +
                 "\n6级科技武器和稀有度11-12和-12武器强化级别为6"
                 )).Left(235f).Top(20f).Size(GFX.GFX.INFO_BUTTON).Append(panel);
-            button = new UIBuilder<UITextHoverImageButton>(button).Init(new UITextHoverImageButton(GFX.GFX.DINO_EXPORT_BUTTON, 
-                btnMsg)).Left(35f).Top(95f).OnClick(new MouseEvent(ExportButtonPressed)).Append(panel);
+            button = new UIBuilder<UITextHoverImageButton>(button).Init(new UITextHoverImageButton(GFX.GFX.DINO_EXPORT_BUTTON,
+                "消耗生物材料进行强化")).Left(35f).Top(95f).OnClick(new MouseEvent(ExportButtonPressed)).Append(panel);
             successBar = new UIBuilder<SuccessChanceBar>(successBar).Init(new SuccessChanceBar(GFX.GFX.DINO_CHANCE_BAR)).Left(165f).Top(15f).Append(panel);
         }
 
@@ -89,6 +93,7 @@ namespace SummonHeart.ui.DinoUI
             }
             if (canRoll)
             {
+                Main.PlaySound(SoundID.Item4, Main.LocalPlayer.position);
                 PowerGItem powerGItem = DNASlot.item.GetGlobalItem<PowerGItem>();
                 int costCount = powerGItem.powerLevel;
                 if (costCount == 0)
@@ -100,7 +105,7 @@ namespace SummonHeart.ui.DinoUI
                 }
                 if (PowerSuccess())
                 {
-                    Main.PlaySound((int)SoundID.Item4.Type, Main.LocalPlayer.Center, 0);
+                    CombatText.NewText(Main.LocalPlayer.getRect(), Color.LightGreen, "强化成功");
                     powerGItem.powerLevel++;
                     /*outputSlot.item = DNASlot.item;
                     DNASlot.item.TurnToAir();*/
@@ -108,7 +113,21 @@ namespace SummonHeart.ui.DinoUI
                 else
                 {
                     //强化失败
-                    Main.NewText("强化失败，你是个非酋.", byte.MaxValue, 50, 50, false);
+                    if (PowerFail2())
+                    {
+                        //武器碎裂
+                        CombatText.NewText(Main.LocalPlayer.getRect(), Color.Red, "强化失败，武器碎裂，你是真的脸黑");
+                        DNASlot.item.TurnToAir();
+                    }
+                    else if (PowerFail1())
+                    {
+                        CombatText.NewText(Main.LocalPlayer.getRect(), Color.Red, "强化失败，武器强化等级-1，别哭");
+                        powerGItem.powerLevel--;
+                    }
+                    else
+                    {
+                        CombatText.NewText(Main.LocalPlayer.getRect(), Color.Red, "强化失败，你是个非酋");
+                    }
                 }
             }
         }
@@ -136,6 +155,16 @@ namespace SummonHeart.ui.DinoUI
             return Utils.NextFloat(Main.rand) <= this.GetChance();
         }
 
+        private bool PowerFail1()
+        {
+            return Utils.NextFloat(Main.rand) <= 0.2f;
+        }
+
+        private bool PowerFail2()
+        {
+            return Utils.NextFloat(Main.rand) <= 0.01f;
+        }
+
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
@@ -143,16 +172,7 @@ namespace SummonHeart.ui.DinoUI
             {
                 ModUIHandler.dinoLoader.HideUI();
             }
-            btnMsg = "消耗生物材料进行强化";
-            if (!DNASlot.item.IsAir)
-            {
-                PowerGItem powerGItem = DNASlot.item.GetGlobalItem<PowerGItem>();
-                int costCount = powerGItem.powerLevel;
-                if (costCount == 0)
-                    costCount = 1;
-                Main.hoverItemName = $"消耗{costCount}个{powerGItem.itemRare}生物材料进行强化" +
-                    $"\n强化成功率{GetChance() * 100}%";
-            }
+            
         }
 
         public void PutSlotItemsInInventory()
@@ -208,7 +228,15 @@ namespace SummonHeart.ui.DinoUI
         {
             if (outputSlot.item.IsAir)
             {
-                Main.hoverItemName = $"强化成功率{GetChance() * 100}%";
+                if (!DNASlot.item.IsAir)
+                {
+                    PowerGItem powerGItem = DNASlot.item.GetGlobalItem<PowerGItem>();
+                    int costCount = powerGItem.powerLevel;
+                    if (costCount == 0)
+                        costCount = 1;
+                    Main.hoverItemName = $"消耗{costCount}个{powerGItem.itemRare}生物材料进行强化" +
+                        $"\n强化成功率{GetChance() * 100}%";
+                }
             }
         }
 
@@ -257,6 +285,5 @@ namespace SummonHeart.ui.DinoUI
 
         // Token: 0x04000171 RID: 369
         public bool visible;
-        public string btnMsg;
     }
 }

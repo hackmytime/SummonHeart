@@ -1,8 +1,7 @@
+using SummonHeart.Extensions.TurretSystem;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ObjectData;
 
 namespace SummonHeart.Tiles
 {
@@ -14,6 +13,37 @@ namespace SummonHeart.Tiles
             Main.tileSpelunker[TileID.Hellstone] = true;
             Main.tileSpelunker[TileID.Slush] = true;
             Main.tileSpelunker[TileID.Silt] = true;
+        }
+
+        public override bool CanKillTile(int i, int j, int type, ref bool blockDamaged)
+        {
+			if (i < 0 || j < 0 || i >= Main.maxTilesX || j >= Main.maxTilesY)
+			{
+				return false;
+			}
+			Tile tile = Main.tile[i, j];
+			Tile tile2 = null;
+			if (tile == null)
+			{
+				return false;
+			}
+			if (!tile.active())
+			{
+				return false;
+			}
+			if (j >= 1)
+			{
+				tile2 = Main.tile[i, j - 1];
+			}
+			if (tile2 != null && tile2.active())
+			{
+				ModTile modTile = TileLoader.GetTile(tile2.type);
+				if (modTile is TurretTile)
+                {
+					return false;
+                }
+			}
+			return base.CanKillTile(i, j, type, ref blockDamaged);
         }
 
         public override void RandomUpdate(int i, int j, int type)

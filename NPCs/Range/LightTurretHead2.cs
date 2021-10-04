@@ -8,11 +8,11 @@ using Terraria.ModLoader;
 
 namespace SummonHeart.NPCs.Range
 {
-    public class TeslaTurretHead : TurretHead
+    public class LightTurretHead2 : TurretHead
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("原初炮塔");
+            DisplayName.SetDefault("4级科技造物·初级闪电炮塔");
         }
 
         public override void SetDefaults()
@@ -21,13 +21,21 @@ namespace SummonHeart.NPCs.Range
             mountOffset = new Vector2(25f, 12f);
             angleMax = 3.1415927f;
             angleMin = -3.1415927f;
-            shootDamage = 1;
-            delayShoot = 30;
+            shootDamage = 500;
+            delayShoot = 20;
             rotationSpeed = 0f;
-            targetRange = 400;
-            npc.lifeMax = 1000;
-            npc.defense = 10;
+            targetRange = 16*25;
+            npc.lifeMax = 300000;
+            npc.defense = 100;
             base.SetDefaults();
+        }
+
+        public override string Texture
+        {
+            get
+            {
+                return "SummonHeart/NPCs/Range/TeslaTurretHead";
+            }
         }
 
         protected override int PickAmmo()

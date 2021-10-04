@@ -8,8 +8,8 @@ namespace SummonHeart.Items.Range.Tools
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Lab Terminal");
-            Tooltip.SetDefault("Right click to open up UI - Technical Fabricator.\n\t Scans samples for DNA.\n\t Catalogs complete genomes.\n\t Fabricates an index to serve as modem for biological organisms.");
+            DisplayName.SetDefault("武器强化台");
+            Tooltip.SetDefault("放置后右键打开强化UI");
         }
 
         public override void SetDefaults()
@@ -31,8 +31,7 @@ namespace SummonHeart.Items.Range.Tools
         public override void AddRecipes()
         {
             ModRecipe modRecipe = new ModRecipe(mod);
-            modRecipe.AddRecipeGroup(RecipeGroupID.IronBar, 2);
-            modRecipe.AddIngredient(178, 1);
+            modRecipe.AddRecipeGroup(RecipeGroupID.IronBar, 50);
             modRecipe.SetResult(this, 1);
             modRecipe.AddRecipe();
         }

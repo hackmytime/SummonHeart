@@ -2,6 +2,7 @@
 using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SummonHeart.Utilities;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -92,7 +93,7 @@ namespace SummonHeart.Extensions.TurretSystem
                 return string.Concat(new object[]
                 {
                     npc.GivenOrTypeName,
-                    " ",
+                    "\n护盾：",
                     npc.life,
                     "/",
                     npc.lifeMax,
@@ -104,9 +105,10 @@ namespace SummonHeart.Extensions.TurretSystem
                     targetRange / 16,
                     " 格\n击退力度: ",
                     shootKnockback.ToString("0.##"),
-                    "\n瞄准速度: ",
-                    (3437.74 * rotationSpeed).ToString("0.##"),
-                    "° 每秒\n防御: ",
+                    //"\n瞄准速度: ",
+                    //(3437.74 * rotationSpeed).ToString("0.##"),
+                    //"° 每秒" +
+                    "\n防御: ",
                     npc.defense,
                     "\n"
                 });
@@ -230,6 +232,21 @@ namespace SummonHeart.Extensions.TurretSystem
                     vel2.X = -Main.windSpeed;
                 }
                 Gore.NewGore(npc.position + new Vector2(Main.rand.Next(npc.width), Main.rand.Next(npc.height)), vel2, type2, Main.rand.NextFloat() * 0.3f + 0.3f);
+            }
+            if (isAlive)
+            {
+                float radius = targetRange;
+                for (int i = 0; i < 32; i++)
+                {
+                    Vector2 offset = new Vector2();
+                    double angle = Main.rand.NextDouble() * 2d * Math.PI;
+                    offset.X += (float)(Math.Sin(angle) * radius);
+                    offset.Y += (float)(Math.Cos(angle) * radius);
+
+                    Dust d = Dust.NewDustPerfect(npc.Center + offset, MyDustId.BlueMagic, npc.velocity, 200, default, 0.3f);
+                    d.fadeIn = 0.5f;
+                    d.noGravity = true;
+                }
             }
         }
 
@@ -363,7 +380,8 @@ namespace SummonHeart.Extensions.TurretSystem
             for (int i = 0; i < 200; i++)
             {
                 NPC target = Main.npc[i];
-                if (target.CanBeChasedBy(this, false) && Vector2.Distance(target.Center, GetMountOrigin()) < targetRange && Collision.CanHitLine(GetMountOrigin(), 1, 1, target.position, target.width, target.height))
+                if (target.CanBeChasedBy(this, false) && Vector2.Distance(target.Center, GetMountOrigin()) < targetRange
+                    && Collision.CanHitLine(this.GetMountOrigin(), 1, 1, target.position, target.width, target.height))
                 {
                     Vector2 distance = target.Center - GetMountOrigin();
                     float angle = (float)Math.Atan2(distance.Y, distance.X);

@@ -323,7 +323,7 @@ namespace SummonHeart
 					}
 				}
 
-				foreach(var type in infiniBuffDic.Keys)
+				/*foreach(var type in infiniBuffDic.Keys)
 				{
 					int buffId = type;
                     if (infiniBuffDic[type])
@@ -337,7 +337,7 @@ namespace SummonHeart
 						if (player.HasBuff(buffId))
 							player.ClearBuff(buffId);
 					}
-				}
+				}*/
 			}
 		}
 
@@ -1057,6 +1057,10 @@ namespace SummonHeart
 			items.Add(item);
 			item = new Item();
 			item.SetDefaults(ModLoader.GetMod("SummonHeart").ItemType("MysteriousCrystal"));
+			item.stack = 1;
+			items.Add(item);
+			item = new Item();
+			item.SetDefaults(ModLoader.GetMod("SummonHeart").ItemType("HelpBag"));
 			item.stack = 1;
 			items.Add(item);
 			item = new Item();

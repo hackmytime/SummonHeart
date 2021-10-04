@@ -14,6 +14,7 @@ namespace SummonHeart.Extensions
         {
             return item != null && !item.IsAir && item.modItem is T;
         }
+
         // Token: 0x06000131 RID: 305 RVA: 0x0000F9F0 File Offset: 0x0000DBF0
         public static void Navigate(this Projectile p, Vector2 to, float speed, float smooth)
         {

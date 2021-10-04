@@ -41,9 +41,11 @@ namespace SummonHeart.Projectiles.Range
             projectile.width = 1;
             projectile.height = 1;
             projectile.friendly = true;
-            projectile.ignoreWater = true;
             projectile.tileCollide = false;
+            projectile.ignoreWater = true;
             ProjectileID.Sets.Homing[projectile.type] = true;
+            projectile.usesLocalNPCImmunity = true;
+            projectile.localNPCHitCooldown = 0;
         }
 
         // Token: 0x060001B9 RID: 441 RVA: 0x0000ACF4 File Offset: 0x00008EF4

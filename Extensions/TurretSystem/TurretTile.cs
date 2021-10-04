@@ -41,6 +41,11 @@ namespace SummonHeart.Extensions.TurretSystem
             return false;
         }
 
+        public override bool CanKillTile(int i, int j, ref bool blockDamaged)
+        {
+            return false;
+        }
+
         public override void KillMultiTile(int i, int j, int frameX, int frameY)
         {
             GetTE().Kill(i, j);

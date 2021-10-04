@@ -381,6 +381,13 @@ namespace SummonHeart
 			recipe = new ModRecipe(this);recipe.AddIngredient(ItemID.Sandstone, 200);recipe.AddTile(TileID.Furnaces);recipe.SetResult(ItemID.Glass, 100);recipe.AddRecipe();
 			recipe = new ModRecipe(this);recipe.AddIngredient(ItemID.HardenedSand, 200);recipe.AddTile(TileID.Furnaces);recipe.SetResult(ItemID.Glass, 100);recipe.AddRecipe();
 			recipe = new ModRecipe(this);recipe.AddIngredient(ItemID.MudBlock, 100);recipe.AddTile(TileID.Furnaces);recipe.SetResult(ItemID.DirtBlock, 100);recipe.AddRecipe();
+			recipe = new ModRecipe(this);recipe.AddIngredient(GetItem("MetalUnit"), 1);recipe.AddIngredient(GetItem("SuLiao"), 1); recipe.SetResult(ItemID.Wire, 100);recipe.AddRecipe();
+			recipe = new ModRecipe(this);
+			recipe.AddIngredient(GetItem("Power3"), 10);
+			recipe.AddIngredient(GetItem("MetalUnit"), 100);
+			recipe.AddIngredient(GetItem("CoreComputer"), 1); 
+			recipe.SetResult(ItemID.CosmicCarKey, 1);
+			recipe.AddRecipe();
 			recipe = new ModRecipe(this);
 			recipe.AddIngredient(ItemID.StoneBlock, 10);
 			recipe.needWater = true;
