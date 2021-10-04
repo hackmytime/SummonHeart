@@ -53,5 +53,15 @@ namespace SummonHeart.Utilities
             packet.Write((byte)whoAmI);
             packet.Send(-1, -1);
         }
+        internal static void TurretShootPacket(int i, int projID, int shootDamage, float shootKnockback, float x, float y)
+        {
+            ModPacket packet = SummonHeartMod.Instance.GetPacket();
+            packet.Write((byte)11);
+            packet.Write(i);
+            packet.Write(projID);
+            packet.Write(shootDamage);
+            packet.Write(shootKnockback);
+            packet.Send(-1, -1);
+        }
     }
 }

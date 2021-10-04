@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SummonHeart.Extensions;
+using SummonHeart.Projectiles.Range.Bullet;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -44,8 +45,6 @@ namespace SummonHeart.Projectiles.Range
             projectile.tileCollide = false;
             projectile.ignoreWater = true;
             ProjectileID.Sets.Homing[projectile.type] = true;
-            projectile.usesLocalNPCImmunity = true;
-            projectile.localNPCHitCooldown = 0;
         }
 
         // Token: 0x060001B9 RID: 441 RVA: 0x0000ACF4 File Offset: 0x00008EF4

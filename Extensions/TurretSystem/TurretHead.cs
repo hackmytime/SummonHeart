@@ -381,7 +381,8 @@ namespace SummonHeart.Extensions.TurretSystem
             {
                 NPC target = Main.npc[i];
                 if (target.CanBeChasedBy(this, false) && Vector2.Distance(target.Center, GetMountOrigin()) < targetRange
-                    && Collision.CanHitLine(this.GetMountOrigin(), 1, 1, target.position, target.width, target.height))
+                    //&& Collision.CanHitLine(this.GetMountOrigin(), 1, 1, target.position, target.width, target.height)
+                    )
                 {
                     Vector2 distance = target.Center - GetMountOrigin();
                     float angle = (float)Math.Atan2(distance.Y, distance.X);
@@ -412,11 +413,31 @@ namespace SummonHeart.Extensions.TurretSystem
         public override void SendExtraAI(BinaryWriter writer)
         {
             writer.Write(isAlive);
+            writer.Write(ShootCounter);
+            writer.Write(delayShoot);
+            writer.Write(targetRange);
+            writer.Write(shootDamage);
+            writer.Write(shootKnockback);
+            writer.Write(angleMax);
+            writer.Write(angleMin);
+            writer.Write(shootVelocity);
+            writer.Write(rotationSpeed);
+            writer.Write(ShootOriginOffset);
         }
 
         public override void ReceiveExtraAI(BinaryReader reader)
         {
             isAlive = reader.ReadBoolean();
+            ShootCounter = reader.ReadInt32();
+            delayShoot = reader.ReadInt32();
+            targetRange = reader.ReadInt32();
+            shootDamage = reader.ReadInt32();
+            shootKnockback = reader.ReadSingle();
+            angleMax = reader.ReadSingle();
+            angleMin = reader.ReadSingle();
+            shootVelocity = reader.ReadSingle();
+            rotationSpeed = reader.ReadSingle();
+            ShootOriginOffset = reader.ReadSingle();
         }
 
         // Token: 0x04000027 RID: 39

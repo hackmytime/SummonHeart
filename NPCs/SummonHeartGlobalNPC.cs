@@ -2,6 +2,7 @@
 using SummonHeart.Extensions;
 using SummonHeart.Items.Weapons.Melee;
 using SummonHeart.Projectiles.Melee;
+using SummonHeart.Projectiles.Range;
 using SummonHeart.Utilities;
 using System;
 using Terraria;

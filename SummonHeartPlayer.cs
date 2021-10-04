@@ -312,18 +312,20 @@ namespace SummonHeart
 							{
 								if (modBuff == null)
 								{
-									infiniBuffDic.Add(type, true);
+									if (infiniBuffDic.Keys.Count < buffMaxCount)
+										infiniBuffDic.Add(type, true);
 								}
 								else if (SummonHeartMod.posionBuffSet.Contains(type))
 								{
-									infiniBuffDic.Add(type, true);
+									if (infiniBuffDic.Keys.Count < buffMaxCount)
+										infiniBuffDic.Add(type, true);
 								}
 							}
 						}
 					}
 				}
 
-				/*foreach(var type in infiniBuffDic.Keys)
+				foreach(var type in infiniBuffDic.Keys)
 				{
 					int buffId = type;
                     if (infiniBuffDic[type])
@@ -337,7 +339,7 @@ namespace SummonHeart
 						if (player.HasBuff(buffId))
 							player.ClearBuff(buffId);
 					}
-				}*/
+				}
 			}
 		}
 

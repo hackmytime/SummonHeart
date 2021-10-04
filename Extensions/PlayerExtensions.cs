@@ -192,7 +192,6 @@ namespace SummonHeart.Extensions
 				if (npc.boss)
 				{
 					player.QuickSpawnItem(ModContent.ItemType<Loot1>(), Main.rand.Next(10, 100));
-					player.QuickSpawnItem(ModContent.ItemType<Loot2>(), Main.rand.Next(1, 5));
 					if (Main.rand.Next(100) == 0)
 					{
 						player.QuickSpawnItem(ModContent.ItemType<Loot3>(), Main.rand.Next(1, 2));
@@ -201,13 +200,73 @@ namespace SummonHeart.Extensions
 					{
 						player.QuickSpawnItem(ModContent.ItemType<Loot4>(), Main.rand.Next(1, 2));
 					}
-					if (Main.rand.Next(10000) == 0)
+					if (npc.type == NPCID.KingSlime)
 					{
-						player.QuickSpawnItem(ModContent.ItemType<Loot5>(), Main.rand.Next(1, 2));
+						player.QuickSpawnItem(ModContent.ItemType<Loot2>(), Main.rand.Next(1, 5));
 					}
-					if (Main.rand.Next(10000) == 0)
+					if (npc.type == NPCID.EyeofCthulhu)
 					{
-						player.QuickSpawnItem(ModContent.ItemType<Loot6>(), 1);
+						player.QuickSpawnItem(ModContent.ItemType<Loot2>(), Main.rand.Next(5, 10));
+					}
+					if (npc.type == NPCID.BrainofCthulhu)
+					{
+						player.QuickSpawnItem(ModContent.ItemType<Loot2>(), Main.rand.Next(5, 10));
+					}
+					if (npc.type == NPCID.EaterofWorldsHead && !NPC.AnyNPCs(NPCID.EaterofWorldsTail))
+					{
+						player.QuickSpawnItem(ModContent.ItemType<Loot2>(), Main.rand.Next(5, 10));
+					}
+					if (npc.type == NPCID.EaterofWorldsTail && !NPC.AnyNPCs(NPCID.EaterofWorldsHead))
+					{
+						player.QuickSpawnItem(ModContent.ItemType<Loot2>(), Main.rand.Next(5, 10));
+					}
+					if (npc.type == NPCID.QueenBee)
+					{
+						player.QuickSpawnItem(ModContent.ItemType<Loot2>(), Main.rand.Next(10, 25));
+					}
+					if (npc.type == NPCID.SkeletronHead)
+					{
+						player.QuickSpawnItem(ModContent.ItemType<Loot2>(), Main.rand.Next(25, 50));
+					}
+					if (npc.type == NPCID.WallofFlesh)
+					{
+						player.QuickSpawnItem(ModContent.ItemType<Loot3>(), Main.rand.Next(1, 5));
+					}
+					if (npc.type == NPCID.SkeletronPrime)
+					{
+						player.QuickSpawnItem(ModContent.ItemType<Loot3>(), Main.rand.Next(5, 10));
+					}
+					if (npc.type == NPCID.Spazmatism && !NPC.AnyNPCs(NPCID.Retinazer))
+					{
+						player.QuickSpawnItem(ModContent.ItemType<Loot3>(), Main.rand.Next(5, 10));
+					}
+					if (npc.type == NPCID.Retinazer && !NPC.AnyNPCs(NPCID.Spazmatism))
+					{
+						player.QuickSpawnItem(ModContent.ItemType<Loot3>(), Main.rand.Next(5, 10));
+					}
+					if (npc.type == NPCID.TheDestroyer)
+					{
+						player.QuickSpawnItem(ModContent.ItemType<Loot3>(), Main.rand.Next(5, 10));
+					}
+					if (npc.type == NPCID.Plantera)
+					{
+						player.QuickSpawnItem(ModContent.ItemType<Loot3>(), Main.rand.Next(10, 25));
+					}
+					if (npc.type == NPCID.Golem)
+					{
+						player.QuickSpawnItem(ModContent.ItemType<Loot3>(), Main.rand.Next(25, 50));
+					}
+					if (npc.type == NPCID.DukeFishron)
+					{
+						player.QuickSpawnItem(ModContent.ItemType<Loot4>(), Main.rand.Next(5, 10));
+					}
+					if (npc.type == NPCID.CultistBoss)
+					{
+						player.QuickSpawnItem(ModContent.ItemType<Loot4>(), Main.rand.Next(1, 5));
+					}
+					if (npc.type == NPCID.MoonLordCore)
+					{
+						player.QuickSpawnItem(ModContent.ItemType<Loot5>(), Main.rand.Next(1, 5));
 					}
 				}
 				else

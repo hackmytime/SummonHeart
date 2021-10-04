@@ -147,7 +147,7 @@ namespace SummonHeart.Projectiles
 			if (projectile.type == 388)
 			{
 				projectile.usesLocalNPCImmunity = true;
-				projectile.localNPCHitCooldown = 1;
+				projectile.localNPCHitCooldown = 0;
 			}
         }
     }

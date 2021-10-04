@@ -6,6 +6,7 @@ using SummonHeart.Extensions;
 using SummonHeart.Extensions.TurretSystem;
 using SummonHeart.Items;
 using SummonHeart.Items.Range.Tools;
+using SummonHeart.Projectiles.Range.Bullet;
 using SummonHeart.ui;
 using SummonHeart.ui.Bar;
 using System;
@@ -524,6 +525,25 @@ namespace SummonHeart
 							SummonHeartPlayer modPlayer = Main.player[playernumber].GetModPlayer<SummonHeartPlayer>();
 							modPlayer.detonate = true;
                         }
+					}
+					break;
+				case 11:
+					{
+						if (Main.netMode == NetmodeID.MultiplayerClient)
+                        {
+							if (Main.LocalPlayer.whoAmI != 0)
+								return;
+							/*byte playernumber = reader.ReadByte();
+							SummonHeartPlayer modPlayer = Main.player[playernumber].GetModPlayer<SummonHeartPlayer>();
+							modPlayer.detonate = true;*/
+							int i = reader.ReadInt32();
+							int projID = reader.ReadInt32();
+							int shootDamage = reader.ReadInt32();
+							int shootKnockback = reader.ReadInt32();
+							NPC target = Main.npc[i];
+							int projIndex = Projectile.NewProjectile(target.Center.X, target.Center.Y, 0f, 0f, ModContent.ProjectileType<BoltBulletPro>(), shootDamage, shootKnockback, Main.myPlayer);
+							Main.projectile[projIndex].netUpdate = true;
+						}
 					}
 					break;
 				default:

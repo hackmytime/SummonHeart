@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using SummonHeart.Extensions.TurretSystem;
 using SummonHeart.Projectiles.Range;
+using SummonHeart.Utilities;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -67,11 +68,22 @@ namespace SummonHeart.NPCs.Range
                 {
                     bool flag = Vector2.Distance(target.Center, GetMountOrigin()) < targetRange;
                     bool lineOfSight = Collision.CanHitLine(GetMountOrigin(), 5, 5, target.position, target.width, target.height);
+                    lineOfSight = true;
                     if (flag && lineOfSight)
                     {
-                        int projIndex = Projectile.NewProjectile(target.Center.X, target.Center.Y, 0f, 0f, projID, shootDamage, shootKnockback, Main.myPlayer, GetMountOrigin().X, GetMountOrigin().Y);
-                        Main.projectile[projIndex].friendly = true;
-                        Main.projectile[projIndex].netUpdate = true;
+                        if (Main.netMode == NetmodeID.SinglePlayer)
+                        {
+                            int projIndex = Projectile.NewProjectile(target.Center.X, target.Center.Y, 0f, 0f, projID, shootDamage, shootKnockback, Main.myPlayer, GetMountOrigin().X, GetMountOrigin().Y);
+                            Main.projectile[projIndex].friendly = true;
+                            Main.projectile[projIndex].netUpdate = true;
+                        }
+                        else
+                        {
+                            MsgUtils.TurretShootPacket(i, projID, shootDamage, shootKnockback, GetMountOrigin().X, GetMountOrigin().Y);
+                            int projIndex = Projectile.NewProjectile(target.Center.X, target.Center.Y, 0f, 0f, projID, 0, shootKnockback, Main.myPlayer, GetMountOrigin().X, GetMountOrigin().Y);
+                            Main.projectile[projIndex].friendly = true;
+                            Main.projectile[projIndex].netUpdate = true;
+                        }
                     }
                 }
             }
