@@ -1,4 +1,4 @@
-﻿/*using SummonHeart.Extensions.TurretSystem;
+﻿using SummonHeart.Extensions.TurretSystem;
 using SummonHeart.Items.Range.Power;
 using SummonHeart.Tiles.Range;
 using Terraria.ModLoader;
@@ -25,4 +25,3 @@ namespace SummonHeart.Items.Range.Turret
         }
     }
 }
-*/
