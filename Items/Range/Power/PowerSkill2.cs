@@ -27,8 +27,8 @@ namespace SummonHeart.Items.Range.Power
             item.height = 32;
             item.rare = -12;
             item.value = Item.sellPrice(9999, 0, 0, 0);
-            item.useAnimation = 20;
-            item.useTime = 20;
+            item.useAnimation = 10;
+            item.useTime = 10;
             item.useStyle = 4;
             item.UseSound = SoundID.Item4;
         }

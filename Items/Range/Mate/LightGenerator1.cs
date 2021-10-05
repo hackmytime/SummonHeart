@@ -29,7 +29,7 @@ namespace SummonHeart.Items.Range.Mate
             ModRecipe recipe = new ModRecipe(mod);
             recipe.AddIngredient(ItemID.Wire, 500);
             recipe.AddIngredient(mod.GetItem("MetalUnit"), 50);
-            recipe.SetResult(this, 1);
+            recipe.SetResult(this, 5);
             recipe.AddRecipe();
         }
     }
