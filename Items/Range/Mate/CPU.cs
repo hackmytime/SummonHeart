@@ -27,7 +27,7 @@ namespace SummonHeart.Items.Range.Mate
         public override void AddRecipes()
         {
             ModRecipe recipe = new ModRecipe(mod);
-            recipe.AddIngredient(mod.GetItem("PureSi"), 5);
+            recipe.AddIngredient(mod.GetItem("PureSi"), 1);
             recipe.AddIngredient(mod.GetItem("UnitWire"), 1);
             recipe.SetResult(this);
             recipe.AddRecipe();

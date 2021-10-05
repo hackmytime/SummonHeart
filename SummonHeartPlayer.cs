@@ -298,7 +298,7 @@ namespace SummonHeart
 				DropOresTwice = false;
 			}
 
-			if(player.active && !player.dead && Main.time % 60 == 0)
+			if(player.active && !player.dead)
             {
 				if(infiniBuffDic.Keys.Count < buffMaxCount)
                 {
