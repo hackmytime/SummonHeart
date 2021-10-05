@@ -82,13 +82,6 @@ namespace SummonHeart.ui.DinoUI
             }
             if (!HasLoot())
             {
-                PowerGItem powerGItem = DNASlot.item.GetGlobalItem<PowerGItem>();
-                int costCount = powerGItem.powerLevel;
-                if (costCount == 0)
-                    costCount = 1;
-                if (fossilSlot.item.stack >= costCount)
-                    canRoll = true;
-                Main.NewText($"至少需要{costCount}个{powerGItem.itemRare}级生物材料", byte.MaxValue, 50, 50, false);
                 canRoll = false;
             }
             if (canRoll)
@@ -137,7 +130,17 @@ namespace SummonHeart.ui.DinoUI
             PowerGItem powerGItem = DNASlot.item.GetGlobalItem<PowerGItem>();
             powerGItem.setItemRare(DNASlot.item);
             int itemRare = powerGItem.itemRare;
-            if(itemRare == 6)
+
+            int costCount = powerGItem.powerLevel;
+            if (costCount == 0)
+                costCount = 1;
+            if (fossilSlot.item.stack < costCount)
+            {
+                Main.NewText($"至少需要{costCount}个{powerGItem.itemRare}级生物材料", byte.MaxValue, 50, 50, false);
+                return false;
+            }
+
+            if (itemRare == 6)
             {
                 if (fossilSlot.item.rare == -12)
                     return true;

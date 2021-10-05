@@ -36,8 +36,8 @@ namespace SummonHeart.Items.Range.Turret
             ModRecipe modRecipe = new ModRecipe(mod);
             modRecipe.AddIngredient(ModContent.ItemType<LightGenerator3>(), 5);
             modRecipe.AddIngredient(ModContent.ItemType<CoreComputer>(), 1);
-            modRecipe.AddIngredient(ModContent.ItemType<Power6>(), 50);
-            modRecipe.AddIngredient(ModContent.ItemType<PowerArmor6>(), 5);
+            modRecipe.AddIngredient(ModContent.ItemType<Power6>(), 10);
+            modRecipe.AddIngredient(ModContent.ItemType<PowerArmor6>(), 1);
             modRecipe.AddIngredient(ModContent.ItemType<MetalUnit>(), 500);
             modRecipe.SetResult(this, 1);
             modRecipe.AddRecipe();

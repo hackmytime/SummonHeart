@@ -28,7 +28,7 @@ namespace SummonHeart.Items.Range.Mate
         {
             ModRecipe recipe = new ModRecipe(mod);
             recipe.AddIngredient(ItemID.Wire, 100);
-            recipe.AddIngredient(ItemID.Glass, 50);
+            recipe.AddIngredient(ItemID.Glass, 20);
             recipe.SetResult(this);
             recipe.AddRecipe();
         }
