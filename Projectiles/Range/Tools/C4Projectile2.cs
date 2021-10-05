@@ -38,7 +38,7 @@ namespace SummonHeart.Projectiles.Range.Tools
         public override void SafeSetDefaults()
         {
             pickPower = 70;
-            radius = 20;
+            radius = 2;
             projectile.tileCollide = true;
             projectile.width = 32;
             projectile.height = 32;

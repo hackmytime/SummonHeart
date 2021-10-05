@@ -12,8 +12,8 @@ namespace SummonHeart.Items.Range.Tools.Bomb
         {
             DisplayName.SetDefault("C4Item2");
             Tooltip.SetDefault("C4Item2");
-            DisplayName.AddTranslation(GameCulture.Chinese, "3级科技造物·爆破工程炸弹【立即爆炸型号】");
-            Tooltip.AddTranslation(GameCulture.Chinese, "爆炸半径：20码" +
+            DisplayName.AddTranslation(GameCulture.Chinese, "3级科技造物·炮塔爆破工程炸弹【立即爆炸型号】");
+            Tooltip.AddTranslation(GameCulture.Chinese, "爆炸半径：2码" +
                 "\n爆炸伤害：1000" +
                 "\n接触物块和敌人立即爆炸");
         }
@@ -45,10 +45,6 @@ namespace SummonHeart.Items.Range.Tools.Bomb
             recipe.AddIngredient(ItemID.Gel, 100);
             recipe.AddIngredient(ModContent.ItemType<HotUnit>(), 5);
             recipe.SetResult(this, 100);
-            recipe.AddRecipe();
-            recipe = new ModRecipe(mod);
-            recipe.AddIngredient(ModContent.ItemType<C4Item>(), 10);
-            recipe.SetResult(this, 10);
             recipe.AddRecipe();
         }
     }

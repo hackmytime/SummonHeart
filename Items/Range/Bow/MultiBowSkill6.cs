@@ -77,7 +77,7 @@ namespace SummonHeart.Items.Range.Bow
                         if (Builder.CanPayCost(costArr, player))
                         {
                             Builder.PayCost(costArr, player);
-                            item.GetGlobalItem<SkillBase>().skillUseCount++;
+                            item.GetGlobalItem<SkillBase>().skillUseCount++;baseItem.GetGlobalItem<PowerGItem>().powerLevel = 0;
                             baseItem.GetGlobalItem<SkillGItem>().skillType = SkillType.MultiBow;
                             baseItem.GetGlobalItem<SkillGItem>().skillLevel = 6;
                             baseItem.GetGlobalItem<SkillGItem>().curPower = 500000;

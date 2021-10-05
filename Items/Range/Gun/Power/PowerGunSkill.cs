@@ -80,7 +80,7 @@ namespace SummonHeart.Items.Range.Gun.Power
                         if (Builder.CanPayCost(costArr, player))
                         {
                             Builder.PayCost(costArr, player);
-                            item.GetGlobalItem<SkillBase>().skillUseCount++;
+                            item.GetGlobalItem<SkillBase>().skillUseCount++;baseItem.GetGlobalItem<PowerGItem>().powerLevel = 0;
                             baseItem.GetGlobalItem<SkillGItem>().skillType = SkillType.PowerGun;
                             baseItem.GetGlobalItem<SkillGItem>().skillLevel = 1;
                             baseItem.GetGlobalItem<SkillGItem>().curPower = 10000;
