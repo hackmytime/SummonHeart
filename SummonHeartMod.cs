@@ -25,8 +25,6 @@ namespace SummonHeart
 {
     public class SummonHeartMod : Mod
 	{
-		/*	public static SummonHeartMod instance;*/
-
 		private ModUIHandler UIhandler = new ModUIHandler();
 
 		internal static List<BuffValue> modBuffValues = new List<BuffValue>();
@@ -40,6 +38,10 @@ namespace SummonHeart
 
 		public static int DustIDSlashFX;
 
+		internal static GamePlayConfig gpConfig;
+		internal static NPCConfig NPCConfig;
+		internal static VisualConfig visualConfig;
+
 		// Hotkeys
 		internal static ModHotKey AutoAttackKey;
 		internal static ModHotKey ShowUI;
@@ -52,6 +54,8 @@ namespace SummonHeart
 		internal static ModHotKey DoubleDamageKey;
 		internal static ModHotKey BuffKey;
 		internal static ModHotKey TriggerExplosion;
+		internal static ModHotKey FreezeKey;
+		internal static ModHotKey GoldKey;
 
 		internal PanelMelee PanelMeleeUI;
 		internal PanelKill PanelKillUI;
@@ -66,6 +70,9 @@ namespace SummonHeart
 
 		internal PanelMagic2 magic2UI;
 		public UserInterface magic2Interface;
+
+		internal PanelXiuXian xiuxianUI;
+		public UserInterface xiuxianInterface;
 
 		/*internal PanelGodSoul godSoulUI;
 		public UserInterface godSoulInterface;*/
@@ -93,6 +100,13 @@ namespace SummonHeart
 		
 		internal PanelBuff panelBuff;
 		private UserInterface panelBuffInterface;
+
+		internal HealthBar healthBar;
+		public UserInterface customResources;
+		internal OpenStatsButton openStatMenu;
+		internal Stats statMenu;
+		public UserInterface customstats;
+		public UserInterface customOpenstats;
 
 		public static SummonHeartMod Instance;
 
@@ -164,6 +178,28 @@ namespace SummonHeart
 			DoubleDamageKey = RegisterHotKey("泰坦双倍偿还技能", Keys.K.ToString());
 			BuffKey = RegisterHotKey("无限法则菜单", Keys.M.ToString());
 			TriggerExplosion = RegisterHotKey("引爆工程炸弹", "Mouse2");
+			FreezeKey = RegisterHotKey("冻结时间", "O");
+			GoldKey = RegisterHotKey("修炼", "P");
+
+			customResources = new UserInterface();
+			healthBar = new HealthBar();
+			HealthBar.visible = true;
+			customResources.SetState(healthBar);
+
+			customstats = new UserInterface();
+			statMenu = new Stats();
+			Stats.visible = false;
+			customstats.SetState(statMenu);
+
+			customOpenstats = new UserInterface();
+			openStatMenu = new OpenStatsButton();
+			OpenStatsButton.visible = true;
+			customOpenstats.SetState(openStatMenu);
+
+			xiuxianUI = new PanelXiuXian();
+			xiuxianUI.Initialize();
+			xiuxianInterface = new UserInterface();
+			xiuxianInterface.SetState(xiuxianUI);
 			// this makes sure that the UI doesn't get opened on the server
 			// the server can't see UI, can it? it's just a command prompt
 			if (Main.netMode != 2)
@@ -242,6 +278,7 @@ namespace SummonHeart
 						magic2Interface = new UserInterface();
 						magic2Interface.SetState(magic2UI);
 					}
+					
 					/*godSoulUI = new PanelGodSoul();
 					godSoulUI.Initialize();
 					godSoulInterface = new UserInterface();
@@ -262,7 +299,9 @@ namespace SummonHeart
 					panelBuff = new PanelBuff();
 					panelBuffInterface = new UserInterface();
 					panelBuffInterface.SetState(panelBuff);
+
 					
+
 				}
 				catch (Exception ex)
 				{
@@ -781,6 +820,14 @@ namespace SummonHeart
 				}
 				panelBuff.needValidate = true;
 			}
+
+			if (!Main.gameMenu && modPlayer.PlayerClass == 9)
+			{
+				customResources?.Update(gameTime);
+				customstats?.Update(gameTime);
+				customOpenstats?.Update(gameTime);
+				xiuxianInterface?.Update(gameTime);
+			}
 		}
 
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
@@ -879,6 +926,19 @@ namespace SummonHeart
 			if (!Main.gameMenu && PanelBuff.visible)
 			{
 				panelBuffInterface.Draw(Main.spriteBatch, new GameTime());
+			}
+			if (!Main.gameMenu && modPlayer.PlayerClass == 9)
+			{
+				customResources.Draw(Main.spriteBatch, new GameTime());
+				customOpenstats.Draw(Main.spriteBatch, new GameTime());
+                if (PanelXiuXian.visible)
+                {
+					xiuxianInterface.Draw(Main.spriteBatch, new GameTime());
+				}
+			}
+			if (!Main.gameMenu && Stats.visible)
+			{
+				customstats.Draw(Main.spriteBatch, new GameTime());
 			}
 			return true;
 		}

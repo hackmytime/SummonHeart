@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using SummonHeart.Buffs.XiuXian;
 using SummonHeart.Effects.Animations.Aura;
 using SummonHeart.Extensions;
 using SummonHeart.Items.Material;
@@ -6,6 +7,7 @@ using SummonHeart.Items.Range;
 using SummonHeart.Items.Weapons.Magic;
 using SummonHeart.Models;
 using SummonHeart.Projectiles.Summon;
+using SummonHeart.Projectiles.XiuXian;
 using SummonHeart.ui;
 using SummonHeart.Utilities;
 using System;
@@ -146,6 +148,9 @@ namespace SummonHeart
 		public float attackDamage;
 		public int lifeSteal;
 
+		//修仙
+		public bool XiuLian;
+
 
 		public SummonHeartPlayer()
 		{
@@ -186,6 +191,7 @@ namespace SummonHeart
 
 		public override void ResetEffects()
 		{
+			XiuLian = false;
 			SummonHeart = false;
 			MysteriousCrystal = false;
 			AttackSpeed = 1f;
@@ -284,6 +290,18 @@ namespace SummonHeart
 				player.UpdateCoins();
 			}
 
+			if (XiuLian)
+			{
+				player.immune = true;
+				player.immuneTime = 2;
+				player.hurtCooldowns[0] = 2;
+				player.hurtCooldowns[1] = 2;
+				player.stealth = 1;
+
+				if (player.ownedProjectileCounts[ModContent.ProjectileType<XiuLianProj>()] <= 0)
+					Projectile.NewProjectile(player.Center.X, player.Center.Y, 0f, 0f, ModContent.ProjectileType<XiuLianProj>(), 0, 0, Main.myPlayer);
+			}
+
 			if (Main.netMode != 2)
 			{
 				ModPlayerEffects.UpdateColors(player);
@@ -358,9 +376,9 @@ namespace SummonHeart
 		{
 			currentAura = this.GetAuraEffectOnPlayer();
 			IncrementAuraFrameTimers(currentAura);
-
+			
             //特效
-            if (onDoubleDamage && damageResourceCurrent > 0)
+            if (XiuLian || (onDoubleDamage && damageResourceCurrent > 0))
             {
                 int dustId = MyDustId.BlueMagic;
 				for (int d = 0; d < 2; d++)
@@ -1202,6 +1220,39 @@ namespace SummonHeart
 
 		public override void ProcessTriggers(TriggersSet triggersSet)
 		{
+			if (SummonHeartMod.GoldKey.JustPressed && PlayerClass == 9)
+			{
+				if (XiuLian)
+				{
+					CombatText.NewText(player.getRect(), Color.LightGreen, "已停止修炼");
+					player.ClearBuff(ModContent.BuffType<GoldenStasis>());
+				}
+				else
+				{
+					if (!player.HasBuff(ModContent.BuffType<GoldenStasis>()) && !player.HasBuff(ModContent.BuffType<GoldenStasisCD>()))
+					{
+						int duration = 3600;
+
+						duration *= 60 *24;
+
+						player.AddBuff(ModContent.BuffType<GoldenStasis>(), duration);
+						player.AddBuff(ModContent.BuffType<GoldenStasisCD>(), 3600);
+
+						Main.PlaySound(mod.GetLegacySoundSlot(SoundType.Custom, "Sounds/Zhonyas").WithVolume(1f), player.Center);
+						CombatText.NewText(player.getRect(), Color.LightGreen, "进入修炼状态");
+                    }
+                    else
+                    {
+						CombatText.NewText(player.getRect(), Color.Red, "暂时无法进入修炼状态");
+                    }
+				}
+				
+			}
+
+			if (XiuLian)
+			{
+				return;
+			}
 			if (SummonHeartMod.AutoAttackKey.JustPressed)
 			{
 				autoAttack = !autoAttack;
@@ -1236,6 +1287,7 @@ namespace SummonHeart
 				PanelMagic2.visible = false;
 				PanelGodSoul.visible = false;
 				PanelBuff.visible = false;
+				PanelXiuXian.visible = false;
 			}
 
 			if (SummonHeartMod.ShowUI.JustPressed)
@@ -1266,6 +1318,10 @@ namespace SummonHeart
 				else if (PlayerClass == 6)
 				{
 					PanelMagic2.visible = !PanelMagic2.visible;
+				}
+				else if (PlayerClass == 9)
+				{
+					PanelXiuXian.visible = !PanelXiuXian.visible;
 				}
 			}
 			if (SummonHeartMod.KillSkillKey.JustPressed)
@@ -1619,6 +1675,10 @@ namespace SummonHeart
 				var index = layers.FindIndex(x => x.Name == "MiscEffectsBack");
 				layers.Insert(index, AnimationHelper.auraEffect);
             }
+
+			if (XiuLian) //dont draw player during betsy dash
+				while (layers.Count > 0)
+					layers.RemoveAt(0);
 		}
 
         public override void PostItemCheck()
