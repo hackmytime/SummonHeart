@@ -76,7 +76,7 @@ namespace SummonHeart.ui
             int columnCount = maxWidth / (32 + 10);
             maxWidth = columnCount * (32 + 10);
             panel.panelWidth = maxWidth;
-            panel.panelHeight = (int)(Main.screenHeight * 0.83);
+            panel.panelHeight = (int)(Main.screenHeight * 0.80);
 
             buffGrid.SetColumnCount(columnCount);
 
@@ -100,85 +100,48 @@ namespace SummonHeart.ui
             {
                 var modbuffpanel = new Layout(10, 0, 0, 0, 10, new LayoutVertical());
 
-                var modlabel = new UIText("仙道势力-『轮回魔功』传承：原本是由超越究极层次的至强道境因果大道所创");
-                modlabel.TextColor = new Color(232, 181, 16);
-                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
-                modlabel = new UIText("在你降维到入侵泰拉世界时，受到泰拉世界意志的疯狂攻击从而失去绝大部分力量");
-                modlabel.TextColor = new Color(232, 181, 16);
-                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
-                modlabel = new UIText("因果大道不得不降阶到轮回大道，并且你的功法受到了泰拉世界意志的疯狂压制。");
-                modlabel.TextColor = new Color(232, 181, 16);
-                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
-                modlabel = new UIText("现在只能发挥出黄阶下品功法的威力，但依然保持了轮回之道的部分力量。");
-                modlabel.TextColor = new Color(232, 181, 16);
-                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
+                var modlabel_max = new UIText("姓名：" + mp.player.name);
+                modlabel_max.TextColor = Color.LightBlue;
+                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_max));
 
-                int totalBoodGas = mp.eyeBloodGas + mp.handBloodGas + mp.bodyBloodGas + mp.footBloodGas;
-
-                var modlabel_level = new UIText("功法：轮回魔功 等阶：黄阶下品");
-                modlabel_level.TextColor = Color.SkyBlue;
-                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-                modlabel_level = new UIText("战斗灵力回复：1/s 修炼状态加速：10倍加速 升级所需道源：1");
-                modlabel_level.TextColor = Color.SkyBlue;
-                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
-
-                modlabel = new UIText("功法力量掌控境界：力境Ⅰ");
-                modlabel.TextColor = new Color(232, 181, 16);
-                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
-
-                modlabel = new UIText("功法气血加成：1.2倍");
-                modlabel.TextColor = new Color(232, 181, 16);
-                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
-
-                modlabel = new UIText("功法灵攻加成：1.2倍");
-                modlabel.TextColor = new Color(232, 181, 16);
-                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
-
-                modlabel = new UIText("功法灵防加成：1.2倍");
-                modlabel.TextColor = new Color(232, 181, 16);
-                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
-
-                modlabel = new UIText("功法特殊能力：生死轮回 主动轮回次数：0");
-                modlabel.TextColor = new Color(232, 181, 16);
-                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
-
-                modlabel = new UIText("被动：生死轮回，不死之身，当你气血归0时，你会复活。『消耗1年寿命复活』");
-                modlabel.TextColor = new Color(232, 181, 16);
-                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
-
-                modlabel = new UIText("主动：你献祭一身修为，灵力归0，获得轮回道源，用于提升你的基础属性和功法等阶。『至少需要129600才可以献祭』");
-                modlabel.TextColor = new Color(232, 181, 16);
-                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
-
-                string worldLevel = "凡人";
-                var modlabel_max = new UIText("境界："+worldLevel);
+                modlabel_max = new UIText("身份：高维宇宙仙道势力入侵者");
                 modlabel_max.TextColor = Color.Red;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_max));
+
+                string worldLevel = "凡人";
+                modlabel_max = new UIText("境界：" + worldLevel);
+                modlabel_max.TextColor = Color.Red;
+                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_max));
+
+                var modlabel = new UIText("年龄：0岁");
+                modlabel.TextColor = Color.LightBlue;
+                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
+
+                modlabel = new UIText("寿命：60年『随时间流逝减少，破境时增加寿命』");
+                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
 
                 modlabel_max = new UIText("灵根：废品 修炼速度加成：0.1倍");
                 modlabel_max.TextColor = Color.Magenta;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_max));
 
                 modlabel = new UIText("悟性：（0）废品『影响修炼功法速度』");
+                modlabel.TextColor = Color.Magenta;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
 
                 modlabel = new UIText("魅力：（0）憎恶 『决定npc的售卖价格』");
+                modlabel.TextColor = Color.Magenta;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
 
                 modlabel = new UIText("气运：（0）天道弃子『幸运-爆率』");
+                modlabel.TextColor = Color.Magenta;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
 
                 modlabel = new UIText("道心：（0）咸鱼『肝度和难度，道心决定了道源转换倍率，道心越高转换的道源越多，最高提升10倍』");
+                modlabel.TextColor = Color.Magenta;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
 
                 modlabel = new UIText("道源：30『初始奖励，每+1点道心奖励2点道源』");
-                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
-
-                modlabel = new UIText("年龄：0岁");
-                modlabel.TextColor = Color.LightBlue;
-                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
-
-                modlabel = new UIText("寿命：60年『随时间流逝减少，破境时增加寿命』");
+                modlabel.TextColor = Color.Magenta;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
 
                 modlabel = new UIText("气血：10");
@@ -192,6 +155,52 @@ namespace SummonHeart.ui
 
                 modlabel = new UIText("灵防：1");
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
+
+
+                var modlabel_level = new UIText("所修功法：轮回魔功 当前等阶：黄阶下品");
+                modlabel_level.TextColor = Color.Red;
+                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
+
+                modlabel = new UIText("功法介绍：原本是由超越究极层次的至强道境因果大道所创，在你降维入侵泰拉世界时");
+                modlabel.TextColor = new Color(232, 181, 16);
+                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
+                modlabel = new UIText("受到泰拉世界意志的疯狂攻击从而失去绝大部分力量，因果大道不得不降阶到轮回大道，并且你的功法受");
+                modlabel.TextColor = new Color(232, 181, 16);
+                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
+                modlabel = new UIText("到了泰拉世界意志的疯狂压制，现在只能发挥出黄阶下品功法的威力，但依然保持了轮回之道的部分力量。");
+                modlabel.TextColor = new Color(232, 181, 16);
+                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
+                
+
+                modlabel_level = new UIText("战斗灵力回复：1/s 修炼状态加速：10倍加速 升级所需道源：1");
+                modlabel_level.TextColor = Color.SkyBlue;
+                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
+
+                modlabel = new UIText("功法力量掌控境界：力境Ⅰ");
+                modlabel.TextColor = new Color(232, 181, 16);
+                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
+
+                modlabel = new UIText("功法气血加成：1.2倍 灵攻加成：1.2倍 灵防加成：1.2倍");
+                modlabel.TextColor = new Color(232, 181, 16);
+                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
+
+                modlabel = new UIText("功法特殊能力：生死轮回 主动轮回次数：0");
+                modlabel.TextColor = new Color(232, 181, 16);
+                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
+
+                modlabel = new UIText("被动：生死轮回，不死之身，当你气血归0时，你会复活。『消耗1年寿命复活』");
+                modlabel.TextColor = new Color(232, 181, 16);
+                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
+
+                modlabel = new UIText("主动：你献祭一身修为，灵力归0，获得轮回道源，用于提升你的基础属性和功法等阶。");
+                modlabel.TextColor = new Color(232, 181, 16);
+                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
+
+                modlabel = new UIText("『至少需要129600才可以献祭』");
+                modlabel.TextColor = new Color(232, 181, 16);
+                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
+
+
 
                 var modbuffgridpanel = new Layout(0, 0, 0, 0, 10, buffGrid);
                 modbuffpanel.children.Add(modbuffgridpanel);

@@ -15,7 +15,7 @@ namespace SummonHeart.RPGModule.Entities
 
         public int XpForLevel()
         {
-            return Mathf.CeilInt(Mathf.Pow(level * 0.04f, 0.75f)) + 1;
+            return Mathf.CeilInt(Mathf.Pow(level * 2f, 1f)) + 1;
         }
         public void AddXp(int _xp)
         {

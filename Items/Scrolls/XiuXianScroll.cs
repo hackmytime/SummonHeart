@@ -5,11 +5,11 @@ using Terraria.Localization;
 
 namespace SummonHeart.Items.Scrolls
 {
-    public class RpgScroll : ModItem
+    public class XiuXianScroll : ModItem
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("MagicScroll");
+            DisplayName.SetDefault("XiuXianScroll");
             Tooltip.SetDefault("Can synthesize the roulette of destiny of each difficulty");
             DisplayName.AddTranslation(GameCulture.Chinese, "修仙者");
             Tooltip.AddTranslation(GameCulture.Chinese, "你是高维宇宙仙道势力入侵者" +
@@ -17,8 +17,8 @@ namespace SummonHeart.Items.Scrolls
                 "\n凡人→炼气→筑基→金丹→元婴→化神→合体→渡劫→大乘→散仙→金仙→大罗金仙→混元大罗金仙→半圣→圣人→圣尊→圣王→无上境→道境" +
                 "\n有道是：" +
                 "\n仙路尽头谁为峰" +
-                "\n答案由你谱写" +
-                "\n提示：道友可有道心，道心必定伤肝"
+                "\n答案将由你谱写" +
+                "\n提示：修仙需有道心，道心必定伤肝"
                 );
         }
 

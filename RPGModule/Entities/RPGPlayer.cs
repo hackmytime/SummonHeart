@@ -97,8 +97,8 @@ namespace SummonHeart.RPGModule.Entities
             return Exp;
         }
 
-        private int totalPoints = 0;
-        private int freePoints = 0;
+        private int totalPoints = 10;
+        private int freePoints = 10;
 
 
         public int FreePtns { get { return freePoints; } }
@@ -153,16 +153,16 @@ namespace SummonHeart.RPGModule.Entities
 
         public float GetDefenceMult()
         {
-            return (GetStatImproved(Stat.Vit) * 0.0025f + GetStatImproved(Stat.Cons) * 0.006f) * statMultiplier + 1f;
+            return (GetStatImproved(Stat.灵根) * 0.0025f + GetStatImproved(Stat.魅力) * 0.006f) * statMultiplier + 1f;
         }
 
         public float GetHealthPerHeart()
         {
-            return (GetStatImproved(Stat.Vit) * 0.65f + GetStatImproved(Stat.Cons) * 0.325f) * statMultiplier + 10;
+            return (GetStatImproved(Stat.灵根) * 0.65f + GetStatImproved(Stat.魅力) * 0.325f) * statMultiplier + 10;
         }
         public float GetManaPerStar()
         {
-            return (GetStatImproved(Stat.Foc) * 0.2f + GetStatImproved(Stat.Int) * 0.05f) * statMultiplier + 10;
+            return (GetStatImproved(Stat.悟性) * 0.2f + GetStatImproved(Stat.体质) * 0.05f) * statMultiplier + 10;
         }
 
         public void ApplyReduction(ref int damage, bool heal = false)
@@ -183,12 +183,12 @@ namespace SummonHeart.RPGModule.Entities
 
         public float GetArmorPenetrationMult()
         {
-            return 1f + Stats.GetStat(Stat.Dex) * 0.01f;
+            return 1f + Stats.GetStat(Stat.功法) * 0.01f;
         }
 
         public int GetArmorPenetrationAdd()
         {
-            return Mathf.FloorInt(Stats.GetStat(Stat.Dex) * 0.1f);
+            return Mathf.FloorInt(Stats.GetStat(Stat.功法) * 0.1f);
         }
 
 
@@ -251,19 +251,20 @@ namespace SummonHeart.RPGModule.Entities
 
         public void ResetStats()
         {
+            totalPoints+=1000;
             Stats.Reset(level);
             freePoints = totalPoints;
         }
 
         public float GetCriticalChanceBonus()
         {
-            float X = Mathf.Pow(GetStatImproved(Stat.Foc) * statMultiplier + GetStatImproved(Stat.Dex) * statMultiplier, 0.8f) * 0.05f;
+            float X = Mathf.Pow(GetStatImproved(Stat.悟性) * statMultiplier + GetStatImproved(Stat.功法) * statMultiplier, 0.8f) * 0.05f;
             Mathf.Clamp(X, 0, 75);
             return X;
         }
         public float GetCriticalDamage()
         {
-            float X = Mathf.Pow(GetStatImproved(Stat.Agi) * statMultiplier + GetStatImproved(Stat.Str) * statMultiplier, 0.8f) * 0.005f;
+            float X = Mathf.Pow(GetStatImproved(Stat.道心) * statMultiplier + GetStatImproved(Stat.气运) * statMultiplier, 0.8f) * 0.005f;
             return 1.4f + X;
         }
 
@@ -284,7 +285,7 @@ namespace SummonHeart.RPGModule.Entities
         public float GetHealthRegen()
         {
             float RegenMultiplier = 1f;
-            return (GetStatImproved(Stat.Vit) + GetStatImproved(Stat.Cons)) * 0.02f * statMultiplier * RegenMultiplier;
+            return (GetStatImproved(Stat.灵根) + GetStatImproved(Stat.魅力)) * 0.02f * statMultiplier * RegenMultiplier;
         }
         public float GetManaRegen()
         {
@@ -292,7 +293,7 @@ namespace SummonHeart.RPGModule.Entities
             if (player.manaRegenDelay > 0)
                 RegenMultiplier *= 0.5f;
 
-            return (GetStatImproved(Stat.Int) + GetStatImproved(Stat.Spr)) * 0.02f * statMultiplier * RegenMultiplier;
+            return (GetStatImproved(Stat.体质) + GetStatImproved(Stat.力量)) * 0.02f * statMultiplier * RegenMultiplier;
         }
 
 
@@ -329,21 +330,21 @@ namespace SummonHeart.RPGModule.Entities
             switch (type)
             {
                 case DamageType.Magic:
-                    return (GetStatImproved(Stat.Int) * MAINSTATSMULT + GetStatImproved(Stat.Spr) * SECONDARYTATSMULT) * statMultiplier + 0.8f;
+                    return (GetStatImproved(Stat.体质) * MAINSTATSMULT + GetStatImproved(Stat.力量) * SECONDARYTATSMULT) * statMultiplier + 0.8f;
                 case DamageType.Ranged:
-                    return (GetStatImproved(Stat.Agi) * MAINSTATSMULT + GetStatImproved(Stat.Dex) * SECONDARYTATSMULT) * statMultiplier + 0.8f;
+                    return (GetStatImproved(Stat.道心) * MAINSTATSMULT + GetStatImproved(Stat.功法) * SECONDARYTATSMULT) * statMultiplier + 0.8f;
                 case DamageType.Summon:
-                    return (GetStatImproved(Stat.Spr) * MAINSTATSMULT + GetStatImproved(Stat.Foc) * SECONDARYTATSMULT) * statMultiplier + 0.8f;
+                    return (GetStatImproved(Stat.力量) * MAINSTATSMULT + GetStatImproved(Stat.悟性) * SECONDARYTATSMULT) * statMultiplier + 0.8f;
                 case DamageType.Throw:
-                    return (GetStatImproved(Stat.Dex) * MAINSTATSMULT + GetStatImproved(Stat.Str) * SECONDARYTATSMULT) * statMultiplier + 0.8f;
+                    return (GetStatImproved(Stat.功法) * MAINSTATSMULT + GetStatImproved(Stat.气运) * SECONDARYTATSMULT) * statMultiplier + 0.8f;
                 case DamageType.Symphonic:
-                    return (GetStatImproved(Stat.Agi) * SECONDARYTATSMULT + GetStatImproved(Stat.Foc) * SECONDARYTATSMULT) * statMultiplier + 0.8f;
+                    return (GetStatImproved(Stat.道心) * SECONDARYTATSMULT + GetStatImproved(Stat.悟性) * SECONDARYTATSMULT) * statMultiplier + 0.8f;
                 case DamageType.Radiant:
-                    return (GetStatImproved(Stat.Int) * SECONDARYTATSMULT + GetStatImproved(Stat.Spr) * SECONDARYTATSMULT) * statMultiplier + 0.8f;
+                    return (GetStatImproved(Stat.体质) * SECONDARYTATSMULT + GetStatImproved(Stat.力量) * SECONDARYTATSMULT) * statMultiplier + 0.8f;
                 case DamageType.KI:
-                    return (GetStatImproved(Stat.Spr) * MAINSTATSMULT + GetStatImproved(Stat.Str) * SECONDARYTATSMULT) * statMultiplier + 0.8f;
+                    return (GetStatImproved(Stat.力量) * MAINSTATSMULT + GetStatImproved(Stat.气运) * SECONDARYTATSMULT) * statMultiplier + 0.8f;
                 default:
-                    return (GetStatImproved(Stat.Str) * MAINSTATSMULT + GetStatImproved(Stat.Agi) * SECONDARYTATSMULT) * statMultiplier + 0.8f;
+                    return (GetStatImproved(Stat.气运) * MAINSTATSMULT + GetStatImproved(Stat.道心) * SECONDARYTATSMULT) * statMultiplier + 0.8f;
             }
         }
 
@@ -553,7 +554,6 @@ namespace SummonHeart.RPGModule.Entities
 
         public override void Load(TagCompound tag)
         {
-            damageToApply = 0;
             Exp = tag.GetInt("Exp");
             level = tag.GetInt("level");
             LoadStats(tag.GetIntArray("Stats"), tag.GetIntArray("StatsXP"));

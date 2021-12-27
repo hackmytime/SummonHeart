@@ -96,7 +96,7 @@ namespace SummonHeart.ui
             PoisonedArrows.SetImage(ModContent.GetTexture("UntoldLegends/Sprites/Ranged/PoisonedArrows0"));
             EaglesEyes.SetImage(ModContent.GetTexture("UntoldLegends/Sprites/Ranged/EaglesEyes0"));
             MarksmansConcentration.SetImage(ModContent.GetTexture("UntoldLegends/Sprites/Ranged/MarksmansConcentration0"));
-            HuntersFocus.SetImage(ModContent.GetTexture("UntoldLegends/Sprites/Ranged/HuntersFocus0"));
+            Hunters悟性us.SetImage(ModContent.GetTexture("UntoldLegends/Sprites/Ranged/Hunters悟性us0"));
             Camouflage.SetImage(ModContent.GetTexture("UntoldLegends/Sprites/Ranged/Camouflage0"));
             ShadowForm.SetImage(ModContent.GetTexture("UntoldLegends/Sprites/Ranged/ShadowForm0"));
             ShadowArrows.SetImage(ModContent.GetTexture("UntoldLegends/Sprites/Ranged/ShadowArrows0"));
@@ -170,13 +170,13 @@ namespace SummonHeart.ui
             {
                 DescriptionText.SetText("[c/ffec00:Marksman's Concentration]\nWhile holding a Bow and not running fast,\nvision decreased but damage increased by 5%\n[c/b40000:Requires: Eagle's Eyes]");
             }
-            if (HuntersFocus.IsMouseHovering)
+            if (Hunters悟性us.IsMouseHovering)
             {
-                DescriptionText.SetText("[c/ffec00:Hunter's Focus]\nWhile holding a Bow and not running fast,\nyou can clearly see all enemies near you\n[c/b40000:Requires: Marksman's Concentration]");
+                DescriptionText.SetText("[c/ffec00:Hunter's 悟性us]\nWhile holding a Bow and not running fast,\nyou can clearly see all enemies near you\n[c/b40000:Requires: Marksman's Concentration]");
             }
             if (Camouflage.IsMouseHovering)
             {
-                DescriptionText.SetText("[c/ffec00:Camouflage]\nWhile standing still or walking very\nslowly, enemy agro is reduced\n[c/b40000:Requires: Hunter's Focus]");
+                DescriptionText.SetText("[c/ffec00:Camouflage]\nWhile standing still or walking very\nslowly, enemy agro is reduced\n[c/b40000:Requires: Hunter's 悟性us]");
             }
             if (ShadowForm.IsMouseHovering)
             {
@@ -302,13 +302,13 @@ namespace SummonHeart.ui
                     else
                     {
                         MarksmansConcentration.SetImage(ModContent.GetTexture("UntoldLegends/Sprites/Ranged/MarksmansConcentration2"));
-                        if (SummonHeartPlayer.HuntersFocus == false)
+                        if (SummonHeartPlayer.Hunters悟性us == false)
                         {
-                            HuntersFocus.SetImage(ModContent.GetTexture("UntoldLegends/Sprites/Ranged/HuntersFocus1"));
+                            Hunters悟性us.SetImage(ModContent.GetTexture("UntoldLegends/Sprites/Ranged/Hunters悟性us1"));
                         }
                         else
                         {
-                            HuntersFocus.SetImage(ModContent.GetTexture("UntoldLegends/Sprites/Ranged/HuntersFocus2"));
+                            Hunters悟性us.SetImage(ModContent.GetTexture("UntoldLegends/Sprites/Ranged/Hunters悟性us2"));
                             if (SummonHeartPlayer.Camouflage == false)
                             {
                                 Camouflage.SetImage(ModContent.GetTexture("UntoldLegends/Sprites/Ranged/Camouflage1"));
@@ -486,19 +486,19 @@ namespace SummonHeart.ui
                 SummonHeartPlayer.SkillPoints--;
             }
         }
-        private void OnHuntersFocus(UIMouseEvent evt, UIElement listeningElement)
+        private void OnHunters悟性us(UIMouseEvent evt, UIElement listeningElement)
         {
             SummonHeartPlayer SummonHeartPlayer = Main.LocalPlayer.GetModPlayer<SummonHeartPlayer>();
-            if (!SummonHeartPlayer.HuntersFocus && SummonHeartPlayer.SkillPoints >= 1 && SummonHeartPlayer.MarksmansConcentration)
+            if (!SummonHeartPlayer.Hunters悟性us && SummonHeartPlayer.SkillPoints >= 1 && SummonHeartPlayer.MarksmansConcentration)
             {
-                SummonHeartPlayer.HuntersFocus = true;
+                SummonHeartPlayer.Hunters悟性us = true;
                 SummonHeartPlayer.SkillPoints--;
             }
         }
         private void OnCamouflage(UIMouseEvent evt, UIElement listeningElement)
         {
             SummonHeartPlayer SummonHeartPlayer = Main.LocalPlayer.GetModPlayer<SummonHeartPlayer>();
-            if (!SummonHeartPlayer.Camouflage && SummonHeartPlayer.SkillPoints >= 1 && SummonHeartPlayer.HuntersFocus)
+            if (!SummonHeartPlayer.Camouflage && SummonHeartPlayer.SkillPoints >= 1 && SummonHeartPlayer.Hunters悟性us)
             {
                 SummonHeartPlayer.Camouflage = true;
                 SummonHeartPlayer.SkillPoints--;

@@ -1,14 +1,14 @@
 ﻿namespace SummonHeart.RPGModule.Enum
 {
-    public enum Stat : byte
+    public enum Stat : int
     {
-        Vit, //Vitality : Increase Health Points, Increase Health Regen, Increase defence (light)
-        Foc, //Focus : Increase Mana, Increase Critical Rate, Increase Sumon Damage (light)
-        Cons, //Constitution : Increase Defences, Increase Health Regen, increase health (light)
-        Str, //Strength : Increase Melee Damage, Increase Critical Damage, Increase Throw Damage (light)
-        Agi, //Agility : Increase Ranged Damage, Increase Critical Damage, Increase Melee Damage (light)
-        Dex, //Dexterity : Increase Throw Damage, Increase Critical Rate, Increase Ranged Damage (light)
-        Int, //Intelect : Increase Magic Damage, Increase Mana Regen, Increase Mana (light)
-        Spr //Spirit : Increase Summon Damage,  Increase Mana Regen, Increase Magic Damage (light)
+        灵根, //影响修炼速度和破境难度废品、凡品、下品、中品、上品、良品、超品、极品、完美、先天、凡仙、仙品
+        悟性, //影响灵技修炼速度
+        魅力, //『决定npc的售卖价格』
+        气运, //『幸运-爆率』
+        道心, //0-10自由选择
+        功法, //轮回仙经进化
+        体质, //影响血量
+        力量  //影响功法力量掌控境界
     }
 }

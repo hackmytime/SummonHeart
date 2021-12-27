@@ -25,7 +25,7 @@ namespace SummonHeart.Items.Weapons.Sabres
 
         public static int DustAmount(Player player) { return player.whoAmI == Main.myPlayer ? 32 : 2; }
 
-        public static float GetFocusRadius(Player player)
+        public static float Get悟性usRadius(Player player)
         {
             SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
             float focusRadiusCur = focusRadius;
@@ -103,8 +103,8 @@ namespace SummonHeart.Items.Weapons.Sabres
                     float distance = (center - npc.Center).Length();
                     if (distance <= radius)
                     {
-                        float distanceToFocus = (targetCentre - npc.Center).Length();
-                        targets.Add(npc, distanceToFocus);
+                        float distanceTo悟性us = (targetCentre - npc.Center).Length();
+                        targets.Add(npc, distanceTo悟性us);
                     }
                 }
             }
@@ -243,7 +243,7 @@ namespace SummonHeart.Items.Weapons.Sabres
 
             if (charge)
             {
-                float radius = RaidenUtils.GetFocusRadius(player);
+                float radius = RaidenUtils.Get悟性usRadius(player);
 
                 RaidenUtils.DrawDustRadius(player, radius, RaidenUtils.DustAmount(player));
 
@@ -555,7 +555,7 @@ namespace SummonHeart.Items.Weapons.Sabres
                     { mouse = new Vector2(Main.screenPosition.X + Main.mouseX, Main.screenPosition.Y + Main.mouseY); }
                     else
                     { mouse = player.Center + new Vector2(player.direction * 256); } // an estimation
-                    targets = RaidenUtils.GetTargettableNPCs(player.Center, mouse, RaidenUtils.GetFocusRadius(player), RaidenUtils.focusTargets);
+                    targets = RaidenUtils.GetTargettableNPCs(player.Center, mouse, RaidenUtils.Get悟性usRadius(player), RaidenUtils.focusTargets);
                     if (targets.Count > 0)
                     {
                         Main.PlaySound(SoundID.Item71, projectile.Center); sndOnce = false;

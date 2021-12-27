@@ -230,7 +230,7 @@ namespace SummonHeart.ui
 
 
 
-            ResetText = new UIText("重置", SizeMultiplier, true)
+            ResetText = new UIText("轮回", SizeMultiplier, true)
             {
                 TextColor = Color.Gray
             };
@@ -359,12 +359,12 @@ namespace SummonHeart.ui
 
         float GetCritImprov()
         {
-            return Math.Abs(Mathf.Round(Mathf.Pow(Char.GetStatImproved(Stat.Agi) + Char.GetStatImproved(Stat.Str) + 1, 0.8f) * 0.005f - Char.GetCriticalDamage(), 2));
+            return Math.Abs(Mathf.Round(Mathf.Pow(Char.GetStatImproved(Stat.道心) + Char.GetStatImproved(Stat.气运) + 1, 0.8f) * 0.005f - Char.GetCriticalDamage(), 2));
         }
 
         float GetCritChanceImprov()
         {
-            return Math.Abs(Mathf.Round(Mathf.Pow(Char.GetStatImproved(Stat.Foc) + Char.GetStatImproved(Stat.Dex) + 1, 0.8f) * 0.05f - Char.GetCriticalChanceBonus(), 3));
+            return Math.Abs(Mathf.Round(Mathf.Pow(Char.GetStatImproved(Stat.悟性) + Char.GetStatImproved(Stat.功法) + 1, 0.8f) * 0.05f - Char.GetCriticalChanceBonus(), 3));
         }
 
         public void UpdateStat(UIMouseEvent evt, UIElement listeningElement, Stat stat)
@@ -382,14 +382,14 @@ namespace SummonHeart.ui
             }
             switch (stat)
             {
-                case Stat.Vit:
+                case Stat.灵根:
                     UpgradeStatOver[0].SetText("+ " + Char.player.statLifeMax / 20f * 0.65f * Char.statMultiplier + " Hp");
                     UpgradeStatOver[0].TextColor = MainColor;
                     UpgradeStatOver[2].SetText("+ " + Char.BaseArmor * 0.0025f * Char.statMultiplier + " Armor");
                     UpgradeStatOver[2].TextColor = SecondaryColor;
                     UpgradeStatOver[10].SetText("+ " + 0.02f * Char.statMultiplier + " HP/Sec");
                     break;
-                case Stat.Foc:
+                case Stat.悟性:
                     UpgradeStatOver[1].SetText("+ " + Char.player.statManaMax / 20f * 0.02f * Char.statMultiplier + " Mana");
                     UpgradeStatOver[1].TextColor = MainColor;
                     UpgradeStatOver[7].SetText("+ " + RPGPlayer.SECONDARYTATSMULT * Char.statMultiplier + " Multiplier");
@@ -397,42 +397,37 @@ namespace SummonHeart.ui
                     UpgradeStatOver[8].SetText("+ " + GetCritChanceImprov() + " %");
 
                     break;
-                case Stat.Cons:
+                case Stat.魅力:
                     UpgradeStatOver[0].SetText("+ " + Char.player.statLifeMax / 20f * 0.325f * Char.statMultiplier + " Hp");
                     UpgradeStatOver[0].TextColor = SecondaryColor;
                     UpgradeStatOver[2].SetText("+ " + Char.BaseArmor * 0.006f * Char.statMultiplier + " Armor");
                     UpgradeStatOver[2].TextColor = MainColor;
                     UpgradeStatOver[10].SetText("+ " + 0.02f * Char.statMultiplier + " HP/Sec");
                     break;
-                case Stat.Str:
+                case Stat.气运:
                     UpgradeStatOver[3].SetText("+ " + RPGPlayer.MAINSTATSMULT * Char.statMultiplier + " Multiplier");
                     UpgradeStatOver[3].TextColor = MainColor;
                     UpgradeStatOver[5].SetText("+ " + RPGPlayer.SECONDARYTATSMULT * Char.statMultiplier + " Multiplier");
                     UpgradeStatOver[5].TextColor = SecondaryColor;
                     UpgradeStatOver[9].SetText("+ " + GetCritImprov() * 0.01f + " %");
                     break;
-                case Stat.Agi:
-                    UpgradeStatOver[4].SetText("+ " + RPGPlayer.MAINSTATSMULT * Char.statMultiplier + " Multiplier");
-                    UpgradeStatOver[4].TextColor = MainColor;
-                    UpgradeStatOver[3].SetText("+ " + RPGPlayer.SECONDARYTATSMULT * Char.statMultiplier + " Multiplier");
-                    UpgradeStatOver[3].TextColor = SecondaryColor;
-                    UpgradeStatOver[9].SetText("+ " + GetCritImprov() * 0.01f + " %");
+                case Stat.道心:
                     break;
-                case Stat.Dex:
+                case Stat.功法:
                     UpgradeStatOver[5].SetText("+ " + RPGPlayer.MAINSTATSMULT * Char.statMultiplier + " Multiplier");
                     UpgradeStatOver[5].TextColor = MainColor;
                     UpgradeStatOver[4].SetText("+ " + RPGPlayer.SECONDARYTATSMULT * Char.statMultiplier + " Multiplier");
                     UpgradeStatOver[4].TextColor = SecondaryColor;
                     UpgradeStatOver[8].SetText("+ " + GetCritChanceImprov() + " %");
                     break;
-                case Stat.Int:
+                case Stat.体质:
                     UpgradeStatOver[6].SetText("+ " + RPGPlayer.MAINSTATSMULT * Char.statMultiplier + " Multiplier");
                     UpgradeStatOver[6].TextColor = MainColor;
                     UpgradeStatOver[1].SetText("+ " + Char.player.statManaMax / 20f * 0.05f * Char.statMultiplier + " Mana");
                     UpgradeStatOver[1].TextColor = SecondaryColor;
                     UpgradeStatOver[11].SetText("+ " + 0.02f * Char.statMultiplier + " MP/Sec");
                     break;
-                case Stat.Spr:
+                case Stat.力量:
                     UpgradeStatOver[7].SetText("+ " + RPGPlayer.MAINSTATSMULT * Char.statMultiplier + " Multiplier");
                     UpgradeStatOver[7].TextColor = MainColor;
                     UpgradeStatOver[6].SetText("+ " + RPGPlayer.SECONDARYTATSMULT * Char.statMultiplier + " Multiplier");
@@ -521,26 +516,30 @@ namespace SummonHeart.ui
                 string pre = "";
                 if (Char.GetStatImproved((Stat)i) > Char.GetStat((Stat)i))
                     pre = "+";
-                UpgradeStatText[i].SetText((Stat)i + " : " + Char.GetNaturalStat((Stat)i) + " + " + Char.GetAddStat((Stat)i) + " (" + pre + (Char.GetStatImproved((Stat)i) - Char.GetStat((Stat)i)) + ")");
+                UpgradeStatText[i].SetText((Stat)i + " : " + Char.GetNaturalStat((Stat)i) + " + " + Char.GetAddStat((Stat)i) + " (" + Char.GetStat((Stat)i) + ")");
                 statprogresscolor = Char.GetStatXP((Stat)i) / (float)Char.GetStatXPMax((Stat)i);
                 StatProgress[i].TextColor = new Color(127, (int)(280 * statprogresscolor), (int)(243 * statprogresscolor));
                 StatProgress[i].SetText(Char.GetStatXP((Stat)i) + " / " + Char.GetStatXPMax((Stat)i));
                 progressStatsBar[i].color = new Color((int)(200 * (1 - statprogresscolor)), (int)(280 * statprogresscolor), (int)(130 * statprogresscolor) + 50, 1); ;
             }
-            for (int i = 0; i < 5; i++)
+            /*for (int i = 0; i < 5; i++)
             {
                 UpgradeStatDetails[i + 3].SetText((DamageType)i + " Damage Multiplier : " + Math.Round(Char.GetDamageMult((DamageType)i), 2) + " x " + Math.Round(Char.GetDamageMult((DamageType)i, 1), 2) + " = " + Math.Round(Char.GetDamageMult((DamageType)i, 2) * 100, 2) + " %");
-            }
-            UpgradeStatDetails[0].SetText("Health : " + Char.player.statLifeMax2 + " ( " + Char.player.statLifeMax / 20 + " Heart x " + Math.Round(Char.GetHealthMult(), 2) + " x " + Math.Round(Char.GetHealthPerHeart(), 2) + " Health Per Heart + 10 )");
-            UpgradeStatDetails[1].SetText("Mana : " + Char.player.statManaMax2 + " ( " + Char.player.statManaMax / 20 + " Crystal x " + Math.Round(Char.GetManaPerStar(), 2) + " Mana per crystal + 4 )");
-            UpgradeStatDetails[2].SetText("Defense : " + Char.player.statDefense + " ( " + Char.BaseArmor + " Armor x " + Math.Round(Char.GetDefenceMult(), 2) + " x " + Math.Round(Char.GetArmorMult(), 2) + " Defense Per Armor )");
+            }*/
+            UpgradeStatDetails[0].SetText("气血 : " + Char.player.statLifeMax2 + " ( " + Char.player.statLifeMax / 20 + " 心 x " + Math.Round(Char.GetHealthMult(), 2) + " x " + Math.Round(Char.GetHealthPerHeart(), 2) + " 血/心 + 10 )");
+            UpgradeStatDetails[1].SetText("灵力 : " + Char.player.statManaMax2);
+            UpgradeStatDetails[2].SetText("防御 : " + Char.player.statDefense + " ( " + Char.BaseArmor + " 护甲 x " + Math.Round(Char.GetDefenceMult(), 2) + " x " + Math.Round(Char.GetArmorMult(), 2) + " 防御/护甲 + 0 )");
+            UpgradeStatDetails[3].SetText("灵攻 : " + Math.Round(Char.GetDamageMult((DamageType)1), 2) + " x " + Math.Round(Char.GetDamageMult((DamageType)1, 1), 2) + " = " + Math.Round(Char.GetDamageMult((DamageType)1, 2) * 100, 2) + " %");
+            UpgradeStatDetails[4].SetText("购买价格 : " + "100倍");
+            UpgradeStatDetails[5].SetText("物品掉落 : " + "0.1倍");
+            UpgradeStatDetails[6].SetText("修炼加成 : " + "0.1倍");
+            UpgradeStatDetails[7].SetText("灵技加成 : " + "0.1倍");
+            UpgradeStatDetails[8].SetText("暴击几率 : + " + Math.Round(Char.GetCriticalChanceBonus(), 2) + "%");
+            UpgradeStatDetails[9].SetText("暴击伤害 : " + Math.Round(Char.GetCriticalDamage() * 100, 2) + "%");
+            UpgradeStatDetails[10].SetText("气血回复 : +" + Math.Round((double)Char.player.lifeRegen, 2) + "/s");
 
-            UpgradeStatDetails[8].SetText("Crit Chance : + " + Math.Round(Char.GetCriticalChanceBonus(), 2) + "%");
-            UpgradeStatDetails[9].SetText("Crit Damage : " + Math.Round(Char.GetCriticalDamage() * 100, 2) + "%");
-            UpgradeStatDetails[10].SetText("HealthRegen : +" + Math.Round((double)Char.player.lifeRegen, 2) + " Per Sec");
-
-            UpgradeStatDetails[11].SetText("ManaRegen : +" + Math.Round(Char.player.manaRegen + Char.GetManaRegen(), 2) + " Per Sec");
-            PointsLeft.SetText("Points : " + Char.FreePtns + " / " + Char.TotalPtns, 1, true);
+            UpgradeStatDetails[11].SetText("灵力回复 : +" + Math.Round(Char.player.manaRegen + Char.GetManaRegen(), 2) + "/s");
+            PointsLeft.SetText("道源 : " + Char.FreePtns + " / " + Char.TotalPtns, 1, true);
 
         }
 
