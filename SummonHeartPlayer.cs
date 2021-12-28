@@ -8,6 +8,7 @@ using SummonHeart.Items.Weapons.Magic;
 using SummonHeart.Models;
 using SummonHeart.Projectiles.Summon;
 using SummonHeart.Projectiles.XiuXian;
+using SummonHeart.RPGModule.Entities;
 using SummonHeart.ui;
 using SummonHeart.Utilities;
 using System;
@@ -380,7 +381,7 @@ namespace SummonHeart
             //特效
             if (XiuLian || (onDoubleDamage && damageResourceCurrent > 0))
             {
-                int dustId = MyDustId.BlueMagic;
+				int dustId = MyDustId.BlueMagic;
 				for (int d = 0; d < 2; d++)
                 {
 					Vector2 vector = new Vector2(Main.rand.Next(-12, 12) * -9.88f, Main.rand.Next(-12, 12) * -9.88f);

@@ -12,13 +12,14 @@ namespace SummonHeart.Projectiles.XiuXian
 
         public override void SetDefaults()
         {
-            projectile.width = 56;
-            projectile.height = 56;
+            projectile.width = 75;
+            projectile.height = 98;
             projectile.friendly = true;
             projectile.penetrate = -1;
             projectile.timeLeft = 18000;
             projectile.tileCollide = false;
             projectile.ignoreWater = true;
+            projectile.scale = 0.75f;
         }
 
         public override bool CanDamage()
@@ -43,7 +44,7 @@ namespace SummonHeart.Projectiles.XiuXian
             }
 
             projectile.position.X = Main.player[projectile.owner].Center.X - projectile.width / 2;
-            projectile.position.Y = Main.player[projectile.owner].Center.Y - projectile.height / 2;
+            projectile.position.Y = Main.player[projectile.owner].Center.Y - projectile.height / 2 - 21;
         }
     }
 }

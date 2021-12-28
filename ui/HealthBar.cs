@@ -99,7 +99,7 @@ namespace SummonHeart.ui
 
         Ressource[] ressourcebar = new Ressource[5];
 
-        RessourceBreath breath;
+        //RessourceBreath breath;
         UIOverlay Overlay;
 
 
@@ -145,9 +145,9 @@ namespace SummonHeart.ui
                 health.SetText("" + player.statLife + " | " + player.statLifeMax2); //Set Life
 
 
-            manatext.SetText("" + player.statMana + " | " + player.statManaMax2); //Set Mana
+            manatext.SetText("" + (int)player.GetModPlayer<RPGPlayer>().lingli + " | " + player.GetModPlayer<RPGPlayer>().lingliMax); //Set Mana
             xptext.SetText("" + (float)player.GetModPlayer<RPGPlayer>().GetExp() + " | " + (float)player.GetModPlayer<RPGPlayer>().XPToNextLevel()); //Set Mana
-            Level.SetText("Lvl. " + (float)player.GetModPlayer<RPGPlayer>().GetLevel());
+            Level.SetText("境界：" + player.GetModPlayer<RPGPlayer>().GetLevelText());
 
 
 
@@ -395,7 +395,7 @@ namespace SummonHeart.ui
                 MainPanel[i + 1] = new PanelBar((Mode)i, RessourceTexture[(Mode)i].texture);
                 if ((Mode)i == Mode.Breath)
                 {
-                    breath = new RessourceBreath((Mode)i, RessourceTexture[(Mode)i].texture);
+                    //breath = new RessourceBreath((Mode)i, RessourceTexture[(Mode)i].texture);
                 }
                 else
                 {
@@ -412,8 +412,8 @@ namespace SummonHeart.ui
 
                 if ((Mode)i == Mode.Breath)
                 {
-                    breath.ImageScale = scale;
-                    MainPanel[i + 1].Append(breath);
+                    /*breath.ImageScale = scale;
+                    MainPanel[i + 1].Append(breath);*/
                 }
                 else
                 {
@@ -465,7 +465,7 @@ namespace SummonHeart.ui
 
 
 
-    class RessourceBreath : UIElement
+    /*class RessourceBreath : UIElement
     {
         private Texture2D _texture;
         public float ImageScale = 1f;
@@ -522,7 +522,7 @@ namespace SummonHeart.ui
 
             spriteBatch.Draw(_texture, dimensions.Position(), new Rectangle((int)point1.X, (int)point1.Y, width, height), color, 0f, Vector2.Zero, ImageScale, SpriteEffects.None, 0f);
         }
-    }
+    }*/
 
     class Ressource : UIElement
     {
@@ -571,13 +571,13 @@ namespace SummonHeart.ui
                     break;
 
                 case Mode.MANA:
-                    quotient = player.statMana / (float)player.statManaMax2;
+                    quotient = (int)player.GetModPlayer<RPGPlayer>().lingli / player.GetModPlayer<RPGPlayer>().lingliMax;
                     break;
                 case Mode.XP:
                     quotient = player.GetModPlayer<RPGPlayer>().GetExp() / (float)player.GetModPlayer<RPGPlayer>().XPToNextLevel();
                     break;
                 case Mode.Weapon:
-                    quotient = player.GetModPlayer<RPGPlayer>().EquipedItemXp / (float)player.GetModPlayer<RPGPlayer>().EquipedItemMaxXp;
+                    quotient = player.GetModPlayer<RPGPlayer>().age / (float)player.GetModPlayer<RPGPlayer>().life;
                     break;
 
                 default:

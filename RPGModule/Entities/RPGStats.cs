@@ -60,10 +60,8 @@ namespace SummonHeart.RPGModule.Entities
 
         public void OnLevelUp()
         {
-            for (int i = 0; i <= 7; i++)
-            {
-                ActualStat[(Stat)i].LevelUp();
-            }
+            ActualStat[(Stat.体质)].LevelUp();
+            ActualStat[(Stat.力量)].LevelUp();
         }
     }
 }
