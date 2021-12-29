@@ -65,7 +65,7 @@ namespace SummonHeart.RPGModule.Entities
         public float lingliMax;
         private int linliHealCD = 0;
         public int age = 0;
-        public int life = 10;
+        public int life = 60 * 360;
         private int ageCD = 0;
 
         public override void ResetEffects()
@@ -141,8 +141,8 @@ namespace SummonHeart.RPGModule.Entities
                     totalPoints = (int)Mathf.Round(totalPoints * 0.05);
                     ResetStats();
                     age = 0;
-                    life = 60;
-                    CombatText.NewText(player.getRect(), Color.LightGreen, "轮回成功，丢失全部物品，你现在是1个0岁婴儿!!!!");
+                    life = 60 * 360;
+                    CombatText.NewText(player.getRect(), Color.LightGreen, "轮回成功，丢失95%道源，丢失全部修为，丢失全部物品装备饰品，你现在是1个0岁婴儿!!!!");
                     mp.powerArmor = null;
                     player.PickUpAllItem();
 
@@ -617,10 +617,10 @@ namespace SummonHeart.RPGModule.Entities
         }
 
 
-        private void LevelUpMessage()
+        private void LevelUpMessage(int addLife)
         {
             CombatText.NewText(player.getRect(), new Color(255, 25, 100), "境界突破 !!!!");
-            CombatText.NewText(player.getRect(), Color.LightGreen, "+6年寿元");
+            CombatText.NewText(player.getRect(), Color.LightGreen, "+"+ addLife + "年寿元");
              //Main.NewText(player.name + " Is now level : " + level.ToString() + " .Congratulation !", 255, 223, 63);
         }
 
@@ -647,11 +647,25 @@ namespace SummonHeart.RPGModule.Entities
             else
             {
                 returnTime = 0;
-                life += 6 * 360;
+
+               
                 Stats.OnLevelUp();
+                int addLife = 0;
+                int a = level / 10;
+                int b = level % 10;
+               
+                if (b == 0 && a > 0)
+                {
+                    addLife = (age + life) / 360;
+                }
+                else
+                {
+                    addLife = (6 + a);
+                }
                 level++;
+                life += addLife * 360;
                 if (!silent)
-                    LevelUpMessage();
+                    LevelUpMessage(addLife);
             }
 
             if (Main.netMode == NetmodeID.MultiplayerClient)
