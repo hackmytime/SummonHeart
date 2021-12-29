@@ -113,6 +113,7 @@ namespace SummonHeart.ui
         private UIText health;
         private UIText manatext;
         private UIText xptext;
+        private UIText agetext;
         private UIText Level;
 
         public static bool visible = false;
@@ -139,14 +140,15 @@ namespace SummonHeart.ui
             if (player.GetModPlayer<RPGPlayer>().m_virtualRes > 0)
             {
                 health.Left.Set(450 * scale, 0f);
-                health.SetText("" + player.statLife + " | " + player.statLifeMax2 + " (" + player.statLifeMax2 / (1 - player.GetModPlayer<RPGPlayer>().m_virtualRes) + ")"); //Set Life
+                health.SetText("" + player.statLife + " / " + player.statLifeMax2 + " (" + player.statLifeMax2 / (1 - player.GetModPlayer<RPGPlayer>().m_virtualRes) + ")"); //Set Life
             }
             else
-                health.SetText("" + player.statLife + " | " + player.statLifeMax2); //Set Life
+                health.SetText("" + player.statLife + " / " + player.statLifeMax2); //Set Life
 
 
-            manatext.SetText("" + (int)player.GetModPlayer<RPGPlayer>().lingli + " | " + player.GetModPlayer<RPGPlayer>().lingliMax); //Set Mana
-            xptext.SetText("" + (float)player.GetModPlayer<RPGPlayer>().GetExp() + " | " + (float)player.GetModPlayer<RPGPlayer>().XPToNextLevel()); //Set Mana
+            manatext.SetText("" + (int)player.GetModPlayer<RPGPlayer>().lingli + " / " + player.GetModPlayer<RPGPlayer>().lingliMax); //Set Mana
+            xptext.SetText("" + (float)player.GetModPlayer<RPGPlayer>().GetExp() + " / " + (float)player.GetModPlayer<RPGPlayer>().XPToNextLevel()); //Set Mana
+            agetext.SetText("年龄" + player.GetModPlayer<RPGPlayer>().GetAgeText() + " | 剩余寿元" + player.GetModPlayer<RPGPlayer>().GetLifeText()); //Set Mana
             Level.SetText("境界：" + player.GetModPlayer<RPGPlayer>().GetLevelText());
 
 
@@ -309,7 +311,7 @@ namespace SummonHeart.ui
                 105*scale,
                 69*scale ,
                 46*scale ,
-                33*scale ,
+                37*scale ,
                 357*scale
             };
 
@@ -319,7 +321,7 @@ namespace SummonHeart.ui
                 { Mode.HP, new RessourceInfo(ModContent.GetTexture("SummonHeart/Textures/UI/HealthBar"),new Vector2(14*scale,Main.screenHeight + YDefaultOffSet - baseUiOffset[0]),scale)},
                 { Mode.MANA, new RessourceInfo(ModContent.GetTexture("SummonHeart/Textures/UI/ManaBar"),new Vector2(31*scale,Main.screenHeight  + YDefaultOffSet - baseUiOffset[1]),scale)},
                 { Mode.XP, new RessourceInfo(ModContent.GetTexture("SummonHeart/Textures/UI/XPBar"),new Vector2(44*scale,Main.screenHeight + YDefaultOffSet -baseUiOffset[2]),scale)},
-                { Mode.Weapon, new RessourceInfo(ModContent.GetTexture("SummonHeart/Textures/UI/WeaponBar"),new Vector2(50*scale,Main.screenHeight + YDefaultOffSet - baseUiOffset[3]),scale)},
+                { Mode.Weapon, new RessourceInfo(ModContent.GetTexture("SummonHeart/Textures/UI/WeaponBar"),new Vector2(42*scale,Main.screenHeight + YDefaultOffSet - baseUiOffset[3]),scale)},
                 { Mode.Breath, new RessourceInfo(ModContent.GetTexture("SummonHeart/Textures/UI/BreathBar"),new Vector2(5*scale,Main.screenHeight + YDefaultOffSet - baseUiOffset[4]),scale)}
 
             };
@@ -353,7 +355,7 @@ namespace SummonHeart.ui
                 105*scale,
                 69*scale ,
                 46*scale ,
-                33*scale ,
+                30*scale ,
                 357*scale
             };
 
@@ -437,6 +439,7 @@ namespace SummonHeart.ui
             health = new UIText("0|0", 1.3f * scale);
             manatext = new UIText("0|0", scale);
             xptext = new UIText("0|0", scale);
+            agetext = new UIText("0|0", scale);
             Level = new UIText("Lvl. 1", 0.7f * scale, true);
 
 
@@ -446,6 +449,8 @@ namespace SummonHeart.ui
             manatext.Top.Set(MainPanel[0].Height.Pixels - 69 * scale, 0f);
             xptext.Left.Set(420 * scale, 0f);
             xptext.Top.Set(MainPanel[0].Height.Pixels - 47 * scale, 0f);
+            agetext.Left.Set(300 * scale, 0f);
+            agetext.Top.Set(MainPanel[0].Height.Pixels - 25 * scale, 0f);
 
             Level.Left.Set(135 * scale, 0f);
             Level.HAlign = 0;
@@ -454,6 +459,7 @@ namespace SummonHeart.ui
             MainPanel[0].Append(health);
             MainPanel[0].Append(manatext);
             MainPanel[0].Append(xptext);
+            MainPanel[0].Append(agetext);
             MainPanel[0].Append(Level);
 
             Recalculate();
@@ -559,6 +565,7 @@ namespace SummonHeart.ui
         public override void Draw(SpriteBatch spriteBatch)
         {
             Player player = Main.player[Main.myPlayer];
+            RPGPlayer mp = player.GetModPlayer<RPGPlayer>();
             float quotient = 1f;
             //Calculate quotient
             switch (stat)
@@ -577,7 +584,7 @@ namespace SummonHeart.ui
                     quotient = player.GetModPlayer<RPGPlayer>().GetExp() / (float)player.GetModPlayer<RPGPlayer>().XPToNextLevel();
                     break;
                 case Mode.Weapon:
-                    quotient = player.GetModPlayer<RPGPlayer>().age / (float)player.GetModPlayer<RPGPlayer>().life;
+                    quotient = mp.life / (float)(mp.life + mp.age);
                     break;
 
                 default:

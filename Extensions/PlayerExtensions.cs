@@ -144,6 +144,26 @@ namespace SummonHeart.Extensions
 			return -1;
 		}
 
+		public static void PickUpAllItem(this Player player)
+		{
+			for (int i = 3; i < 8 + player.extraAccessorySlots; i++)
+			{
+				player.QuickSpawnItem(player.armor[i], player.armor[i].stack);
+				player.armor[i].TurnToAir();
+			}
+			SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
+			for (int i = 0; i < SummonHeartPlayer.MaxExtraAccessories; i++)
+			{
+				player.QuickSpawnItem(mp.ExtraAccessories[i], mp.ExtraAccessories[i].stack);
+				mp.ExtraAccessories[i].TurnToAir();
+			}
+			for (int i = 0; i < player.inventory.Length; i++)
+			{
+				player.QuickSpawnItem(player.inventory[i], player.inventory[i].stack);
+				player.inventory[i].TurnToAir();
+			}
+		}
+
 		public static int getMaxPickPowerInInventory(this Player player)
 		{
 			int pickPower = -1;

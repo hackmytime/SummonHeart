@@ -16,6 +16,7 @@ using AnotherRpgMod.RPGModule;
 using SummonHeart.Utilities;
 using SummonHeart.RPGModule.Enum;
 using SummonHeart.Projectiles.XiuXian;
+using SummonHeart.Extensions;
 
 namespace SummonHeart.RPGModule.Entities
 {
@@ -63,10 +64,9 @@ namespace SummonHeart.RPGModule.Entities
         public float lingli;
         public float lingliMax;
         private int linliHealCD = 0;
-        public float age = 0;
-        public float life = 60;
+        public int age = 0;
+        public int life = 10;
         private int ageCD = 0;
-        private bool oldDead = false;
 
         public override void ResetEffects()
         {
@@ -89,50 +89,75 @@ namespace SummonHeart.RPGModule.Entities
         public override void PostUpdate()
         {
             SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
-            player.lifeRegen += Mathf.FloorInt(GetHealthRegen());
-            lingliMax = GetLinliMax();
-            linliHealCD++;
-            if (linliHealCD == 12)
+            if(mp.PlayerClass == 9)
             {
-                linliHealCD = 0;
-            }
-            if (linliHealCD == 0)
-            {
-                if(lingli < lingliMax)
+                player.lifeRegen += Mathf.FloorInt(GetHealthRegen());
+                lingliMax = GetLinliMax();
+                linliHealCD++;
+                if (linliHealCD == 12)
                 {
-                    if (mp.XiuLian)
+                    linliHealCD = 0;
+                }
+                if (linliHealCD == 0)
+                {
+                    if (lingli < lingliMax)
                     {
-                        lingli += (float)GetXiuLianLinliReply() / 5;
+                        if (mp.XiuLian)
+                        {
+                            lingli += (float)GetXiuLianLinliReply() / 5;
+                        }
+                        else
+                        {
+                            lingli += (float)GetLinliReply() / 5;
+                        }
+                        if (lingli >= lingliMax)
+                        {
+                            lingli = lingliMax;
+                        }
                     }
                     else
                     {
-                        lingli += (float)GetLinliReply() / 5;
-                    }
-                    if (lingli >= lingliMax)
-                    {
-                        lingli = lingliMax;
+                        if (mp.XiuLian)
+                        {
+                            float addXp = Mathf.Round(GetXiuLianLinliReply() / 5, 0);
+                            AddXp((int)addXp, 1);
+                        }
                     }
                 }
-                else
+                //寿命
+                ageCD++;
+                if (ageCD == 240 && life > 0)
                 {
-                    if (mp.XiuLian)
-                    {
-                        float addXp = Mathf.Round(GetXiuLianLinliReply() / 5, 0);
-                        AddXp((int)addXp, 1);
-                    }
+                    ageCD = 0;
+                    age++;
+                    life--;
                 }
-            }
-            //寿命
-            ageCD++;
-            if (ageCD == 240 && life > 0)
-            {
-                ageCD = 0;
-                age++;
-                life--;
-            }
-            if (life == 0)
-            {
-                oldDead = true;
+                if (life <= 0)
+                {
+                    Main.NewText("你寿元归0，即将被轮回之道拉入轮回，轮回仙经消耗95%道源，保护你记忆不被磨灭!!!!", new Color(255, 25, 100), false);
+                    CombatText.NewText(player.getRect(), new Color(255, 25, 100), "你寿元归0，即将被轮回之道拉入轮回，轮回仙经消耗95%道源，保护你记忆不被磨灭!!!!");
+                    level = 0;
+                    Exp = 0;
+                    totalPoints = (int)Mathf.Round(totalPoints * 0.05);
+                    ResetStats();
+                    age = 0;
+                    life = 60;
+                    CombatText.NewText(player.getRect(), Color.LightGreen, "轮回成功，丢失全部物品，你现在是1个0岁婴儿!!!!");
+                    mp.powerArmor = null;
+                    player.PickUpAllItem();
+
+                    if (!player.dead)
+                    {
+                        player.Spawn();
+                        Main.PlaySound(SoundID.Item6, player.position);
+                        for (int k = 0; k < 70; k++)
+                        {
+                            Main.dust[Dust.NewDust(player.position, base.player.width, base.player.height, 15, 0f, 0f, 150, Color.Cyan, 1.2f)].velocity *= 0.5f;
+                        }
+                    }
+
+                    Main.NewText("轮回成功，丢失全部物品和饰品，你现在是1个0岁婴儿!!!!", Color.LightGreen, false);
+                }
             }
         }
 
@@ -161,6 +186,20 @@ namespace SummonHeart.RPGModule.Entities
         {
             double reply = (1 + GetStat(Stat.功法) * 0.1) * GetStat(Stat.灵根) * 0.05;
             return Math.Round(reply, 3);
+        }
+
+        public string GetAgeText()
+        {
+            int a = age / 360;
+            int b = age % 360;
+            return a + "岁" + b + "天";
+        }
+
+        public string GetLifeText()
+        {
+            int a = life / 360;
+            int b = life % 360;
+            return a + "年" + b + "天";
         }
 
         public double GetXiuLianLinliReply()
@@ -581,6 +620,7 @@ namespace SummonHeart.RPGModule.Entities
         private void LevelUpMessage()
         {
             CombatText.NewText(player.getRect(), new Color(255, 25, 100), "境界突破 !!!!");
+            CombatText.NewText(player.getRect(), Color.LightGreen, "+6年寿元");
              //Main.NewText(player.name + " Is now level : " + level.ToString() + " .Congratulation !", 255, 223, 63);
         }
 
@@ -607,6 +647,7 @@ namespace SummonHeart.RPGModule.Entities
             else
             {
                 returnTime = 0;
+                life += 6 * 360;
                 Stats.OnLevelUp();
                 level++;
                 if (!silent)
@@ -665,7 +706,21 @@ namespace SummonHeart.RPGModule.Entities
 
         }
 
-      
+
+        public override void Kill(double damage, int hitDirection, bool pvp, PlayerDeathReason damageSource)
+        {
+            if (life >= 360)
+            {
+                CombatText.NewText(player.getRect(), new Color(255, 25, 100), "逆转轮回成功，寿元-1年 !!!!");
+                life -= 360;
+                age += 360;
+            }
+            else
+            {
+                age += life;
+                life = 0;
+            }
+        }
 
 
         public override TagCompound Save()
@@ -677,6 +732,8 @@ namespace SummonHeart.RPGModule.Entities
             return new TagCompound {
                 {"Exp", Exp},
                 {"level", level},
+                {"age", age},
+                {"life", life},
                 {"Stats", ConvertStatToInt()},
                 {"StatsXP", ConvertStatXPToInt()},
                 {"totalPoints", totalPoints},
@@ -695,6 +752,8 @@ namespace SummonHeart.RPGModule.Entities
         {
             Exp = tag.GetFloat("Exp");
             level = tag.GetInt("level");
+            age = tag.GetInt("age");
+            life = tag.GetInt("life");
             LoadStats(tag.GetIntArray("Stats"), tag.GetIntArray("StatsXP"));
             totalPoints = tag.GetInt("totalPoints");
             freePoints = tag.GetInt("freePoints");

@@ -60,6 +60,10 @@ namespace SummonHeart.ui.Bar
         {
             base.DrawSelf(spriteBatch);
             SummonHeartPlayer mp = Main.LocalPlayer.GetModPlayer<SummonHeartPlayer>();
+            if (mp.powerArmor == null)
+            {
+                return;
+            }
             PowerArmorBase powerArmorBase = mp.powerArmor.GetGlobalItem<PowerArmorBase>();
             float quotient = powerArmorBase.powerArmorCount * 1f / powerArmorBase.powerArmorMax;
             quotient = Utils.Clamp(quotient, 0f, 1f);
