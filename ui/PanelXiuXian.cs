@@ -4,6 +4,8 @@ using SummonHeart.body;
 using SummonHeart.costvalues;
 using SummonHeart.Extensions;
 using SummonHeart.Items.Material;
+using SummonHeart.RPGModule.Entities;
+using SummonHeart.RPGModule.Enum;
 using SummonHeart.ui.layout;
 using System.Collections.Generic;
 using Terraria;
@@ -93,7 +95,7 @@ namespace SummonHeart.ui
             var buffSize = SummonHeartMod.getBuffLength();
 
             var unownedTexture = ModContent.GetTexture("SummonHeart/ui/unowned");
-            var mp = Main.player[Main.myPlayer].GetModPlayer<SummonHeartPlayer>();
+            var mp = Main.player[Main.myPlayer].GetModPlayer<RPGPlayer>();
             panelwrapper.children.Clear();
 
             int buffIndex = 0;
@@ -108,56 +110,48 @@ namespace SummonHeart.ui
                 modlabel_max.TextColor = Color.Red;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_max));
 
-                string worldLevel = "凡人";
-                modlabel_max = new UIText("境界：" + worldLevel);
+                modlabel_max = new UIText("境界：" + mp.GetLevelText());
                 modlabel_max.TextColor = Color.Red;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_max));
 
-                var modlabel = new UIText("年龄：0岁");
+                var modlabel = new UIText("年龄：" + mp.GetAgeText());
                 modlabel.TextColor = Color.LightBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
 
-                modlabel = new UIText("寿命：60年『随时间流逝减少，破境时增加寿命』");
+                modlabel = new UIText("剩余寿元："+mp.GetLifeText()+"『随时间流逝减少，破境时增加寿命』");
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
 
-                modlabel_max = new UIText("灵根：废品 修炼速度加成：0.1倍");
+                modlabel_max = new UIText("灵根：" + mp.GetStat(Stat.灵根));
                 modlabel_max.TextColor = Color.Magenta;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_max));
 
-                modlabel = new UIText("悟性：（0）废品『影响修炼功法速度』");
+                modlabel = new UIText("悟性：" + mp.GetStat(Stat.灵根));
                 modlabel.TextColor = Color.Magenta;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
 
-                modlabel = new UIText("魅力：（0）憎恶 『决定npc的售卖价格』");
+                modlabel = new UIText("魅力：" + mp.GetStat(Stat.灵根));
                 modlabel.TextColor = Color.Magenta;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
 
-                modlabel = new UIText("气运：（0）天道弃子『幸运-爆率』");
+                modlabel = new UIText("气运：" + mp.GetStat(Stat.灵根));
                 modlabel.TextColor = Color.Magenta;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
 
-                modlabel = new UIText("道心：（0）咸鱼『肝度和难度，道心决定了道源转换倍率，道心越高转换的道源越多，最高提升10倍』");
+                modlabel = new UIText("道心：" + mp.GetStat(Stat.道心) + "咸鱼『肝度和难度，道心决定了道源转换倍率，道心越高转换的道源越多，最高提升10倍』");
                 modlabel.TextColor = Color.Magenta;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
-
-                modlabel = new UIText("道源：30『初始奖励，每+1点道心奖励2点道源』");
-                modlabel.TextColor = Color.Magenta;
+              
+                modlabel = new UIText("气血：" + mp.player.statLifeMax2);
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
 
-                modlabel = new UIText("气血：10");
-                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
-
-                modlabel = new UIText("灵力：0/20");
-                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
-
-                modlabel = new UIText("灵攻：2");
+                modlabel = new UIText("灵力：" + mp.GetLinliMax());
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
 
                 modlabel = new UIText("灵防：1");
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
 
 
-                var modlabel_level = new UIText("所修功法：轮回魔功 当前等阶：黄阶下品");
+                var modlabel_level = new UIText("所修功法：轮回仙经 当前等阶：黄阶下品");
                 modlabel_level.TextColor = Color.Red;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
 
@@ -176,27 +170,31 @@ namespace SummonHeart.ui
                 modlabel_level.TextColor = Color.SkyBlue;
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel_level));
 
-                modlabel = new UIText("功法力量掌控境界：力境Ⅰ");
+               /* modlabel = new UIText("功法力量掌控境界：力境Ⅰ");
                 modlabel.TextColor = new Color(232, 181, 16);
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
 
                 modlabel = new UIText("功法气血加成：1.2倍 灵攻加成：1.2倍 灵防加成：1.2倍");
                 modlabel.TextColor = new Color(232, 181, 16);
-                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
+                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));*/
 
-                modlabel = new UIText("功法特殊能力：生死轮回 主动轮回次数：0");
+                modlabel = new UIText("功法特殊能力：生死轮回、九转道源、因果逆转·燃元秘术");
                 modlabel.TextColor = new Color(232, 181, 16);
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
 
-                modlabel = new UIText("被动：生死轮回，不死之身，当你气血归0时，你会复活。『消耗1年寿命复活』");
+                modlabel = new UIText("生死轮回，不死之身：当玩家气血归0死亡时，轮回仙经会逆转轮回之道，玩家1年后会复活，消耗玩家1年寿元。");
                 modlabel.TextColor = new Color(232, 181, 16);
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
 
-                modlabel = new UIText("主动：你献祭一身修为，灵力归0，获得轮回道源，用于提升你的基础属性和功法等阶。");
+                modlabel = new UIText("如果寿元归0而死，轮回之道全开，轮回仙经无力逆转轮回，只能舍弃掉95%的道源和全部肉身，保留5%道源和灵魂记忆不灭，走轮回之道轮回。");
                 modlabel.TextColor = new Color(232, 181, 16);
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
 
-                modlabel = new UIText("『至少需要129600才可以献祭』");
+                modlabel = new UIText("九转道源：同一个境界可以轮回修炼9次，夺天地造化提炼道源，道源可逆天改命提升你的天资。");
+                modlabel.TextColor = new Color(232, 181, 16);
+                modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
+
+                modlabel = new UIText("因果逆转·燃元秘术：开启时提升10倍修炼速度，寿元消耗提升20倍，额外寿元消耗100%");
                 modlabel.TextColor = new Color(232, 181, 16);
                 modbuffpanel.children.Add(new LayoutElementWrapperUIElement(modlabel));
 

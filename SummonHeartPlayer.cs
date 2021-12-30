@@ -1225,7 +1225,7 @@ namespace SummonHeart
 			{
 				if (XiuLian)
 				{
-					CombatText.NewText(player.getRect(), Color.LightGreen, "已停止修炼");
+					CombatText.NewText(player.getRect(), Color.Red, "已停止修炼");
 					player.ClearBuff(ModContent.BuffType<GoldenStasis>());
 				}
 				else
@@ -1247,7 +1247,22 @@ namespace SummonHeart
 						CombatText.NewText(player.getRect(), Color.Red, "暂时无法进入修炼状态");
                     }
 				}
-				
+			}
+
+			if (SummonHeartMod.FireAgeKey.JustPressed && PlayerClass == 9)
+			{
+				var Char = Main.player[Main.myPlayer].GetModPlayer<RPGPlayer>();
+				if (Char.FireAge)
+				{
+					Char.FireAge = false;
+					CombatText.NewText(player.getRect(), Color.Red, "已关闭轮回仙经·燃元秘术");
+				}
+				else
+				{
+					Main.PlaySound(29, (int)player.position.X, (int)player.position.Y, 104, 1f, 0f);
+					Char.FireAge = true;
+					CombatText.NewText(player.getRect(), Color.LightGreen, "已开启轮回仙经·燃元秘术");
+				}
 			}
 
 			if (XiuLian)

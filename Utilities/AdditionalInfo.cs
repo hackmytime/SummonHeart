@@ -27,16 +27,19 @@ namespace SummonHeart.Utilities
                     Text = "气运：提升物品掉率";
                     break;
                 case Stat.道心:
-                    Text = "道心：+3道源\n死亡时复活需要消耗的寿元大幅度提升\n试试钢铁道心开局";
+                    Text = "道心：每次点击都送4道源作为挑战奖励\n每1点道心提升燃元秘术10%的效果\n死亡时复活需要消耗的寿元提升0-10倍\n试试逆天改命难度开局（点满道心）\n键盘砸烂，不寄刀片";
                     break;
                 case Stat.功法:
-                    Text = "功法：提升功法品阶";
+                    Text = "功法：提升功法品阶\n灵气吸收指的是修炼状态下的速度\n平常状态的自动回复只有10分之一效果";
                     break;
                 case Stat.体质:
-                    Text = "体质：提升气血";
+                    Text = "体质：提升气血、回血、防御和灵防";
                     break;
                 case Stat.力量:
                     Text = "力量：提升力量掌控境界";
+                    break;
+                default:
+                    Text = "左键+1，右键+20，滚轮可以爽快加";
                     break;
             }
 

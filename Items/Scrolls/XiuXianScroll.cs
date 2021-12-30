@@ -13,7 +13,7 @@ namespace SummonHeart.Items.Scrolls
             Tooltip.SetDefault("Can synthesize the roulette of destiny of each difficulty");
             DisplayName.AddTranslation(GameCulture.Chinese, "修仙者");
             Tooltip.AddTranslation(GameCulture.Chinese, "你是高维宇宙仙道势力入侵者" +
-                "\n传承『轮回魔功』" +
+                "\n传承『轮回仙经』" +
                 "\n凡人→炼气→筑基→金丹→元婴→化神→合体→渡劫→大乘→散仙→金仙→大罗金仙→混元大罗金仙→半圣→圣人→圣尊→圣王→无上境→道境" +
                 "\n有道是：" +
                 "\n仙路尽头谁为峰" +
@@ -42,7 +42,7 @@ namespace SummonHeart.Items.Scrolls
             {
                 if (Main.netMode == 0 || Main.netMode == 1)
                 {
-                    Main.NewText("已领悟『轮回魔功』祝你好运。", 255, 255, 255);
+                    Main.NewText("已领悟『轮回仙经』祝你好运。", 255, 255, 255);
                 }
                 modPlayer.PlayerClass = 9;
                 return true;

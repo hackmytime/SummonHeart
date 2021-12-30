@@ -383,7 +383,7 @@ namespace SummonHeart.ui
             switch (stat)
             {
                 case Stat.灵根:
-                    UpgradeStatOver[11].SetText("+ 0.05倍");
+                    UpgradeStatOver[11].SetText("+ 0.025倍");
                     UpgradeStatOver[11].TextColor = MainColor;
                     break;
                 case Stat.悟性:
@@ -453,25 +453,26 @@ namespace SummonHeart.ui
         {
             if (!visible)
                 return;
+            
             Main.PlaySound(SoundID.MenuOpen);
             if (Main.keyState.PressingShift())
             {
-                if (Main.keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftControl))
-                {
-                    while (Char.FreePtns > 0)
-                        Char.SpendPoints(stat, Char.GetStatXPMax(stat) - Char.GetStatXP(stat));
-                    return;
-                }
-
-                for (int i = 0; i < amount; i++)
+                Char.SpendPoints(stat, amount);
+                return;
+            }
+            if (Main.keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftControl))
+            {
+                while (Char.FreePtns > 0)
                     Char.SpendPoints(stat, Char.GetStatXPMax(stat) - Char.GetStatXP(stat));
                 return;
             }
-            Char.SpendPoints(stat, amount);
+
+            for (int i = 0; i < amount; i++)
+                Char.SpendPoints(stat, Char.GetStatXPMax(stat) - Char.GetStatXP(stat));
         }
         private void UpgradeStatWheel(UIScrollWheelEvent evt, UIElement listeningElement, Stat stat)
         {
-            if (!visible)
+            if (!visible || stat == Stat.道心)
                 return;
             int amount = 0;
             if (evt.ScrollWheelValue > 0)
@@ -511,7 +512,7 @@ namespace SummonHeart.ui
                 string pre = "";
                 if (Char.GetStatImproved((Stat)i) > Char.GetStat((Stat)i))
                     pre = "+";
-                UpgradeStatText[i].SetText((Stat)i + " : " + Char.GetNaturalStat((Stat)i) + " + " + Char.GetAddStat((Stat)i) + " (" + Char.GetStat((Stat)i) + ")");
+                UpgradeStatText[i].SetText((Stat)i + " : " + Char.GetStat((Stat)i) + " (" + Char.GetStatText((Stat)i) + ")");
                 statprogresscolor = Char.GetStatXP((Stat)i) / (float)Char.GetStatXPMax((Stat)i);
                 StatProgress[i].TextColor = new Color(127, (int)(280 * statprogresscolor), (int)(243 * statprogresscolor));
                 StatProgress[i].SetText(Char.GetStatXP((Stat)i) + " / " + Char.GetStatXPMax((Stat)i));
@@ -522,17 +523,17 @@ namespace SummonHeart.ui
                 UpgradeStatDetails[i + 3].SetText((DamageType)i + " Damage Multiplier : " + Math.Round(Char.GetDamageMult((DamageType)i), 2) + " x " + Math.Round(Char.GetDamageMult((DamageType)i, 1), 2) + " = " + Math.Round(Char.GetDamageMult((DamageType)i, 2) * 100, 2) + " %");
             }*/
             UpgradeStatDetails[0].SetText("气血 : " + Char.player.statLifeMax2 + " ( " + Char.player.statLifeMax / 20 + " 心 x " + Math.Round(Char.GetHealthMult(), 2) + " x " + Math.Round(Char.GetHealthPerHeart(), 2) + " 血/心 + "+ 10 * Char.GetLevel() + " )");
-            UpgradeStatDetails[1].SetText("灵力 : " + Char.player.statManaMax2);
+            UpgradeStatDetails[1].SetText("灵力 : " + Char.lingliMax);
             UpgradeStatDetails[2].SetText("防御 : " + Char.player.statDefense + " ( " + Char.BaseArmor + " 护甲 x " + Math.Round(Char.GetDefenceMult(), 2) + " x " + Math.Round(Char.GetArmorMult(), 2) + " 防御/护甲 + 0 )");
             UpgradeStatDetails[3].SetText("灵攻 : " + Math.Round(Char.GetDamageMult((DamageType)1), 2) + " x " + Math.Round(Char.GetDamageMult((DamageType)1, 1), 2) + " = " + Math.Round(Char.GetDamageMult((DamageType)1, 2) * 100, 2) + " %");
             UpgradeStatDetails[4].SetText("购买价格 : " + "100倍");
             UpgradeStatDetails[5].SetText("物品掉落 : " + "0.1倍");
-            UpgradeStatDetails[6].SetText("修炼加速 : " + (10 + Char.GetStat(Stat.功法) * 0.01) + "倍");
-            UpgradeStatDetails[7].SetText("灵技加成 : " + "0.1倍");
-            UpgradeStatDetails[8].SetText("暴击几率 : + " + Math.Round(Char.GetCriticalChanceBonus(), 2) + "%");
+            UpgradeStatDetails[6].SetText("燃元秘术修炼加速 : " + Char.GetFireMult() + "倍");
+            UpgradeStatDetails[7].SetText("燃元秘术寿元消耗 : " + Char.GetFireAgeMult() + "倍");
+            UpgradeStatDetails[8].SetText("灵技加成 : " + "0.1倍");
             UpgradeStatDetails[9].SetText("暴击伤害 : " + Math.Round(Char.GetCriticalDamage() * 100, 2) + "%");
             UpgradeStatDetails[10].SetText("气血回复 : +" + Math.Round((double)Char.player.lifeRegen, 2) + "/s");
-            UpgradeStatDetails[11].SetText("灵力回复 : +" + (1 + Char.GetStat(Stat.功法) * 0.1) + " x " + Char.GetStat(Stat.灵根) * 0.05 + "=" + Char.GetLinliReply() + "/s");
+            UpgradeStatDetails[11].SetText("灵力吸收 : +" + (1 + Char.GetStat(Stat.功法) * 0.1) + " x " + Char.GetStat(Stat.灵根) * 0.025 + "=" + Char.GetXiuLianLinliReply() + "/s");
             PointsLeft.SetText("道源 : " + Char.FreePtns + " / " + Char.TotalPtns, 1, true);
 
         }

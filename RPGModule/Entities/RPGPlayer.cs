@@ -60,12 +60,13 @@ namespace SummonHeart.RPGModule.Entities
         string[] numTexts = new string[] {"零", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十"};
 
         //修仙
+        public bool FireAge;
         public int returnTime = 0;
         public float lingli;
         public float lingliMax;
         private int linliHealCD = 0;
         public int age = 0;
-        public int life = 60 * 360;
+        public int life = 60 * 360 * 24;
         private int ageCD = 0;
 
         public override void ResetEffects()
@@ -104,11 +105,16 @@ namespace SummonHeart.RPGModule.Entities
                     {
                         if (mp.XiuLian)
                         {
-                            lingli += (float)GetXiuLianLinliReply() / 5;
+                            float addXp = Mathf.Round(GetXiuLianLinliReply() / 5, 3);
+                            lingli += addXp;
+                            CombatText.NewText(player.getRect(), Color.LightGreen, "+" + addXp + "灵力");
                         }
                         else
                         {
-                            lingli += (float)GetLinliReply() / 5;
+                            float addXp = Mathf.Round(GetLinliReply() / 5, 3);
+                            lingli += addXp;
+                            if(FireAge)
+                                CombatText.NewText(player.getRect(), Color.LightGreen, "+" + addXp + "灵力");
                         }
                         if (lingli >= lingliMax)
                         {
@@ -119,29 +125,33 @@ namespace SummonHeart.RPGModule.Entities
                     {
                         if (mp.XiuLian)
                         {
-                            float addXp = Mathf.Round(GetXiuLianLinliReply() / 5, 0);
-                            AddXp((int)addXp, 1);
+                            float addXp = Mathf.Round(GetXiuLianLinliReply() / 5, 3);
+                            AddXp(addXp, 1);
                         }
                     }
                 }
                 //寿命
                 ageCD++;
-                if (ageCD == 240 && life > 0)
+                if (ageCD == 10 && life > 0)
                 {
                     ageCD = 0;
-                    age++;
-                    life--;
+                    int addAge = 1;
+                    if (FireAge)
+                        addAge = Mathf.FloorInt(GetFireAgeMult());
+                    age += addAge;
+                    life -= addAge;
                 }
                 if (life <= 0)
                 {
                     Main.NewText("你寿元归0，即将被轮回之道拉入轮回，轮回仙经消耗95%道源，保护你记忆不被磨灭!!!!", new Color(255, 25, 100), false);
                     CombatText.NewText(player.getRect(), new Color(255, 25, 100), "你寿元归0，即将被轮回之道拉入轮回，轮回仙经消耗95%道源，保护你记忆不被磨灭!!!!");
                     level = 0;
+                    lingli = 0;
                     Exp = 0;
                     totalPoints = (int)Mathf.Round(totalPoints * 0.05);
                     ResetStats();
                     age = 0;
-                    life = 60 * 360;
+                    life = 60 * 360 * 24;
                     CombatText.NewText(player.getRect(), Color.LightGreen, "轮回成功，丢失95%道源，丢失全部修为，丢失全部物品装备饰品，你现在是1个0岁婴儿!!!!");
                     mp.powerArmor = null;
                     player.PickUpAllItem();
@@ -167,7 +177,7 @@ namespace SummonHeart.RPGModule.Entities
         }
         public void SyncStat(StatData data, Stat stat) //only use for sync
         {
-            Stats.SetStats(stat, level, data.GetLevel, data.GetXP);
+            Stats.SetStats(stat, data.GetLevel, data.GetXP);
         }
 
         public int GetStatImproved(Stat stat)
@@ -182,32 +192,47 @@ namespace SummonHeart.RPGModule.Entities
             return Stats.GetStat(s);
         }
 
+        public string GetStatText(Stat s)
+        {
+            return Stats.GetStatText(s);
+        }
+
         public double GetLinliReply()
         {
-            double reply = (1 + GetStat(Stat.功法) * 0.1) * GetStat(Stat.灵根) * 0.05;
+            double reply = (1 + GetStat(Stat.功法) * 0.1) * GetStat(Stat.灵根) * 0.025;
+            reply /= 10;
+            if (FireAge)
+                reply *= GetFireMult();
+            return Math.Round(reply, 3);
+        }
+
+        public double GetXiuLianLinliReply()
+        {
+            double reply = GetLinliReply() * 10;
             return Math.Round(reply, 3);
         }
 
         public string GetAgeText()
         {
-            int a = age / 360;
-            int b = age % 360;
-            return a + "岁" + b + "天";
+            int a = age / 360 / 24;
+            int b = age - (a * 360 * 24);
+            int c = b / 24;
+            return a + "岁" + c + "天";
         }
 
         public string GetLifeText()
         {
-            int a = life / 360;
-            int b = life % 360;
-            return a + "年" + b + "天";
+            int a = life / 360 / 24;
+            int b = life - (a * 360 * 24);
+            int c = b / 24;
+            int d = b % 24;
+            if (d < 10)
+                return a + "岁" + c + "天0" + d + "时";
+            else
+                return a + "岁" + c + "天" + d + "时";
         }
 
-        public double GetXiuLianLinliReply()
-        {
-            double reply = (1 + GetStat(Stat.功法) * 0.1) * GetStat(Stat.灵根) * 0.05;
-            reply *= (10 + GetStat(Stat.功法) * 0.01);
-            return Math.Round(reply, 3);
-        }
+       
         public int GetStatXP(Stat s)
         {
             return Stats.GetStatXP(s);
@@ -227,6 +252,25 @@ namespace SummonHeart.RPGModule.Entities
         public float GetExp()
         {
             return Mathf.Round(Exp, 2);
+        }
+
+        public float GetFireMult()
+        {
+            double mult = (10 + GetStat(Stat.功法) * 0.1) * (1 + GetStat(Stat.道心) * 0.1);
+            return Mathf.Round(mult, 2);
+        }
+        public float GetFireAgePercent()
+        {
+            if (GetStat(Stat.功法) >= 5000)
+                return 0;
+            double mult = 1 - GetStat(Stat.功法) / 5000;
+            return Mathf.Round(mult, 2);
+        }
+
+        public float GetFireAgeMult()
+        {
+            double mult = GetFireMult() * (1 + GetFireAgePercent());
+            return Mathf.Round(mult, 2);
         }
 
         public string GetLevelText()
@@ -323,6 +367,17 @@ namespace SummonHeart.RPGModule.Entities
 
         public void SpendPoints(Stat _stat, int ammount)
         {
+            if (_stat == Stat.道心 && GetStat(_stat) >= 10)
+            {
+                return;
+            }
+            if (_stat == Stat.道心 && GetStat(_stat) < 10)
+            {
+                Stats.UpgradeStat(_stat, 1);
+                freePoints += 4;
+                totalPoints += 4;
+                return;
+            }
             ammount = Mathf.Clamp(ammount, 1, freePoints);
             Stats.UpgradeStat(_stat, ammount);
             freePoints -= ammount;
@@ -418,7 +473,7 @@ namespace SummonHeart.RPGModule.Entities
         public void ResetStats()
         {
             //level++;
-            Stats.Reset(level);
+            Stats.Reset();
             freePoints = totalPoints;
         }
 
@@ -549,7 +604,7 @@ namespace SummonHeart.RPGModule.Entities
         {
             if (Config.gpConfig.RPGPlayer)
             {
-                exp = ReduceExp(exp, _level);
+                //exp = ReduceExp(exp, _level);
 
                 if (level >= 80)
                 {
@@ -587,7 +642,7 @@ namespace SummonHeart.RPGModule.Entities
             totalPoints = 0;
             freePoints = 0;
             level = 1;
-            Stats.Reset(1);
+            Stats.Reset();
         }
 
         public void RecalculateStat()
@@ -656,14 +711,14 @@ namespace SummonHeart.RPGModule.Entities
                
                 if (b == 0 && a > 0)
                 {
-                    addLife = (age + life) / 360;
+                    addLife = (age + life) / 360 / 24;
                 }
                 else
                 {
                     addLife = (6 + a);
                 }
                 level++;
-                life += addLife * 360;
+                life += addLife * 360 * 24;
                 if (!silent)
                     LevelUpMessage(addLife);
             }
@@ -714,7 +769,7 @@ namespace SummonHeart.RPGModule.Entities
             {
                 for (int i = 0; i < 8; i++)
                 {
-                    Stats.SetStats((Stat)i, level + 3, _level[i], _xp[i]);
+                    Stats.SetStats((Stat)i, _level[i], _xp[i]);
                 }
             }
 
@@ -723,11 +778,12 @@ namespace SummonHeart.RPGModule.Entities
 
         public override void Kill(double damage, int hitDirection, bool pvp, PlayerDeathReason damageSource)
         {
-            if (life >= 360)
+            int addAge = 360 * 24 * GetStat(Stat.道心);
+            if (life >= addAge)
             {
-                CombatText.NewText(player.getRect(), new Color(255, 25, 100), "逆转轮回成功，寿元-1年 !!!!");
-                life -= 360;
-                age += 360;
+                CombatText.NewText(player.getRect(), new Color(255, 25, 100), "逆转轮回成功，寿元-"+ GetStat(Stat.道心) + "年 !!!!");
+                life -= addAge;
+                age += addAge;
             }
             else
             {

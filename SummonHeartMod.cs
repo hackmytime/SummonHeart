@@ -56,6 +56,7 @@ namespace SummonHeart
 		internal static ModHotKey TriggerExplosion;
 		internal static ModHotKey FreezeKey;
 		internal static ModHotKey GoldKey;
+		internal static ModHotKey FireAgeKey;
 
 		internal PanelMelee PanelMeleeUI;
 		internal PanelKill PanelKillUI;
@@ -180,6 +181,7 @@ namespace SummonHeart
 			TriggerExplosion = RegisterHotKey("引爆工程炸弹", "Mouse2");
 			FreezeKey = RegisterHotKey("冻结时间", "O");
 			GoldKey = RegisterHotKey("修炼", "P");
+			FireAgeKey = RegisterHotKey("轮回仙经·燃元秘术", "V");
 
 			customResources = new UserInterface();
 			healthBar = new HealthBar();
