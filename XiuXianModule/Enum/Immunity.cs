@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AnotherRpgMod.RPGModule
+namespace AnotherRpgMod.XiuXianModule
 {
-    public enum LeechType
+    public enum Immunity
     {
-        Life,
-        Magic,
-        Both
+        OnFire,
+
     }
 }

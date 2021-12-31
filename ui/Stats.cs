@@ -11,9 +11,9 @@ using System.Reflection;
 using Terraria.GameInput;
 using Terraria.Localization;
 using SummonHeart;
-using SummonHeart.RPGModule.Entities;
+using SummonHeart.XiuXianModule.Entities;
 using SummonHeart.Utilities;
-using SummonHeart.RPGModule.Enum;
+using SummonHeart.XiuXianModule.Enum;
 
 namespace SummonHeart.ui
 {
@@ -241,7 +241,7 @@ namespace SummonHeart.ui
             ResetText.OnClick += new MouseEvent(ResetStats);
             ResetText.OnMouseOver += new MouseEvent(ResetTextHover);
             ResetText.OnMouseOut += new MouseEvent(ResetTextOut);
-            statsPanel.Append(ResetText);
+            //statsPanel.Append(ResetText);
 
             Texture2D Button = ModContent.GetTexture("Terraria/UI/ButtonPlay");
             for (int i = 0; i < 12; i++)
@@ -387,12 +387,8 @@ namespace SummonHeart.ui
                     UpgradeStatOver[11].TextColor = MainColor;
                     break;
                 case Stat.悟性:
-                    UpgradeStatOver[1].SetText("+ " + Char.player.statManaMax / 20f * 0.02f * Char.statMultiplier + " Mana");
-                    UpgradeStatOver[1].TextColor = MainColor;
-                    UpgradeStatOver[7].SetText("+ " + RPGPlayer.SECONDARYTATSMULT * Char.statMultiplier + " Multiplier");
-                    UpgradeStatOver[7].TextColor = SecondaryColor;
-                    UpgradeStatOver[8].SetText("+ " + GetCritChanceImprov() + " %");
-
+                    UpgradeStatOver[8].SetText("+ 0.1");
+                    UpgradeStatOver[8].TextColor = MainColor;
                     break;
                 case Stat.魅力:
                     UpgradeStatOver[0].SetText("+ " + Char.player.statLifeMax / 20f * 0.325f * Char.statMultiplier + " Hp");
@@ -423,11 +419,8 @@ namespace SummonHeart.ui
                     UpgradeStatOver[10].TextColor = MainColor;
                     break;
                 case Stat.力量:
-                    UpgradeStatOver[7].SetText("+ " + RPGPlayer.MAINSTATSMULT * Char.statMultiplier + " Multiplier");
-                    UpgradeStatOver[7].TextColor = MainColor;
-                    UpgradeStatOver[6].SetText("+ " + RPGPlayer.SECONDARYTATSMULT * Char.statMultiplier + " Multiplier");
-                    UpgradeStatOver[6].TextColor = SecondaryColor;
-                    UpgradeStatOver[11].SetText("+ " + 0.02f * Char.statMultiplier + " MP/Sec");
+                    UpgradeStatOver[3].SetText("+ 0.1");
+                    UpgradeStatOver[3].TextColor = MainColor;
                     break;
             }
             InfoStat.SetText(AdditionalInfo.GetAdditionalStatInfo(stat));
@@ -525,12 +518,12 @@ namespace SummonHeart.ui
             UpgradeStatDetails[0].SetText("气血 : " + Char.player.statLifeMax2 + " ( " + Char.player.statLifeMax / 20 + " 心 x " + Math.Round(Char.GetHealthMult(), 2) + " x " + Math.Round(Char.GetHealthPerHeart(), 2) + " 血/心 + "+ 10 * Char.GetLevel() + " )");
             UpgradeStatDetails[1].SetText("灵力 : " + Char.lingliMax);
             UpgradeStatDetails[2].SetText("防御 : " + Char.player.statDefense + " ( " + Char.BaseArmor + " 护甲 x " + Math.Round(Char.GetDefenceMult(), 2) + " x " + Math.Round(Char.GetArmorMult(), 2) + " 防御/护甲 + 0 )");
-            UpgradeStatDetails[3].SetText("灵攻 : " + Math.Round(Char.GetDamageMult((DamageType)1), 2) + " x " + Math.Round(Char.GetDamageMult((DamageType)1, 1), 2) + " = " + Math.Round(Char.GetDamageMult((DamageType)1, 2) * 100, 2) + " %");
+            UpgradeStatDetails[3].SetText("灵攻 : +" + Char.lingliDamageMult+ "倍");
             UpgradeStatDetails[4].SetText("购买价格 : " + "100倍");
             UpgradeStatDetails[5].SetText("物品掉落 : " + "0.1倍");
             UpgradeStatDetails[6].SetText("燃元秘术修炼加速 : " + Char.GetFireMult() + "倍");
             UpgradeStatDetails[7].SetText("燃元秘术寿元消耗 : " + Char.GetFireAgeMult() + "倍");
-            UpgradeStatDetails[8].SetText("灵技加成 : " + "0.1倍");
+            UpgradeStatDetails[8].SetText("灵技修炼加速 : " + Char.GetLinjiXiuLianAddMult() + "倍");
             UpgradeStatDetails[9].SetText("暴击伤害 : " + Math.Round(Char.GetCriticalDamage() * 100, 2) + "%");
             UpgradeStatDetails[10].SetText("气血回复 : +" + Math.Round((double)Char.player.lifeRegen, 2) + "/s");
             UpgradeStatDetails[11].SetText("灵力吸收 : +" + (1 + Char.GetStat(Stat.功法) * 0.1) + " x " + Char.GetStat(Stat.灵根) * 0.025 + "=" + Char.GetXiuLianLinliReply() + "/s");

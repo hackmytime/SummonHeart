@@ -12,13 +12,13 @@ using Terraria.ModLoader.IO;
 using Terraria.GameInput;
 using System.Reflection;
 using Terraria.UI.Chat;
-using AnotherRpgMod.RPGModule;
+using AnotherRpgMod.XiuXianModule;
 using SummonHeart.Utilities;
-using SummonHeart.RPGModule.Enum;
+using SummonHeart.XiuXianModule.Enum;
 using SummonHeart.Projectiles.XiuXian;
 using SummonHeart.Extensions;
 
-namespace SummonHeart.RPGModule.Entities
+namespace SummonHeart.XiuXianModule.Entities
 {
 
     class RPGPlayer : ModPlayer
@@ -69,6 +69,11 @@ namespace SummonHeart.RPGModule.Entities
         public int life = 60 * 360 * 24;
         private int ageCD = 0;
 
+        public float lingliDamageAdd;
+        public float lingliDamageMult;
+        public float lingliDamageKnockback;
+        public int lingliDamageCrit;
+
         public override void ResetEffects()
         {
         }
@@ -94,6 +99,7 @@ namespace SummonHeart.RPGModule.Entities
             {
                 player.lifeRegen += Mathf.FloorInt(GetHealthRegen());
                 lingliMax = GetLinliMax();
+                lingliDamageMult = GetLinliDamageMult();
                 linliHealCD++;
                 if (linliHealCD == 12)
                 {
@@ -397,6 +403,17 @@ namespace SummonHeart.RPGModule.Entities
         {
             return GetStat(Stat.体质) * 1f + 1;
         }
+
+        public float GetLinjiXiuLianAddMult()
+        {
+            return GetStat(Stat.悟性) * 0.05f + 1;
+        }
+
+        public float GetLinliDamageMult()
+        {
+            return GetStat(Stat.力量) * 0.05f + 1;
+        }
+
         public float GetManaPerStar()
         {
             return (GetStatImproved(Stat.悟性) * 0.2f + GetStatImproved(Stat.体质) * 0.05f) * statMultiplier + 10;
@@ -735,7 +752,7 @@ namespace SummonHeart.RPGModule.Entities
             int[] convertedStats = new int[8];
             for (int i = 0; i < 8; i++)
             {
-                convertedStats[i] = GetAddStat((Stat)i);
+                convertedStats[i] = GetStat((Stat)i);
             }
             return convertedStats;
         }

@@ -1,9 +1,9 @@
-﻿using SummonHeart.RPGModule.Enum;
+﻿using SummonHeart.XiuXianModule.Enum;
 using SummonHeart.Utilities;
 using System;
 using System.Collections.Generic;
 
-namespace SummonHeart.RPGModule.Entities
+namespace SummonHeart.XiuXianModule.Entities
 {
     class RPGStats
     {
@@ -14,7 +14,7 @@ namespace SummonHeart.RPGModule.Entities
         string[] lingenTexts = new string[] { "废品","凡品","下品","中品","上品","良品","超品","极品","完美","先天","凡仙","仙品" };
         string[] meiliTexts = new string[] { "憎恶", "反感", "丑陋", "怪异", "普通", "不凡", "出众", "非凡", "惊人", "超凡", "完美", "仙姿" };
         string[] qiyunTexts = new string[] { "天道弃子","恶运缠身","多灾多难","时运不济","平平淡淡","颇有好运","时来运转","顺风顺水","逢凶化吉","鸿运当头","气运缠身","天道之子" };
-        string[] daoxinTexts = new string[] { "咸鱼","不亢不卑","坚守本心","自命不凡","向天问道","百折不挠","坚韧不拔","看破红尘","人定胜天","超凡入圣","逆天改命" };
+        string[] daoxinTexts = new string[] { "咸鱼","不亢不卑","坚守本心","自命不凡","向天问道","百折不挠","坚韧不拔","看破红尘","人定胜天","超凡入圣","肝帝证道" };
 
         
 
@@ -92,6 +92,8 @@ namespace SummonHeart.RPGModule.Entities
         {
             for (int i = 0; i <= 7; i++)
             {
+                if ((Stat)i == Stat.道心)
+                    continue;
                 ActualStat[(Stat)i] = new StatData(Default);
             }
         }

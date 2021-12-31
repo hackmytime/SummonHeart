@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using Terraria.ModLoader;
 using Terraria.Localization;
 using SummonHeart;
-using SummonHeart.RPGModule.Entities;
+using SummonHeart.XiuXianModule.Entities;
 using SummonHeart.Utilities;
 
 namespace SummonHeart.ui

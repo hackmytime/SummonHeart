@@ -1,4 +1,4 @@
-﻿namespace SummonHeart.RPGModule.Entities.Enum
+﻿namespace SummonHeart.XiuXianModule.Entities.Enum
 {
     public enum NPCRank
     {

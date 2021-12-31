@@ -15,8 +15,8 @@ namespace SummonHeart.Items.Helpful
         {
             DisplayName.SetDefault("HelpBag");
             Tooltip.SetDefault("HelpBag");
-            DisplayName.AddTranslation(GameCulture.Chinese, "国庆大礼包");
-            Tooltip.AddTranslation(GameCulture.Chinese, "国庆节礼物，右键打开");
+            DisplayName.AddTranslation(GameCulture.Chinese, "元旦大礼包（假）");
+            Tooltip.AddTranslation(GameCulture.Chinese, "元旦礼物，右键打开");
         }
 
         public override void SetDefaults()
@@ -43,10 +43,8 @@ namespace SummonHeart.Items.Helpful
 
         public override void RightClick(Player player)
         {
-            player.QuickSpawnItem(ModContent.ItemType<MetalUnit>(), 101);
-            player.QuickSpawnItem(ItemID.MasterBait, 10);
-            player.QuickSpawnItem(ModContent.ItemType<LightTurretItem1>(), 1);
-            player.QuickSpawnItem(ModContent.ItemType<PowerArmor3>(), 1);
+            player.QuickSpawnItem(ItemID.MasterBait, 2022);
+            player.QuickSpawnItem(ModContent.ItemType<LightTurretItem1>(), 3);
         }
     }
 }

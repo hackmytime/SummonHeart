@@ -24,7 +24,7 @@ namespace SummonHeart
         DISPLAYNPCNAME = 0x400
     }
 
-    [Label("AnRPG display config")]
+    [Label("修仙者显示配置")]
     public class VisualConfig : ModConfig
     {
         // You MUST specify a MultiplayerSyncMode.
@@ -84,88 +84,19 @@ namespace SummonHeart
         }
     }
 
-    [Label("AnRPG gameplay config")]
+    [Label("修仙者配置")]
     public class GamePlayConfig : ModConfig
     {
 
         // You MUST specify a MultiplayerSyncMode.
         public override ConfigScope Mode => ConfigScope.ServerSide;
 
-
-
-        [Label("Xp Level Reduction")]
-        [Tooltip("Reduce the exp gained when the entity level is too low, look at Xp Reduction delta to change the value")]
-        [DefaultValue(true)]
-        public bool XPReduction;
-
-        [Label("RPG Player Module")]
+      
+        [Label("开启修仙")]
         [Tooltip("Enable all player related RPG elements")]
         [DefaultValue(true)]
         public bool RPGPlayer;
-
-
-        [Label("Item Rarity")]
-        [Tooltip("Enable item rarity like : Broken, Masterpiece, Legendary...")]
-        [DefaultValue(true)]
-        public bool ItemRarity;
-
-        [Label("Item Modifier")]
-        [Tooltip("Enable Item modifier like : Bonus damage based on distance...")]
-        [DefaultValue(true)]
-        public bool ItemModifier;
-
-        [Label("Item Tree")]
-        [Tooltip("Enable Skill Tree evolution for Item")]
-        [DefaultValue(true)]
-        public bool ItemTree;
-
-        [Label("Item Ascension Limit")]
-        [Tooltip("Cap the maximum ascension based on the world progress")]
-        [DefaultValue(true)]
-        public bool AscendLimit;
-
-        [Label("Item Ascension Limit Per Boss")]
-        [Tooltip("How much the ascend limit Increase Per boss, 0.5 mean one for two each boss killed, '2' mean two for each boss killed")]
-        [Range(0.1F, 10F)]
-        [Increment(.25f)]
-        [DefaultValue(1f)]
-        public float AscendLimitPerBoss;
-
-        [Label("Xp Reduction Delta")]
-        [Tooltip("Level range at which the xp gain will start to be reduced")]
-        [DefaultValue(10)]
-        public int XPReductionDelta;
-
-        [Label("Xp Multiplier")]
-        [Tooltip("Multiply all xp gain for player by this value")]
-        [Range(0.1F, 50F)]
-        [Increment(.25f)]
-        [DefaultValue(1f)]
-        public float XpMultiplier;
-
-        [Label("Item Xp Multiplier")]
-        [Tooltip("Multiply all xp gain for weapon by this value")]
-        [Range(0.1F, 50F)]
-        [Increment(.25f)]
-        [DefaultValue(1f)]
-        public float ItemXpMultiplier;
-
-        [Label("Life Leech Cooldown")]
-        [Tooltip("CoolDown between Each LifeLeech procc")]
-        [Range(0.01f, 5F)]
-        [Increment(.25f)]
-        [DefaultValue(1f)]
-        public float LifeLeechCD;
-
-        [Label("Vanity give stat")]
-        [Tooltip("Allow vanity object to give stat")]
-        [DefaultValue(false)]
-        public bool VanityGiveStat;
-
-        [Label("Use Custom SkillTree")]
-        [Tooltip("When true, it'll use the JsonSkillTree in \"Documents\\My Games\\Terraria\\ModLoader\\Mod Configs\\AnRPG\" ")]
-        [DefaultValue(false)]
-        public bool UseCustomSkillTree;
+      
 
         public override void OnLoaded()
         {
@@ -176,7 +107,7 @@ namespace SummonHeart
             SummonHeartMod.gpConfig = this;
         }
     }
-    [Label("AnRPG Enemies config")]
+    [Label("修仙者敌人配置")]
     public class NPCConfig : ModConfig
     {
         public override ConfigScope Mode => ConfigScope.ServerSide;

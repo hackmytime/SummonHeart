@@ -1,6 +1,6 @@
 ﻿using SummonHeart.Utilities;
 
-namespace SummonHeart.RPGModule.Entities
+namespace SummonHeart.XiuXianModule.Entities
 {
     class StatData
     {

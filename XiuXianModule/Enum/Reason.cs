@@ -1,5 +1,5 @@
 ﻿
-namespace AnotherRpgMod.RPGModule
+namespace AnotherRpgMod.XiuXianModule
 {
     public enum Reason
     {

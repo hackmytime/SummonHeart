@@ -1,4 +1,4 @@
-﻿namespace SummonHeart.RPGModule.Enum
+﻿namespace SummonHeart.XiuXianModule.Enum
 {
     public enum Stat : int
     {

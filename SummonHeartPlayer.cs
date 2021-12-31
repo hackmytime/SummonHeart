@@ -8,7 +8,7 @@ using SummonHeart.Items.Weapons.Magic;
 using SummonHeart.Models;
 using SummonHeart.Projectiles.Summon;
 using SummonHeart.Projectiles.XiuXian;
-using SummonHeart.RPGModule.Entities;
+using SummonHeart.XiuXianModule.Entities;
 using SummonHeart.ui;
 using SummonHeart.Utilities;
 using System;
@@ -293,11 +293,11 @@ namespace SummonHeart
 
 			if (XiuLian)
 			{
-				player.immune = true;
+				/*player.immune = true;
 				player.immuneTime = 2;
 				player.hurtCooldowns[0] = 2;
 				player.hurtCooldowns[1] = 2;
-				player.stealth = 1;
+				player.stealth = 1;*/
 
 				if (player.ownedProjectileCounts[ModContent.ProjectileType<XiuLianProj>()] <= 0)
 					Projectile.NewProjectile(player.Center.X, player.Center.Y, 0f, 0f, ModContent.ProjectileType<XiuLianProj>(), 0, 0, Main.myPlayer);

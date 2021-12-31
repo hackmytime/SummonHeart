@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 using Terraria.GameContent.UI.Elements;
 using Terraria.UI;
-using SummonHeart.RPGModule.Enum;
+using SummonHeart.XiuXianModule.Enum;
 
 namespace SummonHeart.Utilities
 {
@@ -27,7 +27,7 @@ namespace SummonHeart.Utilities
                     Text = "气运：提升物品掉率";
                     break;
                 case Stat.道心:
-                    Text = "道心：每次点击都送4道源作为挑战奖励\n每1点道心提升燃元秘术10%的效果\n死亡时复活需要消耗的寿元提升0-10倍\n试试逆天改命难度开局（点满道心）\n键盘砸烂，不寄刀片";
+                    Text = "道心：每次点击都送4道源作为挑战奖励\n每1点道心提升燃元秘术10%的效果\n死亡时复活需要消耗的寿元提升0-10倍\n试试肝帝证道难度开局（点满道心）\n键盘砸烂，不寄刀片";
                     break;
                 case Stat.功法:
                     Text = "功法：提升功法品阶\n灵气吸收指的是修炼状态下的速度\n平常状态的自动回复只有10分之一效果";
