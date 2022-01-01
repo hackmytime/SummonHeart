@@ -12,11 +12,10 @@ using Terraria.ModLoader.IO;
 using Terraria.GameInput;
 using System.Reflection;
 using Terraria.UI.Chat;
-using AnotherRpgMod.XiuXianModule;
 using SummonHeart.Utilities;
-using SummonHeart.XiuXianModule.Enum;
 using SummonHeart.Projectiles.XiuXian;
 using SummonHeart.Extensions;
+using SummonHeart.XiuXianModule.EnumType;
 
 namespace SummonHeart.XiuXianModule.Entities
 {
@@ -25,15 +24,7 @@ namespace SummonHeart.XiuXianModule.Entities
     {
         public readonly static ushort ACTUALSAVEVERSION = 2;
         private float Exp = 0;
-        private string basename = "";
-
-
-        private DateTime LastLeech = DateTime.MinValue;
-
         private RPGStats Stats;
-        float damageToApply = 0;
-
-        
 
         private bool XpLimitMessage = false;
 
@@ -90,16 +81,18 @@ namespace SummonHeart.XiuXianModule.Entities
             }
         }
 
-
-
-        public override void PostUpdate()
+        public override void PostUpdateMiscEffects()
         {
             SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
-            if(mp.PlayerClass == 9)
+            if (mp.PlayerClass == 9)
             {
                 player.lifeRegen += Mathf.FloorInt(GetHealthRegen());
                 lingliMax = GetLinliMax();
                 lingliDamageMult = GetLinliDamageMult();
+                player.statLifeMax2 = Mathf.Clamp((int)(GetHealthMult() * player.statLifeMax2 * GetHealthPerHeart() / 20) + 10 * GetLevel(), 10, int.MaxValue);
+                player.statDefense = (int)(GetDefenceMult() * player.statDefense * GetArmorMult());
+
+
                 linliHealCD++;
                 if (linliHealCD == 12)
                 {
@@ -119,7 +112,7 @@ namespace SummonHeart.XiuXianModule.Entities
                         {
                             float addXp = Mathf.Round(GetLinliReply() / 5, 3);
                             lingli += addXp;
-                            if(FireAge)
+                            if (FireAge)
                                 CombatText.NewText(player.getRect(), Color.LightGreen, "+" + addXp + "灵力");
                         }
                         if (lingli >= lingliMax)
@@ -177,6 +170,7 @@ namespace SummonHeart.XiuXianModule.Entities
             }
         }
 
+
         public void SyncLevel(int _level) //only use for sync
         {
             level = _level;
@@ -233,9 +227,9 @@ namespace SummonHeart.XiuXianModule.Entities
             int c = b / 24;
             int d = b % 24;
             if (d < 10)
-                return a + "岁" + c + "天0" + d + "时";
+                return a + "年" + c + "天0" + d + "时";
             else
-                return a + "岁" + c + "天" + d + "时";
+                return a + "年" + c + "天" + d + "时";
         }
 
        
@@ -389,11 +383,6 @@ namespace SummonHeart.XiuXianModule.Entities
             freePoints -= ammount;
         }
 
-        public int GetNaturalStat(Stat s)
-        {
-            return Stats.GetNaturalStat(s);
-        }
-
         public float GetDefenceMult()
         {
             return (GetStatImproved(Stat.灵根) * 0.0025f + GetStatImproved(Stat.魅力) * 0.006f) * statMultiplier + 1f;
@@ -444,48 +433,6 @@ namespace SummonHeart.XiuXianModule.Entities
         {
             return Mathf.FloorInt(Stats.GetStat(Stat.功法) * 0.1f);
         }
-
-
-
-        public override void PostUpdateEquips()
-        {
-
-            if (Config.gpConfig.RPGPlayer)
-            {
-                if (Main.netMode != NetmodeID.Server)
-                {
-                    m_virtualRes = 0;
-                    armor = player.statDefense;
-
-                    player.statLifeMax2 = Mathf.Clamp((int)(GetHealthMult() * player.statLifeMax2 * GetHealthPerHeart() / 20) + 10 * GetLevel(), 10, int.MaxValue);
-                    player.statManaMax2 = (int)(player.statManaMax2 * GetManaPerStar() / 20) + 10;
-                    player.statDefense = (int)(GetDefenceMult() * player.statDefense * GetArmorMult());
-                    player.meleeDamage *= GetDamageMult(DamageType.Melee, 2);
-                    player.thrownDamage *= GetDamageMult(DamageType.Throw, 2);
-                    player.rangedDamage *= GetDamageMult(DamageType.Ranged, 2);
-                    player.magicDamage *= GetDamageMult(DamageType.Magic, 2);
-                    player.minionDamage *= GetDamageMult(DamageType.Summon, 2);
-
-                   
-
-
-                    player.armorPenetration = Mathf.FloorInt(player.armorPenetration * GetArmorPenetrationMult());
-                    player.armorPenetration += GetArmorPenetrationAdd();
-
-                    manaShieldDelay = Mathf.Clamp(manaShieldDelay - 1, 0, manaShieldDelay);
-                    player.manaCost *= (float)Math.Sqrt(GetDamageMult(DamageType.Magic, 2));
-
-
-                    ManaRegenPerSecond = Mathf.FloorInt(GetManaRegen());
-                    float manaRegenTick = ManaRegenPerSecond / 60 + ManaRegenBuffer;
-                    int manaRegenThisTick = Mathf.Clamp(Mathf.FloorInt(manaRegenTick), 0, int.MaxValue);
-                    ManaRegenBuffer = Mathf.Clamp(manaRegenTick - manaRegenThisTick, 0, int.MaxValue);
-                    player.statMana = Mathf.Clamp(player.statMana + manaRegenThisTick, player.statMana, player.statManaMax2);
-                }
-            }
-        }
-
-        
 
         public void ResetStats()
         {
@@ -809,6 +756,32 @@ namespace SummonHeart.XiuXianModule.Entities
             }
         }
 
+        public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
+        {
+            SendClientChanges(this);
+            if (WorldManager.instance != null)
+                WorldManager.instance.NetUpdateWorld();
+            base.SyncPlayer(toWho, fromWho, newPlayer);
+        }
+
+        public override void SendClientChanges(ModPlayer clientPlayer)
+        {
+            if (clientPlayer == null || level <= 0)
+                return;
+
+            if (Config.gpConfig.RPGPlayer)
+            {
+                ModPacket packet = mod.GetPacket();
+                packet.Write((byte)Message.SyncLevel);
+                packet.Write(player.whoAmI);
+                packet.Write(level);
+                packet.Write(player.statLife);
+                packet.Write(player.statLifeMax2);
+                packet.Send();
+            }
+            base.SendClientChanges(clientPlayer);
+        }
+
 
         public override TagCompound Save()
         {
@@ -821,6 +794,7 @@ namespace SummonHeart.XiuXianModule.Entities
                 {"level", level},
                 {"age", age},
                 {"life", life},
+                {"lingli", lingli},
                 {"Stats", ConvertStatToInt()},
                 {"StatsXP", ConvertStatXPToInt()},
                 {"totalPoints", totalPoints},
@@ -841,6 +815,7 @@ namespace SummonHeart.XiuXianModule.Entities
             level = tag.GetInt("level");
             age = tag.GetInt("age");
             life = tag.GetInt("life");
+            lingli = tag.GetFloat("lingli");
             LoadStats(tag.GetIntArray("Stats"), tag.GetIntArray("StatsXP"));
             totalPoints = tag.GetInt("totalPoints");
             freePoints = tag.GetInt("freePoints");

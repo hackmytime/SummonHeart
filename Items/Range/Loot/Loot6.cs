@@ -27,7 +27,7 @@ namespace SummonHeart.Items.Range.Loot
             item.height = 32;
             item.rare = -12;
             item.value = Item.sellPrice(9999, 0, 0, 0);
-            item.maxStack = 1;
+            item.maxStack = 9999;
             item.useTime = 20;
             item.useStyle = 2;
             item.UseSound = SoundID.Item4;

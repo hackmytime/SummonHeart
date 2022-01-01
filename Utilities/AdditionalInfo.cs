@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 using Terraria.GameContent.UI.Elements;
 using Terraria.UI;
-using SummonHeart.XiuXianModule.Enum;
+using SummonHeart.XiuXianModule.EnumType;
 
 namespace SummonHeart.Utilities
 {

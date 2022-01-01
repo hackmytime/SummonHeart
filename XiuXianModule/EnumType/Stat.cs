@@ -1,4 +1,4 @@
-﻿namespace SummonHeart.XiuXianModule.Enum
+﻿namespace SummonHeart.XiuXianModule.EnumType
 {
     public enum Stat : int
     {

@@ -12,7 +12,11 @@ namespace SummonHeart
         [DefaultValue(false)]
         [Label("炼体特效")]
         public bool EffectVisualConfig;
-        
+
+        [DefaultValue(true)]
+        [Label("显示物品mod名称")]
+        public bool DisplayItemModNameConfig;
+
         [DefaultValue(false)]
         [Label("钓鱼是否钓额外物品")]
         public bool FishOtherItem;

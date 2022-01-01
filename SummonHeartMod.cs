@@ -9,12 +9,15 @@ using SummonHeart.Items.Range.Tools;
 using SummonHeart.Projectiles.Range.Bullet;
 using SummonHeart.ui;
 using SummonHeart.ui.Bar;
+using SummonHeart.Utilities;
+using SummonHeart.XiuXianModule.Entities.Npc;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Events;
+using Terraria.Graphics;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.Localization;
@@ -23,11 +26,35 @@ using Terraria.UI;
 
 namespace SummonHeart
 {
-    public class SummonHeartMod : Mod
+	public enum Message : byte
+	{
+		SyncNpcVariables,
+		SyncNpcData,
+		SyncKillResourceCount,
+		SyncPlayerNpcVar,
+		SyncAnglerQuestReward,
+		SyncTime,
+		SyncFallenStar,
+		BuildHousePacket,
+		SpanNpcPacket,
+		BombPacket,
+		TurretShootPacket,
+		AddXP,
+		SyncLevel,
+		SyncNPCSpawn,
+		SyncNPCUpdate,
+		SyncWeapon,
+		AskNpc,
+		Log,
+		syncWorld,
+	};
+
+	public class SummonHeartMod : Mod
 	{
 		private ModUIHandler UIhandler = new ModUIHandler();
 
 		internal static List<BuffValue> modBuffValues = new List<BuffValue>();
+		public static Vector2 zoomValue = new Vector2(1, 1);
 
 		public static HashSet<int> posionBuffSet = new HashSet<int>();
 		public static HashSet<int> whiteBuffSet = new HashSet<int>();
@@ -108,6 +135,8 @@ namespace SummonHeart
 		internal Stats statMenu;
 		public UserInterface customstats;
 		public UserInterface customOpenstats;
+		public UserInterface customNPCName;
+		internal NPCNameUI NPCName;
 
 		public static SummonHeartMod Instance;
 
@@ -183,25 +212,6 @@ namespace SummonHeart
 			GoldKey = RegisterHotKey("修炼", "P");
 			FireAgeKey = RegisterHotKey("轮回仙经·燃元秘术", "V");
 
-			customResources = new UserInterface();
-			healthBar = new HealthBar();
-			HealthBar.visible = true;
-			customResources.SetState(healthBar);
-
-			customstats = new UserInterface();
-			statMenu = new Stats();
-			Stats.visible = false;
-			customstats.SetState(statMenu);
-
-			customOpenstats = new UserInterface();
-			openStatMenu = new OpenStatsButton();
-			OpenStatsButton.visible = true;
-			customOpenstats.SetState(openStatMenu);
-
-			xiuxianUI = new PanelXiuXian();
-			xiuxianUI.Initialize();
-			xiuxianInterface = new UserInterface();
-			xiuxianInterface.SetState(xiuxianUI);
 			// this makes sure that the UI doesn't get opened on the server
 			// the server can't see UI, can it? it's just a command prompt
 			if (Main.netMode != 2)
@@ -211,6 +221,30 @@ namespace SummonHeart
 			}
 			if (!Main.dedServ)
 			{
+				customNPCName = new UserInterface();
+				NPCName = new NPCNameUI();
+				NPCNameUI.visible = true;
+				customNPCName.SetState(NPCName);
+
+				customResources = new UserInterface();
+				healthBar = new HealthBar();
+				HealthBar.visible = true;
+				customResources.SetState(healthBar);
+
+				customstats = new UserInterface();
+				statMenu = new Stats();
+				Stats.visible = false;
+				customstats.SetState(statMenu);
+
+				customOpenstats = new UserInterface();
+				openStatMenu = new OpenStatsButton();
+				OpenStatsButton.visible = true;
+				customOpenstats.SetState(openStatMenu);
+
+				xiuxianUI = new PanelXiuXian();
+				xiuxianUI.Initialize();
+				xiuxianInterface = new UserInterface();
+				xiuxianInterface.SetState(xiuxianUI);
 				try
 				{
 					Ref<Effect> trailRef = new Ref<Effect>(base.GetEffect("Effects/Trail"));
@@ -221,6 +255,7 @@ namespace SummonHeart
 					SplitGlowMask.Load();
 					Player player = Main.player[Main.myPlayer];
 					SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
+					
 					if (modPlayer.PlayerClass == 1)
 					{
 						PanelMeleeUI = new PanelMelee();
@@ -321,7 +356,13 @@ namespace SummonHeart
 			initposionBuffSet();
 		}
 
-        public override void Unload()
+		public override void ModifyTransformMatrix(ref SpriteViewMatrix Transform)
+		{
+			zoomValue = Transform.Zoom;
+			base.ModifyTransformMatrix(ref Transform);
+		}
+
+		public override void Unload()
         {
 			this.UIhandler.Unload();
 			this.UIhandler = null;
@@ -385,6 +426,7 @@ namespace SummonHeart
 						{
 							arg = "FFFF00";
 						}
+						RPGGlobalNPC Rnpc = npc2.GetGlobalNPC<RPGGlobalNPC>();
 						string[] array = new string[]
 						{
 							string.Format("[c/{0}:{1}]", arg, npc2.GivenOrTypeName),
@@ -392,7 +434,7 @@ namespace SummonHeart
 							string.Format("\n{0}:{1}", GameCulture.Chinese.IsActive ? "伤害" : "Damage", npc2.damage.ToString()),
 							string.Format("\n{0}:{1}", GameCulture.Chinese.IsActive ? "防御" : "Defense", npc2.defense.ToString()),
 							string.Format("\n{0}:{1}/{2}", GameCulture.Chinese.IsActive ? "生命" : "Life", npc2.life.ToString(), npc2.lifeMax.ToString()),
-							string.Format("\n{0}:{1}", GameCulture.Chinese.IsActive ? "战力" : "Power", npc2.getPower()),
+							string.Format("\n{0}:{1}", GameCulture.Chinese.IsActive ? "境界" : "Power", Rnpc.GetLevelText()),
 							string.Format("\n{0}:{1}", GameCulture.Chinese.IsActive ? "评价" : "PowerLevel", npc2.getPowerLevelText())
 						};
 						string text = string.Concat(array);
@@ -469,129 +511,8 @@ namespace SummonHeart
 		}
 		public override void HandlePacket(BinaryReader reader, int whoAmI)
 		{
-			byte msgType = reader.ReadByte();
-			switch (msgType)
-			{
-				case 0:
-					{
-						/*int playernumber = (int)reader.ReadByte();
-						int tileX = reader.ReadInt32();
-						int tileY = reader.ReadInt32();
-						int houseType = reader.ReadInt32();
-						Builder.BuildHouse(tileX, tileY, houseType, false);
-						if (Main.netMode == 2)
-						{
-							ModPacket packet = base.GetPacket(256);
-							packet.Write(0);
-							packet.Write((byte)playernumber);
-							packet.Write(tileX);
-							packet.Write(tileY);
-							packet.Write(houseType);
-							packet.Send(-1, playernumber);
-						}*/
-					}
-					break;
-
-				case 1:
-                    {
-						byte npc = reader.ReadByte();
-						Main.npc[npc].life = reader.ReadInt32();
-					}
-                    break;
-
-				case 2: //update SoulSplit
-                    {
-						/*byte npc = reader.ReadByte();
-						*/
-						if (Main.netMode == NetmodeID.MultiplayerClient)
-						{
-							int npc = reader.ReadByte();
-							Main.npc[npc].lifeRegen = reader.ReadInt32();
-						}
-					}
-					break;
-				case 3:
-                    {
-						if (Main.netMode == NetmodeID.MultiplayerClient)
-						{
-							byte playernumber = reader.ReadByte();
-							int heal = reader.ReadInt32();
-							SummonHeartPlayer modPlayer = Main.player[playernumber].GetModPlayer<SummonHeartPlayer>();
-							modPlayer.KillResourceCountMsg();
-						}
-					}
-					break;
-				case 4:
-                    {
-						if (Main.netMode == NetmodeID.MultiplayerClient)
-						{
-							byte playernumber = reader.ReadByte();
-							int npc = reader.ReadByte();
-							Main.player[playernumber].doKillNpcExp(Main.npc[npc]);
-						}
-					}
-					break;
-				case 5:
-					{
-						Main.AnglerQuestSwap();
-					}
-					break;
-				case 6:
-					{
-						Main.time = 54000.0;
-						CultistRitual.delay = 0;
-						CultistRitual.recheck = 0;
-					}
-					break;
-				case 7:
-					{
-						SummonHeartWorld.StarMulti = 100;
-						SummonHeartWorld.StarMultiTime = 60 * 60 * 12;
-					}
-					break;
-				case 8:
-					AutoHouseTool.HandleBuilding2(reader.ReadInt32(), reader.ReadInt32(), whoAmI);
-					break;
-				case 9:
-					{
-						NPC.SpawnOnPlayer(reader.ReadInt32(), reader.ReadInt16());
-						NetMessage.SendData(61, -1, -1, null, reader.ReadInt16(), NPCID.TravellingMerchant, 0f, 0f, 0, 0, 0);
-					}
-					break;
-				case 10:
-					{
-						if (Main.netMode == NetmodeID.MultiplayerClient)
-                        {
-							byte playernumber = reader.ReadByte();
-							SummonHeartPlayer modPlayer = Main.player[playernumber].GetModPlayer<SummonHeartPlayer>();
-							modPlayer.detonate = true;
-                        }
-					}
-					break;
-				case 11:
-					{
-						if (Main.netMode == NetmodeID.MultiplayerClient)
-                        {
-							if (Main.LocalPlayer.whoAmI != 0)
-								return;
-							/*byte playernumber = reader.ReadByte();
-							SummonHeartPlayer modPlayer = Main.player[playernumber].GetModPlayer<SummonHeartPlayer>();
-							modPlayer.detonate = true;*/
-							int i = reader.ReadInt32();
-							int projID = reader.ReadInt32();
-							int shootDamage = reader.ReadInt32();
-							int shootKnockback = reader.ReadInt32();
-							NPC target = Main.npc[i];
-							int projIndex = Projectile.NewProjectile(target.Center.X, target.Center.Y, 0f, 0f, ModContent.ProjectileType<BoltBulletPro>(), shootDamage, shootKnockback, Main.myPlayer);
-							Main.projectile[projIndex].netUpdate = true;
-						}
-					}
-					break;
-				default:
-					Logger.WarnFormat("MyMod: Unknown Message type: {0}", msgType);
-					break;
-					
-			}
+			MsgUtils.HandlePacket(reader, whoAmI);
+			
 		}
 
 
@@ -830,6 +751,8 @@ namespace SummonHeart
 				customOpenstats?.Update(gameTime);
 				xiuxianInterface?.Update(gameTime);
 			}
+			if (!Main.gameMenu)
+				customNPCName?.Update(gameTime);
 		}
 
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
@@ -933,7 +856,7 @@ namespace SummonHeart
 			{
 				customResources.Draw(Main.spriteBatch, new GameTime());
 				customOpenstats.Draw(Main.spriteBatch, new GameTime());
-                if (PanelXiuXian.visible)
+				if (PanelXiuXian.visible)
                 {
 					xiuxianInterface.Draw(Main.spriteBatch, new GameTime());
 				}
@@ -942,6 +865,8 @@ namespace SummonHeart
 			{
 				customstats.Draw(Main.spriteBatch, new GameTime());
 			}
+			if (!Main.gameMenu)
+				customNPCName.Draw(Main.spriteBatch, new GameTime());
 			return true;
 		}
 

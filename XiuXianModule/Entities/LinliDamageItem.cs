@@ -116,7 +116,10 @@ namespace SummonHeart.XiuXianModule.Weapon
             if (rp.lingli >= linliCost)
             {
                 rp.lingli -= linliCost;
-                useCount += Mathf.RoundInt(rp.GetLinjiXiuLianAddMult());
+                if (useCount < useMax)
+                    useCount += Mathf.RoundInt(rp.GetLinjiXiuLianAddMult());
+                if (useCount > useMax)
+                    useCount = useMax;
                 return true;
             }
             return false;

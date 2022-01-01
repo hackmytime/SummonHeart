@@ -34,7 +34,7 @@ namespace SummonHeart
         [Tooltip("Health Bar Offset on the Y axis")]
         [Range(-500f, 1500f)]
         [Increment(10f)]
-        [DefaultValue(100)]
+        [DefaultValue(0)]
         public float HealthBarYoffSet;
 
         [Label("Health Bar Scale")]
@@ -96,7 +96,19 @@ namespace SummonHeart
         [Tooltip("Enable all player related RPG elements")]
         [DefaultValue(true)]
         public bool RPGPlayer;
-      
+
+        [Label("Item Ascension Limit")]
+        [Tooltip("Cap the maximum ascension based on the world progress")]
+        [DefaultValue(true)]
+        public bool AscendLimit;
+
+        [Label("Item Ascension Limit Per Boss")]
+        [Tooltip("How much the ascend limit Increase Per boss, 0.5 mean one for two each boss killed, '2' mean two for each boss killed")]
+        [Range(0.1F, 10F)]
+        [Increment(.25f)]
+        [DefaultValue(1f)]
+        public float AscendLimitPerBoss;
+
 
         public override void OnLoaded()
         {

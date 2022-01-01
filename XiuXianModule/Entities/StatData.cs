@@ -4,13 +4,11 @@ namespace SummonHeart.XiuXianModule.Entities
 {
     class StatData
     {
-        private int natural;
         private int level;
         private int xp;
 
         public int AddLevel { get { return level; } }
-        public int NaturalLevel { get { return natural; } }
-        public int GetLevel { get { return level + natural; } }
+        public int GetLevel { get { return level; } }
         public int GetXP { get { return xp; } }
 
         public int XpForLevel()
@@ -26,15 +24,14 @@ namespace SummonHeart.XiuXianModule.Entities
                 level = level + 1;
             }
         }
-        public StatData(int _natural, int _level = 0, int _xp = 0)
+        public StatData(int _level = 0, int _xp = 0)
         {
-            natural = _natural;
             xp = _xp;
             level = _level;
         }
         public void LevelUp()
         {
-            natural++;
+            level++;
         }
 
     }

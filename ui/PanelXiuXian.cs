@@ -5,7 +5,6 @@ using SummonHeart.costvalues;
 using SummonHeart.Extensions;
 using SummonHeart.Items.Material;
 using SummonHeart.XiuXianModule.Entities;
-using SummonHeart.XiuXianModule.Enum;
 using SummonHeart.ui.layout;
 using System.Collections.Generic;
 using Terraria;
@@ -13,6 +12,7 @@ using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
+using SummonHeart.XiuXianModule.EnumType;
 
 namespace SummonHeart.ui
 {

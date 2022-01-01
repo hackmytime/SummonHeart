@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AnotherRpgMod.XiuXianModule
+namespace SummonHeart.XiuXianModule.EnumType
 {
     public enum ClassType
     {

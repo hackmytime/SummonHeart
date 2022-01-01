@@ -98,15 +98,7 @@ namespace SummonHeart.NPCs
 			return base.CheckActive(npc);
         }
 
-        public void SyncPlayerNpcVar(Player player, NPC npc)
-		{
-			SummonHeartPlayer modPlayer = player.GetModPlayer<SummonHeartPlayer>();
-			ModPacket packet = mod.GetPacket();
-			packet.Write((byte)4);
-			packet.Write((byte)player.whoAmI);
-			packet.Write((byte)npc.whoAmI);
-			packet.Send();
-		}
+       
 
         public override void PostAI(NPC npc)
         {
@@ -164,7 +156,7 @@ namespace SummonHeart.NPCs
 					Player player = Main.player[k];
 					if (player.active)
 					{
-						SyncPlayerNpcVar(player, npc);
+						MsgUtils.SyncPlayerNpcVar(mod, player, npc);
 					}
 				}
             }
@@ -207,24 +199,7 @@ namespace SummonHeart.NPCs
             }
         }
 
-		public void SyncNpcVariables(NPC npc)
-		{
-			ModPacket packet = mod.GetPacket();
-			packet.Write((byte)1);
-			packet.Write((byte)npc.whoAmI);
-			packet.Write(npc.life);
-			packet.Send();
-		}
-
-		public void SyncKillResourceCount(Player player, int killResourceCount)
-		{
-			ModPacket packet = mod.GetPacket();
-			packet.Write((byte)3);
-			packet.Write((byte)player.whoAmI);
-			packet.Write(killResourceCount);
-			packet.Send();
-
-		}
+		
 
 		public void CauseDirectDamage(NPC npc, int originalDamage, bool crit, int addRealDmage)
 		{
@@ -261,7 +236,7 @@ namespace SummonHeart.NPCs
 				}
 				if (Main.netMode == 1)
 				{
-					SyncNpcVariables(npc);
+					MsgUtils.SyncNpcVariables(mod, npc);
 				}
 			}
 		}
@@ -281,7 +256,7 @@ namespace SummonHeart.NPCs
 				}
 				if (Main.netMode == 1)
 				{
-					SyncNpcVariables(npc);
+					MsgUtils.SyncNpcVariables(mod, npc);
 				}
 			}
 		}
@@ -328,7 +303,7 @@ namespace SummonHeart.NPCs
 				
 				if (Main.netMode == 1)
 				{
-					SyncNpcVariables(npc);
+					MsgUtils.SyncNpcVariables(mod, npc);
 				}
 			}
 		}

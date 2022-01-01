@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace SummonHeart.XiuXianModule.Entities.Enum
+﻿
+namespace SummonHeart.XiuXianModule.Entities.Npc
 {
-    [Flags]
     public enum NPCModifier : int
     {
         None = 0x0,

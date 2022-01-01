@@ -73,14 +73,5 @@ namespace SummonHeart.Buffs
           
             return true;
         }
-
-        public void SyncNpcData(NPC npc)
-        {
-            ModPacket packet = mod.GetPacket();
-            packet.Write((byte)2);
-            packet.Write((byte)npc.whoAmI);
-            packet.Write(npc.lifeRegen);
-            packet.Send();
-        }
     }
 }

@@ -1,7 +1,7 @@
-﻿using SummonHeart.XiuXianModule.Enum;
-using SummonHeart.Utilities;
+﻿using SummonHeart.Utilities;
 using System;
 using System.Collections.Generic;
+using SummonHeart.XiuXianModule.EnumType;
 
 namespace SummonHeart.XiuXianModule.Entities
 {
@@ -68,11 +68,6 @@ namespace SummonHeart.XiuXianModule.Entities
             {
                 return lingenTexts[v];
             }
-        }
-
-        public int GetNaturalStat(Stat a)
-        {
-            return ActualStat[a].NaturalLevel;
         }
 
         public void UpgradeStat(Stat statname, int value = 1)

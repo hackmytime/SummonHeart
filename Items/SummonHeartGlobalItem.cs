@@ -369,15 +369,18 @@ namespace SummonHeart.Items
             if (num != -1)
             {
                 string text;
-                if (item.modItem == null)
+                if (SummonHeartConfig.Instance.DisplayItemModNameConfig)
                 {
-                    text = "【" + (GameCulture.Chinese.IsActive ? "原版" : "Vanilla") + "】";
+                    if (item.modItem == null)
+                    {
+                        text = "【" + (GameCulture.Chinese.IsActive ? "原版" : "Vanilla") + "】";
+                    }
+                    else
+                    {
+                        text = "【" + item.modItem.mod.DisplayName + "】";
+                    }
+                    tooltips.Insert(num + 1, new TooltipLine(base.mod, "SRC:ModBelongIdentifier", text));
                 }
-                else
-                {
-                    text = "【" + item.modItem.mod.DisplayName + "】";
-                }
-                tooltips.Insert(num + 1, new TooltipLine(base.mod, "SRC:ModBelongIdentifier", text));
                 if (item.fishingPole > 0)
                 {
                     text = "钓鱼等级 Lv" + mp.fishLureCount;

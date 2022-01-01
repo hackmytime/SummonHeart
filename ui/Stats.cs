@@ -13,7 +13,7 @@ using Terraria.Localization;
 using SummonHeart;
 using SummonHeart.XiuXianModule.Entities;
 using SummonHeart.Utilities;
-using SummonHeart.XiuXianModule.Enum;
+using SummonHeart.XiuXianModule.EnumType;
 
 namespace SummonHeart.ui
 {
