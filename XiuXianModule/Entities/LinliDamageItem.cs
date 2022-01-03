@@ -47,9 +47,9 @@ namespace SummonHeart.XiuXianModule.Weapon
             var rp = player.GetModPlayer<RPGPlayer>();
             add += rp.lingliDamageAdd;
             float useMult = useCount / (float)2000;
-            if (useMult == 0)
-                useMult = 0.01f;
             mult *= rp.lingliDamageMult * useMult;
+            if (mult == 0)
+                mult = 0.01f;
         }
 
         public override void GetWeaponKnockback(Player player, ref float knockback)

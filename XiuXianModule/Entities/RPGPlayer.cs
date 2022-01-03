@@ -16,11 +16,13 @@ using SummonHeart.Utilities;
 using SummonHeart.Projectiles.XiuXian;
 using SummonHeart.Extensions;
 using SummonHeart.XiuXianModule.EnumType;
+using SummonHeart.Projectiles.XiuXian.Weapon;
+using SummonHeart.Projectiles.Range.Arrows;
+using SummonHeart.Projectiles.Magic;
 
 namespace SummonHeart.XiuXianModule.Entities
 {
-
-    class RPGPlayer : ModPlayer
+    internal class RPGPlayer : ModPlayer
     {
         public readonly static ushort ACTUALSAVEVERSION = 2;
         private float Exp = 0;
@@ -65,8 +67,148 @@ namespace SummonHeart.XiuXianModule.Entities
         public float lingliDamageKnockback;
         public int lingliDamageCrit;
 
+        //灵技
+        public int IcicleCount = 0;
+        public int IcicleCountMax = 108;
+        private int icicleCD = 0;
+        public bool onIceAttack;
+
         public override void ResetEffects()
         {
+            //onIceAttack = false;
+        }
+
+        public void FrostEffect()
+        {
+            if (player.whoAmI == Main.myPlayer && onIceAttack)
+            {
+                if (icicleCD <= 0 && IcicleCount < IcicleCountMax && player.ownedProjectileCounts[ModContent.ProjectileType<FrostIcicle>()] < IcicleCountMax)
+                {
+                    IcicleCount+=3;
+                    if (IcicleCount > IcicleCountMax)
+                        IcicleCount = IcicleCountMax;
+
+                    //kill all current ones
+                    for (int i = 0; i < Main.maxProjectiles; i++)
+                    {
+                        Projectile proj = Main.projectile[i];
+
+                        if (proj.active && proj.type == ModContent.ProjectileType<FrostIcicle>() && proj.owner == player.whoAmI)
+                        {
+                            proj.active = false;
+                            proj.netUpdate = true;
+                        }
+                    }
+
+                    //respawn in formation
+                    int proCount = player.ownedProjectileCounts[ModContent.ProjectileType<FrostIcicle>()];
+                    for (int k = 1; k <= getIceLevel(IcicleCount); k++)
+                    {
+                        int count = 0;
+                        if (k < getIceLevel(IcicleCount))
+                            count = 8 * k;
+                        else
+                            count = getIceLastLevelCount(IcicleCount);
+                        for (int i = 0; i < count; i++)
+                        {
+                            int v = 360 / count;
+                            float radians = i * v * (float)(Math.PI / 180);
+                            Vector2 center = player.Center;
+                            Projectile frost = SHUtils.NewProjectileDirectSafe(center, Vector2.Zero, ModContent.ProjectileType<FrostIcicle>(), 0, 0f, player.whoAmI, 5, radians);
+                            frost.netUpdate = true;
+                            frost.ai[0] = 40f * k;
+                        }
+                    }
+
+                    float dustScale = 1.5f;
+
+                    if (IcicleCount % 10 == 0)
+                    {
+                        dustScale = 3f;
+                    }
+
+                    //dust
+                    /*for (int j = 0; j < 20; j++)
+                    {
+                        Vector2 vector6 = Vector2.UnitY * 5f;
+                        vector6 = vector6.RotatedBy((j - (20 / 2 - 1)) * 6.28318548f / 20) + player.Center;
+                        Vector2 vector7 = vector6 - player.Center;
+                        int d = Dust.NewDust(vector6 + vector7, 0, 0, 15);
+                        Main.dust[d].noGravity = true;
+                        Main.dust[d].scale = dustScale;
+                        Main.dust[d].velocity = vector7;
+
+                        if (IcicleCount % 10 == 0)
+                        {
+                            Main.dust[d].velocity *= 2;
+                        }
+                    }*/
+
+                    icicleCD = 20;
+                }
+
+                if (icicleCD > 0)
+                    icicleCD--;
+            }
+
+            if (IcicleCount >= 1 && !onIceAttack)
+            {
+                int dmg = 50;
+
+                for (int i = 0; i < Main.maxProjectiles; i++)
+                {
+                    Projectile proj = Main.projectile[i];
+
+                    if (proj.active && proj.type == ModContent.ProjectileType<FrostIcicle>() && proj.owner == player.whoAmI)
+                    {
+                        Vector2 vel = (Main.MouseWorld - proj.Center).SafeNormalize(-Vector2.UnitY) * 20f;
+
+                        int p = Projectile.NewProjectile(proj.Center, vel, 116, dmg, 1f, player.whoAmI);
+                        if (p != Main.maxProjectiles)
+                        {
+                            Main.projectile[p].timeLeft = 60 * 6;
+                            Main.projectile[p].melee = false;
+                            Main.projectile[p].magic = false;
+                            Main.projectile[p].tileCollide = false;
+                            Main.projectile[p].ignoreWater = true;
+                            Main.projectile[p].penetrate = 6;
+                            //Main.projectile[p].GetGlobalProjectile<FargoGlobalProjectile>().CanSplit = false;
+                            //Main.projectile[p].GetGlobalProjectile<FargoGlobalProjectile>().FrostFreeze = true;
+                        }
+
+                        proj.Kill();
+                    }
+                }
+
+                IcicleCount = 0;
+            }
+        }
+
+
+        public int XpForLevel(int level)
+        {
+            return 8 * level;
+        }
+        public int getIceLevel(int i)
+        {
+            int level = 1;
+            while (i > XpForLevel(level))
+            {
+                i -= XpForLevel(level);
+                level = level + 1;
+            }
+            return level;
+        }
+
+        public int getIceLastLevelCount(int i)
+        {
+            int level = 1;
+            while (i > XpForLevel(level))
+            {
+                i -= XpForLevel(level);
+                level = level + 1;
+            }
+            return i;
         }
 
         public override void PreUpdate()
@@ -83,6 +225,7 @@ namespace SummonHeart.XiuXianModule.Entities
 
         public override void PostUpdateMiscEffects()
         {
+            FrostEffect();
             SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
             if (mp.PlayerClass == 9)
             {

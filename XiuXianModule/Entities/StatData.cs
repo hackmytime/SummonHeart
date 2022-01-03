@@ -13,7 +13,7 @@ namespace SummonHeart.XiuXianModule.Entities
 
         public int XpForLevel()
         {
-            return Mathf.CeilInt(level / 4) + 1;
+            return Mathf.CeilInt(level / 10) + 1;
         }
         public void AddXp(int _xp)
         {

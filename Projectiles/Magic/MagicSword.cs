@@ -23,7 +23,7 @@ namespace SummonHeart.Projectiles.Magic
             projectile.aiStyle = 0;
             projectile.scale = 0.6f;
             projectile.usesLocalNPCImmunity = true;
-            projectile.localNPCHitCooldown = 6;
+            projectile.localNPCHitCooldown = 1;
             ProjectileID.Sets.TrailingMode[projectile.type] = 0;
         }
         

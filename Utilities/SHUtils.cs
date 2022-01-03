@@ -23,6 +23,13 @@ namespace SummonHeart.Utilities
             if (visible) player.ManaEffect(amount);
         }
 
+        public static Projectile NewProjectileDirectSafe(Vector2 pos, Vector2 vel, int type, int damage, float knockback, int owner = 255, float ai0 = 0f, float ai1 = 0f)
+        {
+            int p = Projectile.NewProjectile(pos, vel, type, damage, knockback, owner, ai0, ai1);
+            return p < Main.maxProjectiles ? Main.projectile[p] : null;
+        }
+
+
         public static void Trans(this Player player, Vector2 pos)
         {
             player.Teleport(pos, 1, 0);

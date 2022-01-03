@@ -2,6 +2,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Localization;
+using SummonHeart.ui;
 
 namespace SummonHeart.Items.Scrolls
 {
@@ -18,7 +19,9 @@ namespace SummonHeart.Items.Scrolls
                 "\n有道是：" +
                 "\n仙路尽头谁为峰" +
                 "\n答案将由你谱写" +
-                "\n提示：修仙需有道心，道心必定伤肝"
+                "\n获得传承后，会给你30点道源，请打开天赋界面，决定初始加点，无法更改" +
+                "\n提示：修仙需有灵根，无灵根无法修仙" +
+                "\n提示：点击修炼小人可以开关天赋界面"
                 );
         }
 
@@ -42,7 +45,7 @@ namespace SummonHeart.Items.Scrolls
             {
                 if (Main.netMode == 0 || Main.netMode == 1)
                 {
-                    Main.NewText("已领悟『轮回仙经』祝你好运。", 255, 255, 255);
+                    Main.NewText("已领悟『轮回仙经』获得30点初始道源，请打开天赋界面，决定初始加点，无法更改", 255, 255, 255);
                 }
                 modPlayer.PlayerClass = 9;
                 return true;
