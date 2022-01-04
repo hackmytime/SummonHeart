@@ -58,6 +58,7 @@ namespace SummonHeart.XiuXianModule.Entities
         public float lingli;
         public float lingliMax;
         private int linliHealCD = 0;
+        public float danYaoMult = 1f;
         public int age = 0;
         public int life = 60 * 360 * 24;
         private int ageCD = 0;
@@ -66,6 +67,8 @@ namespace SummonHeart.XiuXianModule.Entities
         public float lingliDamageMult;
         public float lingliDamageKnockback;
         public int lingliDamageCrit;
+
+       
 
         //灵技
         public int IcicleCount = 0;
@@ -76,6 +79,7 @@ namespace SummonHeart.XiuXianModule.Entities
         public override void ResetEffects()
         {
             //onIceAttack = false;
+            danYaoMult = 1f;
         }
 
         public void FrostEffect()
@@ -342,7 +346,7 @@ namespace SummonHeart.XiuXianModule.Entities
 
         public double GetLinliReply()
         {
-            double reply = (1 + GetStat(Stat.功法) * 0.1) * GetStat(Stat.灵根) * 0.025;
+            double reply = (1 + GetStat(Stat.功法) * 0.1) * GetStat(Stat.灵根) * 0.025 * danYaoMult;
             reply /= 10;
             if (FireAge)
                 reply *= GetFireMult();
