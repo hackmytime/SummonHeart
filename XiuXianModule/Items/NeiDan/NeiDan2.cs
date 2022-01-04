@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 using Terraria.Localization;
 using Microsoft.Xna.Framework;
 
-namespace SummonHeart.Items.Range.Loot
+namespace SummonHeart.XiuXianModule.Items.NeiDan
 {
     public class NeiDan2 : ModItem
     {

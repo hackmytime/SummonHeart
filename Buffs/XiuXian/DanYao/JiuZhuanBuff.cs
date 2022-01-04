@@ -5,12 +5,12 @@ using SummonHeart.XiuXianModule.Entities;
 
 namespace SummonHeart.Buffs.XiuXian.DanYao
 {
-    public class ZhujiBuff : ModBuff
+    public class JiuZhuanBuff : ModBuff
     {
         public override void SetDefaults()
         {
-            DisplayName.SetDefault("筑基丹生效中");
-            Description.SetDefault("灵力吸收速度翻4倍");
+            DisplayName.SetDefault("九转金丹生效中");
+            Description.SetDefault("灵力吸收速度翻256倍");
             Main.buffNoSave[Type] = false;
             Main.debuff[Type] = false;
             canBeCleared = false;
@@ -18,7 +18,7 @@ namespace SummonHeart.Buffs.XiuXian.DanYao
 
         public override void Update(Player player, ref int buffIndex)
         {
-            player.GetModPlayer<RPGPlayer>().danYaoMult = 4;
+            player.GetModPlayer<RPGPlayer>().danYaoMult = 256;
         }
     }
 }

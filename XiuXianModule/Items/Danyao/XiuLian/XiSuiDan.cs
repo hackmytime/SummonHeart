@@ -3,9 +3,9 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria;
 using SummonHeart.XiuXianModule.Entities;
-using SummonHeart.Buffs.XiuXian;
+using SummonHeart.Buffs.XiuXian.DanYao;
 
-namespace SummonHeart.Items.Range.Loot
+namespace SummonHeart.XiuXianModule.Items.Danyao.XiuLian
 {
     public class XiSuiDan : ModItem
     {
@@ -14,8 +14,8 @@ namespace SummonHeart.Items.Range.Loot
             DisplayName.SetDefault("洗髓丹");
             Tooltip.SetDefault("二品丹药" +
                 "\n可用于练气期修士洗精伐髓" +
-                "\n服用后灵力吸收速度增加4倍" +
-                "\n持续2分钟");
+                "\n服用后灵力吸收速度翻2倍" +
+                "\n持续1分钟");
         }
 
         public override void SetDefaults()
@@ -37,12 +37,12 @@ namespace SummonHeart.Items.Range.Loot
             RPGPlayer mp = player.GetModPlayer<RPGPlayer>();
             if (mp.GetLevel() > 10)
             {
-                CombatText.NewText(player.getRect(), Color.Red, "境界过高，此丹药对你已经无效，无法吸收");
+                CombatText.NewText(player.getRect(), Color.Gold, "境界过高，此丹药对你已经无效，无法吸收");
                 return false;
             }
             else
             {
-                player.AddBuff(ModContent.BuffType<XisuiBuff>(), 3600 * 2);
+                player.AddBuff(ModContent.BuffType<XisuiBuff>(), 3600 * 1);
             }
             return true;
         }
@@ -52,6 +52,15 @@ namespace SummonHeart.Items.Range.Loot
             ModRecipe recipe = new ModRecipe(mod);
             recipe.AddIngredient(mod.GetItem("LingShi1"), 99);
             recipe.AddIngredient(mod.GetItem("NeiDan2"), 1);
+            int gem = 1;
+            recipe.AddIngredient(ItemID.Amber, gem);
+            recipe.AddIngredient(ItemID.Amethyst, gem);
+            recipe.AddIngredient(ItemID.Topaz, gem);
+            recipe.AddIngredient(ItemID.Sapphire, gem);
+            recipe.AddIngredient(ItemID.Ruby, gem);
+            recipe.AddIngredient(ItemID.Emerald, gem);
+            recipe.AddIngredient(ItemID.Diamond, gem);
+            recipe.AddIngredient(ItemID.SilverBar, gem);
             recipe.SetResult(this);
             recipe.AddRecipe();
         }
