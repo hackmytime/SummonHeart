@@ -391,6 +391,124 @@ namespace SummonHeart.XiuXianModule.Entities.Npc
             }
             return true;
         }
+        public override bool PreNPCLoot(NPC npc)
+        {
+            if (npc.type == NPCID.MoonLordCore)
+            {
+                if (!NPC.downedMoonlord)
+                {
+                }
+            }
+            if (npc.type == NPCID.EyeofCthulhu)
+            {
+                if (!NPC.downedBoss1)
+                {
+                    npc.DropItemInstanced(npc.position, npc.Size, mod.ItemType("AlchemistCharmTier1"));
+                }
+            }
+            if (true)
+            {
+                if (npc.type == NPCID.KingSlime)
+                {
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("KingSlimeBooster"));
+                }
+                if (npc.type == NPCID.EyeofCthulhu)
+                {
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("EyeOfCthulhuBooster"));
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("BrokenBooster1"));
+                }
+                if (npc.type == NPCID.EaterofWorldsHead && !NPC.AnyNPCs(NPCID.EaterofWorldsTail))
+                {
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("EaterOfWorldsBooster"));
+                }
+                if (npc.type == NPCID.EaterofWorldsTail && !NPC.AnyNPCs(NPCID.EaterofWorldsHead))
+                {
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("EaterOfWorldsBooster"));
+                }
+                if (npc.type == NPCID.BrainofCthulhu)
+                {
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("BrainOfCthulhuBooster"));
+                }
+                if (npc.type == NPCID.QueenBee)
+                {
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("QueenBeeBooster"));
+                }
+                if (npc.type == NPCID.SkeletronHead)
+                {
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("SkeletronBooster"));
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("BrokenBooster2"));
+                }
+                if (npc.type == NPCID.WallofFlesh)
+                {
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("WoFBooster"));
+                }
+                if (npc.type == NPCID.SkeletronPrime)
+                {
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("PrimeBooster"));
+                }
+                if (npc.type == NPCID.Spazmatism && !NPC.AnyNPCs(NPCID.Retinazer))
+                {
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("TwinsBooster"));
+                }
+                if (npc.type == NPCID.Retinazer && !NPC.AnyNPCs(NPCID.Spazmatism))
+                {
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("TwinsBooster"));
+                }
+                if (npc.type == NPCID.TheDestroyer)
+                {
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("DestroyerBooster"));
+                }
+                if (npc.type == NPCID.Plantera)
+                {
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("PlanteraBooster"));
+                }
+                if (npc.type == NPCID.Golem)
+                {
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("GolemBooster"));
+                }
+                if (npc.type == NPCID.DukeFishron)
+                {
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("FishronBooster"));
+                }
+                if (npc.type == NPCID.CultistBoss)
+                {
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("CultistBooster"));
+                }
+                if (npc.type == NPCID.MoonLordCore)
+                {
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("MoonLordBooster"));
+                }
+                if (npc.type == NPCID.DD2DarkMageT1 || npc.type == NPCID.DD2DarkMageT3)
+                {
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("DarkMageBooster"));
+                }
+                if (npc.type == NPCID.DD2OgreT2 || npc.type == NPCID.DD2OgreT3)
+                {
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("OgreBooster"));
+                }
+                if (npc.type == NPCID.DD2Betsy)
+                {
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("BetsyBooster"));
+                }
+                if (npc.type == 471)
+                {
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("GSummonerBooster"));
+                }
+                if (npc.type == 243)
+                {
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("IceGolemBooster"));
+                }
+                if (npc.type == 170 || npc.type == 171 || npc.type == 180)
+                {
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("PigronBooster"));
+                }
+                if (npc.type == 395)
+                {
+                    Item.NewItem((int)npc.position.X, (int)npc.position.Y, npc.width, npc.height, mod.ItemType("MartianSaucerBooster"));
+                }
+            }
+            return base.PreNPCLoot(npc);
+        }
 
         public override void NPCLoot(NPC npc)
         {
