@@ -150,7 +150,10 @@ namespace SummonHeart.Utilities
         }
         public static int CeilInt(int number)
         {
-            return (int)Math.Ceiling((double)number);
+            int ceil = (int)Math.Ceiling((double)number);
+            if (ceil <= 0)
+                ceil = 1;
+            return ceil;
         }
 
 

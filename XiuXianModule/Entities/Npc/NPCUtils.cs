@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using SummonHeart.Utilities;
+using SummonHeart.XiuXianModule.EnumType;
 
 namespace SummonHeart.XiuXianModule.Entities.Npc
 {
@@ -131,6 +132,114 @@ namespace SummonHeart.XiuXianModule.Entities.Npc
             if (maxLevel < 1)
                 maxLevel = 1;
             return maxLevel;
+        }
+
+        internal static int InitLevel(NPC npc)
+        {
+            int level = 1;
+            int baseLevel = 0;
+            RPGPlayer mp = Main.LocalPlayer.GetModPlayer<RPGPlayer>();
+            if (npc.boss)
+            {
+                if (npc.type == NPCID.KingSlime)
+                {
+                    //1、史莱姆王、结丹一重
+                    baseLevel = 21;
+                }
+                if (npc.type == NPCID.EyeofCthulhu)
+                {
+                    //2、克眼、结丹三重
+                    baseLevel = 23;
+                }
+                if (npc.type == NPCID.EaterofWorldsHead && !NPC.AnyNPCs(NPCID.EaterofWorldsTail))
+                {
+                    //3、世吞/克脑、结丹七重
+                    baseLevel = 27;
+                }
+                if (npc.type == NPCID.EaterofWorldsTail && !NPC.AnyNPCs(NPCID.EaterofWorldsHead))
+                {
+                    //3、世吞/克脑、结丹七重
+                    baseLevel = 27;
+                }
+                if (npc.type == NPCID.BrainofCthulhu)
+                {
+                    //3、世吞/克脑、结丹七重
+                    baseLevel = 27;
+                }
+                if (npc.type == NPCID.QueenBee)
+                {
+                    //4、蜂王、结丹十重巅峰
+                    baseLevel = 30;
+                }
+                if (npc.type == NPCID.SkeletronHead)
+                {
+                    //5、吴克、元婴一重
+                    baseLevel = 31;
+                }
+                if (npc.type == NPCID.WallofFlesh)
+                {
+                    //6、肉山、元婴三重
+                    baseLevel = 33;
+                }
+                if (npc.type == NPCID.SkeletronPrime)
+                {
+                    //7、新三王、元婴十重巅峰
+                    baseLevel = 40;
+                }
+                if (npc.type == NPCID.Spazmatism && !NPC.AnyNPCs(NPCID.Retinazer))
+                {
+                    //7、新三王、元婴十重巅峰
+                    baseLevel = 40;
+                }
+                if (npc.type == NPCID.Retinazer && !NPC.AnyNPCs(NPCID.Spazmatism))
+                {
+                    //7、新三王、元婴十重巅峰
+                    baseLevel = 40;
+                }
+                if (npc.type == NPCID.TheDestroyer)
+                {
+                    //7、新三王、元婴十重巅峰
+                    baseLevel = 40;
+                }
+                if (npc.type == NPCID.Plantera)
+                {
+                    //8、小花、化神一重
+                    baseLevel = 41;
+                }
+                if (npc.type == NPCID.Golem)
+                {
+                    //9、石头人、化神三重
+                    baseLevel = 43;
+                }
+                if (npc.type == NPCID.DukeFishron)
+                {
+                    //10、肉后小怪、化神七重
+                    baseLevel = 47;
+                }
+                if (npc.type == NPCID.CultistBoss)
+                {
+                    //11、邪教徒、化神巅峰
+                    baseLevel = 50;
+                }
+                if (npc.type == NPCID.MoonLordCore)
+                {
+                    //12、月总、合体一重
+                    baseLevel = 51;
+                }
+                if (npc.type == NPCID.DD2Betsy)
+                {
+                    //12、天国飞龙
+                    baseLevel = 40;
+                }
+            }
+            else
+            {
+                //小怪
+                baseLevel = mp.GetLevel();
+                if (baseLevel > 30)
+                    baseLevel = 30;
+            }
+            return baseLevel + mp.GetStat(Stat.道心);
         }
 
         //Get Tier bonus from world
@@ -573,10 +682,47 @@ namespace SummonHeart.XiuXianModule.Entities.Npc
             return DoTDamage;
         }
 
+        public static int GetLinliMax(int level)
+        {
+            double tempMax = 0;
+            int a = level / 10;
+            int b = level % 10;
+            if (level == 0)
+                return 0;
+            if (b == 0)
+            {
+                tempMax = 9 * Math.Pow(10, a);
+            }
+            else if (a > 0)
+            {
+                tempMax = 9 * (b + 1) * Math.Pow(10, a);
+            }
+            else
+            {
+                tempMax = 9 * b * Math.Pow(10, a);
+            }
+            return Mathf.CeilInt(tempMax);
+        }
+
         public static NPC SetNPCStats(NPC npc, int level, int tier, NPCRank rank)
         {
             if (npc == null)
                 return npc;
+            int lingliMax = GetLinliMax(level);
+            npc.lifeMax = Mathf.HugeCalc(npc.lifeMax + lingliMax, npc.lifeMax);
+            if (npc.damage > 0)
+                npc.damage += Mathf.HugeCalc(Mathf.FloorInt(npc.damage + lingliMax / 10), npc.damage);
+            if (npc.defense > 0)
+                npc.defense = Mathf.HugeCalc(Mathf.FloorInt(npc.defense + lingliMax / 8), npc.defense);
+
+            if (npc.defense < 0)
+                npc.defense = 0;
+            if (npc.damage < 0)
+                npc.damage = 0;
+
+            npc.life = npc.lifeMax;
+
+            return npc;
 
             if (!Config.NPCConfig.NPCProgress)
             {

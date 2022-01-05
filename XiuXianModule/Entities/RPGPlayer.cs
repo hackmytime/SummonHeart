@@ -55,6 +55,7 @@ namespace SummonHeart.XiuXianModule.Entities
         //修仙
         public bool FireAge;
         public int returnTime = 0;
+        public int lifeHeal = 0;
         public float lingli;
         public float lingliMax;
         private int linliHealCD = 0;
@@ -80,6 +81,8 @@ namespace SummonHeart.XiuXianModule.Entities
         {
             //onIceAttack = false;
             danYaoMult = 1f;
+            lifeHeal = 0;
+            lingliDamageAdd = 0;
         }
 
         public void FrostEffect()
@@ -236,9 +239,16 @@ namespace SummonHeart.XiuXianModule.Entities
                 player.lifeRegen += Mathf.FloorInt(GetHealthRegen());
                 lingliMax = GetLinliMax();
                 lingliDamageMult = GetLinliDamageMult();
-                player.statLifeMax2 = Mathf.Clamp((int)(GetHealthMult() * player.statLifeMax2 * GetHealthPerHeart() / 20) + 10 * GetLevel(), 10, int.MaxValue);
-                player.statDefense = (int)(GetDefenceMult() * player.statDefense * GetArmorMult());
-
+                //player.statLifeMax2 = Mathf.Clamp((int)(GetHealthMult() * player.statLifeMax2 * GetHealthPerHeart() / 20) + 10 * GetLevel(), 10, int.MaxValue);
+                player.statLifeMax2 = Mathf.FloorInt(lingliMax / 2);
+                //player.statDefense = (int)(GetDefenceMult() * player.statDefense * GetArmorMult());
+                player.statDefense += Mathf.FloorInt(lingliMax / 20);
+                lingliDamageAdd += Mathf.FloorInt(lingliMax / 10);
+                if(level > 10)
+                {
+                    player.noKnockback = true;
+                    player.noFallDmg = true;
+                }
 
                 linliHealCD++;
                 if (linliHealCD == 12)
@@ -274,6 +284,15 @@ namespace SummonHeart.XiuXianModule.Entities
                             float addXp = Mathf.Round(GetXiuLianLinliReply() / 5, 3);
                             AddXp(addXp, 1);
                         }
+                    }
+                    //回血
+                    int heal = lifeHeal / 5;
+                    if (player.statLife < player.statLifeMax2)
+                    {
+                        if (heal < 1)
+                            heal = 1;
+                        player.statLife += heal;
+                        player.HealEffect(heal);
                     }
                 }
                 //寿命
@@ -437,15 +456,15 @@ namespace SummonHeart.XiuXianModule.Entities
             return levelText + levelTexts[a] + numTexts[b] + "重";
         }
 
-        public int XPToNextLevel()
+        public float XPToNextLevel()
         {
             if (level == 0)
                 return 9;
             int a = level % 10;
             if(a == 0)
-                return 10 * GetLinliMax();
+                return 20 * GetLinliMax();
             else
-                return 2 * GetLinliMax();
+                return 10 * GetLinliMax();
         }
 
         public int GetLinliMax()
@@ -521,8 +540,8 @@ namespace SummonHeart.XiuXianModule.Entities
             if (_stat == Stat.道心 && GetStat(_stat) < 10)
             {
                 Stats.UpgradeStat(_stat, 1);
-                freePoints += 4;
-                totalPoints += 4;
+                freePoints += 1;
+                totalPoints += 1;
                 return;
             }
             ammount = Mathf.Clamp(ammount, 1, freePoints);
@@ -783,11 +802,12 @@ namespace SummonHeart.XiuXianModule.Entities
         }
 
 
-        private void LevelUpMessage(int addLife)
+        private void LevelUpMessage(int addLife, int pointsToGain)
         {
             CombatText.NewText(player.getRect(), new Color(255, 25, 100), "境界突破 !!!!");
             CombatText.NewText(player.getRect(), Color.LightGreen, "+"+ addLife + "年寿元");
-             //Main.NewText(player.name + " Is now level : " + level.ToString() + " .Congratulation !", 255, 223, 63);
+            CombatText.NewText(player.getRect(), new Color(150, 100, 200), "+" + pointsToGain + "道源", true);
+            //Main.NewText(player.name + " Is now level : " + level.ToString() + " .Congratulation !", 255, 223, 63);
         }
 
         private void ReturnMessage(int pointsToGain)
@@ -813,12 +833,18 @@ namespace SummonHeart.XiuXianModule.Entities
             else
             {
                 returnTime = 0;
-
-               
-                Stats.OnLevelUp();
-                int addLife = 0;
                 int a = level / 10;
                 int b = level % 10;
+                
+                int pointsToGain = Mathf.FloorInt(Mathf.Pow(2, a));
+                if (b == 0)
+                    pointsToGain *= 100;
+                else
+                    pointsToGain *= b;
+                totalPoints += pointsToGain;
+                freePoints += pointsToGain;
+                Stats.OnLevelUp();
+                int addLife = 0;
                
                 if (b == 0 && a > 0)
                 {
@@ -831,7 +857,7 @@ namespace SummonHeart.XiuXianModule.Entities
                 level++;
                 life += addLife * 360 * 24;
                 if (!silent)
-                    LevelUpMessage(addLife);
+                    LevelUpMessage(addLife, pointsToGain);
             }
 
             if (Main.netMode == NetmodeID.MultiplayerClient)

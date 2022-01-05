@@ -185,7 +185,7 @@ namespace SummonHeart.XiuXianModule.Entities.Npc
                     }
                     else
                     {
-                        level = Mathf.CeilInt(NPCUtils.GetBaseLevel(npc) * Config.NPCConfig.NpclevelMultiplier);
+                        level = NPCUtils.InitLevel(npc);
                         if (npc.townNPC || npc.damage == 0)
                             tier = Mathf.CeilInt(NPCUtils.GetTierAlly(npc, level) * Config.NPCConfig.NpclevelMultiplier);
                         else if (Config.NPCConfig.NPCProgress)
@@ -219,6 +219,12 @@ namespace SummonHeart.XiuXianModule.Entities.Npc
                 }
             }
         }
+
+        private int InitLevel(NPC npc)
+        {
+            return Mathf.CeilInt(NPCUtils.GetBaseLevel(npc) * Config.NPCConfig.NpclevelMultiplier);
+        }
+
         private void Effect(NPC npc)
         {
             if (HaveModifier(NPCModifier.Golden))
@@ -250,9 +256,6 @@ namespace SummonHeart.XiuXianModule.Entities.Npc
 
         public override void PostAI(NPC npc)
         {
-
-
-
             Effect(npc);
             if (npc.dontTakeDamage && dontTakeDamageTime > 0)
             {
@@ -391,7 +394,7 @@ namespace SummonHeart.XiuXianModule.Entities.Npc
             }
             return true;
         }
-        public override bool PreNPCLoot(NPC npc)
+       /* public override bool PreNPCLoot(NPC npc)
         {
             if (npc.type == NPCID.MoonLordCore)
             {
@@ -508,7 +511,7 @@ namespace SummonHeart.XiuXianModule.Entities.Npc
                 }
             }
             return base.PreNPCLoot(npc);
-        }
+        }*/
 
         public override void NPCLoot(NPC npc)
         {
@@ -523,6 +526,7 @@ namespace SummonHeart.XiuXianModule.Entities.Npc
 
             if (npc.damage == 0) return;
             if (npc.townNPC) return;
+            
 
             Player player = Array.Find(Main.player, p => p.active);
             if (Main.netMode == NetmodeID.SinglePlayer)

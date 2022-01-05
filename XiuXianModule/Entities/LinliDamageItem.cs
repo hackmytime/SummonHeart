@@ -94,17 +94,21 @@ namespace SummonHeart.XiuXianModule.Weapon
                 string str = "";
                 string desp = "";
                 string upDesp = "";
+                string levelDesp = "";
                 {
                     str = "品阶 " + levelTexts[level];
                     desp = "掌控进度 " + useCount + "/" + useMax;
                     upDesp = "灵攻加成 " + useCount / 20 + "%("+ baseDamage + "基础伤害)";
+                    levelDesp = "境界加成 +" + rp.lingliDamageAdd + "面板伤害";
                 }
                 tooltips.Insert(num + 1, new TooltipLine(mod, "SkillStr", str));
                 tooltips[num + 1].overrideColor = Color.LightSkyBlue;
                 tooltips.Insert(num + 2, new TooltipLine(mod, "SkillDesp", desp));
                 tooltips[num + 2].overrideColor = Color.LightGreen;
-                tooltips.Insert(num + 3, new TooltipLine(mod, "SkillDesp", upDesp));
+                tooltips.Insert(num + 3, new TooltipLine(mod, "upDesp", upDesp));
                 tooltips[num + 3].overrideColor = Color.LightGreen;
+                tooltips.Insert(num + 4, new TooltipLine(mod, "LvelDesp", levelDesp));
+                tooltips[num + 4].overrideColor = Color.Gold;
             }
         }
 

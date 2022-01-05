@@ -16,7 +16,7 @@ namespace SummonHeart.XiuXianModule.Items.Danyao.XiuLian
                 "\n可用于练气巅峰修士突破筑基" +
                 "\n可用于筑基修士日常修炼" +
                 "\n服用后灵力吸收速度翻4倍" +
-                "\n持续2分钟");
+                "\n持续3分钟");
         }
 
         public override void SetDefaults()
@@ -48,7 +48,7 @@ namespace SummonHeart.XiuXianModule.Items.Danyao.XiuLian
             }
             else
             {
-                player.AddBuff(ModContent.BuffType<ZhujiBuff>(), 3600 * 2);
+                player.AddBuff(ModContent.BuffType<ZhujiBuff>(), 3600 * 3);
             }
             return true;
         }

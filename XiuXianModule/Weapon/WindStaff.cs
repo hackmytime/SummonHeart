@@ -16,7 +16,8 @@ namespace SummonHeart.XiuXianModule.Weapon
             DisplayName.AddTranslation(GameCulture.Chinese, "风暴术");
             Tooltip.SetDefault("FireBirdStaff");
             Tooltip.AddTranslation(GameCulture.Chinese, "" +
-                "以灵力引导天地风元素凝聚风暴之箭\n注意安全");
+                "以灵力引导天地风元素凝聚风暴之箭" +
+                "\n注意安全,筑基以下境界会被风暴吹走");
         }
 
         public override void SafeSetDefaults()

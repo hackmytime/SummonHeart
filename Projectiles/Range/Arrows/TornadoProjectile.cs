@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using SummonHeart.XiuXianModule.Entities;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -116,6 +117,7 @@ namespace SummonHeart.Projectiles.Range.Arrows
             }
             Player player = Main.player[Main.myPlayer];
             SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
+            RPGPlayer rp = player.GetModPlayer<RPGPlayer>();
             base.projectile.damage = mp.tornadoDamage;
             if (!player.noKnockback && projectile.position.X / 16f <= (player.position.X + 700f) / 16f && projectile.position.X / 16f >= (player.position.X - 700f) / 16f)
             {

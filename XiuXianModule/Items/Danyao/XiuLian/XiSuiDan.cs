@@ -15,7 +15,7 @@ namespace SummonHeart.XiuXianModule.Items.Danyao.XiuLian
             Tooltip.SetDefault("二品丹药" +
                 "\n可用于练气期修士洗精伐髓" +
                 "\n服用后灵力吸收速度翻2倍" +
-                "\n持续1分钟");
+                "\n持续2分钟");
         }
 
         public override void SetDefaults()
@@ -42,7 +42,7 @@ namespace SummonHeart.XiuXianModule.Items.Danyao.XiuLian
             }
             else
             {
-                player.AddBuff(ModContent.BuffType<XisuiBuff>(), 3600 * 1);
+                player.AddBuff(ModContent.BuffType<XisuiBuff>(), 3600 * 2);
             }
             return true;
         }
