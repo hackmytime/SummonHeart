@@ -398,11 +398,8 @@ namespace SummonHeart.ui
                     UpgradeStatOver[10].SetText("+ " + 0.02f * Char.statMultiplier + " HP/Sec");
                     break;
                 case Stat.气运:
-                    UpgradeStatOver[3].SetText("+ " + RPGPlayer.MAINSTATSMULT * Char.statMultiplier + " Multiplier");
-                    UpgradeStatOver[3].TextColor = MainColor;
-                    UpgradeStatOver[5].SetText("+ " + RPGPlayer.SECONDARYTATSMULT * Char.statMultiplier + " Multiplier");
-                    UpgradeStatOver[5].TextColor = SecondaryColor;
-                    UpgradeStatOver[9].SetText("+ " + GetCritImprov() * 0.01f + " %");
+                    UpgradeStatOver[5].SetText("+ " + RPGPlayer.MAINSTATSMULT * Char.statMultiplier + " Multiplier");
+                    UpgradeStatOver[5].TextColor = MainColor;
                     break;
                 case Stat.道心:
                     break;
@@ -413,9 +410,9 @@ namespace SummonHeart.ui
                     UpgradeStatOver[6].TextColor = SecondaryColor;
                     break;
                 case Stat.体质:
-                    UpgradeStatOver[0].SetText("+ " + (((float)Char.player.statLifeMax / 20f) * Char.statMultiplier) + " Hp");
+                    UpgradeStatOver[0].SetText("+ " + 10 + " Hp");
                     UpgradeStatOver[0].TextColor = MainColor;
-                    UpgradeStatOver[10].SetText("+ " + 0.1f * Char.statMultiplier + " HP/Sec");
+                    UpgradeStatOver[10].SetText("+ " + 2 + " HP/Sec");
                     UpgradeStatOver[10].TextColor = MainColor;
                     break;
                 case Stat.力量:
@@ -515,12 +512,12 @@ namespace SummonHeart.ui
             {
                 UpgradeStatDetails[i + 3].SetText((DamageType)i + " Damage Multiplier : " + Math.Round(Char.GetDamageMult((DamageType)i), 2) + " x " + Math.Round(Char.GetDamageMult((DamageType)i, 1), 2) + " = " + Math.Round(Char.GetDamageMult((DamageType)i, 2) * 100, 2) + " %");
             }*/
-            UpgradeStatDetails[0].SetText("气血 : " + Char.player.statLifeMax2 + " ( " + Char.player.statLifeMax / 20 + " 心 x " + Math.Round(Char.GetHealthMult(), 2) + " x " + Math.Round(Char.GetHealthPerHeart(), 2) + " 血/心 + "+ 10 * Char.GetLevel() + " )");
+            UpgradeStatDetails[0].SetText("气血 : " + Char.player.statLifeMax2);
             UpgradeStatDetails[1].SetText("灵力 : " + Char.lingliMax);
-            UpgradeStatDetails[2].SetText("防御 : " + Char.player.statDefense + " ( " + Char.BaseArmor + " 护甲 x " + Math.Round(Char.GetDefenceMult(), 2) + " x " + Math.Round(Char.GetArmorMult(), 2) + " 防御/护甲 + 0 )");
-            UpgradeStatDetails[3].SetText("灵攻 : +" + Char.lingliDamageMult+ "倍");
+            UpgradeStatDetails[2].SetText("基础防御 : " + Char.player.statDefense);
+            UpgradeStatDetails[3].SetText("基础攻击 : +" + Char.lingliDamageMult+ "倍");
             UpgradeStatDetails[4].SetText("购买价格 : " + "100倍");
-            UpgradeStatDetails[5].SetText("物品掉落 : " + "0.1倍");
+            UpgradeStatDetails[5].SetText("物品掉落 : " + Char.GetStat(Stat.气运) * 0.05+ "倍");
             UpgradeStatDetails[6].SetText("燃元秘术修炼加速 : " + Char.GetFireMult() + "倍");
             UpgradeStatDetails[7].SetText("燃元秘术寿元消耗 : " + Char.GetFireAgeMult() + "倍");
             UpgradeStatDetails[8].SetText("灵技修炼加速 : " + Char.GetLinjiXiuLianAddMult() + "倍");

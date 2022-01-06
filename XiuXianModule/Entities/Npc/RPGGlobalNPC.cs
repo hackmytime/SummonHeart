@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using SummonHeart.Utilities;
+using SummonHeart.XiuXianModule.Items.LingShi;
+using SummonHeart.XiuXianModule.Items.NeiDan;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -515,6 +517,116 @@ namespace SummonHeart.XiuXianModule.Entities.Npc
 
         public override void NPCLoot(NPC npc)
         {
+            int level = npc.GetGlobalNPC<RPGGlobalNPC>().getLevel;
+            int tier = level % 10;
+            if (tier == 0)
+            {
+                tier = 10;
+            }
+            if (level <= 10)
+            {
+                if (Main.rand.Next(10) == 0)
+                {
+                    Item.NewItem(npc.Hitbox, ModContent.ItemType<LingShi1>(), tier);
+                }
+                if (Main.rand.Next(100) == 0)
+                {
+                    Item.NewItem(npc.Hitbox, ModContent.ItemType<NeiDan1>());
+                }
+            }
+            else if (level <= 20)
+            {
+                tier += 10;
+                if (Main.rand.Next(10) == 0)
+                {
+                    Item.NewItem(npc.Hitbox, ModContent.ItemType<LingShi1>(), tier);
+                }
+                if (Main.rand.Next(100) == 0)
+                {
+                    Item.NewItem(npc.Hitbox, ModContent.ItemType<NeiDan2>());
+                }
+            }
+            else if (level <= 30)
+            {
+                if (Main.rand.Next(10) == 0)
+                {
+                    Item.NewItem(npc.Hitbox, ModContent.ItemType<LingShi2>(), tier);
+                }
+                if (Main.rand.Next(100) == 0)
+                {
+                    Item.NewItem(npc.Hitbox, ModContent.ItemType<NeiDan3>());
+                }
+            }
+            else if (level <= 40)
+            {
+                tier += 10;
+                if (Main.rand.Next(10) == 0)
+                {
+                    Item.NewItem(npc.Hitbox, ModContent.ItemType<LingShi2>(), tier);
+                }
+                if (Main.rand.Next(100) == 0)
+                {
+                    Item.NewItem(npc.Hitbox, ModContent.ItemType<NeiDan4>());
+                }
+            }
+            else if (level <= 50)
+            {
+                if (Main.rand.Next(10) == 0)
+                {
+                    Item.NewItem(npc.Hitbox, ModContent.ItemType<LingShi3>(), tier);
+                }
+                if (Main.rand.Next(100) == 0)
+                {
+                    Item.NewItem(npc.Hitbox, ModContent.ItemType<NeiDan5>());
+                }
+            }
+            else if (level <= 60)
+            {
+                tier += 10;
+                if (Main.rand.Next(10) == 0)
+                {
+                    Item.NewItem(npc.Hitbox, ModContent.ItemType<LingShi3>(), tier);
+                }
+                if (Main.rand.Next(100) == 0)
+                {
+                    Item.NewItem(npc.Hitbox, ModContent.ItemType<NeiDan6>());
+                }
+            }
+            else if (level <= 70)
+            {
+                if (Main.rand.Next(10) == 0)
+                {
+                    Item.NewItem(npc.Hitbox, ModContent.ItemType<LingShi4>(), tier);
+                }
+                if (Main.rand.Next(100) == 0)
+                {
+                    Item.NewItem(npc.Hitbox, ModContent.ItemType<NeiDan7>());
+                }
+            }
+            else if (level <= 80)
+            {
+                tier += 10;
+                if (Main.rand.Next(10) == 0)
+                {
+                    Item.NewItem(npc.Hitbox, ModContent.ItemType<LingShi4>(), tier);
+                }
+                if (Main.rand.Next(100) == 0)
+                {
+                    Item.NewItem(npc.Hitbox, ModContent.ItemType<NeiDan8>());
+                }
+            }
+            else if (level <= 90)
+            {
+                tier += 10;
+                if (Main.rand.Next(10) == 0)
+                {
+                    Item.NewItem(npc.Hitbox, ModContent.ItemType<LingShi4>(), tier);
+                }
+                if (Main.rand.Next(100) == 0)
+                {
+                    Item.NewItem(npc.Hitbox, ModContent.ItemType<NeiDan9>());
+                }
+            }
 
             if (HaveModifier(NPCModifier.Cluster) && !HaveBufferProperty("clustered"))
             {

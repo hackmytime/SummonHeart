@@ -85,7 +85,7 @@ namespace SummonHeart.NPCs
 				Vector2 vector = Vector2.Zero;
 				npc.Teleport(vector, 0, 0);
 				isBack = true;
-				string text = "检测到已经清除全部魔神之子，允许所有作战单位传送回归。";
+				string text = "检测到已经清除全部仙魔之子，允许所有作战单位传送回归。";
 				if (Main.netMode == NetmodeID.SinglePlayer)
 				{
 					Main.NewText(text, new Color(175, 75, 255));

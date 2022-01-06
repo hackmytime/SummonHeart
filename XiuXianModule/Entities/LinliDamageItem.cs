@@ -45,9 +45,9 @@ namespace SummonHeart.XiuXianModule.Weapon
         public override void ModifyWeaponDamage(Player player, ref float add, ref float mult, ref float flat)
         {
             var rp = player.GetModPlayer<RPGPlayer>();
-            add += rp.lingliDamageAdd;
+            flat += rp.lingliDamageAdd;
             float useMult = useCount / (float)2000;
-            mult *= rp.lingliDamageMult * useMult;
+            mult *= useMult;
             if (mult == 0)
                 mult = 0.01f;
         }
@@ -62,7 +62,8 @@ namespace SummonHeart.XiuXianModule.Weapon
         {
             // Adds crit bonuses
             var rp = player.GetModPlayer<RPGPlayer>();
-            crit += rp.lingliDamageCrit;
+            float useMult = useCount / (float)20;
+            crit += (int)useMult;
         }
 
         // Because we want the damage tooltip to show our custom damage, we need to modify it

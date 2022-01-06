@@ -235,7 +235,7 @@ namespace SummonHeart.XiuXianModule.Entities.Npc
             else
             {
                 //小怪
-                baseLevel = mp.GetLevel();
+                baseLevel = mp.GetLevel() / 2;
                 if (baseLevel > 30)
                     baseLevel = 30;
             }

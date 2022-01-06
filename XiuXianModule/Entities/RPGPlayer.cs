@@ -56,6 +56,7 @@ namespace SummonHeart.XiuXianModule.Entities
         public bool FireAge;
         public int returnTime = 0;
         public int lifeHeal = 0;
+        public float baseLifeHeal = 0;
         public float lingli;
         public float lingliMax;
         private int linliHealCD = 0;
@@ -66,6 +67,7 @@ namespace SummonHeart.XiuXianModule.Entities
 
         public float lingliDamageAdd;
         public float lingliDamageMult;
+        public float baseDefMult;
         public float lingliDamageKnockback;
         public int lingliDamageCrit;
 
@@ -83,6 +85,7 @@ namespace SummonHeart.XiuXianModule.Entities
             danYaoMult = 1f;
             lifeHeal = 0;
             lingliDamageAdd = 0;
+            baseLifeHeal = 0;
         }
 
         public void FrostEffect()
@@ -236,14 +239,15 @@ namespace SummonHeart.XiuXianModule.Entities
             SummonHeartPlayer mp = player.GetModPlayer<SummonHeartPlayer>();
             if (mp.PlayerClass == 9)
             {
-                player.lifeRegen += Mathf.FloorInt(GetHealthRegen());
                 lingliMax = GetLinliMax();
                 lingliDamageMult = GetLinliDamageMult();
+                baseDefMult = GetBaseDefMult();
+                baseLifeHeal = GetBaseLifeHeal();
                 //player.statLifeMax2 = Mathf.Clamp((int)(GetHealthMult() * player.statLifeMax2 * GetHealthPerHeart() / 20) + 10 * GetLevel(), 10, int.MaxValue);
-                player.statLifeMax2 = Mathf.FloorInt(lingliMax / 2);
+                player.statLifeMax2 = Mathf.FloorInt(lingliMax / 2 + GetHealthAdd());
                 //player.statDefense = (int)(GetDefenceMult() * player.statDefense * GetArmorMult());
-                player.statDefense += Mathf.FloorInt(lingliMax / 20);
-                lingliDamageAdd += Mathf.FloorInt(lingliMax / 10);
+                lingliDamageAdd += Mathf.FloorInt(lingliMax / 20 * lingliDamageMult);
+                player.statDefense += Mathf.FloorInt(lingliDamageAdd * 0.8 * baseDefMult);
                 if(level > 10)
                 {
                     player.noKnockback = true;
@@ -286,7 +290,7 @@ namespace SummonHeart.XiuXianModule.Entities
                         }
                     }
                     //回血
-                    int heal = lifeHeal / 5;
+                    int heal = lifeHeal + (int)baseLifeHeal / 5;
                     if (player.statLife < player.statLifeMax2)
                     {
                         if (heal < 1)
@@ -554,9 +558,24 @@ namespace SummonHeart.XiuXianModule.Entities
             return (GetStatImproved(Stat.灵根) * 0.0025f + GetStatImproved(Stat.魅力) * 0.006f) * statMultiplier + 1f;
         }
 
-        public float GetHealthPerHeart()
+        public float GetHealthAdd()
         {
-            return GetStat(Stat.体质) * 1f + 1;
+            return GetStat(Stat.体质) * 10f;
+        }
+
+        public float GetBaseLifeHeal()
+        {
+            return GetStat(Stat.体质) * 2f;
+        }
+
+        public float GetBaseDefMult()
+        {
+            return GetStat(Stat.体质) * 0.1f + 1;
+        }
+
+        public int GetItemDropMult()
+        {
+            return Mathf.FloorInt(GetStat(Stat.气运) * 0.05f);
         }
 
         public float GetLinjiXiuLianAddMult()
@@ -566,7 +585,7 @@ namespace SummonHeart.XiuXianModule.Entities
 
         public float GetLinliDamageMult()
         {
-            return GetStat(Stat.力量) * 0.05f + 1;
+            return GetStat(Stat.力量) * 0.1f + 1;
         }
 
         public float GetManaPerStar()
@@ -620,12 +639,7 @@ namespace SummonHeart.XiuXianModule.Entities
         }
 
        
-        public float GetBonusHeal()
-        {
-            if (Config.gpConfig.RPGPlayer)
-                return GetHealthPerHeart() / 20;
-            return 1;
-        }
+       
         public float GetBonusHealMana()
         {
             if (Config.gpConfig.RPGPlayer)
@@ -633,11 +647,7 @@ namespace SummonHeart.XiuXianModule.Entities
             return 1;
         }
 
-        public float GetHealthRegen()
-        {
-            float RegenMultiplier = 1f;
-            return GetStatImproved(Stat.体质) * 0.1f * statMultiplier * RegenMultiplier;
-        }
+       
         public float GetManaRegen()
         {
             float RegenMultiplier = 1f;

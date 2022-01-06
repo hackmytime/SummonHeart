@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SummonHeart.XiuXianModule.Entities;
+using System;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -16,10 +17,15 @@ namespace SummonHeart.NPCs
 
         public override void NPCLoot(NPC npc)
         {
-            if (firstLoot && npc.type != 439 && SummonHeartWorld.GoddessMode)
+            Player player = Main.player[Main.myPlayer];
+            RPGPlayer rp = player.GetModPlayer<RPGPlayer>();
+            if (firstLoot && npc.type != 439)
             {
+                int dropMult = rp.GetItemDropMult();
+                if (SummonHeartWorld.GoddessMode)
+                    dropMult++;
                 firstLoot = false;
-                for (int i = 1; i < 2; i++)
+                for (int i = 1; i < dropMult; i++)
                 {
                     npc.NPCLoot();
                 }
